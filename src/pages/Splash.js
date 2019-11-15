@@ -14,19 +14,19 @@ class Splash extends React.PureComponent {
     // }, 2000);
   }
 
-  getDomesticSeggestion() {
-    return Service.get("/Flights/Airports?flightType=1");
-  }
+  // getDomesticSeggestion() {
+  //   return Service.get("/Flights/Airports?flightType=1");
+  // }
 
-  getInternationalSeggestion() {
-    return Service.get("/Flights/Airports?flightType=2");
-  }
+  // getInternationalSeggestion() {
+  //   return Service.get("/Flights/Airports?flightType=2");
+  // }
   getHotelSugesstion() {
     return Service.get("/Hotels/Cities?hoteltype=1");
   }
-  getBusSuggestion() {
-    return Service.get("/Buses/Sources");
-  }
+  // getBusSuggestion() {
+  //   return Service.get("/Buses/Sources");
+  // }
 
   componentDidMount() {
     const {
@@ -38,22 +38,22 @@ class Splash extends React.PureComponent {
     if (
       domesticSuggestion.length == 0 ||
       internationalSuggestion.length == 0 ||
-      domesticHotelSuggestion.length == 0 ||
-      busSuggestion.length == 0
+      domesticHotelSuggestion.length == 0 //||
+      // busSuggestion.length == 0
     ) {
       axios
         .all([
-          this.getDomesticSeggestion(),
-          this.getInternationalSeggestion(),
-          this.getHotelSugesstion(),
-          this.getBusSuggestion()
+          //  this.getDomesticSeggestion(),
+          //  this.getInternationalSeggestion(),
+          this.getHotelSugesstion()
+          //  this.getBusSuggestion()
         ])
         .then(
-          axios.spread((domestic, international, hotel, bus) => {
-            this.props.DomSugg(domestic.data);
-            this.props.IntSugg(international.data);
+          axios.spread(hotel => {
+            //   this.props.DomSugg(domestic.data);
+            //  this.props.IntSugg(international.data);
             this.props.DomHotelSugg(hotel.data);
-            this.props.BusSugg(bus.data);
+            //    this.props.BusSugg(bus.data);
             this.props.navigation.navigate("DrawerNavigator"); //DrawerNavigator
           })
         );
@@ -61,17 +61,17 @@ class Splash extends React.PureComponent {
       this.props.navigation.navigate("DrawerNavigator");
       axios
         .all([
-          this.getDomesticSeggestion(),
-          this.getInternationalSeggestion(),
-          this.getHotelSugesstion(),
-          this.getBusSuggestion()
+          // this.getDomesticSeggestion(),
+          // this.getInternationalSeggestion(),
+          this.getHotelSugesstion()
+          // this.getBusSuggestion()
         ])
         .then(
-          axios.spread((domestic, international, hotel, bus) => {
-            this.props.DomSugg(domestic.data);
-            this.props.IntSugg(international.data);
+          axios.spread(hotel => {
+            // this.props.DomSugg(domestic.data);
+            //  this.props.IntSugg(international.data);
             this.props.DomHotelSugg(hotel.data);
-            this.props.BusSugg(bus.data);
+            // this.props.BusSugg(bus.data);
             // Both requests are now complete
           })
         );

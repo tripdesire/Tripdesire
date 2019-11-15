@@ -12,10 +12,12 @@ import {
 import { withNavigation } from "react-navigation";
 import Button from "./Button";
 import Text from "./TextComponent";
+import Activity_Indicator from "./Activity_Indicator";
 import Service from "../service";
 import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
+import { DomSugg } from "../store/action";
 import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 class DomesticFlights extends React.PureComponent {
@@ -65,7 +67,7 @@ class DomesticFlights extends React.PureComponent {
 
   componentDidMount() {
     //  console.log("mount");
-    this.setState({ suggestions: this.props.domesticSuggestion });
+    //this.setState({ suggestions: this.props.domesticSuggestion });
     // Service.get("/Flights/Airports?flightType=1")
     //   .then(({ data }) => {
     //     this.setState({ suggestions: data });
@@ -374,14 +376,14 @@ class DomesticFlights extends React.PureComponent {
         <AutoCompleteModal
           placeholder="Enter Source"
           visible={this.state.modalFrom}
-          suggestions={this.state.suggestions}
+          suggestions={this.props.domesticSuggestion}
           onChange={this.handleFrom}
           onModalBackPress={this.setModalVisible("modalFrom", false)}
         />
         <AutoCompleteModal
           placeholder="Enter Destination"
           visible={this.state.modalTo}
-          suggestions={this.state.suggestions}
+          suggestions={this.props.domesticSuggestion}
           onChange={this.handleTo}
           onModalBackPress={this.setModalVisible("modalTo", false)}
         />
@@ -394,8 +396,24 @@ class AutoCompleteModal extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      filteredList: this.props.suggestions
+      filteredList: this.props.suggestions,
+      loader: false
     };
+  }
+
+  componentDidMount() {
+    if (this.props.suggestions.length == 0) {
+      this.setState({ loader: true });
+      Service.get("/Flights/Airports?flightType=1")
+        .then(({ data }) => {
+          this.props.DomSugg(data);
+          this.setState({ loader: false });
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({ loader: false });
+        });
+    }
   }
 
   filterList = text => {
@@ -464,6 +482,7 @@ class AutoCompleteModal extends React.PureComponent {
             />
           </View>
         </View>
+        {this.state.loader && <Activity_Indicator />}
       </Modal>
     );
   }
@@ -581,8 +600,12 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapDispatchToProps = {
+  DomSugg
+};
+
 const mapStateToProps = state => ({
   domesticSuggestion: state.domesticSuggestion
 });
 
-export default connect(mapStateToProps)(withNavigation(DomesticFlights));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(DomesticFlights));

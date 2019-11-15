@@ -12,6 +12,8 @@ import {
 import { withNavigation } from "react-navigation";
 import Button from "./Button";
 import Text from "./TextComponent";
+import { IntSugg } from "../store/action";
+import Activity_Indicator from "./Activity_Indicator";
 import Service from "../service";
 import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
@@ -64,7 +66,7 @@ class InternationalFlights extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.setState({ suggestions: this.props.internationalSuggestion });
+    //  this.setState({ suggestions: this.props.internationalSuggestion });
     // Service.get("/Flights/Airports?flightType=2")
     //   .then(({ data }) => {
     //     this.setState({ suggestions: data });
@@ -380,14 +382,14 @@ class InternationalFlights extends React.PureComponent {
         <AutoCompleteModal
           placeholder="Enter Source"
           visible={this.state.modalFrom}
-          suggestions={this.state.suggestions}
+          suggestions={this.props.internationalSuggestion}
           onChange={this.handleFrom}
           onModalBackPress={this.setModalVisible("modalFrom", false)}
         />
         <AutoCompleteModal
           placeholder="Enter Destination"
           visible={this.state.modalTo}
-          suggestions={this.state.suggestions}
+          suggestions={this.props.internationalSuggestion}
           onChange={this.handleTo}
           onModalBackPress={this.setModalVisible("modalTo", false)}
         />
@@ -400,12 +402,28 @@ class AutoCompleteModal extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      filteredList: this.props.suggestions
+      filteredList: this.props.suggestions, // this.props.suggestions,
+      loader: false
     };
+  }
+
+  componentDidMount() {
+    if (this.props.suggestions.length == 0) {
+      this.setState({ loader: true });
+      Service.get("/Flights/Airports?flightType=2")
+        .then(({ data }) => {
+          this.props.DomSugg(data);
+          this.setState({ loader: false });
+        })
+        .catch(error => {
+          this.setState({ loader: false });
+        });
+    }
   }
 
   filterList = text => {
     console.log(text);
+
     let filteredList = this.props.suggestions.filter(
       item =>
         item.AirportCode.toLowerCase().includes(text.toLowerCase()) ||
@@ -469,6 +487,7 @@ class AutoCompleteModal extends React.PureComponent {
             />
           </View>
         </View>
+        {this.state.loader && <Activity_Indicator />}
       </Modal>
     );
   }
