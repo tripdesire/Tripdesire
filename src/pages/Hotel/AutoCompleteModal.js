@@ -5,6 +5,7 @@ import Service from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import Icon from "react-native-vector-icons/Ionicons";
+import { DomHotelSugg } from "../store/action";
 import moment from "moment";
 import { connect } from "react-redux";
 import { Header } from "../../components";
@@ -13,8 +14,24 @@ class AutoCompleteModal extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      filteredList: this.props.suggestions
+      filteredList: this.props.suggestions,
+      loader: false
     };
+  }
+
+  componentDidMount() {
+    if (this.props.suggestions.length == 0) {
+      this.setState({ loader: true });
+      Service.get("/Flights/Airports?Hotel=1")
+        .then(({ data }) => {
+          this.props.DomHotelSugg(data);
+          this.setState({ loader: false });
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({ loader: false });
+        });
+    }
   }
 
   filterList = text => {
@@ -83,4 +100,12 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AutoCompleteModal;
+const mapDispatchToProps = {
+  DomHotelSugg
+};
+
+const mapStateToProps = state => ({
+  domesticHotelSuggestionReducer: state.domesticHotelSuggestionReducer
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AutoCompleteModal);

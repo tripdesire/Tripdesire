@@ -1,12 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  Picker
-} from "react-native";
+import { View, Image, StyleSheet, Modal, TouchableOpacity, Picker } from "react-native";
 import { Button, Text } from "../../components";
 import Service from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
@@ -43,9 +36,9 @@ class Hotel extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    this.setState({ suggestions: this.props.domesticHotelSuggestionReducer });
-  }
+  // componentDidMount() {
+  //   this.setState({ suggestions: this.props.domesticHotelSuggestionReducer });
+  // }
 
   navigateToScreen = () => {
     this.props.navigation.goBack(null);
@@ -137,10 +130,7 @@ class Hotel extends React.PureComponent {
 
   _search = () => {
     let Difference_In_Time = this.state.CheckOut - this.state.CheckIn;
-    let Difference_In_Days = Math.round(
-      Difference_In_Time / (1000 * 3600 * 24),
-      1
-    );
+    let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24), 1);
 
     let params = {
       city: this.state.city,
@@ -177,11 +167,7 @@ class Hotel extends React.PureComponent {
     return (
       <View style={{ flexDirection: "column", flex: 1 }}>
         <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}>
-          <Header
-            firstName="Hotel"
-            lastName="Search"
-            onPress={this.navigateToScreen}
-          />
+          <Header firstName="Hotel" lastName="Search" onPress={this.navigateToScreen} />
         </View>
 
         <View style={{ height: 30, width: "100%" }}>
@@ -193,8 +179,7 @@ class Hotel extends React.PureComponent {
               alignItems: "center",
               marginHorizontal: 20,
               ...StyleSheet.absoluteFill
-            }}
-          >
+            }}>
             <Button
               style={{
                 backgroundColor: "#5B89F9",
@@ -204,8 +189,7 @@ class Hotel extends React.PureComponent {
                 justifyContent: "center",
                 alignItems: "center",
                 borderRadius: 5
-              }}
-            >
+              }}>
               <Text style={{ color: "#fff", fontSize: 12 }}>Domestic</Text>
             </Button>
           </View>
@@ -215,8 +199,7 @@ class Hotel extends React.PureComponent {
             elevation: 1,
             backgroundColor: "#FFFFFF",
             flex: 4
-          }}
-        >
+          }}>
           <Text
             style={{
               color: "#1F273E",
@@ -225,14 +208,11 @@ class Hotel extends React.PureComponent {
               marginHorizontal: 16,
               alignSelf: "center"
             }}
-            onPress={this._onpress}
-          >
+            onPress={this._onpress}>
             {place}
           </Text>
 
-          <View
-            style={{ margin: 16, flexDirection: "row", alignItems: "center" }}
-          >
+          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
               style={{ width: 25, resizeMode: "contain" }}
               source={require("../../assets/imgs/cal.png")}
@@ -241,16 +221,10 @@ class Hotel extends React.PureComponent {
               style={{
                 flex: 1,
                 paddingStart: 20
-              }}
-            >
+              }}>
               <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-in</Text>
-              <Button
-                style={{ flex: 1, marginStart: 5 }}
-                onPress={this.show("date")}
-              >
-                <Text style={{ flex: 1 }}>
-                  {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
-                </Text>
+              <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
+                <Text style={{ flex: 1 }}>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
               </Button>
               {show_CheckIn && (
                 <RNDateTimePicker
@@ -266,18 +240,10 @@ class Hotel extends React.PureComponent {
               style={{
                 flex: 1,
                 paddingStart: 20
-              }}
-            >
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>
-                Check-out
-              </Text>
-              <Button
-                style={{ flex: 1, marginStart: 5 }}
-                onPress={this.showTo("date")}
-              >
-                <Text style={{ flex: 1 }}>
-                  {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
-                </Text>
+              }}>
+              <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-out</Text>
+              <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
+                <Text style={{ flex: 1 }}>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
               </Button>
               {show_CheckOut && (
                 <RNDateTimePicker
@@ -296,12 +262,9 @@ class Hotel extends React.PureComponent {
               height: 1,
               backgroundColor: "#DDDDDD",
               marginHorizontal: 20
-            }}
-          ></View>
+            }}></View>
 
-          <View
-            style={{ margin: 16, flexDirection: "row", alignItems: "center" }}
-          >
+          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
               style={{ width: 25, resizeMode: "contain" }}
               source={require("../../assets/imgs/person.png")}
@@ -310,8 +273,7 @@ class Hotel extends React.PureComponent {
               style={{
                 flex: 1,
                 paddingStart: 20
-              }}
-            >
+              }}>
               <Text style={{ color: "#5D666D", marginStart: 5 }}>
                 {adults_count === "Passengers:" ? adults_count : ""}
                 {adults_count > 0 ? adults_count + " Adults , " : ""}
@@ -326,11 +288,8 @@ class Hotel extends React.PureComponent {
                     justifyContent: "center",
                     borderRadius: 15
                   }}
-                  onPress={this.setPassengers}
-                >
-                  <Text style={{ color: "#fff", paddingHorizontal: 15 }}>
-                    ADD
-                  </Text>
+                  onPress={this.setPassengers}>
+                  <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
                 </Button>
               </View>
             </View>
@@ -344,8 +303,7 @@ class Hotel extends React.PureComponent {
               borderRadius: 20,
               marginVertical: 40
             }}
-            onPress={this._search}
-          >
+            onPress={this._search}>
             <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
           </Button>
         </View>
@@ -358,7 +316,7 @@ class Hotel extends React.PureComponent {
         <AutoCompleteModal
           placeholder="Enter Source"
           visible={this.state._place}
-          suggestions={this.state.suggestions}
+          suggestions={this.props.domesticHotelSuggestionReducer}
           onChange={this._handle}
           onModalBackPress={this._submit}
         />
