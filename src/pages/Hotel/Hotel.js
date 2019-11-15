@@ -1,14 +1,10 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, Modal, TouchableOpacity, Picker } from "react-native";
-import { Button, Text } from "../../components";
-import Service from "../../service";
-import Autocomplete from "react-native-autocomplete-input";
+import { Button, Text, AutoCompleteModal } from "../../components";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
 import { connect } from "react-redux";
 import { Header } from "../../components";
-import AutoCompleteModal from "./AutoCompleteModal";
 import AddPassengers from "./AddPassengers";
 
 class Hotel extends React.PureComponent {
@@ -313,13 +309,15 @@ class Hotel extends React.PureComponent {
           submit={this.submit}
           modalClose={this.modalClose}
         />
-        <AutoCompleteModal
-          placeholder="Enter Source"
-          visible={this.state._place}
-          suggestions={this.props.domesticHotelSuggestionReducer}
-          onChange={this._handle}
-          onModalBackPress={this._submit}
-        />
+
+        <Modal animationType="slide" transparent={false} visible={this.state._place}>
+          <AutoCompleteModal
+            placeholder="Enter Source"
+            type="domesticHotel"
+            onChange={this._handle}
+            onModalBackPress={this._submit}
+          />
+        </Modal>
       </View>
     );
   }

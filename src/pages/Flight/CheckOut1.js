@@ -23,6 +23,7 @@ class CheckOut1 extends React.PureComponent {
     super(props);
     const { params } = props.navigation.state;
     this.state = {
+      loading: false,
       date: new Date(),
       gender: "Mr",
       DOB: new Date(),
@@ -300,44 +301,56 @@ class CheckOut1 extends React.PureComponent {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
       console.log(data);
-      Service.post("/Flights/BlockFlightTicket", data).then(blockres => {
-        console.log(blockres.data);
-        axios
-          .post("https://demo66.tutiixx.com/wp-json/wc/v2/checkout/new-order?user_id=7")
-          .then(res => {
-            console.log(res);
-            this.setState({
-              transactionId: res.transaction_id,
-              status: res.status
-            });
-            RazorpayCheckout.open(options)
-              .then(data => {
-                // handle success
-                alert(`Success: ${data.razorpay_payment_id}`);
-                this.setState({ orderId: data.razorpay_payment_id });
-                this.props.navigation.navigate("ThankYou", res);
-                let paymentData = {
-                  order_id: res.data.id,
-                  status: "completed",
-                  transaction_id: res.data.transaction_id,
-                  reference_no: blockres.data.ReferenceNo
-                };
-                console.log(paymentData);
-                axios
-                  .post(
-                    "https://demo66.tutiixx.com/wp-json/wc/v2/checkout/update-order",
-                    paymentData
-                  )
-                  .then(res => {
-                    console.log(res);
-                  });
-              })
-              .catch(error => {
-                // handle failure
-                alert(`Error: ${error.code} | ${error.description}`);
+      this.setState({ loading: true });
+      Service.post("/Flights/BlockFlightTicket", data)
+        .then(blockres => {
+          console.log(blockres.data);
+          axios
+            .post("https://demo66.tutiixx.com/wp-json/wc/v2/checkout/new-order?user_id=7")
+            .then(res => {
+              console.log(res);
+              this.setState({
+                transactionId: res.transaction_id,
+                status: res.status,
+                loading: false
               });
-          });
-      });
+              RazorpayCheckout.open(options)
+                .then(data => {
+                  // handle success
+                  alert(`Success: ${data.razorpay_payment_id}`);
+                  this.setState({ orderId: data.razorpay_payment_id });
+                  this.props.navigation.navigate("ThankYou", res);
+                  let paymentData = {
+                    order_id: res.data.id,
+                    status: "completed",
+                    transaction_id: res.data.transaction_id,
+                    reference_no: blockres.data.ReferenceNo
+                  };
+                  console.log(paymentData);
+                  axios
+                    .post(
+                      "https://demo66.tutiixx.com/wp-json/wc/v2/checkout/update-order",
+                      paymentData
+                    )
+                    .then(res => {
+                      console.log(res);
+                    });
+                })
+                .catch(error => {
+                  // handle failure
+
+                  alert(`Error: ${error.code} | ${error.description}`);
+                });
+            })
+            .catch(error => {
+              Toast.show(error, Toast.LONG);
+              this.setState({ loading: false });
+            });
+        })
+        .catch(error => {
+          Toast.show(error, Toast.LONG);
+          this.setState({ loading: false });
+        });
     }
 
     console.log(param);
@@ -356,7 +369,7 @@ class CheckOut1 extends React.PureComponent {
     const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults } = this.state;
 
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View
           style={{
             height: 56,
@@ -943,6 +956,7 @@ class CheckOut1 extends React.PureComponent {
             </Button>
           </ScrollView>
         </View>
+        {this.state.loading && <Activity_Indicator />}
       </View>
     );
   }

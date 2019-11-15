@@ -9,7 +9,9 @@ import {
   ScrollView,
   Modal
 } from "react-native";
-import { Button, Text, DomesticFlights, InternationalFlights } from "../../components";
+import { Button, Text } from "../../components";
+import DomesticFlights from "./DomesticFlights";
+import InternationalFlights from "./InternationalFlights";
 import Service from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";

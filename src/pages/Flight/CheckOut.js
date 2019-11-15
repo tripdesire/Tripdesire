@@ -1,13 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  ScrollView
-} from "react-native";
+import { View, Image, TextInput, ScrollView } from "react-native";
 import Toast from "react-native-simple-toast";
 import { Button, Text, Activity_Indicator } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -21,6 +13,7 @@ class CheckOut extends React.PureComponent {
     super(props);
     console.log(this.props.navigation.state.params);
     this.state = {
+      loading: false,
       return: false
     };
   }
@@ -192,26 +185,30 @@ class CheckOut extends React.PureComponent {
       fl_infant: params.infant,
       fl_ctype: params.className
     };
-    console.log(param);
 
-    axios.post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param).then(res => {
-      console.log(res);
-      if (res.data.code == 1) {
-        this.props.navigation.navigate(page, params);
-      } else {
-        Toast.show("Flight is not added to cart.", Toast.SHORT);
-        axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(res => {
-          console.log(res);
-        });
+    this.setState({ loading: true });
+    axios
+      .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param)
+      .then(res => {
+        console.log(res);
+        // if (res.data.code == 1) {
         axios
-          .get(
-            "https://demo66.tutiixx.com/wp-json/wc/v2/cart/remove/?cart_item_key=c7e1249ffc03eb9ded908c236bd1996d"
-          )
+          .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
           .then(res => {
             console.log(res);
+            this.props.navigation.navigate(page, params);
+            this.setState({ loading: false });
+          })
+          .catch(error => {
+            Toast.show(error, Toast.LONG);
+            this.setState({ loading: false });
           });
-      }
-    });
+        // }
+      })
+      .catch(error => {
+        Toast.show(error, Toast.LONG);
+        this.setState({ loading: false });
+      });
   };
 
   render() {
@@ -1006,6 +1003,7 @@ class CheckOut extends React.PureComponent {
               <Text style={{ color: "#fff" }}>Next</Text>
             </Button>
           </ScrollView>
+          {this.state.loading && <Activity_Indicator />}
         </View>
       );
     }

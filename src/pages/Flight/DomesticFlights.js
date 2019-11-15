@@ -1,25 +1,10 @@
-import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Picker,
-  ScrollView,
-  Modal
-} from "react-native";
+import React from "react";
+import { View, Image, StyleSheet, Picker, Modal, BackHandler } from "react-native";
 import { withNavigation } from "react-navigation";
-import Button from "./Button";
-import Text from "./TextComponent";
-import Activity_Indicator from "./Activity_Indicator";
-import Service from "../service";
-import Autocomplete from "react-native-autocomplete-input";
+import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
-import { DomSugg } from "../store/action";
-import Icon from "react-native-vector-icons/Ionicons";
-import { connect } from "react-redux";
+
 class DomesticFlights extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -65,15 +50,24 @@ class DomesticFlights extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    //  console.log("mount");
-    //this.setState({ suggestions: this.props.domesticSuggestion });
-    // Service.get("/Flights/Airports?flightType=1")
-    //   .then(({ data }) => {
-    //     this.setState({ suggestions: data });
-    //   })
-    //   .catch(() => {});
-  }
+  // componentDidMount() {
+  //   this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+  //     console.log(this.state.modalFrom);
+  //     if (this.state.modalFrom || this.state.modalTo) {
+  //       this.setState({
+  //         modalFrom: false,
+  //         modalTo: false
+  //       });
+  //     } else {
+  //       this.props.navigation.goBack(null);
+  //     }
+  //     return true;
+  //   });
+  // }
+
+  // componentWillUnmount() {
+  //   this.backHandler.remove();
+  // }
 
   setDate = (event, date) => {
     date = date || this.state.Journey_date;
@@ -185,10 +179,6 @@ class DomesticFlights extends React.PureComponent {
       Journey_date,
       Return_date,
       mode,
-      backgroundColor_domestic,
-      backgroundColor_international,
-      Button_text_color_domestic,
-      Button_text_color_international,
       tripTypeColorOneway,
       tripTypeColorRound,
       selectRound
@@ -212,7 +202,7 @@ class DomesticFlights extends React.PureComponent {
               marginHorizontal: 5,
               alignSelf: "center"
             }}
-            source={require("../assets/imgs/white-arrow-left-side.png")}
+            source={require("../../assets/imgs/white-arrow-left-side.png")}
           />
           <Button
             style={{ justifyContent: "center" }}
@@ -221,7 +211,7 @@ class DomesticFlights extends React.PureComponent {
           </Button>
           <Image
             style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
-            source={require("../assets/imgs/Round-trip-arrow.png")}
+            source={require("../../assets/imgs/Round-trip-arrow.png")}
           />
           <Button
             style={{ justifyContent: "center" }}
@@ -233,7 +223,7 @@ class DomesticFlights extends React.PureComponent {
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
             style={{ width: 25, resizeMode: "contain" }}
-            source={require("../assets/imgs/flights-1.png")}
+            source={require("../../assets/imgs/flights-1.png")}
           />
           <View
             style={{
@@ -268,7 +258,7 @@ class DomesticFlights extends React.PureComponent {
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
             style={{ width: 25, resizeMode: "contain" }}
-            source={require("../assets/imgs/cal.png")}
+            source={require("../../assets/imgs/cal.png")}
           />
           <View
             style={{
@@ -322,7 +312,7 @@ class DomesticFlights extends React.PureComponent {
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
             style={{ width: 25, resizeMode: "contain" }}
-            source={require("../assets/imgs/person.png")}
+            source={require("../../assets/imgs/person.png")}
           />
           <View
             style={{
@@ -373,117 +363,26 @@ class DomesticFlights extends React.PureComponent {
         </Button>
         <AddPassengers visible={this.state.modalPassengers} submit={this.submit} />
 
-        <AutoCompleteModal
-          placeholder="Enter Source"
-          visible={this.state.modalFrom}
-          suggestions={this.props.domesticSuggestion}
-          onChange={this.handleFrom}
-          onModalBackPress={this.setModalVisible("modalFrom", false)}
-        />
-        <AutoCompleteModal
-          placeholder="Enter Destination"
-          visible={this.state.modalTo}
-          suggestions={this.props.domesticSuggestion}
-          onChange={this.handleTo}
-          onModalBackPress={this.setModalVisible("modalTo", false)}
-        />
+        <Modal animationType="slide" transparent={false} visible={this.state.modalFrom}>
+          <AutoCompleteModal
+            placeholder="Enter Source"
+            //visible={this.state.modalFrom}
+            type="domesticFlight"
+            onChange={this.handleFrom}
+            onModalBackPress={this.setModalVisible("modalFrom", false)}
+          />
+        </Modal>
+
+        <Modal animationType="slide" transparent={false} visible={this.state.modalTo}>
+          <AutoCompleteModal
+            placeholder="Enter Destination"
+            //visible={this.state.modalTo}
+            type="domesticFlight"
+            onChange={this.handleTo}
+            onModalBackPress={this.setModalVisible("modalTo", false)}
+          />
+        </Modal>
       </View>
-    );
-  }
-}
-
-class AutoCompleteModal extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filteredList: this.props.suggestions,
-      loader: false
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.suggestions.length == 0) {
-      this.setState({ loader: true });
-      Service.get("/Flights/Airports?flightType=1")
-        .then(({ data }) => {
-          this.props.DomSugg(data);
-          this.setState({ loader: false });
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({ loader: false });
-        });
-    }
-  }
-
-  filterList = text => {
-    let filteredList = this.props.suggestions.filter(
-      item =>
-        item.AirportCode.toLowerCase().includes(text.toLowerCase()) ||
-        item.City.toLowerCase().includes(text.toLowerCase())
-    );
-    this.setState({ filteredList });
-  };
-
-  handleItemChange = item => () => {
-    this.props.onChange && this.props.onChange(item);
-  };
-
-  renderItem = ({ item, i }) => (
-    <TouchableOpacity
-      style={{
-        //backgroundColor: "#FFFFFF",
-        //minHeight: 35,
-        paddingStart: 8,
-        marginVertical: 8,
-        justifyContent: "center"
-      }}
-      onPress={this.handleItemChange(item)}>
-      <Text>
-        {item.City},{item.Country}-({item.AirportCode})-{item.AirportDesc}
-      </Text>
-    </TouchableOpacity>
-  );
-
-  keyExtractor = (item, index) => item.AirportCode + index;
-
-  render() {
-    return (
-      <Modal animationType="slide" transparent={false} visible={this.props.visible}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Button
-            onPress={this.props.onModalBackPress}
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              height: 48,
-              width: 48
-            }}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <View style={styles.autocompleteContainer}>
-            <Autocomplete
-              placeholder={this.props.placeholder}
-              inputContainerStyle={{
-                borderWidth: 0,
-                height: 48,
-                justifyContent: "center"
-              }}
-              data={this.state.filteredList}
-              onChangeText={this.filterList}
-              listStyle={{
-                maxHeight: 300,
-                margin: 0,
-                padding: 0,
-                borderWidth: 0
-              }}
-              renderItem={this.renderItem}
-              keyExtractor={this.keyExtractor}
-            />
-          </View>
-        </View>
-        {this.state.loader && <Activity_Indicator />}
-      </Modal>
     );
   }
 }
@@ -600,12 +499,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = {
-  DomSugg
-};
-
-const mapStateToProps = state => ({
-  domesticSuggestion: state.domesticSuggestion
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(DomesticFlights));
+export default withNavigation(DomesticFlights);

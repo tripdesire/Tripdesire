@@ -9,7 +9,7 @@ import { busSuggestionReducer } from "./busSuggestionReducer";
 export default combineReducers({
   domesticSuggestion: domesticSuggestionReducer,
   internationalSuggestion: internationalSuggestionReducer,
-  domesticHotelSuggestionReducer: domesticHotelSuggestionReducer,
+  domesticHotelSuggestion: domesticHotelSuggestionReducer,
   signIn: signInReducer,
   signUp: signUpReducer,
   busSuggestion: busSuggestionReducer
