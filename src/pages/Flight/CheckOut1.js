@@ -11,9 +11,7 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { Button, Text, Activity_Indicator } from "../../components";
-import IconSimple from "react-native-vector-icons/SimpleLineIcons";
-import Icon from "react-native-vector-icons/Ionicons";
+import { Button, Text, Activity_Indicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
@@ -329,6 +327,7 @@ class CheckOut1 extends React.PureComponent {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
       console.log(data);
+      let totalData = data;
 
       this.setState({ loading: true });
       Service.post("/Flights/BlockFlightTicket", data)
@@ -357,8 +356,7 @@ class CheckOut1 extends React.PureComponent {
                     contact: "9191919191",
                     name: "Razorpay Software"
                   },
-                  theme: { color: "#E5EBF7" },
-                  userData: res.data
+                  theme: { color: "#E5EBF7" }
                 };
 
                 RazorpayCheckout.open(options)
@@ -367,7 +365,11 @@ class CheckOut1 extends React.PureComponent {
                     console.log(data);
                     alert(`Success: ${data.razorpay_payment_id}`);
                     this.setState({ orderId: data.razorpay_payment_id });
-                    this.props.navigation.navigate("ThankYou", res);
+                    this.props.navigation.navigate("ThankYou", {
+                      cartRes: res,
+                      blockRes: blockres,
+                      data: totalData
+                    });
                     let paymentData = {
                       order_id: res.data.id,
                       status: "completed",
@@ -905,7 +907,7 @@ class CheckOut1 extends React.PureComponent {
                   marginVertical: 5,
                   alignItems: "center"
                 }}>
-                <IconSimple name="bag" size={30} />
+                <Icon name="bag" size={30} type="SimpleLineIcons"/>
                 <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
                   Contact Details
                 </Text>

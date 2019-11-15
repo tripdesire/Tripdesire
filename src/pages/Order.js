@@ -22,16 +22,7 @@ class Order extends React.PureComponent {
     super(props);
     this.state = {
       loader: true,
-      orders: [
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 },
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 },
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 },
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 },
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 },
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 },
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 },
-        // { bookingid: 125, status: "Success", Date: "Nov 4 2019", Total: 300 }
-      ]
+      orders: []
     };
   }
 
