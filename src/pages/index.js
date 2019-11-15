@@ -25,6 +25,7 @@ import RoomDetails from "../pages/Hotel/RoomDetails";
 import ThankYou from "./ThankYou";
 import Order from "./Order";
 import OrderDetails from "./OrderDetails";
+import Filter from "./Flight/Filter";
 
 export {
   Home,
@@ -53,5 +54,6 @@ export {
   RoomDetails,
   ThankYou,
   Order,
-  OrderDetails
+  OrderDetails,
+  Filter
 };

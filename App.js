@@ -33,7 +33,8 @@ import {
   RoomDetails,
   ThankYou,
   Order,
-  OrderDetails
+  OrderDetails,
+  Filter
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -77,7 +78,8 @@ const HomeStack = createStackNavigator(
     SignIn,
     SignUp,
     RoomDetails,
-    ThankYou
+    ThankYou,
+    Filter
   },
   {
     headerMode: "none",

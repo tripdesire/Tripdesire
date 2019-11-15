@@ -165,10 +165,10 @@ class Filter extends React.PureComponent {
                 <Text style={styles._filterHeading}>Stops</Text>
                 {[...Array(2)].map((e, index) => (
                   <View style={styles._singleItemView} key={index}>
-                    <CheckBox
+                    {/* <CheckBox
                       value={this.state.stops[index].checkBox}
                       // onChange={this._setcheckBox(index)}
-                    />
+                    /> */}
                     <Text>{index} Stop(s)</Text>
                   </View>
                 ))}
@@ -178,11 +178,11 @@ class Filter extends React.PureComponent {
               <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
                 <Text style={styles._filterHeading}>Fare Type</Text>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Refundable</Text>
                 </View>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Non-Refundable</Text>
                 </View>
               </View>
@@ -191,11 +191,11 @@ class Filter extends React.PureComponent {
               <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
                 <Text style={styles._filterHeading}>Airlines</Text>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Indigo</Text>
                 </View>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Air India</Text>
                 </View>
               </View>
@@ -204,11 +204,11 @@ class Filter extends React.PureComponent {
               <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
                 <Text style={styles._filterHeading}>Connecting Locations</Text>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Kolkata</Text>
                 </View>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Delhi</Text>
                 </View>
               </View>
@@ -217,11 +217,11 @@ class Filter extends React.PureComponent {
               <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
                 <Text style={styles._filterHeading}>Price</Text>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Kolkata</Text>
                 </View>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Delhi</Text>
                 </View>
               </View>
@@ -230,11 +230,11 @@ class Filter extends React.PureComponent {
               <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
                 <Text style={styles._filterHeading}>Departure</Text>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Kolkata</Text>
                 </View>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Delhi</Text>
                 </View>
               </View>
@@ -243,11 +243,11 @@ class Filter extends React.PureComponent {
               <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
                 <Text style={styles._filterHeading}>Arrival</Text>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Kolkata</Text>
                 </View>
                 <View style={styles._singleItemView}>
-                  <CheckBox value={this.state.zeroStop} />
+                  {/* <CheckBox value={this.state.zeroStop} /> */}
                   <Text>Delhi</Text>
                 </View>
               </View>
