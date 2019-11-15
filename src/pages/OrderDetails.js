@@ -1,13 +1,6 @@
 import React, { PureComponent } from "react";
 import { Text, Button, Header, Activity_Indicator } from "../components";
-import {
-  Image,
-  ImageBackground,
-  Dimensions,
-  View,
-  StyleSheet,
-  FlatList
-} from "react-native";
+import { Image, ImageBackground, Dimensions, View, StyleSheet, FlatList } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
@@ -31,9 +24,8 @@ class OrderDetails extends React.PureComponent {
             marginHorizontal: 16,
             height: 56,
             alignItems: "center"
-          }}
-        >
-          <Button onPress={this.props.navigation.openDrawer}>
+          }}>
+          <Button onPress={this.props.navigation.goBack(null)}>
             <Icon name="md-arrow-back" size={24} />
           </Button>
           <Text
@@ -42,8 +34,7 @@ class OrderDetails extends React.PureComponent {
               color: "#1E293B",
               marginStart: 5,
               fontWeight: "700"
-            }}
-          >
+            }}>
             Orders
           </Text>
         </View>
@@ -53,8 +44,7 @@ class OrderDetails extends React.PureComponent {
               flexDirection: "row",
               justifyContent: "space-between",
               marginHorizontal: 8
-            }}
-          >
+            }}>
             <Text style={{ color: "#636C73", fontSize: 12 }}>01 - jan</Text>
             <Text style={{ color: "#636C73", fontSize: 12 }}>Non-Stop</Text>
           </View>
@@ -63,8 +53,7 @@ class OrderDetails extends React.PureComponent {
               flexDirection: "row",
               marginHorizontal: 8,
               justifyContent: "space-between"
-            }}
-          >
+            }}>
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>Indigo</Text>
               <Text
@@ -72,8 +61,7 @@ class OrderDetails extends React.PureComponent {
                   fontSize: 12,
                   color: "#5D646A",
                   lineHeight: 14
-                }}
-              >
+                }}>
                 6E-151E
               </Text>
             </View>
@@ -84,8 +72,7 @@ class OrderDetails extends React.PureComponent {
                   fontSize: 12,
                   color: "#5D646A",
                   lineHeight: 14
-                }}
-              >
+                }}>
                 Hyderabad
               </Text>
             </View>
@@ -96,22 +83,18 @@ class OrderDetails extends React.PureComponent {
                   fontSize: 12,
                   color: "#5D646A",
                   lineHeight: 14
-                }}
-              >
+                }}>
                 Bangalore
               </Text>
             </View>
             <View>
-              <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                1 hrs 25 mins
-              </Text>
+              <Text style={{ fontSize: 20, lineHeight: 22 }}>1 hrs 25 mins</Text>
               <Text
                 style={{
                   fontSize: 12,
                   color: "#5D646A",
                   lineHeight: 14
-                }}
-              >
+                }}>
                 Bangalore
               </Text>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>Economy</Text>
@@ -124,8 +107,7 @@ class OrderDetails extends React.PureComponent {
             elevation: 1,
             borderRadius: 5,
             marginTop: 10
-          }}
-        >
+          }}>
           <Text
             style={{
               fontWeight: "700",
@@ -135,8 +117,7 @@ class OrderDetails extends React.PureComponent {
               paddingHorizontal: 10,
               borderTopLeftRadius: 5,
               borderTopRightRadius: 5
-            }}
-          >
+            }}>
             Passenger Details
           </Text>
           <View
@@ -144,15 +125,13 @@ class OrderDetails extends React.PureComponent {
               flexDirection: "row",
               justifyContent: "space-between",
               paddingHorizontal: 10
-            }}
-          >
+            }}>
             <View>
               <Text
                 style={{
                   fontWeight: "700",
                   fontSize: 16
-                }}
-              >
+                }}>
                 Passenger
               </Text>
               <Text>Kamal Gangwar</Text>
@@ -173,8 +152,7 @@ class OrderDetails extends React.PureComponent {
             elevation: 1,
             borderRadius: 5,
             marginTop: 10
-          }}
-        >
+          }}>
           <Text
             style={{
               fontWeight: "700",
@@ -184,8 +162,7 @@ class OrderDetails extends React.PureComponent {
               backgroundColor: "#EEF1F8",
               paddingHorizontal: 10,
               paddingVertical: 10
-            }}
-          >
+            }}>
             Fare Summary
           </Text>
           <View style={styles.summaryView}>
@@ -214,9 +191,7 @@ class OrderDetails extends React.PureComponent {
           </View>
           <View style={styles.summaryView}>
             <Text style={{ flex: 1 }}>Payment Method</Text>
-            <Text style={{ flex: 1, marginStart: 10 }}>
-              Credit Card/Debit Card/Net Banking
-            </Text>
+            <Text style={{ flex: 1, marginStart: 10 }}>Credit Card/Debit Card/Net Banking</Text>
           </View>
         </View>
       </View>

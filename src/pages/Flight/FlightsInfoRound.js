@@ -21,8 +21,8 @@ class FlightsInfoRound extends React.PureComponent {
       to: "",
       journey_date: "",
       return_date: "",
-      journeyDate:"",
-      returnDate:"",
+      journeyDate: "",
+      returnDate: "",
       className: "",
       travelClass: "",
       Adult: "",
@@ -57,8 +57,8 @@ class FlightsInfoRound extends React.PureComponent {
       travelClass: data.travelClass,
       journey_date: jd,
       return_date: rt,
-      journeyDate:data.journeyDate,
-      returnDate:data.returnDate,
+      journeyDate: data.journeyDate,
+      returnDate: data.returnDate,
       Adult: data.adults,
       Child: data.children,
       Infant: data.infants,
@@ -70,8 +70,6 @@ class FlightsInfoRound extends React.PureComponent {
     });
     Service.get("/Flights/AvailableFlights", data)
       .then(({ data }) => {
-        //console.log(data);
-        //console.log(data.DomesticOnwardFlights);
         if (data.DomesticOnwardFlights.length > 1) {
           this._getDomesticFlightOnward(data.DomesticOnwardFlights[0], 0);
         }
@@ -121,8 +119,8 @@ class FlightsInfoRound extends React.PureComponent {
       infant: this.state.Child,
       journey_date: this.state.journey_date,
       return_date: this.state.return_date,
-      journeyDate:this.state.journeyDate,
-      returnDate:this.state.returnDate,
+      journeyDate: this.state.journeyDate,
+      returnDate: this.state.returnDate,
       Adult: this.state.Adult,
       Child: this.state.Child,
       Infant: this.state.Infant,

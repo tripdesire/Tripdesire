@@ -206,7 +206,12 @@ class CheckOut1 extends React.PureComponent {
 
     let data = {
       ActualBaseFare: params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
-      ActualBaseFareRet: 0,
+      ActualBaseFareRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.ActualBaseFare
+          : 0,
       Address: "Hyderabad",
       AdultPax: params.adult,
       Ages: age,
@@ -215,14 +220,24 @@ class CheckOut1 extends React.PureComponent {
       ChildPax: params.child,
       City: "Hyderabad",
       Conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
-      ConveniencefeeRet: 0,
+      ConveniencefeeRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.Conveniencefee
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.Conveniencefee
+          : 0,
       Destination: params.destinationCode,
       DestinationName: params.destinationAirportName,
       dob: dob,
-      EmailId: "guru@email.com",
+      EmailId: "guruu@email.com",
       FareDetails: params.departFlight.FareDetails,
       FlightId: params.departFlight.FlightUId,
-      FlightIdRet: null,
+      FlightIdRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FlightUId
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FlightUId
+          : null,
       FlightType: params.flightType,
       Genders: gender,
       GSTDetails: params.departFlight.IsGSTMandatory
@@ -242,34 +257,62 @@ class CheckOut1 extends React.PureComponent {
       IsNonStopFlight: false,
       JourneyDate: params.journeyDate,
       key: params.departFlight.OriginDestinationoptionId.Key,
-      keyRet: null,
-      MobileNo: "9999999999",
+      keyRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.OriginDestinationoptionId.Key
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.OriginDestinationoptionId.Key
+          : null,
+      MobileNo: "9999995999",
       Names: name,
       OcTax: 0,
-      OnwardFlightSegments: params.departFlight.FlightSegments,
+      OnwardFlightSegments:
+        params.flightType == 1
+          ? params.departFlight.FlightSegments
+          : params.departFlight.IntOnward.FlightSegments,
       PassportDetails: "",
       PostalCode: "500071",
       Provider: params.departFlight.Provider,
       Psgrtype: "",
-      ReturnDate: "",
-      ReturnFlightSegments: [],
+      ReturnDate: params.tripType == 2 ? params.returnDate : params.journeyDate,
+      ReturnFlightSegments:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FlightSegments
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.IntReturn.FlightSegments
+          : [],
       Rule: " ",
       RuleRet: null,
       SCharge: params.departFlight.FareDetails.ChargeableFares.SCharge,
-      SChargeRet: 0,
+      SChargeRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.SCharge
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.SCharge
+          : 0,
       SMSUsageCount: 0,
       Source: params.sourceCode,
       SourceName: params.sourceAirportName,
-      State: "UP",
+      State: "Telangana",
       STax: 0,
       STaxRet: 0,
       Tax: params.departFlight.FareDetails.ChargeableFares.Tax,
-      TaxRet: 0,
+      TaxRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.Tax
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.Tax
+          : 0,
       TCharge: 0,
       TChargeRet: 0,
       TDiscount: params.departFlight.FareDetails.ChargeableFares.TDiscount,
-      TDiscountRet: 0,
-      telephone: "8888888888",
+      TDiscountRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.TDiscount
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.TDiscount
+          : 0,
+      telephone: "8888588888",
       TMarkup: 0,
       TMarkupRet: 0,
       TPartnerCommission: 0,
@@ -282,70 +325,79 @@ class CheckOut1 extends React.PureComponent {
       UserType: 5
     };
 
-    var options = {
-      description: "Credits towards consultation",
-      image: "https://i.imgur.com/3g7nmJC.png",
-      currency: "INR",
-      key: "rzp_test_a3aQYPLYowGvWJ",
-      amount: "500000",
-      name: "TripDesire",
-      prefill: {
-        email: "void@razorpay.com",
-        contact: "9191919191",
-        name: "Razorpay Software"
-      },
-      theme: { color: "#E5EBF7" }
-    };
-
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
       console.log(data);
+
       this.setState({ loading: true });
       Service.post("/Flights/BlockFlightTicket", data)
         .then(blockres => {
           console.log(blockres.data);
-          axios
-            .post("https://demo66.tutiixx.com/wp-json/wc/v2/checkout/new-order?user_id=7")
-            .then(res => {
-              console.log(res);
-              this.setState({
-                transactionId: res.transaction_id,
-                status: res.status,
-                loading: false
-              });
-              RazorpayCheckout.open(options)
-                .then(data => {
-                  // handle success
-                  alert(`Success: ${data.razorpay_payment_id}`);
-                  this.setState({ orderId: data.razorpay_payment_id });
-                  this.props.navigation.navigate("ThankYou", res);
-                  let paymentData = {
-                    order_id: res.data.id,
-                    status: "completed",
-                    transaction_id: res.data.transaction_id,
-                    reference_no: blockres.data.ReferenceNo
-                  };
-                  console.log(paymentData);
-                  axios
-                    .post(
-                      "https://demo66.tutiixx.com/wp-json/wc/v2/checkout/update-order",
-                      paymentData
-                    )
-                    .then(res => {
-                      console.log(res);
-                    });
-                })
-                .catch(error => {
-                  // handle failure
-
-                  alert(`Error: ${error.code} | ${error.description}`);
+          if (blockres.data.BookingStatus == 8) {
+            axios
+              .post("https://demo66.tutiixx.com/wp-json/wc/v2/checkout/new-order?user_id=7")
+              .then(res => {
+                console.log(res);
+                this.setState({
+                  transactionId: res.data.transaction_id,
+                  status: res.data.status,
+                  loading: false
                 });
-            })
-            .catch(error => {
-              Toast.show(error, Toast.LONG);
-              this.setState({ loading: false });
-            });
+
+                var options = {
+                  description: "Credits towards consultation",
+                  image: "https://i.imgur.com/3g7nmJC.png",
+                  currency: "INR",
+                  key: "rzp_test_a3aQYPLYowGvWJ",
+                  amount: res.data.total * 100,
+                  name: "TripDesire",
+                  prefill: {
+                    email: "void@razorpay.com",
+                    contact: "9191919191",
+                    name: "Razorpay Software"
+                  },
+                  theme: { color: "#E5EBF7" },
+                  userData: res.data
+                };
+
+                RazorpayCheckout.open(options)
+                  .then(data => {
+                    // handle success
+                    console.log(data);
+                    alert(`Success: ${data.razorpay_payment_id}`);
+                    this.setState({ orderId: data.razorpay_payment_id });
+                    this.props.navigation.navigate("ThankYou", res);
+                    let paymentData = {
+                      order_id: res.data.id,
+                      status: "completed",
+                      transaction_id: res.data.transaction_id,
+                      reference_no: blockres.data.ReferenceNo
+                    };
+                    console.log(paymentData);
+                    axios
+                      .post(
+                        "https://demo66.tutiixx.com/wp-json/wc/v2/checkout/update-order",
+                        paymentData
+                      )
+                      .then(res => {
+                        console.log(res);
+                      });
+                  })
+                  .catch(error => {
+                    // handle failure
+
+                    alert(`Error: ${error.code} | ${error.description}`);
+                  });
+              })
+              .catch(error => {
+                Toast.show(error, Toast.LONG);
+                this.setState({ loading: false });
+              });
+          } else {
+            this.setState({ loading: false });
+            Toast.show("Ticket is not block successfully ", Toast.LONG);
+          }
         })
         .catch(error => {
           Toast.show(error, Toast.LONG);
