@@ -5,6 +5,7 @@ import Text from "./TextComponent";
 import Activity_Indicator from "./Activity_Indicator";
 import Service from "../service";
 import Autocomplete from "react-native-autocomplete-input";
+import Toast from "react-native-simple-toast";
 import Icon from "./IconNB";
 import { DomSugg, IntSugg, DomHotelSugg } from "../store/action";
 import { connect } from "react-redux";
@@ -38,6 +39,7 @@ class AutoCompleteModal extends React.PureComponent {
       internationalSuggestion,
       domesticHotelSuggestion
     } = this.props;
+
     switch (type) {
       case "domesticFlight":
         if (domesticSuggestion.length == 0) {
@@ -48,7 +50,7 @@ class AutoCompleteModal extends React.PureComponent {
               this.setState({ loader: false, filteredList: data });
             })
             .catch(err => {
-              console.log(err);
+              Toast.show(err, Toast.LONG);
               this.setState({ loader: false });
             });
         }
@@ -63,7 +65,7 @@ class AutoCompleteModal extends React.PureComponent {
               this.setState({ loader: false, filteredList: data });
             })
             .catch(err => {
-              console.log(err);
+              Toast.show(err, Toast.LONG);
               this.setState({ loader: false });
             });
         }
@@ -77,7 +79,7 @@ class AutoCompleteModal extends React.PureComponent {
               this.setState({ loader: false, filteredList: data });
             })
             .catch(err => {
-              console.log(err);
+              Toast.show(err, Toast.LONG);
               this.setState({ loader: false });
             });
         }
@@ -208,7 +210,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     end: 0,
     top: 0,
-    zIndex: 1
+    zIndex: 3
   }
 });
 
