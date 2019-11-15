@@ -5,10 +5,9 @@ import Service from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import Icon from "react-native-vector-icons/Ionicons";
-import { DomHotelSugg } from "../store/action";
+import { DomHotelSugg } from "../../store/action";
 import moment from "moment";
 import { connect } from "react-redux";
-import { Header } from "../../components";
 
 class AutoCompleteModal extends React.PureComponent {
   constructor(props) {
