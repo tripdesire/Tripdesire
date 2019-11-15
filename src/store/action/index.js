@@ -1,0 +1,50 @@
+import {
+  DOMESTIC_SUGGESTION,
+  INTERNATIONAL_SUGGESTION,
+  DOMESTIC_HOTEL_SUGGESTION,
+  SIGN_IN,
+  SIGN_UP,
+  BUS_SUGGESTION
+} from "./actionTypes";
+
+export const DomSugg = data => {
+  return {
+    type: DOMESTIC_SUGGESTION,
+    payload: data
+  };
+};
+
+export const IntSugg = data => {
+  return {
+    type: INTERNATIONAL_SUGGESTION,
+    payload: data
+  };
+};
+
+export const DomHotelSugg = data => {
+  return {
+    type: DOMESTIC_HOTEL_SUGGESTION,
+    payload: data
+  };
+};
+
+export const Signup = data => {
+  return {
+    type: SIGN_UP,
+    payload: data
+  };
+};
+
+export const Signin = data => {
+  return {
+    type: SIGN_IN,
+    payload: data
+  };
+};
+
+export const BusSugg = data => {
+  return {
+    type: BUS_SUGGESTION,
+    payload: data
+  };
+};

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "700390422426",
+    "firebase_url": "https://tripdesire-c1700.firebaseio.com",
+    "project_id": "tripdesire-c1700",
+    "storage_bucket": "tripdesire-c1700.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700390422426:android:baaae2f6d66c75f55b2c23",
+        "android_client_info": {
+          "package_name": "com.tripdesire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700390422426-js26bv8ou5lmieaucdh51jqfuvkhi5mk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripdesire",
+            "certificate_hash": "1c2b1a1a785bc83120b84f2ad5a5d7803cdff147"
+          }
+        },
+        {
+          "client_id": "700390422426-si5ip9965oq8n7jho2ocq9jd6sf11mm3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoMx-4H1yc5Nbz08xEG_uOMCZlTTXLUn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700390422426-si5ip9965oq8n7jho2ocq9jd6sf11mm3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
