@@ -1,4 +1,8 @@
 {
   "printWidth": 100,
-  "jsxBracketSameLine": true
+  "jsxBracketSameLine": true,
+  "endOfLine": "lf",
+  "tabWidth": 2,
+  "bracketSpacing": true,
+  "trailingComma": "none"
 }
