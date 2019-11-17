@@ -147,7 +147,7 @@ class AutoCompleteModal extends React.PureComponent {
           justifyContent: "center"
         }}
         onPress={this.handleItemChange(item)}>
-        <Text>{text}</Text>
+        <Text style={{ flex: 1 }}>{text}</Text>
       </TouchableOpacity>
     );
   };

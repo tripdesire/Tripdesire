@@ -166,7 +166,7 @@ class RenderDomesticRound extends React.PureComponent {
             Refundable
           </Text>
           <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
-            Rare Rules
+            Fare Rules
           </Text>
           <Button onPress={this.toggle}>
             {this.state.expanded == false && (

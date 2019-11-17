@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, Picker, Modal, BackHandler } from "react-native";
+import { View, Image, StyleSheet, Picker, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
@@ -341,7 +341,7 @@ class DomesticFlights extends React.PureComponent {
             <Text style={{ color: "#5D666D", marginStart: 5 }}>Class</Text>
             <Picker
               selectedValue={this.state.class}
-              style={{ height: 20, width: 110 }}
+              style={{ height: 30, width: "100%" }}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ class: itemValue, index: itemIndex })
               }>

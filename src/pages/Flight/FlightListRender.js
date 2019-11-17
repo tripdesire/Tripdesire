@@ -27,7 +27,7 @@ class FlightListRender extends React.PureComponent {
       travelClass: this.props.travelClass,
       className: this.props.className,
       journey_date: this.props.journey_date,
-      journeyDate:this.props.journeyDate,
+      journeyDate: this.props.journeyDate,
       adult: this.props.adult,
       child: this.props.child,
       infant: this.props.infant,
@@ -163,7 +163,7 @@ class FlightListRender extends React.PureComponent {
             }}>
             Refundable
           </Text>
-          <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Rare Rules</Text>
+          <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
           <Button onPress={this.toggle}>
             {this.state.expanded == false && (
               <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>

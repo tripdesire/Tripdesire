@@ -231,7 +231,7 @@ class RenderInternationRound extends React.PureComponent {
             }}>
             Refundable
           </Text>
-          <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Rare Rules</Text>
+          <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
           <Button onPress={this.toggle}>
             {this.state.expanded == false && (
               <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
@@ -502,7 +502,7 @@ class RenderInternationRound extends React.PureComponent {
               }}>
               Refundable
             </Text>
-            <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Rare Rules</Text>
+            <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
             <Button onPress={this.toggleReturn}>
               {this.state.expandedReturn == false && (
                 <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
