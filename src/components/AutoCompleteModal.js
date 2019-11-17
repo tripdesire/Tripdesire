@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import Button from "./Button";
 import Text from "./TextComponent";
 import Activity_Indicator from "./Activity_Indicator";
@@ -9,6 +9,8 @@ import Toast from "react-native-simple-toast";
 import Icon from "./IconNB";
 import { DomSugg, IntSugg, DomHotelSugg } from "../store/action";
 import { connect } from "react-redux";
+
+const { height } = Dimensions.get("window");
 
 class AutoCompleteModal extends React.PureComponent {
   constructor(props) {
@@ -172,7 +174,8 @@ class AutoCompleteModal extends React.PureComponent {
               alignItems: "center",
               justifyContent: "center",
               height: 48,
-              width: 48
+              width: 48,
+              zIndex: 1
             }}>
             <Icon name="md-arrow-back" size={24} />
           </Button>
@@ -182,14 +185,15 @@ class AutoCompleteModal extends React.PureComponent {
               inputContainerStyle={{
                 borderWidth: 0,
                 height: 48,
+                paddingStart: 48,
                 justifyContent: "center"
               }}
               data={this.state.filteredList}
               onChangeText={this.filterList}
               listStyle={{
-                maxHeight: 300,
+                maxHeight: height,
                 margin: 0,
-                padding: 0,
+                paddingHorizontal: 16,
                 borderWidth: 0
               }}
               renderItem={this.renderItem}
@@ -206,11 +210,10 @@ class AutoCompleteModal extends React.PureComponent {
 const styles = StyleSheet.create({
   autocompleteContainer: {
     flex: 1,
-    start: 48,
+    start: 0,
     position: "absolute",
     end: 0,
-    top: 0,
-    zIndex: 3
+    top: 0
   }
 });
 

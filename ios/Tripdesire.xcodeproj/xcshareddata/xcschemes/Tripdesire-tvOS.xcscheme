@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "Tripdesire-tvOS.app"
-               BlueprintName = "Tripdesire-tvOS"
-               ReferencedContainer = "container:Tripdesire.xcodeproj">
+               BuildableName = "tripdesire-tvOS.app"
+               BlueprintName = "tripdesire-tvOS"
+               ReferencedContainer = "container:tripdesire.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "Tripdesire-tvOSTests.xctest"
-               BlueprintName = "Tripdesire-tvOSTests"
-               ReferencedContainer = "container:Tripdesire.xcodeproj">
+               BuildableName = "tripdesire-tvOSTests.xctest"
+               BlueprintName = "tripdesire-tvOSTests"
+               ReferencedContainer = "container:tripdesire.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "Tripdesire-tvOSTests.xctest"
-               BlueprintName = "Tripdesire-tvOSTests"
-               ReferencedContainer = "container:Tripdesire.xcodeproj">
+               BuildableName = "tripdesire-tvOSTests.xctest"
+               BlueprintName = "tripdesire-tvOSTests"
+               ReferencedContainer = "container:tripdesire.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "Tripdesire-tvOS.app"
-            BlueprintName = "Tripdesire-tvOS"
-            ReferencedContainer = "container:Tripdesire.xcodeproj">
+            BuildableName = "tripdesire-tvOS.app"
+            BlueprintName = "tripdesire-tvOS"
+            ReferencedContainer = "container:tripdesire.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "Tripdesire-tvOS.app"
-            BlueprintName = "Tripdesire-tvOS"
-            ReferencedContainer = "container:Tripdesire.xcodeproj">
+            BuildableName = "tripdesire-tvOS.app"
+            BlueprintName = "tripdesire-tvOS"
+            ReferencedContainer = "container:tripdesire.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "Tripdesire-tvOS.app"
-            BlueprintName = "Tripdesire-tvOS"
-            ReferencedContainer = "container:Tripdesire.xcodeproj">
+            BuildableName = "tripdesire-tvOS.app"
+            BlueprintName = "tripdesire-tvOS"
+            ReferencedContainer = "container:tripdesire.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

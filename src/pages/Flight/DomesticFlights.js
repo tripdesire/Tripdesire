@@ -363,7 +363,11 @@ class DomesticFlights extends React.PureComponent {
         </Button>
         <AddPassengers visible={this.state.modalPassengers} submit={this.submit} />
 
-        <Modal animationType="slide" transparent={false} visible={this.state.modalFrom}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalFrom}
+          onRequestClose={this.setModalVisible("modalFrom", false)}>
           <AutoCompleteModal
             placeholder="Enter Source"
             //visible={this.state.modalFrom}
@@ -373,7 +377,11 @@ class DomesticFlights extends React.PureComponent {
           />
         </Modal>
 
-        <Modal animationType="slide" transparent={false} visible={this.state.modalTo}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalTo}
+          onRequestClose={this.setModalVisible("modalTo", false)}>
           <AutoCompleteModal
             placeholder="Enter Destination"
             //visible={this.state.modalTo}

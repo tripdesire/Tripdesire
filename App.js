@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { Provider } from "react-redux";

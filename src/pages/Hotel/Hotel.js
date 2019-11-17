@@ -79,11 +79,11 @@ class Hotel extends React.PureComponent {
     });
   };
 
-  _onpress = () => {
+  modalOpen = () => {
     this.setState({ _place: true });
   };
 
-  _submit = () => {
+  modalBackPress = () => {
     this.setState({ _place: false });
   };
 
@@ -204,7 +204,7 @@ class Hotel extends React.PureComponent {
               marginHorizontal: 16,
               alignSelf: "center"
             }}
-            onPress={this._onpress}>
+            onPress={this.modalOpen}>
             {place}
           </Text>
 
@@ -310,12 +310,16 @@ class Hotel extends React.PureComponent {
           modalClose={this.modalClose}
         />
 
-        <Modal animationType="slide" transparent={false} visible={this.state._place}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state._place}
+          onRequestClose={this.modalBackPress}>
           <AutoCompleteModal
             placeholder="Enter Source"
             type="domesticHotel"
             onChange={this._handle}
-            onModalBackPress={this._submit}
+            onModalBackPress={this.modalBackPress}
           />
         </Modal>
       </View>
