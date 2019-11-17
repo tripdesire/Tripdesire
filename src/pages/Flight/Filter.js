@@ -1,15 +1,14 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, Modal, TouchableOpacity, Picker } from "react-native";
+import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Button, Text } from "../../components";
 import Service from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
-import Icon from "react-native-vector-icons/Ionicons";
+//import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import { connect } from "react-redux";
-import { Header } from "../../components";
+import { Header, Icon } from "../../components";
 //import CheckBox from "@react-native-community/checkbox";
-import { ScrollView } from "react-native-gesture-handler";
+import {} from "react-native-gesture-handler";
 
 class Filter extends React.PureComponent {
   constructor(props) {
