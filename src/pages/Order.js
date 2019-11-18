@@ -26,7 +26,8 @@ class Order extends React.PureComponent {
     };
   }
 
-  _OrderDetails = value => {
+  _OrderDetails = value => () => {
+    console.log("Hye");
     this.props.navigation.navigate("OrderDetails", value);
   };
 
@@ -39,7 +40,7 @@ class Order extends React.PureComponent {
           loader: false
         });
       } else {
-        Toast.show("Please enter the child age.", Toast.SHORT);
+        Toast.show("Data not found.", Toast.SHORT);
         this.setState({ loader: false });
       }
     });
@@ -60,7 +61,7 @@ class Order extends React.PureComponent {
           borderRadius: 8,
           padding: 10
         }}
-        onPress={() => this._OrderDetails(item)}>
+        onPress={this._OrderDetails(item)}>
         <View
           style={{
             flexDirection: "row",

@@ -12,10 +12,15 @@ const { height, width } = Dimensions.get("window");
 class OrderDetails extends React.PureComponent {
   constructor(props) {
     super(props);
-    console.log(props.navigation.state);
+    console.log(props.navigation.state.params);
   }
 
+  _goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   render() {
+    const { params } = this.props.navigation.state;
     return (
       <View>
         <View
@@ -25,7 +30,7 @@ class OrderDetails extends React.PureComponent {
             height: 56,
             alignItems: "center"
           }}>
-          <Button onPress={this.props.navigation.goBack(null)}>
+          <Button onPress={this._goBack}>
             <Icon name="md-arrow-back" size={24} />
           </Button>
           <Text
@@ -35,7 +40,7 @@ class OrderDetails extends React.PureComponent {
               marginStart: 5,
               fontWeight: "700"
             }}>
-            Orders
+            {"   "}#{params.id}
           </Text>
         </View>
         <View>
@@ -45,8 +50,14 @@ class OrderDetails extends React.PureComponent {
               justifyContent: "space-between",
               marginHorizontal: 8
             }}>
-            <Text style={{ color: "#636C73", fontSize: 12 }}>01 - jan</Text>
-            <Text style={{ color: "#636C73", fontSize: 12 }}>Non-Stop</Text>
+            <Text style={{ color: "#636C73", fontSize: 12 }}>
+              {params.line_items[0].meta_data[12].value}
+            </Text>
+            <Text style={{ color: "#636C73", fontSize: 12 }}>
+              {params.line_items[0].meta_data[8].value != 0
+                ? params.line_items[0].meta_data[8].value
+                : "Non-Stop"}
+            </Text>
           </View>
           <View
             style={{
@@ -55,29 +66,48 @@ class OrderDetails extends React.PureComponent {
               justifyContent: "space-between"
             }}>
             <View>
-              <Text style={{ fontSize: 20, lineHeight: 22 }}>Indigo</Text>
+              <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                {params.line_items[0].meta_data[1].value}
+              </Text>
               <Text
                 style={{
                   fontSize: 12,
                   color: "#5D646A",
                   lineHeight: 14
                 }}>
-                6E-151E
+                {params.line_items[0].meta_data[2].value}
               </Text>
             </View>
             <View>
-              <Text style={{ fontSize: 20, lineHeight: 22 }}>08:25</Text>
+              <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                {params.line_items[0].meta_data[5].value}
+              </Text>
               <Text
                 style={{
                   fontSize: 12,
                   color: "#5D646A",
                   lineHeight: 14
                 }}>
-                Hyderabad
+                {params.line_items[0].meta_data[3].value}
               </Text>
             </View>
             <View>
-              <Text style={{ fontSize: 20, lineHeight: 22 }}>08:25</Text>
+              <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                {params.line_items[0].meta_data[6].value}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "#5D646A",
+                  lineHeight: 14
+                }}>
+                {params.line_items[0].meta_data[4].value}
+              </Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                {params.line_items[0].meta_data[7].value}
+              </Text>
               <Text
                 style={{
                   fontSize: 12,
@@ -86,18 +116,9 @@ class OrderDetails extends React.PureComponent {
                 }}>
                 Bangalore
               </Text>
-            </View>
-            <View>
-              <Text style={{ fontSize: 20, lineHeight: 22 }}>1 hrs 25 mins</Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "#5D646A",
-                  lineHeight: 14
-                }}>
-                Bangalore
+              <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                {params.line_items[0].meta_data[21].value}
               </Text>
-              <Text style={{ fontSize: 20, lineHeight: 22 }}>Economy</Text>
             </View>
           </View>
         </View>
@@ -167,31 +188,43 @@ class OrderDetails extends React.PureComponent {
           </Text>
           <View style={styles.summaryView}>
             <Text>Convenience Fee</Text>
-            <Text>0.00</Text>
+            <Text>{params.line_items[0].meta_data[9].value}</Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Flight Scharge</Text>
-            <Text>0.00</Text>
+            <Text>{params.line_items[0].meta_data[10].value}</Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Base Fare</Text>
-            <Text>1472</Text>
+            <Text>
+              {params.currency_symbol}
+              {params.line_items[0].meta_data[15].value}
+            </Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Flight Gst</Text>
-            <Text>0.00</Text>
+            <Text>
+              {params.currency_symbol}
+              {params.line_items[0].meta_data[16].value}
+            </Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Flight Tax</Text>
-            <Text>1131</Text>
+            <Text>
+              {params.currency_symbol}
+              {params.line_items[0].meta_data[11].value}
+            </Text>
           </View>
           <View style={styles.summaryView}>
             <Text style={{ fontWeight: "700", fontSize: 18 }}>Total Price</Text>
-            <Text style={{ fontWeight: "700", fontSize: 18 }}>2603</Text>
+            <Text style={{ fontWeight: "700", fontSize: 18 }}>
+              {params.currency_symbol}
+              {params.total}
+            </Text>
           </View>
           <View style={styles.summaryView}>
             <Text style={{ flex: 1 }}>Payment Method</Text>
-            <Text style={{ flex: 1, marginStart: 10 }}>Credit Card/Debit Card/Net Banking</Text>
+            <Text style={{ flex: 1, marginStart: 10 }}>{params.payment_method}</Text>
           </View>
         </View>
       </View>

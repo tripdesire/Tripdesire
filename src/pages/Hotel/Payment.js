@@ -172,21 +172,29 @@ class Payment extends React.PureComponent {
       infant_details: this.state.infants
     };
 
-    let name = [...Array(parseInt(params.room))]
-      .map(
-        [
-          ...this.state.adults.map(
-            item => item.den + "|" + item.firstname + "|" + item.last_name + "|adt"
-          ),
-          ...this.state.childs.map(
-            item => item.den + "|" + item.firstname + "|" + item.last_name + "|chd"
-          ),
-          ...this.state.infants.map(
-            item => item.den + "|" + item.firstname + "|" + item.last_name + "|inf"
-          )
-        ].join("~")
+    let dataa = [];
+    let arrayCount = [];
+    dataa = params.adultDetail;
+    for (let i = 0; i < dataa.length; i++) {
+      if (dataa[i] == "~") {
+        continue;
+      } else {
+        arrayCount.push(dataa[i]);
+      }
+    }
+    console.log(arrayCount);
+
+    let name = [
+      ...this.state.adults.map(
+        item => item.den + "|" + item.firstname + "|" + item.last_name + "|adt"
+      ),
+      ...this.state.childs.map(
+        item => item.den + "|" + item.firstname + "|" + item.last_name + "|chd"
+      ),
+      ...this.state.infants.map(
+        item => item.den + "|" + item.firstname + "|" + item.last_name + "|inf"
       )
-      .join("-");
+    ].join("~");
 
     let dob = [
       ...this.state.adults.map(item => moment(item.dob).format("DD-MM-YYYY")),

@@ -91,7 +91,8 @@ const HomeStack = createStackNavigator(
 
 const OrderStack = createStackNavigator(
   {
-    Order
+    Order,
+    OrderDetails
   },
   {
     headerMode: "none",
