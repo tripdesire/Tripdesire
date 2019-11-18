@@ -1,21 +1,12 @@
-import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, FlatList, ScrollView } from "react-native";
-import {
-  Button,
-  Text,
-  Activity_Indicator,
-  DomesticFlights,
-  InternationalFlights,
-  HeaderFlights
-} from "../../components";
-import Icon from "react-native-vector-icons/AntDesign";
+import React from "react";
+import { View, Image, StyleSheet, FlatList, Modal } from "react-native";
+import { Button, Text, Activity_Indicator, Icon, HeaderFlights } from "../../components";
 import Toast from "react-native-simple-toast";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Service from "../../service";
 import moment from "moment";
-var newData = [];
+import Filter from "./Filter";
 
 class FlightsInfoOneway extends React.PureComponent {
   constructor(props) {
@@ -35,39 +26,16 @@ class FlightsInfoOneway extends React.PureComponent {
       sourceAirportName: "",
       destinationAirportName: "",
       _selectFlightType: false,
-      data: [
-        {
-          date: "09",
-          day: "Mon"
-        },
-        {
-          date: "10",
-          day: "Tue"
-        },
-        {
-          date: "11",
-          day: "Wed"
-        },
-        {
-          date: "12",
-          day: "Thur"
-        },
-        {
-          date: "13",
-          day: "Fri"
-        },
-        {
-          date: "14",
-          day: "Sat"
-        }
-      ],
-      flights: []
+      month: "",
+      dates: [],
+      flights: [],
+      showFilter: false
     };
   }
 
   componentDidMount() {
-    let data = [];
-    data = this.props.navigation.state.params;
+    let data = this.props.navigation.state.params;
+    this.genrateDates(data.journeyDate);
     console.log(data);
 
     let jd = moment(data.journeyDate, "DD-MM-YYYY").format("DD MMM");
@@ -106,6 +74,21 @@ class FlightsInfoOneway extends React.PureComponent {
       });
   }
 
+  genrateDates(date) {
+    let dates = [];
+    date = moment(date, "DD-MM-YYYY");
+    for (let i = 0; i < 7; i++) {
+      let d = date.add(1, "days");
+      dates.push({
+        fullDate: d.format("DD-MM-YYYY"),
+        day: d.format("ddd"),
+        date: d.format("DD")
+      });
+    }
+    let month = date.format("MMM");
+    this.setState({ dates, month });
+  }
+
   Filter(value) {
     let stopage = [];
     console.log("hey");
@@ -120,20 +103,30 @@ class FlightsInfoOneway extends React.PureComponent {
     }
   }
 
+  openFilter = () => {
+    this.setState({ showFilter: true });
+  };
+  closeFilter = () => {
+    this.setState({ showFilter: false });
+  };
+
   _renderItem = ({ item }) => (
-    <View style={{ flexDirection: "row" }}>
-      <Button
-        style={{
-          marginHorizontal: 5,
-          paddingHorizontal: 15
-        }}>
-        <Text style={{ fontSize: 12, color: "#717984", alignSelf: "center" }}>{item.day}</Text>
-        <Text style={{ fontSize: 20, fontWeight: "700", alignSelf: "center" }}>{item.date}</Text>
-      </Button>
-      <View
-        style={{ width: 1, height: 35, backgroundColor: "#DFDFDF", paddingVertical: 15 }}></View>
+    <Button style={{ paddingHorizontal: 15, paddingVertical: 10, alignItems: "center" }}>
+      <Text style={{ fontSize: 12, color: "#717984" }}>{item.day}</Text>
+      <Text style={{ fontSize: 20, fontWeight: "700" }}>{item.date}</Text>
+    </Button>
+  );
+  itemSeparator = () => (
+    <View style={{ width: 1, backgroundColor: "#DFDFDF", paddingVertical: 10 }} />
+  );
+  listheaderComponent = () => (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ transform: [{ rotate: "270deg" }], textAlign: "center" }}>
+        {this.state.month}
+      </Text>
     </View>
   );
+  _keyExtractor = (item, index) => "dates_" + index;
 
   _renderItemList = ({ item, index }) => {
     if (this.state.flight_type == 1) {
@@ -182,15 +175,22 @@ class FlightsInfoOneway extends React.PureComponent {
       );
     }
   };
-
-  _keyExtractor = (item, index) => "key" + index;
-
   _keyExtractoritems = (item, index) => "key" + index;
 
   render() {
-    const { from, to, journey_date, className, Adult, Child, Infant, loader } = this.state;
+    const {
+      from,
+      to,
+      journey_date,
+      className,
+      Adult,
+      Child,
+      Infant,
+      loader,
+      showFilter
+    } = this.state;
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
           <HeaderFlights
             from={from}
@@ -199,46 +199,43 @@ class FlightsInfoOneway extends React.PureComponent {
             Adult={Adult}
             Child={Child}
             Infant={Infant}
-            className={className}
-            onPress={() => this.props.navigation.goBack(null)}>
-            <View style={{ flexDirection: "row", marginStart: "auto" }}>
-              <IconMaterial name="filter" fontSize={35} color="#5D89F4" />
+            className={className}>
+            <Button
+              style={{
+                flexDirection: "row",
+                marginStart: "auto",
+                paddingEnd: 8,
+                paddingVertical: 16
+              }}
+              onPress={this.openFilter}>
+              <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
               <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
                 Sort & Filter
               </Text>
-            </View>
+            </Button>
           </HeaderFlights>
         </View>
 
         <View style={{ flex: 4 }}>
           <View
             style={{
+              flexDirection: "row",
               marginHorizontal: 30,
               borderRadius: 5,
               marginTop: -40,
               borderWidth: 1,
               borderColor: "#d2d2d2d2",
-              backgroundColor: "#FFFFFF",
-              flexDirection: "row"
+              backgroundColor: "#FFFFFF"
             }}>
-            <ScrollView
+            <FlatList
               horizontal={true}
+              data={this.state.dates}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+              ItemSeparatorComponent={this.itemSeparator}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingVertical: 10 }}>
-              <Text
-                style={{
-                  transform: [{ rotate: "270deg" }],
-                  alignSelf: "center"
-                }}>
-                Sept
-              </Text>
-              <FlatList
-                horizontal={true}
-                data={this.state.data}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-              />
-            </ScrollView>
+              ListHeaderComponent={this.listheaderComponent}
+            />
             <Button
               style={{
                 backgroundColor: "#5B89F9",
@@ -247,16 +244,13 @@ class FlightsInfoOneway extends React.PureComponent {
                 borderTopRightRadius: 5
               }}>
               <Image
-                style={{
-                  width: 20,
-                  resizeMode: "contain",
-                  alignSelf: "center",
-                  marginHorizontal: 8
-                }}
+                style={{ width: 20, marginHorizontal: 8 }}
+                resizeMode="contain"
                 source={require("../../assets/imgs/cal.png")}
               />
             </Button>
           </View>
+
           <FlatList
             nestedScrollEnabled={true}
             vertical={true}
@@ -265,6 +259,13 @@ class FlightsInfoOneway extends React.PureComponent {
             renderItem={this._renderItemList}
           />
         </View>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={showFilter}
+          onRequestClose={this.closeFilter}>
+          <Filter data={this.state.flights} onBackPress={this.closeFilter} />
+        </Modal>
         {loader && <Activity_Indicator />}
       </View>
     );

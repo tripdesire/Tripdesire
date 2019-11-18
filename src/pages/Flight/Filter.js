@@ -121,17 +121,27 @@ class Filter extends React.PureComponent {
     });
   };
 
+  onBackPress = () => {
+    console.log("back");
+    this.props.onBackPress && this.props.onBackPress();
+  };
+
   render() {
     return (
-      <View animationType="slide" transparent={false} visible={this.props.visible}>
+      <View>
         <View style={{ flexDirection: "row", alignItems: "center", height: 56 }}>
           <Button
-            onPress={this.props.onModalBackPress}
-            style={{ alignItems: "center", justifyContent: "center", height: 48, width: 48 }}>
+            onPress={this.onBackPress}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              height: 48,
+              width: 48
+            }}>
             <Icon name="md-arrow-back" size={24} />
           </Button>
           <View>
-            <Text style={{ fontWeight: "700", fontSize: 16 }}>Add Filter</Text>
+            <Text style={{ fontWeight: "700", fontSize: 16 }}>Filter</Text>
           </View>
         </View>
         <ScrollView contentContainerStyle={{ flexDirection: "row" }}>
