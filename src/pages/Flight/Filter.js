@@ -1,13 +1,10 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
-import { Button, Text } from "../../components";
-import Service from "../../service";
-import Autocomplete from "react-native-autocomplete-input";
-//import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { Button, Text, CheckBox } from "../../components";
+import { _ } from "lodash";
 import moment from "moment";
 import { connect } from "react-redux";
 import { Header, Icon } from "../../components";
-//import CheckBox from "@react-native-community/checkbox";
 import {} from "react-native-gesture-handler";
 
 class Filter extends React.PureComponent {
@@ -19,7 +16,7 @@ class Filter extends React.PureComponent {
           checkBox: false
         };
       }),
-      filters: [
+      filterTabs: [
         "Stops",
         "Fare Type",
         "Airlines",
@@ -28,8 +25,56 @@ class Filter extends React.PureComponent {
         "Depature",
         "Arrival"
       ],
+      filters: {
+        stops: [],
+        fareType: [],
+        airlines: [],
+        connectingLocations: [],
+        price: [],
+        depature: [],
+        arrival: []
+      },
       index: 0
     };
+  }
+  componentDidMount() {
+    const { data } = this.props;
+    console.log(data);
+
+    let stops = data
+      .map(value => value.FlightSegments.length - 1)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    let fareType = data
+      .map(value => value.FlightSegments[0].BookingClassFare.Rule)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    let airlines = data
+      .map(value => value.FlightSegments[0].AirLineName)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    let connectingLocations = data
+      .map(value =>
+        value.FlightSegments.filter((el, i) => i != 0).map(el => el.IntDepartureAirportName)
+      )
+      .reduce((total, value) => [...total, ...value])
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    let priceArray = data.map(value => value.FareDetails.TotalFare);
+    let price = [Math.min(...priceArray), Math.max(...priceArray)];
+
+    this.setState({
+      filters: {
+        ...this.state.filters,
+        stops,
+        fareType,
+        airlines,
+        connectingLocations,
+        maxArrivalTime,
+        minArrivalTime
+      }
+    });
+    console.log(stops, fareType, airlines, connectingLocations, price);
   }
 
   _setcheckBox = index => {
@@ -45,7 +90,7 @@ class Filter extends React.PureComponent {
   };
 
   render() {
-    const { filters } = this.state;
+    const { filterTabs, index, filters } = this.state;
     return (
       <>
         <View style={{ flexDirection: "row", alignItems: "center", height: 56 }}>
@@ -56,126 +101,46 @@ class Filter extends React.PureComponent {
         </View>
         <View style={{ flex: 1, flexDirection: "row" }}>
           <View style={{ flex: 2, backgroundColor: "#E8EEF6" }}>
-            {this.state.filters.map((item, index) => (
+            {filterTabs.map((item, i) => (
               <Button
-                style={[
-                  styles.filterTabs,
-                  index == this.state.index ? { backgroundColor: "#FFFFFF" } : null
-                ]}
+                style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
                 key={"filter_" + item + index}
-                onPress={this.changeActiveTab(index)}>
+                onPress={this.changeActiveTab(i)}>
                 <Text>{item}</Text>
               </Button>
             ))}
           </View>
           <View style={{ flex: 3 }}>
-            <ScrollView></ScrollView>
+            {index == 0 && (
+              <ScrollView>
+                {filters.stops.map((item, index) => (
+                  <CheckBox label={item + " Stop(s)"} />
+                ))}
+              </ScrollView>
+            )}
+            {index == 1 && (
+              <ScrollView>
+                {filters.fareType.map((item, index) => (
+                  <CheckBox label={item} />
+                ))}
+              </ScrollView>
+            )}
+            {index == 2 && (
+              <ScrollView>
+                {filters.airlines.map((item, index) => (
+                  <CheckBox label={item} />
+                ))}
+              </ScrollView>
+            )}
+            {index == 3 && (
+              <ScrollView>
+                {filters.connectingLocations.map((item, index) => (
+                  <CheckBox label={item} />
+                ))}
+              </ScrollView>
+            )}
           </View>
         </View>
-        {/* <ScrollView contentContainerStyle={{ flexDirection: "row" }}>
-          <View>
-            <Button onPress={this._Stop}>
-              <Text style={styles.filterTabs}>Stops</Text>
-            </Button>
-            <Button onPress={this._fareType}>
-              <Text style={styles.filterTabs}>Fare Type</Text>
-            </Button>
-            <Button onPress={this._Airline}>
-              <Text style={styles.filterTabs}>Airlines</Text>
-            </Button>
-            <Button onPress={this._Location}>
-              <Text style={styles.filterTabs}>Connecting Locations</Text>
-            </Button>
-            <Button onPress={this._Price}>
-              <Text style={styles.filterTabs}>Price</Text>
-            </Button>
-            <Button onPress={this._Departure}>
-              <Text style={styles.filterTabs}>Depature</Text>
-            </Button>
-            <Button onPress={this._Arrival}>
-              <Text style={styles.filterTabs}>Arrival</Text>
-            </Button>
-          </View>
-          <View>
-            {this.state.stop == true && (
-              <View style={styles._mainCheckBoxView}>
-                <Text style={styles.filterTabs}>Stops</Text>
-                {[...Array(2)].map((e, index) => (
-                  <View style={styles._singleItemView} key={index}>
-                    <Text>{index} Stop(s)</Text>
-                  </View>
-                ))}
-              </View>
-            )}
-            {this.state.fareType == true && (
-              <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
-                <Text style={styles.filterTabs}>Fare Type</Text>
-                <View style={styles._singleItemView}>
-                  
-                  <Text>Refundable</Text>
-                </View>
-                <View style={styles._singleItemView}>
-                  <Text>Non-Refundable</Text>
-                </View>
-              </View>
-            )}
-            {this.state.airline == true && (
-              <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
-                <Text style={styles.filterTabs}>Airlines</Text>
-                <View style={styles._singleItemView}>
-                  <Text>Indigo</Text>
-                </View>
-                <View style={styles._singleItemView}>
-                  <Text>Air India</Text>
-                </View>
-              </View>
-            )}
-            {this.state.location == true && (
-              <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
-                <Text style={styles.filterTabs}>Connecting Locations</Text>
-                <View style={styles._singleItemView}>
-                  <Text>Kolkata</Text>
-                </View>
-                <View style={styles._singleItemView}>
-                  <Text>Delhi</Text>
-                </View>
-              </View>
-            )}
-            {this.state.price == true && (
-              <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
-                <Text style={styles.filterTabs}>Price</Text>
-                <View style={styles._singleItemView}>
-                  <Text>Kolkata</Text>
-                </View>
-                <View style={styles._singleItemView}>
-                  <Text>Delhi</Text>
-                </View>
-              </View>
-            )}
-            {this.state.departure == true && (
-              <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
-                <Text style={styles.filterTabs}>Departure</Text>
-                <View style={styles._singleItemView}>
-                  <Text>Kolkata</Text>
-                </View>
-                <View style={styles._singleItemView}>
-                  <Text>Delhi</Text>
-                </View>
-              </View>
-            )}
-            {this.state.arrival == true && (
-              <View style={[styles._mainCheckBoxView, { marginTop: 10 }]}>
-                <Text style={styles.filterTabs}>Arrival</Text>
-                <View style={styles._singleItemView}>
-                  <Text>Kolkata</Text>
-                </View>
-                <View style={styles._singleItemView}>
-                  <Text>Delhi</Text>
-                </View>
-              </View>
-            )} 
-          </View>
-        </ScrollView> */}
       </>
     );
   }

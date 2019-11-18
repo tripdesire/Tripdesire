@@ -172,34 +172,26 @@ class Payment extends React.PureComponent {
       infant_details: this.state.infants
     };
 
-    let dataa = [];
-    let arrayCount = [];
-    dataa = params.adultDetail;
-    for (let i = 0; i < dataa.length; i++) {
-      if (dataa[i] == "~") {
-        continue;
-      } else {
-        arrayCount.push(dataa[i]);
+    var adults = params.adultDetail.split("~");
+    var childs = params.childDetail.split("~");
+    console.log(adults, childs);
+    let adultCount = 0;
+    let childCount = 0;
+    let finalArr = [];
+    for (let i = 0; i < adults.length; i++) {
+      let arr = [];
+      for (let j = 1; j <= adults[i]; j++) {
+        let item = this.state.adults[adultCount];
+        arr.push(item.den + "|" + item.firstname + "|" + item.last_name + "|adt");
+        adultCount++;
       }
-    }
-    let nameAdt;
-    for (let i = 0; i < params.room; i++) {
-      for (let j = 0; j < arrayCount.length; j++) {
-        for (let k = 0; k < parseInt(arrayCount[j]); k++) {
-          nameAdt = [
-            ...this.state.adults.map(
-              item => item.den + "|" + item.firstname + "|" + item.last_name + "|adt"
-            ),
-            ...this.state.childs.map(
-              item => item.den + "|" + item.firstname + "|" + item.last_name + "|chd"
-            )
-          ].join("~");
-        }
+      for (let j = 1; j <= childs[i]; j++) {
+        let item = this.state.childs[childCount];
+        arr.push(item.den + "|" + item.firstname + "|" + item.last_name + "|chd");
+        childCount++;
       }
-      nameAdt + "-";
+      if (arr.length > 0) finalArr.push(arr.join("~"));
     }
-    console.log(nameAdt);
-    console.log(arrayCount);
 
     let name = [
       ...this.state.adults.map(
@@ -209,6 +201,7 @@ class Payment extends React.PureComponent {
         item => item.den + "|" + item.firstname + "|" + item.last_name + "|chd"
       )
     ].join("~");
+    name = finalArr.join("-");
 
     let dob = [
       ...this.state.adults.map(item => moment(item.dob).format("DD-MM-YYYY")),
@@ -273,75 +266,76 @@ class Payment extends React.PureComponent {
     } else {
       console.log(data);
       let totalData = data;
-
+      return;
       this.setState({ loading: true });
       Service.post("/Hotels/BlockHotelRoom", data)
         .then(blockres => {
           console.log(blockres.data);
-          //   if (blockres.data.BookingStatus == 8) {
-          //     axios
-          //       .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
-          //       .then(res => {
-          //         console.log(res);
-          //         this.setState({
-          //           transactionId: res.data.transaction_id,
-          //           status: res.data.status,
-          //           loading: false
-          //         });
 
-          //         var options = {
-          //           description: "Credits towards consultation",
-          //           image: "https://i.imgur.com/3g7nmJC.png",
-          //           currency: "INR",
-          //           key: "rzp_test_a3aQYPLYowGvWJ",
-          //           amount: res.data.total * 100,
-          //           name: "TripDesire",
-          //           prefill: {
-          //             email: "void@razorpay.com",
-          //             contact: "9191919191",
-          //             name: "Razorpay Software"
-          //           },
-          //           theme: { color: "#E5EBF7" }
-          //         };
+          if (blockres.data.BookingStatus == 8) {
+            axios
+              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
+              .then(res => {
+                console.log(res);
+                this.setState({
+                  transactionId: res.data.transaction_id,
+                  status: res.data.status,
+                  loading: false
+                });
 
-          //         RazorpayCheckout.open(options)
-          //           .then(data => {
-          //             // handle success
-          //             console.log(data);
-          //             alert(`Success: ${data.razorpay_payment_id}`);
-          //             this.setState({ orderId: data.razorpay_payment_id });
-          //             this.props.navigation.navigate("ThankYou", {
-          //               cartRes: res,
-          //               blockRes: blockres,
-          //               data: totalData
-          //             });
-          //             let paymentData = {
-          //               order_id: res.data.id,
-          //               status: "completed",
-          //               transaction_id: res.data.transaction_id,
-          //               reference_no: blockres.data.ReferenceNo
-          //             };
-          //             console.log(paymentData);
-          //             axios
-          //               .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
-          //               .then(res => {
-          //                 console.log(res);
-          //               });
-          //           })
-          //           .catch(error => {
-          //             // handle failure
+                var options = {
+                  description: "Credits towards consultation",
+                  image: "https://i.imgur.com/3g7nmJC.png",
+                  currency: "INR",
+                  key: "rzp_test_a3aQYPLYowGvWJ",
+                  amount: "5000",
+                  name: "TripDesire",
+                  prefill: {
+                    email: "void@razorpay.com",
+                    contact: "9191919191",
+                    name: "Razorpay Software"
+                  },
+                  theme: { color: "#E5EBF7" }
+                };
 
-          //             alert(`Error: ${error.code} | ${error.description}`);
-          //           });
-          //       })
-          //       .catch(error => {
-          //         Toast.show(error, Toast.LONG);
-          //         this.setState({ loading: false });
-          //       });
-          //   } else {
-          //     this.setState({ loading: false });
-          //     Toast.show("Hotel is not block successfully ", Toast.LONG);
-          //   }
+                RazorpayCheckout.open(options)
+                  .then(data => {
+                    // handle success
+                    console.log(data);
+                    alert(`Success: ${data.razorpay_payment_id}`);
+                    this.setState({ orderId: data.razorpay_payment_id });
+                    this.props.navigation.navigate("ThankYou", {
+                      cartRes: res,
+                      blockRes: blockres,
+                      data: totalData
+                    });
+                    let paymentData = {
+                      order_id: res.data.id,
+                      status: "completed",
+                      transaction_id: res.data.transaction_id,
+                      reference_no: blockres.data.ReferenceNo
+                    };
+                    console.log(paymentData);
+                    axios
+                      .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
+                      .then(res => {
+                        console.log(res);
+                      });
+                  })
+                  .catch(error => {
+                    // handle failure
+
+                    alert(`Error: ${error.code} | ${error.description}`);
+                  });
+              })
+              .catch(error => {
+                Toast.show(error, Toast.LONG);
+                this.setState({ loading: false });
+              });
+          } else {
+            this.setState({ loading: false });
+            Toast.show("Hotel is not block successfully ", Toast.LONG);
+          }
         })
         .catch(error => {
           Toast.show(error, Toast.LONG);
