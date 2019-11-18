@@ -1,17 +1,22 @@
-import React, { PureComponent } from "react";
-import { View, Image } from "react-native";
+import React from "react";
+import { View } from "react-native";
+import { withNavigation } from "react-navigation";
 import Text from "./TextComponent";
 import Button from "./Button";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "./IconNBF";
+
 class HeaderFlights extends React.PureComponent {
   constructor(props) {
     super(props);
   }
+
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
   render() {
     return (
       <View style={{ flexDirection: "row", alignItems: "flex-start", width: "100%" }}>
-        <Button onPress={this.props.onPress} style={{ padding: 16 }}>
+        <Button onPress={this.goBack} style={{ padding: 16 }}>
           <Icon name="md-arrow-back" size={24} />
         </Button>
         <View style={{ flex: 1 }}>
@@ -29,4 +34,4 @@ class HeaderFlights extends React.PureComponent {
   }
 }
 
-export default HeaderFlights;
+export default withNavigation(HeaderFlights);

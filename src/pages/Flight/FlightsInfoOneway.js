@@ -1,21 +1,11 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { View, Image, StyleSheet, FlatList, ScrollView } from "react-native";
-import {
-  Button,
-  Text,
-  Activity_Indicator,
-  DomesticFlights,
-  InternationalFlights,
-  HeaderFlights
-} from "../../components";
-import Icon from "react-native-vector-icons/AntDesign";
+import { Button, Text, Activity_Indicator, Icon, HeaderFlights } from "../../components";
 import Toast from "react-native-simple-toast";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Service from "../../service";
 import moment from "moment";
-var newData = [];
 
 class FlightsInfoOneway extends React.PureComponent {
   constructor(props) {
@@ -199,14 +189,13 @@ class FlightsInfoOneway extends React.PureComponent {
             Adult={Adult}
             Child={Child}
             Infant={Infant}
-            className={className}
-            onPress={() => this.props.navigation.goBack(null)}>
-            <View style={{ flexDirection: "row", marginStart: "auto" }}>
-              <IconMaterial name="filter" fontSize={35} color="#5D89F4" />
+            className={className}>
+            <Button style={{ flexDirection: "row", marginStart: "auto", paddingEnd: 16 }}>
+              <Icon name="filter" size={24} color="#5D89F4" type={MaterialCommunityIcons} />
               <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
                 Sort & Filter
               </Text>
-            </View>
+            </Button>
           </HeaderFlights>
         </View>
 
