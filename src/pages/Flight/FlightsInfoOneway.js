@@ -25,39 +25,15 @@ class FlightsInfoOneway extends React.PureComponent {
       sourceAirportName: "",
       destinationAirportName: "",
       _selectFlightType: false,
-      data: [
-        {
-          date: "09",
-          day: "Mon"
-        },
-        {
-          date: "10",
-          day: "Tue"
-        },
-        {
-          date: "11",
-          day: "Wed"
-        },
-        {
-          date: "12",
-          day: "Thur"
-        },
-        {
-          date: "13",
-          day: "Fri"
-        },
-        {
-          date: "14",
-          day: "Sat"
-        }
-      ],
+      month: "",
+      dates: [],
       flights: []
     };
   }
 
   componentDidMount() {
-    let data = [];
-    data = this.props.navigation.state.params;
+    let data = this.props.navigation.state.params;
+    this.genrateDates(data.journeyDate);
     console.log(data);
 
     let jd = moment(data.journeyDate, "DD-MM-YYYY").format("DD MMM");
@@ -96,6 +72,21 @@ class FlightsInfoOneway extends React.PureComponent {
       });
   }
 
+  genrateDates(date) {
+    let dates = [];
+    date = moment(date, "DD-MM-YYYY");
+    for (let i = 0; i < 7; i++) {
+      let d = date.add(1, "days");
+      dates.push({
+        fullDate: d.format("DD-MM-YYYY"),
+        day: d.format("ddd"),
+        date: d.format("DD")
+      });
+    }
+    let month = date.format("MMM");
+    this.setState({ dates, month });
+  }
+
   Filter(value) {
     let stopage = [];
     console.log("hey");
@@ -121,7 +112,9 @@ class FlightsInfoOneway extends React.PureComponent {
   );
   listheaderComponent = () => (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ transform: [{ rotate: "270deg" }], textAlign: "center" }}>Sept</Text>
+      <Text style={{ transform: [{ rotate: "270deg" }], textAlign: "center" }}>
+        {this.state.month}
+      </Text>
     </View>
   );
   _keyExtractor = (item, index) => "dates_" + index;
@@ -211,7 +204,7 @@ class FlightsInfoOneway extends React.PureComponent {
             }}>
             <FlatList
               horizontal={true}
-              data={this.state.data}
+              data={this.state.dates}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               ItemSeparatorComponent={this.itemSeparator}

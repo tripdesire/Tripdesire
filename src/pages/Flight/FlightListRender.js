@@ -42,24 +42,22 @@ class FlightListRender extends React.PureComponent {
   };
 
   render() {
-    let dd = moment(this.props.item.FlightSegments[0].DepartureDateTime).format("HH:MM");
-    let departureDate = moment(this.props.item.FlightSegments[0].DepartureDateTime).format(
-      "MMM DD"
+    const { item, index, from, to, className } = this.props;
+    let dd = moment(item.FlightSegments[0].DepartureDateTime).format("HH:MM");
+    let departureDate = moment(item.FlightSegments[0].DepartureDateTime).format("MMM DD");
+    let ad = moment(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime).format(
+      "HH:MM"
     );
-    let ad = moment(
-      this.props.item.FlightSegments[this.props.item.FlightSegments.length - 1].ArrivalDateTime
-    ).format("HH:MM");
     let arrivalDate = moment(
-      this.props.item.FlightSegments[this.props.item.FlightSegments.length - 1].ArrivalDateTime
+      item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime
     ).format("MMM DD");
-    let img = "http://webapi.i2space.co.in" + this.props.item.FlightSegments[0].ImagePath;
+    let img = "http://webapi.i2space.co.in" + item.FlightSegments[0].ImagePath;
 
-    const { from, to, className } = this.props;
     return (
       <View
         style={{
-          paddingVertical: this.props.index % 2 == 0 ? 30 : 10,
-          backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
+          paddingVertical: index % 2 == 0 ? 30 : 10,
+          backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
         }}>
         <View
           style={{
@@ -69,10 +67,10 @@ class FlightListRender extends React.PureComponent {
             marginBottom: 6
           }}>
           <Text style={{ color: "#636C73", fontSize: 12 }}>
-            {this.props.item.FlightSegments[0].AirLineName} | {this.props.item.FlightUId}
+            {item.FlightSegments[0].AirLineName} | {item.FlightUId}
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
-            ₹{parseInt(this.props.item.FareDetails.TotalFare)}
+            ₹{parseInt(item.FareDetails.TotalFare)}
           </Text>
         </View>
         <View
@@ -95,13 +93,11 @@ class FlightListRender extends React.PureComponent {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 16, lineHeight: 20 }}>
-              {this.props.item.FlightSegments[0].Duration}
-            </Text>
+            <Text style={{ fontSize: 16, lineHeight: 20 }}>{item.FlightSegments[0].Duration}</Text>
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
-              {this.props.item.FlightSegments[0].StopQuantity == 0
+              {item.FlightSegments[0].StopQuantity == 0
                 ? "Non Stop"
-                : this.props.item.FlightSegments[0].StopQuantity}
+                : item.FlightSegments[0].StopQuantity}
             </Text>
           </View>
 
@@ -119,13 +115,13 @@ class FlightListRender extends React.PureComponent {
                 alignSelf: "center",
                 justifyContent: "center"
               }}
-              onPress={() => this.bookNow(this.props.item)}>
+              onPress={() => this.bookNow(item)}>
               <Text
                 style={{
                   color: "#fff",
                   alignSelf: "center",
                   paddingHorizontal: 6,
-                  fontSize: 10
+                  fontSize: 12
                 }}>
                 Book Now
               </Text>
@@ -183,7 +179,7 @@ class FlightListRender extends React.PureComponent {
                 marginHorizontal: 8
               }}>
               <Text style={{ color: "#636C73", fontSize: 12 }}>
-                {this.props.item.FlightSegments[0].AirLineName} | {this.props.item.FlightUId}
+                {item.FlightSegments[0].AirLineName} | {item.FlightUId}
               </Text>
             </View>
             <View
@@ -200,13 +196,7 @@ class FlightListRender extends React.PureComponent {
                   resizeMode="cover"
                 />
                 <View>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      lineHeight: 22
-                    }}>
-                    {dd}
-                  </Text>
+                  <Text style={{ fontSize: 20, lineHeight: 22 }}>{dd}</Text>
                   <Text
                     style={{
                       fontSize: 12,
@@ -301,7 +291,7 @@ class FlightListRender extends React.PureComponent {
                   color: "#5D666D",
                   fontSize: 12
                 }}>
-                {this.props.item.FlightSegments[0].Duration}
+                {item.FlightSegments[0].Duration}
               </Text>
               <Text
                 style={{
@@ -311,9 +301,9 @@ class FlightListRender extends React.PureComponent {
                   fontSize: 12
                 }}>
                 With{" "}
-                {this.props.item.FlightSegments[0].StopQuantity == 0
+                {item.FlightSegments[0].StopQuantity == 0
                   ? "0"
-                  : this.props.item.FlightSegments[0].StopQuantity}{" "}
+                  : item.FlightSegments[0].StopQuantity}{" "}
                 connection/s
               </Text>
               <Foundation name="shopping-bag" size={18} color="#5D666D" />
@@ -324,7 +314,7 @@ class FlightListRender extends React.PureComponent {
                   fontSize: 12,
                   marginStart: 2
                 }}>
-                {this.props.item.FlightSegments[0].BaggageAllowed.HandBaggage}
+                {item.FlightSegments[0].BaggageAllowed.HandBaggage}
               </Text>
               <Foundation name="shopping-bag" size={18} color="#5D666D" />
               <Text
@@ -334,10 +324,10 @@ class FlightListRender extends React.PureComponent {
                   fontSize: 12,
                   marginStart: 2
                 }}>
-                {this.props.item.FlightSegments[0].BaggageAllowed.CheckInBaggage}
+                {item.FlightSegments[0].BaggageAllowed.CheckInBaggage}
               </Text>
               <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
-                Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
+                Total Fare:₹{parseInt(item.FareDetails.TotalFare)}
               </Text>
             </View>
             <View
