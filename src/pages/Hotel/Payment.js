@@ -172,26 +172,27 @@ class Payment extends React.PureComponent {
       infant_details: this.state.infants
     };
 
-    let dataa = [];
-    let arrayCount = [];
-    dataa = params.adultDetail;
-    for (let i = 0; i < dataa.length; i++) {
-      if (dataa[i] == "~") {
-        continue;
-      } else {
-        arrayCount.push(dataa[i]);
+    var adults = params.adultDetail.split("~");
+    var childs = params.childDetail.split("~");
+    console.log(adults, childs);
+    let adultCount = 0;
+    let childCount = 0;
+    let finalArr = [];
+    for (let i = 0; i < adults.length; i++) {
+      let arr = [];
+      for (let j = 1; j <= adults[i]; j++) {
+        let item = this.state.adults[adultCount];
+        arr.push(item.den + "|" + item.firstname + "|" + item.last_name + "|adt");
+        adultCount++;
       }
+      for (let j = 1; j <= childs[i]; j++) {
+        let item = this.state.childs[childCount];
+        arr.push(item.den + "|" + item.firstname + "|" + item.last_name + "|chd");
+        childCount++;
+      }
+      if (arr.length > 0) finalArr.push(arr.join("~"));
     }
-    console.log(arrayCount);
-
-    let name = [
-      ...this.state.adults.map(
-        item => item.den + "|" + item.firstname + "|" + item.last_name + "|adt"
-      ),
-      ...this.state.childs.map(
-        item => item.den + "|" + item.firstname + "|" + item.last_name + "|chd"
-      )
-    ].join("~");
+    name = finalArr.join("-");
 
     let dob = [
       ...this.state.adults.map(item => moment(item.dob).format("DD-MM-YYYY")),
@@ -256,11 +257,12 @@ class Payment extends React.PureComponent {
     } else {
       console.log(data);
       let totalData = data;
-
+      return;
       this.setState({ loading: true });
       Service.post("/Hotels/BlockHotelRoom", data)
         .then(blockres => {
           console.log(blockres.data);
+
           if (blockres.data.BookingStatus == 8) {
             axios
               .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")

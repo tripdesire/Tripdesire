@@ -8,6 +8,7 @@ import TextInputComponent from "./TextInput";
 import CustomDrawer from "./CustomDrawer";
 import AutoCompleteModal from "./AutoCompleteModal";
 import Icon from "./IconNB";
+import CheckBox from "./CheckBox";
 
 export {
   Button,
@@ -19,5 +20,6 @@ export {
   TextInputComponent,
   CustomDrawer,
   AutoCompleteModal,
-  Icon
+  Icon,
+  CheckBox
 };
