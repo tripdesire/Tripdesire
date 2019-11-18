@@ -111,19 +111,20 @@ class FlightsInfoOneway extends React.PureComponent {
   }
 
   _renderItem = ({ item }) => (
-    <View style={{ flexDirection: "row" }}>
-      <Button
-        style={{
-          marginHorizontal: 5,
-          paddingHorizontal: 15
-        }}>
-        <Text style={{ fontSize: 12, color: "#717984", alignSelf: "center" }}>{item.day}</Text>
-        <Text style={{ fontSize: 20, fontWeight: "700", alignSelf: "center" }}>{item.date}</Text>
-      </Button>
-      <View
-        style={{ width: 1, height: 35, backgroundColor: "#DFDFDF", paddingVertical: 15 }}></View>
+    <Button style={{ paddingHorizontal: 15, paddingVertical: 10, alignItems: "center" }}>
+      <Text style={{ fontSize: 12, color: "#717984" }}>{item.day}</Text>
+      <Text style={{ fontSize: 20, fontWeight: "700" }}>{item.date}</Text>
+    </Button>
+  );
+  itemSeparator = () => (
+    <View style={{ width: 1, backgroundColor: "#DFDFDF", paddingVertical: 10 }} />
+  );
+  listheaderComponent = () => (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ transform: [{ rotate: "270deg" }], textAlign: "center" }}>Sept</Text>
     </View>
   );
+  _keyExtractor = (item, index) => "dates_" + index;
 
   _renderItemList = ({ item, index }) => {
     if (this.state.flight_type == 1) {
@@ -172,15 +173,12 @@ class FlightsInfoOneway extends React.PureComponent {
       );
     }
   };
-
-  _keyExtractor = (item, index) => "key" + index;
-
   _keyExtractoritems = (item, index) => "key" + index;
 
   render() {
     const { from, to, journey_date, className, Adult, Child, Infant, loader } = this.state;
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
           <HeaderFlights
             from={from}
@@ -190,8 +188,9 @@ class FlightsInfoOneway extends React.PureComponent {
             Child={Child}
             Infant={Infant}
             className={className}>
-            <Button style={{ flexDirection: "row", marginStart: "auto", paddingEnd: 16 }}>
-              <Icon name="filter" size={24} color="#5D89F4" type={MaterialCommunityIcons} />
+            <Button
+              style={{ flexDirection: "row", marginStart: "auto", paddingEnd: 8, paddingTop: 16 }}>
+              <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
               <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
                 Sort & Filter
               </Text>
@@ -202,32 +201,23 @@ class FlightsInfoOneway extends React.PureComponent {
         <View style={{ flex: 4 }}>
           <View
             style={{
+              flexDirection: "row",
               marginHorizontal: 30,
               borderRadius: 5,
               marginTop: -40,
               borderWidth: 1,
               borderColor: "#d2d2d2d2",
-              backgroundColor: "#FFFFFF",
-              flexDirection: "row"
+              backgroundColor: "#FFFFFF"
             }}>
-            <ScrollView
+            <FlatList
               horizontal={true}
+              data={this.state.data}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+              ItemSeparatorComponent={this.itemSeparator}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingVertical: 10 }}>
-              <Text
-                style={{
-                  transform: [{ rotate: "270deg" }],
-                  alignSelf: "center"
-                }}>
-                Sept
-              </Text>
-              <FlatList
-                horizontal={true}
-                data={this.state.data}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-              />
-            </ScrollView>
+              ListHeaderComponent={this.listheaderComponent}
+            />
             <Button
               style={{
                 backgroundColor: "#5B89F9",
@@ -236,16 +226,13 @@ class FlightsInfoOneway extends React.PureComponent {
                 borderTopRightRadius: 5
               }}>
               <Image
-                style={{
-                  width: 20,
-                  resizeMode: "contain",
-                  alignSelf: "center",
-                  marginHorizontal: 8
-                }}
+                style={{ width: 20, marginHorizontal: 8 }}
+                resizeMode="contain"
                 source={require("../../assets/imgs/cal.png")}
               />
             </Button>
           </View>
+
           <FlatList
             nestedScrollEnabled={true}
             vertical={true}

@@ -15,11 +15,11 @@ class HeaderFlights extends React.PureComponent {
   };
   render() {
     return (
-      <View style={{ flexDirection: "row", alignItems: "flex-start", width: "100%" }}>
+      <View style={{ flexDirection: "row", width: "100%" }}>
         <Button onPress={this.goBack} style={{ padding: 16 }}>
           <Icon name="md-arrow-back" size={24} />
         </Button>
-        <View style={{ flex: 1 }}>
+        <View style={{ paddingTop: 16 }}>
           <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
             {this.props.from} TO {this.props.to}
           </Text>
@@ -29,6 +29,7 @@ class HeaderFlights extends React.PureComponent {
             {this.props.Infant > 0 ? this.props.Infant + " Infant" : ""} | {this.props.className}
           </Text>
         </View>
+        {this.props.children}
       </View>
     );
   }
