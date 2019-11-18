@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { withNavigation } from "react-navigation";
 import Text from "./TextComponent";
 import Button from "./Button";
-import Icon from "./IconNBF";
+import Icon from "./IconNB";
 
 class HeaderFlights extends React.PureComponent {
   constructor(props) {
