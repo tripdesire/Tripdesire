@@ -9,7 +9,7 @@ class CheckBox extends React.PureComponent {
     const { checked, label } = this.props;
     return (
       <TouchableOpacity
-        onPress={this.onPress}
+        onPress={this.props.onPress}
         style={{
           flexDirection: "row",
           padding: 16,
@@ -37,7 +37,7 @@ CheckBox.propTypes = {
 };
 
 CheckBox.defaultProps = {
-  checked: true,
+  checked: false,
   onPress: () => {},
   label: ""
 };

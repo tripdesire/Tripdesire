@@ -7,15 +7,10 @@ import { connect } from "react-redux";
 import { Header, Icon } from "../../components";
 import {} from "react-native-gesture-handler";
 
-class Filter extends React.PureComponent {
+class Filter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      stops: [...Array(2)].map(item => {
-        return {
-          checkBox: false
-        };
-      }),
       filterTabs: [
         "Stops",
         "Fare Type",
@@ -69,28 +64,37 @@ class Filter extends React.PureComponent {
         stops,
         fareType,
         airlines,
-        connectingLocations,
-        maxArrivalTime,
-        minArrivalTime
+        connectingLocations
       }
     });
     console.log(stops, fareType, airlines, connectingLocations, price);
   }
 
-  _setcheckBox = index => {
-    let newData = Object.assign([], this.state.stops);
-    newData[index].checkBox = true;
-    this.setState({
-      stops: newData
-    });
-  };
-
   changeActiveTab = index => () => {
     this.setState({ index });
   };
 
+  updateFilter = (key, index) => () => {
+    console.log("here");
+    const { filterValues } = this.props;
+    const { filters } = this.state;
+    let newData = Object.assign({}, filterValues);
+    if (newData[key].includes(filters[key][index])) {
+      newData[key].splice(
+        newData[key].findIndex(val => val == filters[key][index]),
+        1
+      );
+    } else {
+      newData[key].push(filters[key][index]);
+    }
+    console.log(newData);
+    this.props.onChangeFilter && this.props.onChangeFilter(newData);
+  };
+
   render() {
     const { filterTabs, index, filters } = this.state;
+    const { filterValues } = this.props;
+
     return (
       <>
         <View style={{ flexDirection: "row", alignItems: "center", height: 56 }}>
@@ -114,28 +118,48 @@ class Filter extends React.PureComponent {
             {index == 0 && (
               <ScrollView>
                 {filters.stops.map((item, index) => (
-                  <CheckBox label={item + " Stop(s)"} />
+                  <CheckBox
+                    label={item + " Stop(s)"}
+                    key={"stops_" + item + index}
+                    checked={filterValues.stops.includes(item)}
+                    onPress={this.updateFilter("stops", index)}
+                  />
                 ))}
               </ScrollView>
             )}
             {index == 1 && (
               <ScrollView>
                 {filters.fareType.map((item, index) => (
-                  <CheckBox label={item} />
+                  <CheckBox
+                    label={item}
+                    key={"fareType_" + item + index}
+                    checked={filterValues.fareType.includes(item)}
+                    onPress={this.updateFilter("fareType", index)}
+                  />
                 ))}
               </ScrollView>
             )}
             {index == 2 && (
               <ScrollView>
                 {filters.airlines.map((item, index) => (
-                  <CheckBox label={item} />
+                  <CheckBox
+                    label={item}
+                    key={"airlines_" + item + index}
+                    checked={filterValues.airlines.includes(item)}
+                    onPress={this.updateFilter("airlines", index)}
+                  />
                 ))}
               </ScrollView>
             )}
             {index == 3 && (
               <ScrollView>
                 {filters.connectingLocations.map((item, index) => (
-                  <CheckBox label={item} />
+                  <CheckBox
+                    label={item}
+                    key={"connectingLocations_" + item + index}
+                    checked={filterValues.connectingLocations.includes(item)}
+                    onPress={this.updateFilter("connectingLocations", index)}
+                  />
                 ))}
               </ScrollView>
             )}

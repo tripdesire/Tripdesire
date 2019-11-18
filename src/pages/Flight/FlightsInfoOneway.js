@@ -29,7 +29,16 @@ class FlightsInfoOneway extends React.PureComponent {
       month: "",
       dates: [],
       flights: [],
-      showFilter: false
+      showFilter: false,
+      filterValues: {
+        stops: [],
+        fareType: [],
+        airlines: [],
+        connectingLocations: [],
+        price: [],
+        depature: [],
+        arrival: []
+      }
     };
   }
 
@@ -94,6 +103,9 @@ class FlightsInfoOneway extends React.PureComponent {
   };
   closeFilter = () => {
     this.setState({ showFilter: false });
+  };
+  onChangeFilter = filterValues => {
+    this.setState({ filterValues });
   };
 
   _renderItem = ({ item }) => (
@@ -250,7 +262,12 @@ class FlightsInfoOneway extends React.PureComponent {
           transparent={false}
           visible={showFilter}
           onRequestClose={this.closeFilter}>
-          <Filter data={this.state.flights} onBackPress={this.closeFilter} />
+          <Filter
+            data={this.state.flights}
+            onBackPress={this.closeFilter}
+            filterValues={this.state.filterValues}
+            onChangeFilter={this.onChangeFilter}
+          />
         </Modal>
         {loader && <Activity_Indicator />}
       </View>
