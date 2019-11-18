@@ -19,9 +19,9 @@ class FlightListRender extends React.PureComponent {
     this.setState({ expanded: !this.state.expanded });
   };
 
-  bookNow = value => {
+  bookNow = () => {
     let param = {
-      departFlight: value,
+      departFlight: this.props.item,
       from: this.props.from,
       to: this.props.to,
       travelClass: this.props.travelClass,
@@ -115,7 +115,7 @@ class FlightListRender extends React.PureComponent {
                 alignSelf: "center",
                 justifyContent: "center"
               }}
-              onPress={() => this.bookNow(item)}>
+              onPress={this.bookNow}>
               <Text
                 style={{
                   color: "#fff",

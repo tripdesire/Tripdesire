@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Image, StyleSheet, FlatList, ScrollView } from "react-native";
+import { View, Image, StyleSheet, FlatList, Modal } from "react-native";
 import { Button, Text, Activity_Indicator, Icon, HeaderFlights } from "../../components";
 import Toast from "react-native-simple-toast";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
 import Service from "../../service";
 import moment from "moment";
+import Filter from "./Filter";
 
 class FlightsInfoOneway extends React.PureComponent {
   constructor(props) {
@@ -27,7 +28,8 @@ class FlightsInfoOneway extends React.PureComponent {
       _selectFlightType: false,
       month: "",
       dates: [],
-      flights: []
+      flights: [],
+      showFilter: false
     };
   }
 
@@ -101,6 +103,13 @@ class FlightsInfoOneway extends React.PureComponent {
     }
   }
 
+  openFilter = () => {
+    this.setState({ showFilter: true });
+  };
+  closeFilter = () => {
+    this.setState({ showFilter: false });
+  };
+
   _renderItem = ({ item }) => (
     <Button style={{ paddingHorizontal: 15, paddingVertical: 10, alignItems: "center" }}>
       <Text style={{ fontSize: 12, color: "#717984" }}>{item.day}</Text>
@@ -169,7 +178,17 @@ class FlightsInfoOneway extends React.PureComponent {
   _keyExtractoritems = (item, index) => "key" + index;
 
   render() {
-    const { from, to, journey_date, className, Adult, Child, Infant, loader } = this.state;
+    const {
+      from,
+      to,
+      journey_date,
+      className,
+      Adult,
+      Child,
+      Infant,
+      loader,
+      showFilter
+    } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
@@ -182,7 +201,13 @@ class FlightsInfoOneway extends React.PureComponent {
             Infant={Infant}
             className={className}>
             <Button
-              style={{ flexDirection: "row", marginStart: "auto", paddingEnd: 8, paddingTop: 16 }}>
+              style={{
+                flexDirection: "row",
+                marginStart: "auto",
+                paddingEnd: 8,
+                paddingVertical: 16
+              }}
+              onPress={this.openFilter}>
               <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
               <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
                 Sort & Filter
@@ -234,6 +259,13 @@ class FlightsInfoOneway extends React.PureComponent {
             renderItem={this._renderItemList}
           />
         </View>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={showFilter}
+          onRequestClose={this.closeFilter}>
+          <Filter data={this.state.flights} onBackPress={this.closeFilter} />
+        </Modal>
         {loader && <Activity_Indicator />}
       </View>
     );
