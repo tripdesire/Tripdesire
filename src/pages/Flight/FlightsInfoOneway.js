@@ -200,8 +200,14 @@ class FlightsInfoOneway extends React.PureComponent {
             Child={Child}
             Infant={Infant}
             className={className}
-            onPress={() => this.props.navigation.goBack(null)}
-          />
+            onPress={() => this.props.navigation.goBack(null)}>
+            <View style={{ flexDirection: "row", marginStart: "auto" }}>
+              <IconMaterial name="filter" fontSize={35} color="#5D89F4" />
+              <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                Sort & Filter
+              </Text>
+            </View>
+          </HeaderFlights>
         </View>
 
         <View style={{ flex: 4 }}>
