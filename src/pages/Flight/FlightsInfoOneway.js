@@ -89,20 +89,6 @@ class FlightsInfoOneway extends React.PureComponent {
     this.setState({ dates, month });
   }
 
-  Filter(value) {
-    let stopage = [];
-    console.log("hey");
-    for (let i = 0; i <= value.length; i++) {
-      console.log(value[i].FlightSegments.length - 1);
-      for (let j = 0; j <= stopage; j++) {
-        if (stopage.indexOf(j) != value[i].FlightSegments.length - 1) {
-          stopage.push(value[i].FlightSegments.length - 1);
-          console.log(stopage);
-        }
-      }
-    }
-  }
-
   openFilter = () => {
     this.setState({ showFilter: true });
   };
