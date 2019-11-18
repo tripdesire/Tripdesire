@@ -20,7 +20,7 @@ class HotelPayment extends React.PureComponent {
     });
 
     let param = {
-      id: 222,
+      itemId: 222,
       quantity: "1",
       single_hotel_data: params,
       single_ht_img: params.HotelImages[0].Imagepath,
@@ -47,7 +47,7 @@ class HotelPayment extends React.PureComponent {
 
     axios.post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param).then(res => {});
 
-    this.props.navigation.navigate("CheckOut1", params);
+    this.props.navigation.navigate("Payment", params);
   };
 
   render() {

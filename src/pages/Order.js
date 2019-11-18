@@ -60,7 +60,7 @@ class Order extends React.PureComponent {
           borderRadius: 8,
           padding: 10
         }}
-        onPress={this._OrderDetails(item)}>
+        onPress={() => this._OrderDetails(item)}>
         <View
           style={{
             flexDirection: "row",

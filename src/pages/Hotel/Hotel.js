@@ -108,9 +108,10 @@ class Hotel extends React.PureComponent {
       children: value.data.map(item => item.children).join("~")
         ? value.data.map(item => item.children).join("~")
         : this.state.children,
-      children_count: eval(value.data.map(item => item.children).join("+"))
-        ? eval(value.data.map(item => item.children).join("+"))
-        : this.state.children_count,
+      children_count:
+        eval(value.data.map(item => item.children).join("+")) >= 0
+          ? eval(value.data.map(item => item.children).join("+"))
+          : this.state.children_count,
       childrenAges: value.data
         .map(item => item.childAge)
         .reduce((total, currentValue) => total.concat(currentValue), [])

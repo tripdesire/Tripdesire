@@ -26,6 +26,7 @@ import ThankYou from "./ThankYou";
 import Order from "./Order";
 import OrderDetails from "./OrderDetails";
 import Filter from "./Flight/Filter";
+import Payment from "./Hotel/Payment";
 
 export {
   Home,
@@ -55,5 +56,6 @@ export {
   ThankYou,
   Order,
   OrderDetails,
-  Filter
+  Filter,
+  Payment
 };

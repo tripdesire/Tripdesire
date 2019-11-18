@@ -15,7 +15,7 @@ class AddPassengers extends React.PureComponent {
     this.state = {
       room: 1,
       data: [
-        { adults: 1, children: 0, childAge: [-1, -1] },
+        { adults: 0, children: 0, childAge: [-1, -1] },
         { adults: 0, children: 0, childAge: [-1, -1] },
         { adults: 0, children: 0, childAge: [-1, -1] },
         { adults: 0, children: 0, childAge: [-1, -1] }
@@ -43,6 +43,7 @@ class AddPassengers extends React.PureComponent {
   onChildrenChange = index => value => {
     let newData = Object.assign([], this.state.data);
     newData[index].children = value;
+    newData[index].childAge = [-1, -1];
     this.setState({
       data: newData
     });
@@ -119,6 +120,7 @@ class AddPassengers extends React.PureComponent {
                     borderColor: "#000"
                   }}
                   onValueChange={this.onAdultsChange(index)}>
+                  <Picker.Item label="0" value={0} />
                   <Picker.Item label="1" value={1} />
                   <Picker.Item label="2" value={2} />
                 </Picker>
