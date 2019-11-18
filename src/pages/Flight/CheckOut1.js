@@ -334,8 +334,9 @@ class CheckOut1 extends React.PureComponent {
         .then(blockres => {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 8) {
+            console.log("hey inner");
             axios
-              .post("https://demo66.tutiixx.com/wp-json/wc/v2/checkout/new-order?user_id=7")
+              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
               .then(res => {
                 console.log(res);
                 this.setState({
@@ -378,10 +379,7 @@ class CheckOut1 extends React.PureComponent {
                     };
                     console.log(paymentData);
                     axios
-                      .post(
-                        "https://demo66.tutiixx.com/wp-json/wc/v2/checkout/update-order",
-                        paymentData
-                      )
+                      .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
                       .then(res => {
                         console.log(res);
                       });

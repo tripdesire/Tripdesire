@@ -32,18 +32,23 @@ class Order extends React.PureComponent {
   };
 
   componentDidMount() {
-    axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/nutri-user/7/order-list").then(res => {
-      console.log(res.data);
-      if (res.data.status == 1) {
-        this.setState({
-          orders: res.data.data,
-          loader: false
-        });
-      } else {
-        Toast.show("Data not found.", Toast.SHORT);
-        this.setState({ loader: false });
-      }
-    });
+    axios
+      .get("http://tripdesire.co/wp-json/wc/v2/nutri-user/7/order-list")
+      .then(res => {
+        console.log(res.data);
+        if (res.data.status == 1) {
+          this.setState({
+            orders: res.data.data,
+            loader: false
+          });
+        } else {
+          Toast.show("Data not found.", Toast.SHORT);
+          this.setState({ loader: false });
+        }
+      })
+      .catch(error => {
+        console.log(error, Toast.LONG);
+      });
   }
 
   status = value => {

@@ -190,9 +190,6 @@ class Payment extends React.PureComponent {
       ),
       ...this.state.childs.map(
         item => item.den + "|" + item.firstname + "|" + item.last_name + "|chd"
-      ),
-      ...this.state.infants.map(
-        item => item.den + "|" + item.firstname + "|" + item.last_name + "|inf"
       )
     ].join("~");
 
@@ -266,7 +263,7 @@ class Payment extends React.PureComponent {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 8) {
             axios
-              .post("https://demo66.tutiixx.com/wp-json/wc/v2/checkout/new-order?user_id=7")
+              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
               .then(res => {
                 console.log(res);
                 this.setState({
@@ -280,7 +277,7 @@ class Payment extends React.PureComponent {
                   image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
                   key: "rzp_test_a3aQYPLYowGvWJ",
-                  amount: res.data.total * 100,
+                  amount: "5000",
                   name: "TripDesire",
                   prefill: {
                     email: "void@razorpay.com",
@@ -309,10 +306,7 @@ class Payment extends React.PureComponent {
                     };
                     console.log(paymentData);
                     axios
-                      .post(
-                        "https://demo66.tutiixx.com/wp-json/wc/v2/checkout/update-order",
-                        paymentData
-                      )
+                      .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
                       .then(res => {
                         console.log(res);
                       });
