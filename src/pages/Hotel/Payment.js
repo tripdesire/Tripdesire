@@ -182,6 +182,23 @@ class Payment extends React.PureComponent {
         arrayCount.push(dataa[i]);
       }
     }
+    let nameAdt;
+    for (let i = 0; i < params.room; i++) {
+      for (let j = 0; j < arrayCount.length; j++) {
+        for (let k = 0; k < parseInt(arrayCount[j]); k++) {
+          nameAdt = [
+            ...this.state.adults.map(
+              item => item.den + "|" + item.firstname + "|" + item.last_name + "|adt"
+            ),
+            ...this.state.childs.map(
+              item => item.den + "|" + item.firstname + "|" + item.last_name + "|chd"
+            )
+          ].join("~");
+        }
+      }
+      nameAdt + "-";
+    }
+    console.log(nameAdt);
     console.log(arrayCount);
 
     let name = [
@@ -261,70 +278,70 @@ class Payment extends React.PureComponent {
       Service.post("/Hotels/BlockHotelRoom", data)
         .then(blockres => {
           console.log(blockres.data);
-          if (blockres.data.BookingStatus == 8) {
-            axios
-              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
-              .then(res => {
-                console.log(res);
-                this.setState({
-                  transactionId: res.data.transaction_id,
-                  status: res.data.status,
-                  loading: false
-                });
+          //   if (blockres.data.BookingStatus == 8) {
+          //     axios
+          //       .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
+          //       .then(res => {
+          //         console.log(res);
+          //         this.setState({
+          //           transactionId: res.data.transaction_id,
+          //           status: res.data.status,
+          //           loading: false
+          //         });
 
-                var options = {
-                  description: "Credits towards consultation",
-                  image: "https://i.imgur.com/3g7nmJC.png",
-                  currency: "INR",
-                  key: "rzp_test_a3aQYPLYowGvWJ",
-                  amount: "5000",
-                  name: "TripDesire",
-                  prefill: {
-                    email: "void@razorpay.com",
-                    contact: "9191919191",
-                    name: "Razorpay Software"
-                  },
-                  theme: { color: "#E5EBF7" }
-                };
+          //         var options = {
+          //           description: "Credits towards consultation",
+          //           image: "https://i.imgur.com/3g7nmJC.png",
+          //           currency: "INR",
+          //           key: "rzp_test_a3aQYPLYowGvWJ",
+          //           amount: res.data.total * 100,
+          //           name: "TripDesire",
+          //           prefill: {
+          //             email: "void@razorpay.com",
+          //             contact: "9191919191",
+          //             name: "Razorpay Software"
+          //           },
+          //           theme: { color: "#E5EBF7" }
+          //         };
 
-                RazorpayCheckout.open(options)
-                  .then(data => {
-                    // handle success
-                    console.log(data);
-                    alert(`Success: ${data.razorpay_payment_id}`);
-                    this.setState({ orderId: data.razorpay_payment_id });
-                    this.props.navigation.navigate("ThankYou", {
-                      cartRes: res,
-                      blockRes: blockres,
-                      data: totalData
-                    });
-                    let paymentData = {
-                      order_id: res.data.id,
-                      status: "completed",
-                      transaction_id: res.data.transaction_id,
-                      reference_no: blockres.data.ReferenceNo
-                    };
-                    console.log(paymentData);
-                    axios
-                      .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
-                      .then(res => {
-                        console.log(res);
-                      });
-                  })
-                  .catch(error => {
-                    // handle failure
+          //         RazorpayCheckout.open(options)
+          //           .then(data => {
+          //             // handle success
+          //             console.log(data);
+          //             alert(`Success: ${data.razorpay_payment_id}`);
+          //             this.setState({ orderId: data.razorpay_payment_id });
+          //             this.props.navigation.navigate("ThankYou", {
+          //               cartRes: res,
+          //               blockRes: blockres,
+          //               data: totalData
+          //             });
+          //             let paymentData = {
+          //               order_id: res.data.id,
+          //               status: "completed",
+          //               transaction_id: res.data.transaction_id,
+          //               reference_no: blockres.data.ReferenceNo
+          //             };
+          //             console.log(paymentData);
+          //             axios
+          //               .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
+          //               .then(res => {
+          //                 console.log(res);
+          //               });
+          //           })
+          //           .catch(error => {
+          //             // handle failure
 
-                    alert(`Error: ${error.code} | ${error.description}`);
-                  });
-              })
-              .catch(error => {
-                Toast.show(error, Toast.LONG);
-                this.setState({ loading: false });
-              });
-          } else {
-            this.setState({ loading: false });
-            Toast.show("Hotel is not block successfully ", Toast.LONG);
-          }
+          //             alert(`Error: ${error.code} | ${error.description}`);
+          //           });
+          //       })
+          //       .catch(error => {
+          //         Toast.show(error, Toast.LONG);
+          //         this.setState({ loading: false });
+          //       });
+          //   } else {
+          //     this.setState({ loading: false });
+          //     Toast.show("Hotel is not block successfully ", Toast.LONG);
+          //   }
         })
         .catch(error => {
           Toast.show(error, Toast.LONG);
