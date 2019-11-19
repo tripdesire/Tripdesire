@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, StyleSheet, Picker, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 
 class DomesticFlights extends React.PureComponent {
@@ -37,66 +37,31 @@ class DomesticFlights extends React.PureComponent {
       ToCode: "BOM",
       Journey_date: new Date(),
       Return_date: new Date(),
-      mode: "date",
-      show: false,
-      showTo: false,
-      backgroundColor_domestic: "#5B89F9",
-      Button_text_color_domestic: "#FFFFFF",
-      Button_text_color_international: "#000000",
-      backgroundColor_international: "#FFFFFF",
       tripTypeColorOneway: "#000000",
       tripTypeColorRound: "#BDC4CA",
-      selectRound: false
+      selectRound: false,
+      fromDTpicker: false,
+      toDTpicker: false
     };
   }
 
-  // componentDidMount() {
-  //   this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-  //     console.log(this.state.modalFrom);
-  //     if (this.state.modalFrom || this.state.modalTo) {
-  //       this.setState({
-  //         modalFrom: false,
-  //         modalTo: false
-  //       });
-  //     } else {
-  //       this.props.navigation.goBack(null);
-  //     }
-  //     return true;
-  //   });
-  // }
-
-  // componentWillUnmount() {
-  //   this.backHandler.remove();
-  // }
-
-  setDate = (event, date) => {
-    date = date || this.state.Journey_date;
-    this.setState({
-      show: Platform.OS === "ios" ? true : false,
-      Journey_date: date
-    });
+  showDateTimePicker = key => () => {
+    this.setState({ [key]: true });
   };
 
-  setDateTo = (event, date) => {
-    date = date || this.state.Return_date;
-    this.setState({
-      showTo: Platform.OS === "ios" ? true : false,
-      Return_date: date
-    });
+  hideDateTimePicker = key => () => {
+    this.setState({ [key]: false });
   };
 
-  show = mode => () => {
-    this.setState({
-      show: true,
-      mode
-    });
-  };
-
-  showTo = mode => () => {
-    this.setState({
-      showTo: true,
-      mode
-    });
+  handleDatePicked = key => date => {
+    let data = {};
+    if (key == "fromDTpicker") {
+      data.Journey_date = date;
+    } else {
+      data.Return_date = date;
+    }
+    this.setState(data);
+    this.hideDateTimePicker(key)();
   };
 
   setModalVisible = (key, visible) => () => {
@@ -174,14 +139,13 @@ class DomesticFlights extends React.PureComponent {
     const {
       from,
       to,
-      show,
-      showTo,
-      Journey_date,
-      Return_date,
-      mode,
       tripTypeColorOneway,
       tripTypeColorRound,
-      selectRound
+      selectRound,
+      fromDTpicker,
+      toDTpicker,
+      Journey_date,
+      Return_date
     } = this.state;
 
     let classItems = this.state.className.map((item, i) => {
@@ -266,18 +230,17 @@ class DomesticFlights extends React.PureComponent {
               paddingStart: 20
             }}>
             <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
-            <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
-              <Text>{moment(this.state.Journey_date).format("DD-MMM-YYYY")}</Text>
+            <Button
+              style={{ flex: 1, marginStart: 5 }}
+              onPress={this.showDateTimePicker("fromDTpicker")}>
+              <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
             </Button>
-            {show && (
-              <RNDateTimePicker
-                display="calendar"
-                value={Journey_date}
-                mode={mode}
-                minimumDate={new Date()}
-                onChange={this.setDate}
-              />
-            )}
+            <DateTimePicker
+              isVisible={fromDTpicker}
+              onConfirm={this.handleDatePicked("fromDTpicker")}
+              onCancel={this.hideDateTimePicker("fromDTpicker")}
+              minimumDate={new Date()}
+            />
           </View>
           {selectRound && (
             <View
@@ -286,18 +249,17 @@ class DomesticFlights extends React.PureComponent {
                 paddingStart: 20
               }}>
               <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-              <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
-                <Text>{moment(this.state.Return_date).format("DD-MMM-YYYY")}</Text>
+              <Button
+                style={{ flex: 1, marginStart: 5 }}
+                onPress={this.showDateTimePicker("toDTpicker")}>
+                <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
               </Button>
-              {showTo && (
-                <RNDateTimePicker
-                  display="calendar"
-                  value={Return_date}
-                  mode={mode}
-                  minimumDate={new Date()}
-                  onChange={this.setDateTo}
-                />
-              )}
+              <DateTimePicker
+                isVisible={toDTpicker}
+                onConfirm={this.handleDatePicked("toDTpicker")}
+                onCancel={this.hideDateTimePicker("fromDTpicker")}
+                minimumDate={new Date()}
+              />
             </View>
           )}
         </View>
@@ -328,23 +290,17 @@ class DomesticFlights extends React.PureComponent {
                   justifyContent: "center",
                   borderRadius: 12
                 }}
-                onPress={this.setPassengers}>
+                onPress={this.setModalVisible("modalPassengers", true)}>
                 <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
               </Button>
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              paddingStart: 20
-            }}>
+          <View style={{ flex: 1, paddingStart: 20 }}>
             <Text style={{ color: "#5D666D", marginStart: 5 }}>Class</Text>
             <Picker
               selectedValue={this.state.class}
               style={{ height: 30, width: "100%" }}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ class: itemValue, index: itemIndex })
-              }>
+              onValueChange={itemValue => this.setState({ class: itemValue })}>
               {classItems}
             </Picker>
           </View>
@@ -361,7 +317,17 @@ class DomesticFlights extends React.PureComponent {
           onPress={this._search}>
           <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
         </Button>
-        <AddPassengers visible={this.state.modalPassengers} submit={this.submit} />
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalPassengers}
+          onRequestClose={this.setModalVisible("modalPassengers", false)}>
+          <AddPassengers
+            submit={this.submit}
+            onModalBackPress={this.setModalVisible("modalPassengers", false)}
+          />
+        </Modal>
 
         <Modal
           animationType="slide"
@@ -411,100 +377,87 @@ class AddPassengers extends React.PureComponent {
 
   render() {
     return (
-      <Modal animationType="slide" transparent={false} visible={this.props.visible}>
-        <View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Button
-              onPress={this.props.submit}
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: 48,
-                width: 48
-              }}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <Text style={{ fontSize: 18 }}>Choose Passengers</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 20,
-              marginVertical: 10
-            }}>
-            <View style={{ alignItems: "center" }}>
-              <Text>Adults</Text>
-              <Picker
-                selectedValue={this.state.adult}
-                style={{
-                  height: 50,
-                  width: 60,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: "#000"
-                }}
-                onValueChange={(itemValue, itemIndex) => this.setState({ adult: itemValue })}>
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-                <Picker.Item label="4" value="4" />
-              </Picker>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text>childrens</Text>
-              <Picker
-                selectedValue={this.state.children}
-                style={{ height: 50, width: 60 }}
-                onValueChange={(itemValue, itemIndex) => this.setState({ children: itemValue })}>
-                <Picker.Item label="0" value="0" />
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-                <Picker.Item label="4" value="4" />
-              </Picker>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text>Infants</Text>
-              <Picker
-                selectedValue={this.state.infants}
-                style={{ height: 50, width: 60 }}
-                onValueChange={(itemValue, itemIndex) => this.setState({ infants: itemValue })}>
-                <Picker.Item label="0" value="0" />
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-                <Picker.Item label="4" value="4" />
-              </Picker>
-            </View>
-          </View>
+      <View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Button
+            onPress={this.props.onModalBackPress}
             style={{
-              height: 40,
-              backgroundColor: "#F68E1F",
-              justifyContent: "center",
               alignItems: "center",
-              marginHorizontal: 20,
-              borderRadius: 20
-            }}
-            onPress={this._submit}>
-            <Text style={{ paddingHorizontal: 40, color: "#fff" }}>Submit</Text>
+              justifyContent: "center",
+              height: 48,
+              width: 48
+            }}>
+            <Icon name="md-arrow-back" size={24} />
           </Button>
+          <Text style={{ fontSize: 18 }}>Choose Passengers</Text>
         </View>
-      </Modal>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginHorizontal: 20,
+            marginVertical: 10
+          }}>
+          <View style={{ alignItems: "center" }}>
+            <Text>Adults</Text>
+            <Picker
+              selectedValue={this.state.adult}
+              style={{
+                height: 50,
+                width: 80,
+                borderWidth: 1,
+                borderRadius: 5,
+                borderColor: "#000"
+              }}
+              onValueChange={itemValue => this.setState({ adult: itemValue })}>
+              <Picker.Item label="1" value="1" />
+              <Picker.Item label="2" value="2" />
+              <Picker.Item label="3" value="3" />
+              <Picker.Item label="4" value="4" />
+            </Picker>
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <Text>childrens</Text>
+            <Picker
+              selectedValue={this.state.children}
+              style={{ height: 50, width: 80 }}
+              onValueChange={itemValue => this.setState({ children: itemValue })}>
+              <Picker.Item label="0" value="0" />
+              <Picker.Item label="1" value="1" />
+              <Picker.Item label="2" value="2" />
+              <Picker.Item label="3" value="3" />
+              <Picker.Item label="4" value="4" />
+            </Picker>
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <Text>Infants</Text>
+            <Picker
+              selectedValue={this.state.infants}
+              style={{ height: 50, width: 80 }}
+              onValueChange={itemValue => this.setState({ infants: itemValue })}>
+              <Picker.Item label="0" value="0" />
+              <Picker.Item label="1" value="1" />
+              <Picker.Item label="2" value="2" />
+              <Picker.Item label="3" value="3" />
+              <Picker.Item label="4" value="4" />
+            </Picker>
+          </View>
+        </View>
+        <Button
+          style={{
+            height: 40,
+            backgroundColor: "#F68E1F",
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 20,
+            borderRadius: 20
+          }}
+          onPress={this._submit}>
+          <Text style={{ paddingHorizontal: 40, color: "#fff" }}>Submit</Text>
+        </Button>
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  autocompleteContainer: {
-    flex: 1,
-    start: 48,
-    position: "absolute",
-    end: 0,
-    top: 0,
-    zIndex: 1
-  }
-});
 
 export default withNavigation(DomesticFlights);

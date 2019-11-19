@@ -70,11 +70,19 @@ class FlightsInfoOneway extends React.PureComponent {
         console.log(data);
         if (this.state.flight_type == 1) {
           console.log(data.DomesticOnwardFlights);
-          this.setState({ flights: data.DomesticOnwardFlights, loader: false });
+          this.setState({
+            flights: data.DomesticOnwardFlights,
+            filterFlights: data.DomesticOnwardFlights,
+            loader: false
+          });
         }
         if (this.state.flight_type == 2) {
           console.log(data.InternationalFlights);
-          this.setState({ flights: data.InternationalFlights, loader: false });
+          this.setState({
+            flights: data.InternationalFlights,
+            filterFlights: data.DomesticOnwardFlights,
+            loader: false
+          });
         }
       })
       .catch(err => {
@@ -106,6 +114,27 @@ class FlightsInfoOneway extends React.PureComponent {
   };
   onChangeFilter = filterValues => {
     this.setState({ filterValues });
+  };
+
+  filter = () => {
+    const { filterValues, flights } = this.state;
+    let filterFlights = [...flights];
+
+    filterFlights = filterFlights.filter(
+      item =>
+        (filterValues.stops.length == 0 ||
+          filterValues.stops.includes(item.FlightSegments.length - 1)) &&
+        (filterValues.fareType.length == 0 ||
+          filterValues.fareType.includes(item.FlightSegments[0].BookingClassFare.Rule)) &&
+        (filterValues.airlines.length == 0 ||
+          filterValues.airlines.includes(item.FlightSegments[0].AirLineName)) &&
+        (filterValues.connectingLocations.length == 0 ||
+          item.FlightSegments.some(value =>
+            filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+          ))
+    );
+    console.log(filterFlights);
+    this.setState({ filterFlights, showFilter: false });
   };
 
   _renderItem = ({ item }) => (
@@ -185,7 +214,8 @@ class FlightsInfoOneway extends React.PureComponent {
       Child,
       Infant,
       loader,
-      showFilter
+      showFilter,
+      filterFlights
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
@@ -252,7 +282,7 @@ class FlightsInfoOneway extends React.PureComponent {
           <FlatList
             nestedScrollEnabled={true}
             vertical={true}
-            data={this.state.flights}
+            data={this.state.filterFlights}
             keyExtractor={this._keyExtractoritems}
             renderItem={this._renderItemList}
           />
@@ -267,6 +297,7 @@ class FlightsInfoOneway extends React.PureComponent {
             onBackPress={this.closeFilter}
             filterValues={this.state.filterValues}
             onChangeFilter={this.onChangeFilter}
+            filter={this.filter}
           />
         </Modal>
         {loader && <Activity_Indicator />}

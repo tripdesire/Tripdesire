@@ -34,26 +34,27 @@ class Filter extends React.Component {
   }
   componentDidMount() {
     const { data } = this.props;
-    console.log(data);
-
-    let stops = data
-      .map(value => value.FlightSegments.length - 1)
-      .filter((value, index, self) => self.indexOf(value) === index);
-
-    let fareType = data
-      .map(value => value.FlightSegments[0].BookingClassFare.Rule)
-      .filter((value, index, self) => self.indexOf(value) === index);
-
-    let airlines = data
-      .map(value => value.FlightSegments[0].AirLineName)
-      .filter((value, index, self) => self.indexOf(value) === index);
-
-    let connectingLocations = data
-      .map(value =>
-        value.FlightSegments.filter((el, i) => i != 0).map(el => el.IntDepartureAirportName)
-      )
-      .reduce((total, value) => [...total, ...value])
-      .filter((value, index, self) => self.indexOf(value) === index);
+    //console.log(data);
+    let stops = [];
+    let fareType = [];
+    let airlines = [];
+    let connectingLocations = [];
+    for (let value of data) {
+      if (!stops.includes(value.FlightSegments.length - 1)) {
+        stops.push(value.FlightSegments.length - 1);
+      }
+      if (!fareType.includes(value.FlightSegments[0].BookingClassFare.Rule)) {
+        fareType.push(value.FlightSegments[0].BookingClassFare.Rule);
+      }
+      if (!airlines.includes(value.FlightSegments[0].AirLineName)) {
+        airlines.push(value.FlightSegments[0].AirLineName);
+      }
+      for (let j = 1; j < value.FlightSegments.length; j++) {
+        if (!connectingLocations.includes(value.FlightSegments[j].IntDepartureAirportName)) {
+          connectingLocations.push(value.FlightSegments[j].IntDepartureAirportName);
+        }
+      }
+    }
 
     let priceArray = data.map(value => value.FareDetails.TotalFare);
     let price = [Math.min(...priceArray), Math.max(...priceArray)];
@@ -91,13 +92,15 @@ class Filter extends React.Component {
     this.props.onChangeFilter && this.props.onChangeFilter(newData);
   };
 
+  reset = () => {};
+
   render() {
     const { filterTabs, index, filters } = this.state;
     const { filterValues } = this.props;
 
     return (
       <>
-        <View style={{ flexDirection: "row", alignItems: "center", height: 56 }}>
+        <View style={styles.headerContainer}>
           <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
             <Icon name="md-arrow-back" size={24} />
           </Button>
@@ -165,17 +168,45 @@ class Filter extends React.Component {
             )}
           </View>
         </View>
+        <View style={styles.footer}>
+          {/* <Button style={styles.resetButton} onPress={this.reset}>
+            <Text style={{ fontWeight: "700" }}>Reset</Text>
+          </Button> */}
+          <Button style={styles.applyButton} onPress={this.props.filter}>
+            <Text style={{ color: "#FFFFFF", fontWeight: "700" }}>Apply</Text>
+          </Button>
+        </View>
       </>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  _mainCheckBoxView: { marginHorizontal: 16 },
-  _singleItemView: { flexDirection: "row", alignItems: "center" },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 56
+  },
   filterTabs: {
     width: "100%",
     padding: 16
+  },
+  footer: {
+    flexDirection: "row",
+    width: "100%",
+    padding: 8
+  },
+  resetButton: {
+    padding: 16,
+    flex: 2,
+    alignItems: "center"
+  },
+  applyButton: {
+    padding: 16,
+    backgroundColor: "#F68E1F",
+    borderRadius: 8,
+    flex: 1,
+    alignItems: "center"
   }
 });
 

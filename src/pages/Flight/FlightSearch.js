@@ -23,32 +23,19 @@ class FlightSearch extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      flightType: 1,
-      backgroundColor_domestic: "#5B89F9",
-      Button_text_color_domestic: "#FFFFFF",
-      Button_text_color_international: "#000000",
-      backgroundColor_international: "#FFFFFF"
+      flightType: 1
     };
   }
 
-  _SelectFlightType = value => {
-    this.setState({
-      backgroundColor_domestic: value == "domestic" ? "#5B89F9" : "#FFFFFF",
-      backgroundColor_international: value == "domestic" ? "#FFFFFF" : "#5B89F9",
-      Button_text_color_domestic: value == "domestic" ? "#ffffff" : "#000000",
-      Button_text_color_international: value == "domestic" ? "#000000" : "#ffffff",
-      flightType: value == "domestic" ? 1 : 2
-    });
+  setDomesticActive = () => {
+    this.setState({ flightType: 1 });
+  };
+  setInternationalActive = () => {
+    this.setState({ flightType: 2 });
   };
 
   render() {
-    const {
-      backgroundColor_domestic,
-      backgroundColor_international,
-      Button_text_color_domestic,
-      Button_text_color_international,
-      flightType
-    } = this.state;
+    const { flightType } = this.state;
     return (
       <View style={{ flexDirection: "column", flex: 1 }}>
         <View style={{ backgroundColor: "#E4EAF6", flex: 1 }}>
@@ -62,7 +49,7 @@ class FlightSearch extends React.PureComponent {
             style={{ flexDirection: "row", justifyContent: "center", ...StyleSheet.absoluteFill }}>
             <Button
               style={{
-                backgroundColor: backgroundColor_domestic,
+                backgroundColor: flightType == 1 ? "#5B89F9" : "#FFFFFF",
                 elevation: 1,
                 borderWidth: 1,
                 borderColor: "#DDDDDD",
@@ -72,12 +59,14 @@ class FlightSearch extends React.PureComponent {
                 borderBottomStartRadius: 5,
                 borderTopStartRadius: 5
               }}
-              onPress={() => this._SelectFlightType("domestic")}>
-              <Text style={{ color: Button_text_color_domestic, fontSize: 12 }}>Domestic</Text>
+              onPress={this.setDomesticActive}>
+              <Text style={{ color: flightType == 1 ? "#FFFFFF" : "#000000", fontSize: 12 }}>
+                Domestic
+              </Text>
             </Button>
             <Button
               style={{
-                backgroundColor: backgroundColor_international,
+                backgroundColor: flightType == 2 ? "#5B89F9" : "#FFFFFF",
                 elevation: 1,
                 height: 30,
                 borderEndWidth: 1,
@@ -89,14 +78,14 @@ class FlightSearch extends React.PureComponent {
                 borderBottomEndRadius: 5,
                 borderTopEndRadius: 5
               }}
-              onPress={() => this._SelectFlightType("international")}>
-              <Text style={{ fontSize: 12, color: Button_text_color_international }}>
+              onPress={this.setInternationalActive}>
+              <Text style={{ fontSize: 12, color: flightType == 2 ? "#FFFFFF" : "#000000" }}>
                 International
               </Text>
             </Button>
           </View>
         </View>
-        <View style={{ elevation: 1, backgroundColor: "#FFFFFF", flex: 4 }}>
+        <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
           {flightType == 1 && <DomesticFlights />}
           {flightType == 2 && <InternationalFlights />}
         </View>
