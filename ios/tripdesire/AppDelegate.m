@@ -11,6 +11,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <RNGoogleSignin/RNGoogleSignin.h>
 
 @implementation AppDelegate
 
@@ -40,22 +41,12 @@
 #endif
 }
 
-- (BOOL)application:(UIApplication *)application 
-    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  
-  // You can skip this line if you have the latest version of the SDK installed
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-    didFinishLaunchingWithOptions:launchOptions];
-  // Add any custom logic here.
-  return YES;
-}
-
-- (BOOL)application:(UIApplication *)application 
-            openURL:(NSURL *)url 
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
 
-  BOOL handled =  [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options]
-  ];
+  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] || [RNGoogleSignin application:application openURL:url options:options];
+
   // Add any custom logic here.
   return handled;
 }

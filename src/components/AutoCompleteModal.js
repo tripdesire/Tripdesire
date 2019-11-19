@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from "react-native";
 import Button from "./Button";
 import Text from "./TextComponent";
 import Activity_Indicator from "./Activity_Indicator";
@@ -165,44 +165,48 @@ class AutoCompleteModal extends React.PureComponent {
 
   render() {
     return (
-      // <Modal animationType="slide" transparent={false} visible={this.props.visible}>
-      <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Button
-            onPress={this.props.onModalBackPress}
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              height: 48,
-              width: 48,
-              zIndex: 1
-            }}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <View style={styles.autocompleteContainer}>
-            <Autocomplete
-              placeholder={this.props.placeholder}
-              inputContainerStyle={{
-                borderWidth: 0,
-                height: 48,
-                paddingStart: 48,
-                justifyContent: "center"
-              }}
-              data={this.state.filteredList}
-              onChangeText={this.filterList}
-              listStyle={{
-                maxHeight: height,
-                margin: 0,
-                paddingHorizontal: 16,
-                borderWidth: 0
-              }}
-              renderItem={this.renderItem}
-              keyExtractor={this.keyExtractor}
-            />
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+          <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Button
+                onPress={this.props.onModalBackPress}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 48,
+                  width: 48,
+                  zIndex: 1
+                }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <View style={styles.autocompleteContainer}>
+                <Autocomplete
+                  placeholder={this.props.placeholder}
+                  inputContainerStyle={{
+                    borderWidth: 0,
+                    height: 48,
+                    paddingStart: 48,
+                    justifyContent: "center"
+                  }}
+                  data={this.state.filteredList}
+                  onChangeText={this.filterList}
+                  listStyle={{
+                    maxHeight: height,
+                    margin: 0,
+                    paddingHorizontal: 16,
+                    borderWidth: 0
+                  }}
+                  renderItem={this.renderItem}
+                  keyExtractor={this.keyExtractor}
+                />
+              </View>
+            </View>
+            {this.state.loader && <Activity_Indicator />}
           </View>
-        </View>
-        {this.state.loader && <Activity_Indicator />}
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

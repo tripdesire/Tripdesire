@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Image, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { Button, Text, CheckBox } from "../../components";
 import { _ } from "lodash";
 import moment from "moment";
@@ -104,7 +104,6 @@ class Filter extends React.Component {
   };
 
   updateFilter = (key, index) => () => {
-    console.log("here");
     const { filterValues } = this.props;
     const { filters } = this.state;
     let newData = Object.assign({}, filterValues);
@@ -128,82 +127,85 @@ class Filter extends React.Component {
 
     return (
       <>
-        <View style={styles.headerContainer}>
-          <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <Text style={{ fontWeight: "700", fontSize: 16 }}>Filter</Text>
-        </View>
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <View style={{ flex: 2, backgroundColor: "#E8EEF6" }}>
-            {filterTabs.map((item, i) => (
-              <Button
-                style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
-                key={"filter_" + item + index}
-                onPress={this.changeActiveTab(i)}>
-                <Text>{item}</Text>
-              </Button>
-            ))}
+        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+          <View style={styles.headerContainer}>
+            <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
+              <Icon name="md-arrow-back" size={24} />
+            </Button>
+            <Text style={{ fontWeight: "700", fontSize: 16 }}>Filter</Text>
           </View>
-          <View style={{ flex: 3 }}>
-            {index == 0 && (
-              <ScrollView>
-                {filters.stops.map((item, index) => (
-                  <CheckBox
-                    label={item + " Stop(s)"}
-                    key={"stops_" + item + index}
-                    checked={filterValues.stops.includes(item)}
-                    onPress={this.updateFilter("stops", index)}
-                  />
-                ))}
-              </ScrollView>
-            )}
-            {index == 1 && (
-              <ScrollView>
-                {filters.fareType.map((item, index) => (
-                  <CheckBox
-                    label={item}
-                    key={"fareType_" + item + index}
-                    checked={filterValues.fareType.includes(item)}
-                    onPress={this.updateFilter("fareType", index)}
-                  />
-                ))}
-              </ScrollView>
-            )}
-            {index == 2 && (
-              <ScrollView>
-                {filters.airlines.map((item, index) => (
-                  <CheckBox
-                    label={item}
-                    key={"airlines_" + item + index}
-                    checked={filterValues.airlines.includes(item)}
-                    onPress={this.updateFilter("airlines", index)}
-                  />
-                ))}
-              </ScrollView>
-            )}
-            {index == 3 && (
-              <ScrollView>
-                {filters.connectingLocations.map((item, index) => (
-                  <CheckBox
-                    label={item}
-                    key={"connectingLocations_" + item + index}
-                    checked={filterValues.connectingLocations.includes(item)}
-                    onPress={this.updateFilter("connectingLocations", index)}
-                  />
-                ))}
-              </ScrollView>
-            )}
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View style={{ flex: 2, backgroundColor: "#E8EEF6" }}>
+              {filterTabs.map((item, i) => (
+                <Button
+                  style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
+                  key={"filter_" + item + index}
+                  onPress={this.changeActiveTab(i)}>
+                  <Text>{item}</Text>
+                </Button>
+              ))}
+            </View>
+            <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}>
+              {index == 0 && (
+                <ScrollView>
+                  {filters.stops.map((item, index) => (
+                    <CheckBox
+                      label={item + " Stop(s)"}
+                      key={"stops_" + item + index}
+                      checked={filterValues.stops.includes(item)}
+                      onPress={this.updateFilter("stops", index)}
+                    />
+                  ))}
+                </ScrollView>
+              )}
+              {index == 1 && (
+                <ScrollView>
+                  {filters.fareType.map((item, index) => (
+                    <CheckBox
+                      label={item}
+                      key={"fareType_" + item + index}
+                      checked={filterValues.fareType.includes(item)}
+                      onPress={this.updateFilter("fareType", index)}
+                    />
+                  ))}
+                </ScrollView>
+              )}
+              {index == 2 && (
+                <ScrollView>
+                  {filters.airlines.map((item, index) => (
+                    <CheckBox
+                      label={item}
+                      key={"airlines_" + item + index}
+                      checked={filterValues.airlines.includes(item)}
+                      onPress={this.updateFilter("airlines", index)}
+                    />
+                  ))}
+                </ScrollView>
+              )}
+              {index == 3 && (
+                <ScrollView>
+                  {filters.connectingLocations.map((item, index) => (
+                    <CheckBox
+                      label={item}
+                      key={"connectingLocations_" + item + index}
+                      checked={filterValues.connectingLocations.includes(item)}
+                      onPress={this.updateFilter("connectingLocations", index)}
+                    />
+                  ))}
+                </ScrollView>
+              )}
+            </View>
           </View>
-        </View>
-        <View style={styles.footer}>
-          {/* <Button style={styles.resetButton} onPress={this.reset}>
+          <View style={styles.footer}>
+            {/* <Button style={styles.resetButton} onPress={this.reset}>
             <Text style={{ fontWeight: "700" }}>Reset</Text>
           </Button> */}
-          <Button style={styles.applyButton} onPress={this.props.filter}>
-            <Text style={{ color: "#FFFFFF", fontWeight: "700" }}>Apply</Text>
-          </Button>
-        </View>
+            <Button style={styles.applyButton} onPress={this.props.filter}>
+              <Text style={{ color: "#FFFFFF", fontWeight: "700" }}>Apply</Text>
+            </Button>
+          </View>
+        </SafeAreaView>
       </>
     );
   }
@@ -213,7 +215,8 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    height: 56
+    height: 56,
+    backgroundColor: "#FFFFFF"
   },
   filterTabs: {
     width: "100%",
@@ -222,7 +225,8 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
     width: "100%",
-    padding: 8
+    padding: 8,
+    backgroundColor: "#FFFFFF"
   },
   resetButton: {
     padding: 16,

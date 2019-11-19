@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, Picker, Modal } from "react-native";
+import { View, Image, StyleSheet, Picker, Modal, SafeAreaView } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import DateTimePicker from "react-native-modal-datetime-picker";
