@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, FlatList, Modal } from "react-native";
+import { View, Image, FlatList, Modal, SafeAreaView } from "react-native";
 import { Button, Text, Activity_Indicator, Icon, HeaderFlights } from "../../components";
 import Toast from "react-native-simple-toast";
 import FlightListRender from "./FlightListRender";
@@ -242,91 +242,96 @@ class FlightsInfoOneway extends React.PureComponent {
       flight_type
     } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
-          <HeaderFlights
-            from={from}
-            to={to}
-            journey_date={journey_date}
-            Adult={Adult}
-            Child={Child}
-            Infant={Infant}
-            className={className}>
-            <Button
-              style={{
-                flexDirection: "row",
-                marginStart: "auto",
-                paddingEnd: 8,
-                paddingVertical: 16
-              }}
-              onPress={this.openFilter}>
-              <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-              <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                Sort & Filter
-              </Text>
-            </Button>
-          </HeaderFlights>
-        </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+          <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
+              <HeaderFlights
+                from={from}
+                to={to}
+                journey_date={journey_date}
+                Adult={Adult}
+                Child={Child}
+                Infant={Infant}
+                className={className}>
+                <Button
+                  style={{
+                    flexDirection: "row",
+                    marginStart: "auto",
+                    paddingEnd: 8,
+                    paddingVertical: 16
+                  }}
+                  onPress={this.openFilter}>
+                  <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                  <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                    Sort & Filter
+                  </Text>
+                </Button>
+              </HeaderFlights>
+            </View>
 
-        <View style={{ flex: 4 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 30,
-              borderRadius: 5,
-              marginTop: -40,
-              borderWidth: 1,
-              borderColor: "#d2d2d2d2",
-              backgroundColor: "#FFFFFF"
-            }}>
-            <FlatList
-              horizontal={true}
-              data={dates}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-              ItemSeparatorComponent={this.itemSeparator}
-              showsHorizontalScrollIndicator={false}
-              ListHeaderComponent={this.listheaderComponent}
-            />
-            <Button
-              style={{
-                backgroundColor: "#5B89F9",
-                justifyContent: "center",
-                borderBottomRightRadius: 5,
-                borderTopRightRadius: 5
-              }}>
-              <Image
-                style={{ width: 20, marginHorizontal: 8 }}
-                resizeMode="contain"
-                source={require("../../assets/imgs/cal.png")}
+            <View style={{ flex: 4 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginHorizontal: 30,
+                  borderRadius: 5,
+                  marginTop: -40,
+                  borderWidth: 1,
+                  borderColor: "#d2d2d2d2",
+                  backgroundColor: "#FFFFFF"
+                }}>
+                <FlatList
+                  horizontal={true}
+                  data={dates}
+                  keyExtractor={this._keyExtractor}
+                  renderItem={this._renderItem}
+                  ItemSeparatorComponent={this.itemSeparator}
+                  showsHorizontalScrollIndicator={false}
+                  ListHeaderComponent={this.listheaderComponent}
+                />
+                <Button
+                  style={{
+                    backgroundColor: "#5B89F9",
+                    justifyContent: "center",
+                    borderBottomRightRadius: 5,
+                    borderTopRightRadius: 5
+                  }}>
+                  <Image
+                    style={{ width: 20, marginHorizontal: 8 }}
+                    resizeMode="contain"
+                    source={require("../../assets/imgs/cal.png")}
+                  />
+                </Button>
+              </View>
+
+              <FlatList
+                nestedScrollEnabled={true}
+                vertical={true}
+                data={filterFlights}
+                keyExtractor={this._keyExtractoritems}
+                renderItem={this._renderItemList}
               />
-            </Button>
+            </View>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={showFilter}
+              onRequestClose={this.closeFilter}>
+              <Filter
+                data={this.state.flights}
+                onBackPress={this.closeFilter}
+                filterValues={this.state.filterValues}
+                onChangeFilter={this.onChangeFilter}
+                flight_type={flight_type}
+                filter={this.filter}
+              />
+            </Modal>
+            {loader && <Activity_Indicator />}
           </View>
-
-          <FlatList
-            nestedScrollEnabled={true}
-            vertical={true}
-            data={filterFlights}
-            keyExtractor={this._keyExtractoritems}
-            renderItem={this._renderItemList}
-          />
-        </View>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={showFilter}
-          onRequestClose={this.closeFilter}>
-          <Filter
-            data={this.state.flights}
-            onBackPress={this.closeFilter}
-            filterValues={this.state.filterValues}
-            onChangeFilter={this.onChangeFilter}
-            flight_type={flight_type}
-            filter={this.filter}
-          />
-        </Modal>
-        {loader && <Activity_Indicator />}
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

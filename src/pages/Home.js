@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image } from "react-native";
+import { View, Image, SafeAreaView } from "react-native";
 import { Button, HomeButtonComponent, Text } from "../../src/components";
 import { connect } from "react-redux";
 import { DomSugg, IntSugg, DomHotelSugg } from "../store/action";
@@ -49,73 +49,78 @@ class Home extends React.PureComponent {
   render() {
     const { IconcolorFlight, IconcolorHotels, IconcolorBus, IconcolorCab } = this.state;
     return (
-      <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 20,
-            marginTop: 40
-          }}>
-          <Text style={{ fontSize: 26, color: "#1B294C", fontWeight: "600" }}>WHERE WOULD</Text>
-          <Button onPress={this.props.navigation.openDrawer}>
-            <Image style={{ width: 30 }} source={require("../assets/imgs/bar.png")} />
-          </Button>
-        </View>
-        <Text
-          style={{
-            color: "#5789FF",
-            fontSize: 26,
-            fontWeight: "600",
-            marginHorizontal: 20,
-            marginVertical: 5
-          }}>
-          YOU WANT TO GO?
-        </Text>
-        <Text style={{ marginHorizontal: 20, color: "#616A71" }}>
-          Search Amazing Flights,Hotels,Bus & Cabs
-        </Text>
-        <Text style={{ marginHorizontal: 20, color: "#616A71" }}>at a good Price.</Text>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 16,
-            marginTop: 40
-          }}>
-          <HomeButtonComponent
-            name="Flight"
-            color={IconcolorFlight}
-            img_name={require("../assets/imgs/flight.png")}
-            onPress={this.navigateToScreen("FlightSearch")}
-          />
-          <HomeButtonComponent
-            name="HOTELS"
-            color={IconcolorHotels}
-            img_name={require("../assets/imgs/Hotel.png")}
-            onPress={this.navigateToScreen("Hotel")}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 16
-          }}>
-          <HomeButtonComponent
-            name="BUS"
-            color={IconcolorBus}
-            img_name={require("../assets/imgs/bus.png")}
-            onPress={this.navigateToScreen("Bus")}
-          />
-          <HomeButtonComponent
-            name="CAB"
-            color={IconcolorCab}
-            img_name={require("../assets/imgs/car.png")}
-            onPress={this.navigateToScreen("Cab")}
-          />
-        </View>
-      </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginHorizontal: 20,
+                marginTop: 40
+              }}>
+              <Text style={{ fontSize: 26, color: "#1B294C", fontWeight: "600" }}>WHERE WOULD</Text>
+              <Button onPress={this.props.navigation.openDrawer}>
+                <Image style={{ width: 30 }} source={require("../assets/imgs/bar.png")} />
+              </Button>
+            </View>
+            <Text
+              style={{
+                color: "#5789FF",
+                fontSize: 26,
+                fontWeight: "600",
+                marginHorizontal: 20,
+                marginVertical: 5
+              }}>
+              YOU WANT TO GO?
+            </Text>
+            <Text style={{ marginHorizontal: 20, color: "#616A71" }}>
+              Search Amazing Flights,Hotels,Bus & Cabs
+            </Text>
+            <Text style={{ marginHorizontal: 20, color: "#616A71" }}>at a good Price.</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginHorizontal: 16,
+                marginTop: 40
+              }}>
+              <HomeButtonComponent
+                name="Flight"
+                color={IconcolorFlight}
+                img_name={require("../assets/imgs/flight.png")}
+                onPress={this.navigateToScreen("FlightSearch")}
+              />
+              <HomeButtonComponent
+                name="HOTELS"
+                color={IconcolorHotels}
+                img_name={require("../assets/imgs/Hotel.png")}
+                onPress={this.navigateToScreen("Hotel")}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginHorizontal: 16
+              }}>
+              <HomeButtonComponent
+                name="BUS"
+                color={IconcolorBus}
+                img_name={require("../assets/imgs/bus.png")}
+                onPress={this.navigateToScreen("Bus")}
+              />
+              <HomeButtonComponent
+                name="CAB"
+                color={IconcolorCab}
+                img_name={require("../assets/imgs/car.png")}
+                onPress={this.navigateToScreen("Cab")}
+              />
+            </View>
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 }
@@ -126,7 +131,4 @@ const mapDispatchToProps = {
   DomHotelSugg
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Home);
+export default connect(null, mapDispatchToProps)(Home);

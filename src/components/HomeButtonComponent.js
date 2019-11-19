@@ -8,6 +8,10 @@ class HomeButtonComponent extends Component {
         onPress={this.props.onPress}
         style={{
           elevation: 2,
+          shadowOffset: { width: 0, height: 2 },
+          shadowColor: "rgba(0,0,0,0.1)",
+          shadowOpacity: 1,
+          shadowRadius: 4,
           backgroundColor: "#FFFFFF",
           borderRadius: 15,
           padding: 16,

@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, Modal, TouchableOpacity, Picker } from "react-native";
+import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal } from "../../components";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
@@ -162,168 +162,177 @@ class Hotel extends React.PureComponent {
       room
     } = this.state;
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
-        <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}>
-          <Header firstName="Hotel" lastName="Search" onPress={this.navigateToScreen} />
-        </View>
-
-        <View style={{ height: 30, width: "100%" }}>
-          <View style={{ flex: 2, backgroundColor: "#E5EBF7" }}></View>
-          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginHorizontal: 20,
-              ...StyleSheet.absoluteFill
-            }}>
-            <Button
-              style={{
-                backgroundColor: "#5B89F9",
-                elevation: 1,
-                height: 30,
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 5
-              }}>
-              <Text style={{ color: "#fff", fontSize: 12 }}>Domestic</Text>
-            </Button>
-          </View>
-        </View>
-        <View
-          style={{
-            elevation: 1,
-            backgroundColor: "#FFFFFF",
-            flex: 4
-          }}>
-          <Text
-            style={{
-              color: "#1F273E",
-              fontSize: 18,
-              marginVertical: 30,
-              marginHorizontal: 16,
-              alignSelf: "center"
-            }}
-            onPress={this.modalOpen}>
-            {place}
-          </Text>
-
-          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-            <Image
-              style={{ width: 25, resizeMode: "contain" }}
-              source={require("../../assets/imgs/cal.png")}
-            />
-            <View
-              style={{
-                flex: 1,
-                paddingStart: 20
-              }}>
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-in</Text>
-              <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
-                <Text style={{ flex: 1 }}>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
-              </Button>
-              {show_CheckIn && (
-                <RNDateTimePicker
-                  display="calendar"
-                  value={CheckIn}
-                  mode={mode}
-                  minimumDate={new Date()}
-                  onChange={this.setDate}
-                />
-              )}
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+          <View style={{ flexDirection: "column", flex: 1 }}>
+            <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}>
+              <Header firstName="Hotel" lastName="Search" onPress={this.navigateToScreen} />
             </View>
-            <View
-              style={{
-                flex: 1,
-                paddingStart: 20
-              }}>
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-out</Text>
-              <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
-                <Text style={{ flex: 1 }}>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
-              </Button>
-              {show_CheckOut && (
-                <RNDateTimePicker
-                  display="calendar"
-                  value={CheckOut}
-                  mode={mode}
-                  minimumDate={new Date()}
-                  onChange={this.setDate_CheckOut}
-                />
-              )}
-            </View>
-          </View>
 
-          <View
-            style={{
-              height: 1,
-              backgroundColor: "#DDDDDD",
-              marginHorizontal: 20
-            }}></View>
-
-          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-            <Image
-              style={{ width: 25, resizeMode: "contain" }}
-              source={require("../../assets/imgs/person.png")}
-            />
-            <View
-              style={{
-                flex: 1,
-                paddingStart: 20
-              }}>
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>
-                {adults_count === "Passengers:" ? adults_count : ""}
-                {adults_count > 0 ? adults_count + " Adults , " : ""}
-                {children_count > 0 ? children_count + " Children , " : ""}
-                {adults_count > 0 ? room + " Room" : ""}
-              </Text>
-              <View style={{ flexDirection: "row", flex: 1, paddingStart: 5 }}>
+            <View style={{ height: 30, width: "100%" }}>
+              <View style={{ flex: 2, backgroundColor: "#E5EBF7" }}></View>
+              <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginHorizontal: 20,
+                  ...StyleSheet.absoluteFill
+                }}>
                 <Button
                   style={{
-                    backgroundColor: "#F68E1F",
-                    height: 25,
+                    backgroundColor: "#5B89F9",
+                    elevation: 1,
+                    height: 30,
+                    width: "100%",
                     justifyContent: "center",
-                    borderRadius: 15
-                  }}
-                  onPress={this.setPassengers}>
-                  <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
+                    alignItems: "center",
+                    borderRadius: 5
+                  }}>
+                  <Text style={{ color: "#fff", fontSize: 12 }}>Domestic</Text>
                 </Button>
               </View>
             </View>
+            <View
+              style={{
+                elevation: 1,
+                backgroundColor: "#FFFFFF",
+                flex: 4
+              }}>
+              <Text
+                style={{
+                  color: "#1F273E",
+                  fontSize: 18,
+                  marginVertical: 30,
+                  marginHorizontal: 16,
+                  alignSelf: "center"
+                }}
+                onPress={this.modalOpen}>
+                {place}
+              </Text>
+
+              <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={{ width: 25, resizeMode: "contain" }}
+                  source={require("../../assets/imgs/cal.png")}
+                />
+                <View
+                  style={{
+                    flex: 1,
+                    paddingStart: 20
+                  }}>
+                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-in</Text>
+                  <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
+                    <Text style={{ flex: 1 }}>
+                      {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
+                    </Text>
+                  </Button>
+                  {show_CheckIn && (
+                    <RNDateTimePicker
+                      display="calendar"
+                      value={CheckIn}
+                      mode={mode}
+                      minimumDate={new Date()}
+                      onChange={this.setDate}
+                    />
+                  )}
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    paddingStart: 20
+                  }}>
+                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-out</Text>
+                  <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
+                    <Text style={{ flex: 1 }}>
+                      {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
+                    </Text>
+                  </Button>
+                  {show_CheckOut && (
+                    <RNDateTimePicker
+                      display="calendar"
+                      value={CheckOut}
+                      mode={mode}
+                      minimumDate={new Date()}
+                      onChange={this.setDate_CheckOut}
+                    />
+                  )}
+                </View>
+              </View>
+
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: "#DDDDDD",
+                  marginHorizontal: 20
+                }}></View>
+
+              <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={{ width: 25, resizeMode: "contain" }}
+                  source={require("../../assets/imgs/person.png")}
+                />
+                <View
+                  style={{
+                    flex: 1,
+                    paddingStart: 20
+                  }}>
+                  <Text style={{ color: "#5D666D", marginStart: 5 }}>
+                    {adults_count === "Passengers:" ? adults_count : ""}
+                    {adults_count > 0 ? adults_count + " Adults , " : ""}
+                    {children_count > 0 ? children_count + " Children , " : ""}
+                    {adults_count > 0 ? room + " Room" : ""}
+                  </Text>
+                  <View style={{ flexDirection: "row", flex: 1, paddingStart: 5 }}>
+                    <Button
+                      style={{
+                        backgroundColor: "#F68E1F",
+                        height: 25,
+                        justifyContent: "center",
+                        borderRadius: 15
+                      }}
+                      onPress={this.setPassengers}>
+                      <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
+                    </Button>
+                  </View>
+                </View>
+              </View>
+              <Button
+                style={{
+                  backgroundColor: "#F68E1F",
+                  marginHorizontal: 100,
+                  height: 40,
+                  justifyContent: "center",
+                  borderRadius: 20,
+                  marginVertical: 40
+                }}
+                onPress={this._search}>
+                <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
+              </Button>
+            </View>
+
+            <AddPassengers
+              visible={this.state.modalPassengers}
+              submit={this.submit}
+              modalClose={this.modalClose}
+            />
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state._place}
+              onRequestClose={this.modalBackPress}>
+              <AutoCompleteModal
+                placeholder="Enter Source"
+                type="domesticHotel"
+                onChange={this._handle}
+                onModalBackPress={this.modalBackPress}
+              />
+            </Modal>
           </View>
-          <Button
-            style={{
-              backgroundColor: "#F68E1F",
-              marginHorizontal: 100,
-              height: 40,
-              justifyContent: "center",
-              borderRadius: 20,
-              marginVertical: 40
-            }}
-            onPress={this._search}>
-            <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
-          </Button>
-        </View>
-
-        <AddPassengers
-          visible={this.state.modalPassengers}
-          submit={this.submit}
-          modalClose={this.modalClose}
-        />
-
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state._place}
-          onRequestClose={this.modalBackPress}>
-          <AutoCompleteModal
-            placeholder="Enter Source"
-            type="domesticHotel"
-            onChange={this._handle}
-            onModalBackPress={this.modalBackPress}
-          />
-        </Modal>
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }
