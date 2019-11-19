@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, SafeAreaView } from "react-native";
+import { View, Image, StyleSheet, SafeAreaView, Modal } from "react-native";
 import { Button, Text } from "../../components";
 import DomesticFlights from "./DomesticFlights";
 import InternationalFlights from "./InternationalFlights";

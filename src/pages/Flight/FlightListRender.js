@@ -1,22 +1,57 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, FlatList, ScrollView } from "react-native";
+import { View, Image, StyleSheet, FlatList, ScrollView, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, Activity_Indicator, DomesticFlights } from "../../components";
 import Icon from "react-native-vector-icons/AntDesign";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
 import Service from "../../service";
 import moment from "moment";
+import SimpleToast from "react-native-simple-toast";
 var newData = [];
 class FlightListRender extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
+      showModal: false,
+      farerule: ""
     };
   }
-  toggle = () => {
+  viewDetails = () => {
     this.setState({ expanded: !this.state.expanded });
+  };
+
+  fareRules = () => {
+    this.setState({ showModal: true });
+    let data = {
+      airlineId: this.props.item.FlightUId,
+      classCode: this.props.item.FlightSegments[0].BookingClassFare.ClassType,
+      couponFare: "",
+      flightId: this.props.item.FlightSegments[0].OperatingAirlineFlightNumber,
+      key: this.props.item.OriginDestinationoptionId.Key,
+      provider: this.props.item.Provider,
+      tripType: this.props.trip_type,
+      service: this.props.flight_type,
+      user: "",
+      userType: 5
+    };
+    console.log("hey");
+    console.log(data);
+    Service.get("/Flights/GetFareRule", data)
+      .then(res => {
+        console.log(res.data);
+        this.setState({ farerule: res.data });
+      })
+      .catch(error => {
+        Toast.show(error, Toast.LONG);
+      });
+  };
+
+  closeModal = () => {
+    this.setState({ showModal: false });
   };
 
   bookNow = () => {
@@ -150,24 +185,30 @@ class FlightListRender extends React.PureComponent {
               marginHorizontal: 2
             }}></View>
           <IconMaterial name="message-text-outline" size={20} color="#F68E1F" />
-          <Text
-            style={{
-              flex: 1,
-              marginHorizontal: 10,
-              color: "#5D666D",
-              fontSize: 12
-            }}>
-            Refundable
-          </Text>
-          <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
-          <Button onPress={this.toggle}>
-            {this.state.expanded == false && (
-              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
-            )}
-            {this.state.expanded == true && (
-              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
-            )}
-          </Button>
+          <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
+            <Button>
+              <Text
+                style={{
+                  flex: 1,
+                  marginHorizontal: 10,
+                  color: "#5D666D",
+                  fontSize: 12
+                }}>
+                Refundable
+              </Text>
+            </Button>
+            <Button onPress={this.fareRules}>
+              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
+            </Button>
+            <Button onPress={this.viewDetails}>
+              {this.state.expanded == false && (
+                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
+              )}
+              {this.state.expanded == true && (
+                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
+              )}
+            </Button>
+          </View>
         </View>
 
         {this.state.expanded && (
@@ -340,6 +381,38 @@ class FlightListRender extends React.PureComponent {
               }}></View>
           </View>
         )}
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.showModal}
+          onRequestClose={this.closeModal}>
+          <FareDetail data={this.state.farerule} onBackPress={this.closeModal} />
+        </Modal>
+      </View>
+    );
+  }
+}
+
+class FareDetail extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    console.log(this.props.data);
+  }
+
+  render() {
+    return (
+      <View>
+        <View style={{ flexDirection: "row", marginTop: 10, marginHorizontal: 16 }}>
+          <Button onPress={this.props.onBackPress}>
+            <Ionicons name="md-arrow-back" size={24} />
+          </Button>
+          <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
+            FareRules
+          </Text>
+        </View>
+        <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
+          <Text>{this.props.data}</Text>
+        </ScrollView>
       </View>
     );
   }
