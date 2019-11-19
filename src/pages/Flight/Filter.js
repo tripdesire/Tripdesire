@@ -33,36 +33,64 @@ class Filter extends React.Component {
     };
   }
   componentDidMount() {
-    const { data } = this.props;
+    const { data, flight_type } = this.props;
     //console.log(data);
     let stops = [];
     let fareType = [];
     let airlines = [];
     let connectingLocations = [];
-    for (let value of data) {
-      if (!stops.includes(value.FlightSegments.length - 1)) {
-        stops.push(value.FlightSegments.length - 1);
-      }
-      if (!fareType.includes(value.FlightSegments[0].BookingClassFare.Rule)) {
-        fareType.push(value.FlightSegments[0].BookingClassFare.Rule);
-      }
-      if (!airlines.includes(value.FlightSegments[0].AirLineName)) {
-        airlines.push(value.FlightSegments[0].AirLineName);
-      }
-      for (let j = 1; j < value.FlightSegments.length; j++) {
-        if (!connectingLocations.includes(value.FlightSegments[j].IntDepartureAirportName)) {
-          connectingLocations.push(value.FlightSegments[j].IntDepartureAirportName);
+    let price = [];
+    switch (flight_type) {
+      case 1:
+        for (let value of data) {
+          if (!stops.includes(value.FlightSegments.length - 1)) {
+            stops.push(value.FlightSegments.length - 1);
+          }
+          if (!fareType.includes(value.FlightSegments[0].BookingClassFare.Rule)) {
+            fareType.push(value.FlightSegments[0].BookingClassFare.Rule);
+          }
+          if (!airlines.includes(value.FlightSegments[0].AirLineName)) {
+            airlines.push(value.FlightSegments[0].AirLineName);
+          }
+          for (let j = 1; j < value.FlightSegments.length; j++) {
+            if (!connectingLocations.includes(value.FlightSegments[j].IntDepartureAirportName)) {
+              connectingLocations.push(value.FlightSegments[j].IntDepartureAirportName);
+            }
+          }
         }
-      }
+        price = data.map(value => value.FareDetails.TotalFare);
+        price = [Math.min(...price), Math.max(...price)];
+        break;
+      case 2:
+        for (let value of data) {
+          if (!stops.includes(value.IntOnward.FlightSegments.length - 1)) {
+            stops.push(value.IntOnward.FlightSegments.length - 1);
+          }
+          if (!fareType.includes(value.IntOnward.FlightSegments[0].BookingClassFare.Rule)) {
+            fareType.push(value.IntOnward.FlightSegments[0].BookingClassFare.Rule);
+          }
+          if (!airlines.includes(value.IntOnward.FlightSegments[0].AirLineName)) {
+            airlines.push(value.IntOnward.FlightSegments[0].AirLineName);
+          }
+          for (let j = 1; j < value.IntOnward.FlightSegments.length; j++) {
+            if (
+              !connectingLocations.includes(
+                value.IntOnward.FlightSegments[j].IntDepartureAirportName
+              )
+            ) {
+              connectingLocations.push(value.IntOnward.FlightSegments[j].IntDepartureAirportName);
+            }
+          }
+        }
+        price = data.map(value => value.FareDetails.TotalFare);
+        price = [Math.min(...price), Math.max(...price)];
+        break;
     }
-
-    let priceArray = data.map(value => value.FareDetails.TotalFare);
-    let price = [Math.min(...priceArray), Math.max(...priceArray)];
 
     this.setState({
       filters: {
         ...this.state.filters,
-        stops,
+        stops: stops.sort(),
         fareType,
         airlines,
         connectingLocations

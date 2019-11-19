@@ -13,7 +13,8 @@ class CheckBox extends React.PureComponent {
         style={{
           flexDirection: "row",
           padding: 16,
-          alignItems: "center"
+          alignItems: "center",
+          width: "100%"
         }}>
         <Icon
           type="MaterialCommunityIcons"
@@ -22,7 +23,7 @@ class CheckBox extends React.PureComponent {
           name={checked ? "checkbox-marked" : "checkbox-blank-outline"}
         />
 
-        <Text style={{ marginStart: 16 }}>{label}</Text>
+        <Text style={{ marginStart: 16, flex: 1 }}>{label}</Text>
       </TouchableOpacity>
     );
   }

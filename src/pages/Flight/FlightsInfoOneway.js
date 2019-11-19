@@ -80,7 +80,7 @@ class FlightsInfoOneway extends React.PureComponent {
           console.log(data.InternationalFlights);
           this.setState({
             flights: data.InternationalFlights,
-            filterFlights: data.DomesticOnwardFlights,
+            filterFlights: data.InternationalFlights,
             loader: false
           });
         }
@@ -117,22 +117,44 @@ class FlightsInfoOneway extends React.PureComponent {
   };
 
   filter = () => {
-    const { filterValues, flights } = this.state;
+    const { filterValues, flights, flight_type } = this.state;
     let filterFlights = [...flights];
 
-    filterFlights = filterFlights.filter(
-      item =>
-        (filterValues.stops.length == 0 ||
-          filterValues.stops.includes(item.FlightSegments.length - 1)) &&
-        (filterValues.fareType.length == 0 ||
-          filterValues.fareType.includes(item.FlightSegments[0].BookingClassFare.Rule)) &&
-        (filterValues.airlines.length == 0 ||
-          filterValues.airlines.includes(item.FlightSegments[0].AirLineName)) &&
-        (filterValues.connectingLocations.length == 0 ||
-          item.FlightSegments.some(value =>
-            filterValues.connectingLocations.includes(value.IntDepartureAirportName)
-          ))
-    );
+    switch (flight_type) {
+      case 1:
+        filterFlights = filterFlights.filter(
+          item =>
+            (filterValues.stops.length == 0 ||
+              filterValues.stops.includes(item.FlightSegments.length - 1)) &&
+            (filterValues.fareType.length == 0 ||
+              filterValues.fareType.includes(item.FlightSegments[0].BookingClassFare.Rule)) &&
+            (filterValues.airlines.length == 0 ||
+              filterValues.airlines.includes(item.FlightSegments[0].AirLineName)) &&
+            (filterValues.connectingLocations.length == 0 ||
+              item.FlightSegments.some(value =>
+                filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+              ))
+        );
+        break;
+      case 2:
+        filterFlights = filterFlights.filter(
+          item =>
+            (filterValues.stops.length == 0 ||
+              filterValues.stops.includes(item.IntOnward.FlightSegments.length - 1)) &&
+            (filterValues.fareType.length == 0 ||
+              filterValues.fareType.includes(
+                item.IntOnward.FlightSegments[0].BookingClassFare.Rule
+              )) &&
+            (filterValues.airlines.length == 0 ||
+              filterValues.airlines.includes(item.IntOnward.FlightSegments[0].AirLineName)) &&
+            (filterValues.connectingLocations.length == 0 ||
+              item.IntOnward.FlightSegments.some(value =>
+                filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+              ))
+        );
+        break;
+    }
+
     console.log(filterFlights);
     this.setState({ filterFlights, showFilter: false });
   };
@@ -215,7 +237,9 @@ class FlightsInfoOneway extends React.PureComponent {
       Infant,
       loader,
       showFilter,
-      filterFlights
+      filterFlights,
+      dates,
+      flight_type
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
@@ -257,7 +281,7 @@ class FlightsInfoOneway extends React.PureComponent {
             }}>
             <FlatList
               horizontal={true}
-              data={this.state.dates}
+              data={dates}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               ItemSeparatorComponent={this.itemSeparator}
@@ -282,7 +306,7 @@ class FlightsInfoOneway extends React.PureComponent {
           <FlatList
             nestedScrollEnabled={true}
             vertical={true}
-            data={this.state.filterFlights}
+            data={filterFlights}
             keyExtractor={this._keyExtractoritems}
             renderItem={this._renderItemList}
           />
@@ -297,6 +321,7 @@ class FlightsInfoOneway extends React.PureComponent {
             onBackPress={this.closeFilter}
             filterValues={this.state.filterValues}
             onChangeFilter={this.onChangeFilter}
+            flight_type={flight_type}
             filter={this.filter}
           />
         </Modal>
