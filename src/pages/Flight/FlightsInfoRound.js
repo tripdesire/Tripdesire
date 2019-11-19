@@ -216,7 +216,7 @@ class FlightsInfoRound extends React.PureComponent {
           Child={Child}
           Infant={Infant}
           className={className}
-          style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}> 
+          style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}>
           <Button
             style={{
               flexDirection: "row",
