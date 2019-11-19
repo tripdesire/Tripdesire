@@ -287,24 +287,6 @@ class Payment extends React.PureComponent {
       WebsiteUrl: ""
     };
 
-    let newOrder = {
-      user_id: "7",
-      Payment_method: "razopay",
-      address: params.city,
-      "ad-ages": age, //"24~25" if adults 2
-      billing_city: params.city,
-      date_of_birth: dob, //"16-05-1995~16-05-1995" if adults 2
-      billing_email: "nadeem@webiixx.com",
-      genders: gender,
-      Names: name, //"Mr.|Nadeem|Ahamad|adt~Mr.|Nadeem|Ahamad|adt"if adults 2
-      classType: "E",
-      adult_details: this.state.adults,
-      child_details: this.state.childs,
-      infant_details: this.state.infants
-    };
-
-    console.log(JSON.stringify(newOrder));
-
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
