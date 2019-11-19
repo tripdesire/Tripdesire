@@ -177,20 +177,37 @@ class Payment extends React.PureComponent {
     console.log(adults, childs);
     let adultCount = 0;
     let childCount = 0;
-    let finalArr = [];
+    let finalArr = [],
+      finalArrAge = [],
+      finalArrDob = [],
+      finalArrGender = [];
     for (let i = 0; i < adults.length; i++) {
       let arr = [];
+      let age = [];
+      let dob = [];
+      let gender = [];
       for (let j = 1; j <= adults[i]; j++) {
         let item = this.state.adults[adultCount];
         arr.push(item.den + "|" + item.firstname + "|" + item.last_name + "|adt");
+        age.push(item.age);
+        dob.push(item.dob);
+        gender.push(item.gender);
         adultCount++;
       }
       for (let j = 1; j <= childs[i]; j++) {
         let item = this.state.childs[childCount];
         arr.push(item.den + "|" + item.firstname + "|" + item.last_name + "|chd");
+        age.push(item.age);
+        dob.push(item.dob);
+        gender.push(item.gender);
         childCount++;
       }
-      if (arr.length > 0) finalArr.push(arr.join("~"));
+      if (arr.length > 0) {
+        finalArr.push(arr.join("~"));
+        finalArrAge.push(age.join("~"));
+        finalArrDob.push(dob.join("~"));
+        finalArrGender.push(gender.join("~"));
+      }
     }
 
     let name = [
@@ -208,26 +225,30 @@ class Payment extends React.PureComponent {
       ...this.state.childs.map(item => moment(item.dob).format("DD-MM-YYYY")),
       ...this.state.infants.map(item => moment(item.dob).format("DD-MM-YYYY"))
     ].join("~");
+    dob = finalArrDob.join("-");
 
     let gender = [
       ...this.state.adults.map(item => item.gender),
       ...this.state.childs.map(item => item.gender),
       ...this.state.infants.map(item => item.gender)
     ].join("~");
+    gender = finalArrGender.join("-");
 
     let age = [
       ...this.state.adults.map(item => item.age),
       ...this.state.childs.map(item => item.age),
       ...this.state.infants.map(item => item.age)
     ].join("~");
+    age = finalArrAge.join("-");
 
-    console.log(name);
+    console.log(name, dob, gender, age);
+    console.log(this.state.adults, this.state.childs, this.state.infants);
 
     let data = {
       AdditionalInfo: null,
       Address: "",
       Adults: params.adultDetail,
-      Ages: "", ///
+      Ages: age, ///
       ArrivalDate: params.checkInDate,
       Children: params.childDetail,
       ChildrenAges: params.childAge,
@@ -238,20 +259,20 @@ class Payment extends React.PureComponent {
       DestinationId: params.cityid,
       EmailId: "guru@gmail.com",
       Fare: null,
-      Genders: "",
-      HotelDetail: params.RoomDetails,
+      Genders: gender,
+      HotelDetail: params,
       HotelId: params.HotelId,
       HotelImages: params.HotelImages,
       HotelPolicy: params.HotelPolicy,
       HotelType: 1,
       IsOfflineBooking: false,
       MobileNo: "9999999999",
-      Names: "",
+      Names: name,
       Nationality: params.CountryCode,
       NoOfdays: params.Night,
       PinCode: "",
       Provider: params.Provider,
-      RoomDetails: params.selectedRoom,
+      RoomDetails: [params.selectedRoom],
       Rooms: params.room,
       State: "",
       Status: 1,
@@ -261,20 +282,36 @@ class Payment extends React.PureComponent {
       WebsiteUrl: ""
     };
 
+    let newOrder = {
+      user_id: "7",
+      Payment_method: "razopay",
+      address: params.city,
+      "ad-ages": age, //"24~25" if adults 2
+      billing_city: params.city,
+      date_of_birth: dob, //"16-05-1995~16-05-1995" if adults 2
+      billing_email: "nadeem@webiixx.com",
+      genders: gender,
+      Names: name, //"Mr.|Nadeem|Ahamad|adt~Mr.|Nadeem|Ahamad|adt"if adults 2
+      classType: "E",
+      adult_details: this.state.adults,
+      child_details: this.state.childs,
+      infant_details: this.state.infants
+    };
+
+    console.log(JSON.stringify(newOrder));
+
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
       console.log(data);
       let totalData = data;
-      return;
       this.setState({ loading: true });
       Service.post("/Hotels/BlockHotelRoom", data)
         .then(blockres => {
           console.log(blockres.data);
-
-          if (blockres.data.BookingStatus == 8) {
+          if (blockres.data.BookingStatus == 1) {
             axios
-              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
+              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7", newOrder)
               .then(res => {
                 console.log(res);
                 this.setState({
@@ -343,7 +380,6 @@ class Payment extends React.PureComponent {
         });
     }
 
-    console.log(param);
     console.log(this.state);
   };
 
