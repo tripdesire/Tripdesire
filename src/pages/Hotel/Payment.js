@@ -21,6 +21,7 @@ class Payment extends React.PureComponent {
     super(props);
     const { params } = props.navigation.state;
     this.state = {
+      loader: true,
       loading: false,
       date: new Date(),
       gender: "Mr",
@@ -81,6 +82,10 @@ class Payment extends React.PureComponent {
       status: ""
     };
     console.log(props.navigation.state.params);
+  }
+
+  componentDidMount() {
+    this.setState({ loader: false });
   }
 
   show = (key, index, isShow) => () => {
@@ -401,7 +406,7 @@ class Payment extends React.PureComponent {
   };
   render() {
     const { params } = this.props.navigation.state;
-    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults } = this.state;
+    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loader } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -991,7 +996,7 @@ class Payment extends React.PureComponent {
             </Button>
           </ScrollView>
         </View>
-        {this.state.loading && <Activity_Indicator />}
+        {loader && <Activity_Indicator />}
       </View>
     );
   }

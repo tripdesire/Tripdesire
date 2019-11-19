@@ -45,7 +45,9 @@ class HotelInfo extends React.PureComponent {
         console.log(data.AvailableHotels);
         this.setState({ hotels: data.AvailableHotels, loader: false });
       })
-      .catch(() => {});
+      .catch(error => {
+        console.log(error, Toast.LONG);
+      });
   }
 
   _BookNow(param) {
