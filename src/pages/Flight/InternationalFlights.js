@@ -150,7 +150,7 @@ class InternationalFlights extends React.PureComponent {
     if (this.state.tripType == 1) {
       this.props.navigation.navigate("FlightsInfoOneway", params);
     } else if (this.state.tripType == 2) {
-      this.props.navigation.navigate("FlightInfoRoundInt", params);
+      this.props.navigation.navigate("FlightsInfoRoundInt", params);
     }
   };
 

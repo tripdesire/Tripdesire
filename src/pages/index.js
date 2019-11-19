@@ -18,7 +18,7 @@ import FlightsInfoRound from "./Flight/FlightsInfoRound";
 import Seats from "../pages/Bus/Seats";
 import RenderDomesticRound from "../pages/Flight/RenderDomesticRound";
 import RenderInternationRound from "../pages/Flight/RenderInternationRound";
-import FlightInfoRoundInt from "../pages/Flight/FlightInfoRoundInt";
+import FlightsInfoRoundInt from "../pages/Flight/FlightsInfoRoundInt";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import RoomDetails from "../pages/Hotel/RoomDetails";
@@ -49,7 +49,7 @@ export {
   Seats,
   RenderDomesticRound,
   RenderInternationRound,
-  FlightInfoRoundInt,
+  FlightsInfoRoundInt,
   SignIn,
   SignUp,
   RoomDetails,

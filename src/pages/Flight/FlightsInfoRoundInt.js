@@ -7,7 +7,7 @@ import { withNavigation } from "react-navigation";
 import RenderInternationRound from "./RenderInternationRound";
 import Service from "../../service";
 import moment from "moment";
-class FlightInfoRoundInt extends React.PureComponent {
+class FlightsInfoRoundInt extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -175,4 +175,4 @@ class FlightInfoRoundInt extends React.PureComponent {
   }
 }
 
-export default FlightInfoRoundInt;
+export default FlightsInfoRoundInt;
