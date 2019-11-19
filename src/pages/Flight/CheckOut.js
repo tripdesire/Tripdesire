@@ -646,6 +646,7 @@ class CheckOut extends React.PureComponent {
               <Text style={{ color: "#fff" }}>Next</Text>
             </Button>
           </ScrollView>
+          {this.state.loading && <Activity_Indicator />}
         </View>
       );
     } else if (params.flightType == 2) {
