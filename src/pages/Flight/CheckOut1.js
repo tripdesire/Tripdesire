@@ -339,6 +339,8 @@ class CheckOut1 extends React.PureComponent {
     //   infant_details: this.state.infants
     // };
 
+    //console.log(JSON.stringify(data));
+
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
@@ -394,6 +396,9 @@ class CheckOut1 extends React.PureComponent {
                       reference_no: blockres.data.ReferenceNo
                     };
                     console.log(paymentData);
+
+                    // Service.get()
+
                     axios
                       .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
                       .then(res => {
