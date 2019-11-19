@@ -346,11 +346,20 @@ class Payment extends React.PureComponent {
                       blockRes: blockres,
                       data: totalData
                     });
+
+                    Service.get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
+                      .then(Response => {
+                        console.log(Response.data);
+                      })
+                      .catch(error => {
+                        console.log(error);
+                      });
+
                     let paymentData = {
                       order_id: res.data.id,
                       status: "completed",
                       transaction_id: res.data.transaction_id,
-                      reference_no: blockres.data.ReferenceNo
+                      reference_no: Response.data // blockres.data.ReferenceNo
                     };
                     console.log(paymentData);
                     axios

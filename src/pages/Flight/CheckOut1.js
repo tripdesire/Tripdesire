@@ -368,7 +368,7 @@ class CheckOut1 extends React.PureComponent {
                   image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
                   key: "rzp_test_a3aQYPLYowGvWJ",
-                  amount: res.data.total * 100,
+                  amount: "5000",
                   name: "TripDesire",
                   prefill: {
                     email: "void@razorpay.com",
@@ -389,6 +389,17 @@ class CheckOut1 extends React.PureComponent {
                       blockRes: blockres,
                       data: totalData
                     });
+
+                    Service.get(
+                      "/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo
+                    )
+                      .then(Response => {
+                        console.log(Response);
+                      })
+                      .catch(error => {
+                        console.log(error);
+                      });
+
                     let paymentData = {
                       order_id: res.data.id,
                       status: "completed",
@@ -396,8 +407,6 @@ class CheckOut1 extends React.PureComponent {
                       reference_no: blockres.data.ReferenceNo
                     };
                     console.log(paymentData);
-
-                    // Service.get()
 
                     axios
                       .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
