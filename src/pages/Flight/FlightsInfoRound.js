@@ -1,12 +1,9 @@
 import React, { PureComponent } from "react";
 import { Dimensions, Image, StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
-import { Button, Text, Activity_Indicator, DomesticFlights } from "../../components";
+import { Button, Text, Activity_Indicator, HeaderFlights, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import { withNavigation } from "react-navigation";
 import SwiperFlatList from "react-native-swiper-flatlist";
-import Icon from "react-native-vector-icons/Ionicons";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Foundation from "react-native-vector-icons/Foundation";
 import Service from "../../service";
 import moment from "moment";
 import RenderDomesticRound from "./RenderDomesticRound";
@@ -205,66 +202,36 @@ class FlightsInfoRound extends React.PureComponent {
       index,
       onwardFare,
       returnFare,
-      swiperIndex
+      swiperIndex,
+      flight_type
     } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ backgroundColor: "#E5EBF7", height: 56 }}>
-          <View
+        <HeaderFlights
+          from={from}
+          to={to}
+          journey_date={journey_date}
+          return_date={return_date}
+          Adult={Adult}
+          Child={Child}
+          Infant={Infant}
+          className={className}
+          style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}> 
+          <Button
             style={{
               flexDirection: "row",
-              marginHorizontal: 16,
-              marginTop: 10
-            }}>
-            <Button onPress={() => this.props.navigation.goBack(null)} style={{ padiing: 16 }}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <View
-              style={{
-                justifyContent: "space-between",
-                flexDirection: "row",
-                flex: 1
-              }}>
-              <View>
-                <Text
-                  style={{
-                    fontWeight: "700",
-                    fontSize: 16,
-                    marginHorizontal: 5
-                  }}>
-                  {from} TO {to}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginHorizontal: 5,
-                    color: "#717984"
-                  }}>
-                  {journey_date + " - " + return_date} | {Adult > 0 ? Adult + " Adult" : ""}
-                  {Child > 0 ? Child + " , Child" : ""} {Infant > 0 ? Infant + " , Infant" : ""} |
-                  {" " + className}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                  alignItems: "flex-start",
-                  flex: 1
-                }}>
-                <IconMaterial name="filter" fontSize={35} color="#5D89F4" />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginHorizontal: 5,
-                    color: "#717984"
-                  }}>
-                  Sort & Filter
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
+              marginStart: "auto",
+              paddingEnd: 8,
+              paddingVertical: 16
+            }}
+            //onPress={this.openFilter}
+          >
+            <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+            <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+              Sort & Filter
+            </Text>
+          </Button>
+        </HeaderFlights>
         <View
           style={{
             backgroundColor: "#FFFFFF",
