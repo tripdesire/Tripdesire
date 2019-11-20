@@ -11,7 +11,7 @@ class Splash extends React.PureComponent {
 
   componentDidMount() {
     setTimeout(() => {
-      this.props.navigation.navigate("Bus"); //DrawerNavigator
+      this.props.navigation.navigate("DrawerNavigator"); //DrawerNavigator
     }, 2000);
   }
 

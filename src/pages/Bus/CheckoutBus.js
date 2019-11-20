@@ -40,42 +40,23 @@ class CheckoutBus extends React.PureComponent {
     const { ffn, radioDirect, radioCheck, radioCOD } = this.state;
     return (
       <View style={{ flexDirection: "column", flex: 1 }}>
-        <View style={{ flex: 1, height: 56, backgroundColor: "#E5EBF7" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 20,
-              marginTop: 20
-            }}>
-            <Button onPress={() => this.props.navigation.goBack(null)}>
+        <View style={{ height: 56, backgroundColor: "#E5EBF7", flex: 1 }}>
+          <View style={{ flexDirection: "row", width: "100%" }}>
+            <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
-              <View>
-                <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                  Checkout
-                </Text>
-                <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                  19 Sept | Thursday | 2 Buses Found
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start"
-                }}>
-                <IconMaterial name="share-variant" size={20} color="#5D89F4" />
-              </View>
+            <View
+              style={{
+                paddingTop: 16
+              }}>
+              <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>Checkout</Text>
+              <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                19 Sept | Thursday | 2 Buses Found
+              </Text>
             </View>
           </View>
         </View>
 
-        {/* <View style={{ height: 100, width: "100%" }}>
-              <View style={{ flex: 1, backgroundColor: "#E4EAF6" }}></View>
-              <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}></View>
-             
-            </View> */}
         <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
           <ScrollView
             contentContainerStyle={{ backgroundColor: "#ffffff" }}
@@ -85,7 +66,7 @@ class CheckoutBus extends React.PureComponent {
                 elevation: 2,
                 borderRadius: 8,
                 backgroundColor: "#ffffff",
-                marginHorizontal: 30,
+                marginHorizontal: 16,
                 marginTop: 20
               }}>
               <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
@@ -138,16 +119,15 @@ class CheckoutBus extends React.PureComponent {
               style={{
                 elevation: 2,
                 backgroundColor: "#ffffff",
-                marginHorizontal: 30,
-                marginTop: 20,
-                height: 150,
+                marginHorizontal: 16,
+                marginVertical: 20,
+                paddingVertical: 20,
                 borderRadius: 8
               }}>
               <View
                 style={{
                   flexDirection: "row",
                   marginHorizontal: 10,
-                  marginVertical: 5,
                   alignItems: "center"
                 }}>
                 <Image
@@ -159,6 +139,54 @@ class CheckoutBus extends React.PureComponent {
                   Passengers Details
                 </Text>
               </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 10,
+                  marginHorizontal: 10,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: "#F2F2F2",
+                    height: 40,
+                    flex: 1,
+                    marginStart: 2,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}>
+                  <Picker
+                    selectedValue={this.state.gender}
+                    style={{ height: 50, width: 120 }}
+                    onValueChange={(itemValue, itemIndex) => this.setState({ gender: itemValue })}>
+                    <Picker.Item label="Adhar Card" value="A" />
+                    <Picker.Item label="Voter ID" value="V" />
+                  </Picker>
+                </View>
+                <TextInput
+                  style={{
+                    borderWidth: 1,
+                    borderColor: "#F2F2F2",
+                    height: 40,
+                    flex: 1,
+                    marginHorizontal: 2
+                  }}
+                  placeholder="Identification Document Number"
+                />
+              </View>
+              <TextInput
+                style={{
+                  borderWidth: 1,
+                  borderColor: "#F2F2F2",
+                  height: 40,
+                  flex: 1,
+                  marginTop: 10,
+                  marginHorizontal: 10
+                }}
+                placeholder="Identification Document Issued By"
+              />
               <View
                 style={{
                   flexDirection: "row",
@@ -224,6 +252,75 @@ class CheckoutBus extends React.PureComponent {
               style={{
                 elevation: 2,
                 backgroundColor: "#ffffff",
+                marginHorizontal: 16,
+                marginBottom: 20,
+                paddingVertical: 20,
+                borderRadius: 8
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginHorizontal: 10,
+                  alignItems: "center"
+                }}>
+                <Image
+                  source={require("../../assets/imgs/person.png")}
+                  style={{ width: 20, height: 20 }}
+                  resizeMode="cover"
+                />
+                <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                  Fare Breakup
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  marginHorizontal: 10,
+                  marginTop: 5,
+                  justifyContent: "space-between"
+                }}>
+                <Text>Fare</Text>
+                <Text>1600</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  marginHorizontal: 10,
+                  justifyContent: "space-between"
+                }}>
+                <Text>Conv. Fee</Text>
+                <Text>0</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  marginHorizontal: 10,
+                  justifyContent: "space-between"
+                }}>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>Total Fare</Text>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>1600</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  marginHorizontal: 10,
+                  justifyContent: "space-between"
+                }}>
+                <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>
+                  Total Payable
+                </Text>
+                <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>1600</Text>
+              </View>
+            </View>
+
+            {/* <View
+              style={{
+                elevation: 2,
+                backgroundColor: "#ffffff",
                 marginHorizontal: 30,
                 marginTop: 20,
                 height: 190,
@@ -259,7 +356,7 @@ class CheckoutBus extends React.PureComponent {
                   flex: 1
                 }}
               />
-            </View>
+            </View> */}
 
             <Button
               style={{

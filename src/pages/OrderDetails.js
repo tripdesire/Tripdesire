@@ -51,10 +51,10 @@ class OrderDetails extends React.PureComponent {
               marginHorizontal: 8
             }}>
             <Text style={{ color: "#636C73", fontSize: 12 }}>
-              {params.line_items[0].meta_data[12].value}
+              {params.line_items.length > 0 ? params.line_items[0].meta_data[12].value : ""}
             </Text>
             <Text style={{ color: "#636C73", fontSize: 12 }}>
-              {params.line_items[0].meta_data[8].value != 0
+              {params.line_items.length > 0 && params.line_items[0].meta_data[8].value != 0
                 ? params.line_items[0].meta_data[8].value
                 : "Non-Stop"}
             </Text>
@@ -67,7 +67,7 @@ class OrderDetails extends React.PureComponent {
             }}>
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                {params.line_items[0].meta_data[1].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[1].value : ""}
               </Text>
               <Text
                 style={{
@@ -75,12 +75,12 @@ class OrderDetails extends React.PureComponent {
                   color: "#5D646A",
                   lineHeight: 14
                 }}>
-                {params.line_items[0].meta_data[2].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[2].value : ""}
               </Text>
             </View>
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                {params.line_items[0].meta_data[5].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[5].value : ""}
               </Text>
               <Text
                 style={{
@@ -88,12 +88,12 @@ class OrderDetails extends React.PureComponent {
                   color: "#5D646A",
                   lineHeight: 14
                 }}>
-                {params.line_items[0].meta_data[3].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[3].value : ""}
               </Text>
             </View>
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                {params.line_items[0].meta_data[6].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[6].value : ""}
               </Text>
               <Text
                 style={{
@@ -101,12 +101,12 @@ class OrderDetails extends React.PureComponent {
                   color: "#5D646A",
                   lineHeight: 14
                 }}>
-                {params.line_items[0].meta_data[4].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[4].value : ""}
               </Text>
             </View>
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                {params.line_items[0].meta_data[7].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[7].value : ""}
               </Text>
               <Text
                 style={{
@@ -117,7 +117,7 @@ class OrderDetails extends React.PureComponent {
                 Bangalore
               </Text>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                {params.line_items[0].meta_data[21].value}
+                {params.line_items.length > 0 ? params.line_items[0].meta_data[21].value : ""}
               </Text>
             </View>
           </View>
@@ -188,31 +188,35 @@ class OrderDetails extends React.PureComponent {
           </Text>
           <View style={styles.summaryView}>
             <Text>Convenience Fee</Text>
-            <Text>{params.line_items[0].meta_data[9].value}</Text>
+            <Text>
+              {params.line_items.length > 0 ? params.line_items[0].meta_data[9].value : ""}
+            </Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Flight Scharge</Text>
-            <Text>{params.line_items[0].meta_data[10].value}</Text>
+            <Text>
+              {params.line_items.length > 0 ? params.line_items[0].meta_data[10].value : ""}
+            </Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Base Fare</Text>
             <Text>
               {params.currency_symbol}
-              {params.line_items[0].meta_data[15].value}
+              {params.line_items.length > 0 ? params.line_items[0].meta_data[15].value : ""}
             </Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Flight Gst</Text>
             <Text>
               {params.currency_symbol}
-              {params.line_items[0].meta_data[16].value}
+              {params.line_items.length > 0 ? params.line_items[0].meta_data[16].value : ""}
             </Text>
           </View>
           <View style={styles.summaryView}>
             <Text>Flight Tax</Text>
             <Text>
               {params.currency_symbol}
-              {params.line_items[0].meta_data[11].value}
+              {params.line_items.length > 0 ? params.line_items[0].meta_data[11].value : ""}
             </Text>
           </View>
           <View style={styles.summaryView}>
