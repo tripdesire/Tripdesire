@@ -1,7 +1,15 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, FlatList, ScrollView, TextInput, Dimensions } from "react-native";
-import { Button, Text, Activity_Indicator } from "../../components";
-import Icon from "react-native-vector-icons/Ionicons";
+import {
+  View,
+  Image,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  TextInput,
+  Dimensions,
+  SafeAreaView
+} from "react-native";
+import { Button, Text, Activity_Indicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import Service from "../../service";
@@ -189,97 +197,105 @@ class HotelInfo extends React.PureComponent {
     console.log(this.state);
     const { city, checkIn, checkOut, loader } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 20,
-              marginTop: 10
-            }}>
-            <Button onPress={() => this.props.navigation.goBack(null)}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
-              <View>
-                <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>{city}</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start"
-                  }}>
-                  <IconMaterial name="calendar-month" size={18} color="#717984" />
-                  <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                    {checkIn} - {checkOut}
-                  </Text>
-                </View>
-              </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start"
+                  flexDirection: "row"
                 }}>
-                <IconMaterial name="filter" fontSize={35} color="#5D89F4" />
-                <Text
+                <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+                  <Icon name="md-arrow-back" size={24} />
+                </Button>
+                <View
                   style={{
-                    fontSize: 12,
-                    marginHorizontal: 5,
-                    color: "#717984"
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    flex: 1,
+                    paddingTop: 16
                   }}>
-                  Sort & Filter
-                </Text>
+                  <View>
+                    <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+                      {city}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start"
+                      }}>
+                      <IconMaterial name="calendar-month" size={18} color="#717984" />
+                      <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                        {checkIn} - {checkOut}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <Button
+                  style={{
+                    flexDirection: "row",
+                    marginStart: "auto",
+                    paddingEnd: 8,
+                    paddingVertical: 16
+                  }}
+                  onPress={this.openFilter}>
+                  <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                  <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                    Sort & Filter
+                  </Text>
+                </Button>
               </View>
             </View>
-          </View>
-        </View>
-        <View style={{ height: 40, width: "100%" }}>
-          <View style={{ flex: 2, backgroundColor: "#E5EBF7" }}></View>
-          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
-          <View
-            style={{
-              marginHorizontal: 30,
-              borderRadius: 3,
-              borderColor: "#d2d2d2d2",
-              borderWidth: 1,
-              justifyContent: "space-between",
-              backgroundColor: "#FFFFFF",
-              flexDirection: "row",
-              ...StyleSheet.absoluteFill
-            }}>
-            <TextInput
-              placeholder="Hotel Name"
-              style={{ marginStart: 20, color: "#61666A" }}></TextInput>
-            <Button
-              style={{
-                backgroundColor: "#5B89F9",
-                justifyContent: "center",
-                borderBottomRightRadius: 3,
-                borderTopRightRadius: 3
-              }}>
-              <Image
+            <View style={{ height: 40, width: "100%" }}>
+              <View style={{ flex: 2, backgroundColor: "#E5EBF7" }}></View>
+              <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
+              <View
                 style={{
-                  width: 20,
-                  resizeMode: "contain",
-                  alignSelf: "center",
-                  marginHorizontal: 8
-                }}
-                source={require("../../assets/imgs/search.png")}
-              />
-            </Button>
-          </View>
-        </View>
+                  marginHorizontal: 30,
+                  borderRadius: 3,
+                  borderColor: "#d2d2d2d2",
+                  borderWidth: 1,
+                  justifyContent: "space-between",
+                  backgroundColor: "#FFFFFF",
+                  flexDirection: "row",
+                  ...StyleSheet.absoluteFill
+                }}>
+                <TextInput
+                  placeholder="Hotel Name"
+                  style={{ marginStart: 20, color: "#61666A" }}></TextInput>
+                <Button
+                  style={{
+                    backgroundColor: "#5B89F9",
+                    justifyContent: "center",
+                    borderBottomRightRadius: 3,
+                    borderTopRightRadius: 3
+                  }}>
+                  <Image
+                    style={{
+                      width: 20,
+                      resizeMode: "contain",
+                      alignSelf: "center",
+                      marginHorizontal: 8
+                    }}
+                    source={require("../../assets/imgs/search.png")}
+                  />
+                </Button>
+              </View>
+            </View>
 
-        <View style={{ flex: 5 }}>
-          <FlatList
-            data={this.state.hotels}
-            keyExtractor={this._keyExtractoritems}
-            renderItem={this._renderItemList}
-          />
-        </View>
-        {loader && <Activity_Indicator />}
-      </View>
+            <View style={{ flex: 5 }}>
+              <FlatList
+                data={this.state.hotels}
+                keyExtractor={this._keyExtractoritems}
+                renderItem={this._renderItemList}
+              />
+            </View>
+            {loader && <Activity_Indicator />}
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

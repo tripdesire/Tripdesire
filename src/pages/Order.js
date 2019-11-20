@@ -1,22 +1,11 @@
 import React, { PureComponent } from "react";
-import { Text, Button, Header, Activity_Indicator } from "../components";
-import {
-  Image,
-  ImageBackground,
-  Dimensions,
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity
-} from "react-native";
-import { connect } from "react-redux";
+import { Text, Button, Activity_Indicator } from "../components";
+import { SafeAreaView } from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
-import { DomSugg, IntSugg, DomHotelSugg, BusSugg } from "../store/action";
-import Service from "../service";
 import axios from "axios";
 import moment from "moment";
-const { height, width } = Dimensions.get("window");
 class Order extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -100,35 +89,40 @@ class Order extends React.PureComponent {
   render() {
     const { loader } = this.state;
     return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
-            height: 56,
-            alignItems: "center"
-          }}>
-          <Button onPress={this.props.navigation.openDrawer}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <Text
-            style={{
-              fontSize: 18,
-              color: "#1E293B",
-              marginStart: 5,
-              fontWeight: "700"
-            }}>
-            Orders
-          </Text>
-        </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 16,
+                height: 56,
+                alignItems: "center"
+              }}>
+              <Button onPress={this.props.navigation.openDrawer}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 5,
+                  fontWeight: "700"
+                }}>
+                Orders
+              </Text>
+            </View>
 
-        <FlatList
-          data={this.state.orders}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-        />
-        {loader && <Activity_Indicator />}
-      </View>
+            <FlatList
+              data={this.state.orders}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+            />
+            {loader && <Activity_Indicator />}
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

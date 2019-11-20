@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
-import { Button, Text, Activity_Indicator, InternationalFlights } from "../../components";
-import Icon from "react-native-vector-icons/Ionicons";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
+import { Dimensions, Image, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
+import { Button, Text, Activity_Indicator, Icon } from "../../components";
 import { withNavigation } from "react-navigation";
 import RenderInternationRound from "./RenderInternationRound";
 import Service from "../../service";
@@ -111,66 +109,70 @@ class FlightsInfoRoundInt extends React.PureComponent {
     } = this.state;
     const { width, height } = Dimensions.get("window");
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ backgroundColor: "#E5EBF7", height: 56 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 16,
-              marginTop: 10
-            }}>
-            <Button onPress={() => this.props.navigation.goBack(null)}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <View
-              style={{
-                justifyContent: "space-between",
-                flexDirection: "row",
-                flex: 1
-              }}>
-              <View>
-                <Text
-                  style={{
-                    fontWeight: "700",
-                    fontSize: 16,
-                    marginHorizontal: 5
-                  }}>
-                  {from} To {to}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginHorizontal: 5,
-                    color: "#717984"
-                  }}>
-                  {journey_date + " - " + return_date} | {Adult > 0 ? Adult + " Adult" : ""}
-                  {Child > 0 ? "," + Child + " Child" : ""}{" "}
-                  {Infant > 0 ? "," + Infant + " Infant" : ""} | {className}
-                </Text>
-              </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
+            <View style={{ backgroundColor: "#E5EBF7", height: 56 }}>
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "flex-end",
-                  alignItems: "flex-start",
-                  flex: 1
+                  marginHorizontal: 16,
+                  marginTop: 10
                 }}>
-                <IconMaterial name="filter" fontSize={35} color="#5D89F4" />
-                <Text
+                <Button onPress={() => this.props.navigation.goBack(null)}>
+                  <Icon name="md-arrow-back" size={24} />
+                </Button>
+                <View
                   style={{
-                    fontSize: 12,
-                    marginHorizontal: 5,
-                    color: "#717984"
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    flex: 1
                   }}>
-                  Sort & Filter
-                </Text>
+                  <View>
+                    <Text
+                      style={{
+                        fontWeight: "700",
+                        fontSize: 16,
+                        marginHorizontal: 5
+                      }}>
+                      {from} To {to}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        marginHorizontal: 5,
+                        color: "#717984"
+                      }}>
+                      {journey_date + " - " + return_date} | {Adult > 0 ? Adult + " Adult" : ""}
+                      {Child > 0 ? "," + Child + " Child" : ""}{" "}
+                      {Infant > 0 ? "," + Infant + " Infant" : ""} | {className}
+                    </Text>
+                  </View>
+                  <Button
+                    style={{
+                      flexDirection: "row",
+                      marginStart: "auto",
+                      paddingEnd: 8
+                    }}
+                    onPress={this.openFilter}>
+                    <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                      Sort & Filter
+                    </Text>
+                  </Button>
+                </View>
               </View>
             </View>
+            <FlatList
+              data={flights}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+            />
+            {loader && <Activity_Indicator />}
           </View>
-        </View>
-        <FlatList data={flights} keyExtractor={this._keyExtractor} renderItem={this._renderItem} />
-        {loader && <Activity_Indicator />}
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

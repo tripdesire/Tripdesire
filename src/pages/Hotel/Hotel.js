@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal } from "../../components";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { connect } from "react-redux";
 import { Header } from "../../components";
@@ -28,7 +29,9 @@ class Hotel extends React.PureComponent {
       show_CheckIn: false,
       show_CheckOut: false,
       modalPassengers: false,
-      room: 1
+      room: 1,
+      fromDTpicker: false,
+      toDTpicker: false
     };
   }
 
@@ -95,6 +98,25 @@ class Hotel extends React.PureComponent {
     this.setState({ modalPassengers: false });
   };
 
+  showDateTimePicker = key => () => {
+    this.setState({ [key]: true });
+  };
+
+  hideDateTimePicker = key => () => {
+    this.setState({ [key]: false });
+  };
+
+  handleDatePicked = key => date => {
+    let data = {};
+    if (key == "fromDTpicker") {
+      data.CheckIn = date;
+    } else {
+      data.CheckOut = date;
+    }
+    this.setState(data);
+    this.hideDateTimePicker(key)();
+  };
+
   submit = value => {
     console.log(value);
     this.setState({
@@ -159,7 +181,9 @@ class Hotel extends React.PureComponent {
       show_CheckOut,
       adults_count,
       children_count,
-      room
+      room,
+      fromDTpicker,
+      toDTpicker
     } = this.state;
     return (
       <>
@@ -223,20 +247,18 @@ class Hotel extends React.PureComponent {
                     paddingStart: 20
                   }}>
                   <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-in</Text>
-                  <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
-                    <Text style={{ flex: 1 }}>
-                      {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
-                    </Text>
+                  <Button
+                    style={{ flex: 1, marginStart: 5 }}
+                    onPress={this.showDateTimePicker("fromDTpicker")}>
+                    <Text>{moment(CheckIn).format("DD-MMM-YYYY")}</Text>
                   </Button>
-                  {show_CheckIn && (
-                    <RNDateTimePicker
-                      display="calendar"
-                      value={CheckIn}
-                      mode={mode}
-                      minimumDate={new Date()}
-                      onChange={this.setDate}
-                    />
-                  )}
+
+                  <DateTimePicker
+                    isVisible={fromDTpicker}
+                    onConfirm={this.handleDatePicked("fromDTpicker")}
+                    onCancel={this.hideDateTimePicker("fromDTpicker")}
+                    minimumDate={new Date()}
+                  />
                 </View>
                 <View
                   style={{
@@ -244,20 +266,18 @@ class Hotel extends React.PureComponent {
                     paddingStart: 20
                   }}>
                   <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-out</Text>
-                  <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
-                    <Text style={{ flex: 1 }}>
-                      {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
-                    </Text>
+                  <Button
+                    style={{ flex: 1, marginStart: 5 }}
+                    onPress={this.showDateTimePicker("toDTpicker")}>
+                    <Text>{moment(CheckOut).format("DD-MMM-YYYY")}</Text>
                   </Button>
-                  {show_CheckOut && (
-                    <RNDateTimePicker
-                      display="calendar"
-                      value={CheckOut}
-                      mode={mode}
-                      minimumDate={new Date()}
-                      onChange={this.setDate_CheckOut}
-                    />
-                  )}
+
+                  <DateTimePicker
+                    isVisible={toDTpicker}
+                    onConfirm={this.handleDatePicked("toDTpicker")}
+                    onCancel={this.hideDateTimePicker("toDTpicker")}
+                    minimumDate={new Date()}
+                  />
                 </View>
               </View>
 

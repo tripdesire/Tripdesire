@@ -1,5 +1,13 @@
 import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView
+} from "react-native";
 import { Button, Text, Activity_Indicator, HeaderFlights, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import { withNavigation } from "react-navigation";
@@ -206,154 +214,159 @@ class FlightsInfoRound extends React.PureComponent {
       flight_type
     } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <HeaderFlights
-          from={from}
-          to={to}
-          journey_date={journey_date}
-          return_date={return_date}
-          Adult={Adult}
-          Child={Child}
-          Infant={Infant}
-          className={className}
-          style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}>
-          <Button
-            style={{
-              flexDirection: "row",
-              marginStart: "auto",
-              paddingEnd: 8,
-              paddingVertical: 16
-            }}
-            //onPress={this.openFilter}
-          >
-            <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-            <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-              Sort & Filter
-            </Text>
-          </Button>
-        </HeaderFlights>
-        <View
-          style={{
-            backgroundColor: "#FFFFFF",
-            flex: 1,
-            justifyContent: "center",
-            paddingVertical: 10
-          }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 16
-            }}>
-            <View>
-              <Text style={{ color: "#5F6D78" }}>Departure</Text>
-              <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                $ {onwardFare}
-              </Text>
-            </View>
-            <View>
-              <Text style={{ color: "#5F6D78" }}>Return</Text>
-              <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                $ {returnFare}
-              </Text>
-            </View>
-            <View>
-              <Text style={{ color: "#5F6D78" }}>Total</Text>
-              <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                $ {onwardFare + returnFare}
-              </Text>
-            </View>
-            <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                borderRadius: 15,
-                height: 30,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-              onPress={this._bookNow}>
-              <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Book Now</Text>
-            </Button>
-          </View>
-          <View
-            style={{
-              backgroundColor: "#DEDEDE",
-              height: 1,
-              marginHorizontal: 16,
-              marginVertical: 10
-            }}></View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginHorizontal: 16
-            }}>
-            <Button
-              style={{
-                backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff",
-                elevation: 1,
-                borderWidth: 1,
-                borderColor: "#DDDDDD",
-                height: 40,
-                justifyContent: "center",
-                paddingHorizontal: 50,
-                borderRadius: 20
-              }}
-              onPress={() => this._onPress("Depart")}>
-              <Text
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
+            <HeaderFlights
+              from={from}
+              to={to}
+              journey_date={journey_date}
+              return_date={return_date}
+              Adult={Adult}
+              Child={Child}
+              Infant={Infant}
+              className={className}
+              style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}>
+              <Button
                 style={{
-                  fontSize: 12,
-                  color: swiperIndex == 0 ? "#ffffff" : "#000000"
-                }}>
-                Depart
-              </Text>
-            </Button>
-            <Button
+                  flexDirection: "row",
+                  marginStart: "auto",
+                  paddingEnd: 8,
+                  paddingVertical: 16
+                }}
+                //onPress={this.openFilter}
+              >
+                <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                  Sort & Filter
+                </Text>
+              </Button>
+            </HeaderFlights>
+            <View
               style={{
-                backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff",
-                elevation: 1,
-                borderWidth: 1,
-                borderColor: "#DDDDDD",
-                height: 40,
+                backgroundColor: "#FFFFFF",
+                flex: 1,
                 justifyContent: "center",
-                paddingHorizontal: 50,
-                borderRadius: 20
-              }}
-              onPress={() => this._onPress("Return")}>
-              <Text
+                paddingVertical: 10
+              }}>
+              <View
                 style={{
-                  fontSize: 12,
-                  color: swiperIndex == 1 ? "#ffffff" : "#000000"
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginHorizontal: 16
                 }}>
-                Return
-              </Text>
-            </Button>
+                <View>
+                  <Text style={{ color: "#5F6D78" }}>Departure</Text>
+                  <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
+                    $ {onwardFare}
+                  </Text>
+                </View>
+                <View>
+                  <Text style={{ color: "#5F6D78" }}>Return</Text>
+                  <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
+                    $ {returnFare}
+                  </Text>
+                </View>
+                <View>
+                  <Text style={{ color: "#5F6D78" }}>Total</Text>
+                  <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
+                    $ {onwardFare + returnFare}
+                  </Text>
+                </View>
+                <Button
+                  style={{
+                    backgroundColor: "#F68E1F",
+                    borderRadius: 15,
+                    height: 30,
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                  onPress={this._bookNow}>
+                  <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Book Now</Text>
+                </Button>
+              </View>
+              <View
+                style={{
+                  backgroundColor: "#DEDEDE",
+                  height: 1,
+                  marginHorizontal: 16,
+                  marginVertical: 10
+                }}></View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginHorizontal: 16
+                }}>
+                <Button
+                  style={{
+                    backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff",
+                    elevation: 1,
+                    borderWidth: 1,
+                    borderColor: "#DDDDDD",
+                    height: 40,
+                    justifyContent: "center",
+                    paddingHorizontal: 50,
+                    borderRadius: 20
+                  }}
+                  onPress={() => this._onPress("Depart")}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: swiperIndex == 0 ? "#ffffff" : "#000000"
+                    }}>
+                    Depart
+                  </Text>
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff",
+                    elevation: 1,
+                    borderWidth: 1,
+                    borderColor: "#DDDDDD",
+                    height: 40,
+                    justifyContent: "center",
+                    paddingHorizontal: 50,
+                    borderRadius: 20
+                  }}
+                  onPress={() => this._onPress("Return")}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: swiperIndex == 1 ? "#ffffff" : "#000000"
+                    }}>
+                    Return
+                  </Text>
+                </Button>
+              </View>
+            </View>
+            <View style={{ flex: 4, backgroundColor: "white" }}>
+              <SwiperFlatList
+                index={index}
+                ref={ref => (this.scrollRef = ref)}
+                onChangeIndex={this._onChangeIndex}>
+                <FlatList
+                  data={this.state.onwardFlights}
+                  keyExtractor={this._keyExtractorOnward}
+                  renderItem={this._renderItemOnward}
+                  contentContainerStyle={{ width, paddingHorizontal: 8 }}
+                  extraData={this.state.selectedOnward}
+                />
+                <FlatList
+                  data={this.state.returnFlights}
+                  keyExtractor={this._keyExtractorReturn}
+                  renderItem={this._renderItemReturn}
+                  contentContainerStyle={{ width, paddingHorizontal: 8 }}
+                  extraData={this.state.selectedReturn}
+                />
+              </SwiperFlatList>
+            </View>
+            {loader && <Activity_Indicator />}
           </View>
-        </View>
-        <View style={{ flex: 4, backgroundColor: "white" }}>
-          <SwiperFlatList
-            index={index}
-            ref={ref => (this.scrollRef = ref)}
-            onChangeIndex={this._onChangeIndex}>
-            <FlatList
-              data={this.state.onwardFlights}
-              keyExtractor={this._keyExtractorOnward}
-              renderItem={this._renderItemOnward}
-              contentContainerStyle={{ width, paddingHorizontal: 8 }}
-              extraData={this.state.selectedOnward}
-            />
-            <FlatList
-              data={this.state.returnFlights}
-              keyExtractor={this._keyExtractorReturn}
-              renderItem={this._renderItemReturn}
-              contentContainerStyle={{ width, paddingHorizontal: 8 }}
-              extraData={this.state.selectedReturn}
-            />
-          </SwiperFlatList>
-        </View>
-        {loader && <Activity_Indicator />}
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

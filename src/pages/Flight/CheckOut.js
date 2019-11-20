@@ -1,9 +1,8 @@
 import React, { PureComponent } from "react";
-import { View, Image, TextInput, ScrollView } from "react-native";
+import { View, Image, TextInput, ScrollView, SafeAreaView } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, Activity_Indicator } from "../../components";
+import { Button, Text, Activity_Indicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/Ionicons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
 import axios from "axios";
@@ -293,719 +292,748 @@ class CheckOut extends React.PureComponent {
 
     if (params.flightType == 1) {
       return (
-        <View style={{ flexDirection: "column", flex: 1 }}>
-          <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
-            <View
-              style={{
-                flexDirection: "row",
-                marginHorizontal: 16,
-                marginVertical: 10
-              }}>
-              <Button onPress={() => this.props.navigation.goBack(null)}>
-                <Icon name="md-arrow-back" size={24} />
-              </Button>
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  flex: 1
-                }}>
-                <View>
-                  <Text
-                    style={{
-                      fontWeight: "700",
-                      fontSize: 16,
-                      marginHorizontal: 5
-                    }}>
-                    Checkout
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      marginHorizontal: 5,
-                      color: "#717984"
-                    }}>
-                    {params.journey_date} {params.return_date ? "- " + params.return_date : null} |{" "}
-                    {params.adult > 0 ? params.adult + " Adult" : " "}
-                    {params.child > 0 ? " , " + params.child + " Child" : " "}
-                    {params.infant > 0 ? " , " + params.infant + " Infant" : " "} |{" "}
-                    {params.className}
-                  </Text>
-                </View>
+        <>
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+            <View style={{ flexDirection: "column", flex: 1 }}>
+              <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start"
+                    marginHorizontal: 16,
+                    marginVertical: 10
                   }}>
-                  <IconMaterial name="share-variant" size={20} color="#5D89F4" />
+                  <Button onPress={() => this.props.navigation.goBack(null)}>
+                    <Icon name="md-arrow-back" size={24} />
+                  </Button>
+                  <View
+                    style={{
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      flex: 1
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          fontWeight: "700",
+                          fontSize: 16,
+                          marginHorizontal: 5
+                        }}>
+                        Checkout
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          marginHorizontal: 5,
+                          color: "#717984"
+                        }}>
+                        {params.journey_date}{" "}
+                        {params.return_date ? "- " + params.return_date : null} |{" "}
+                        {params.adult > 0 ? params.adult + " Adult" : " "}
+                        {params.child > 0 ? " , " + params.child + " Child" : " "}
+                        {params.infant > 0 ? " , " + params.infant + " Infant" : " "} |{" "}
+                        {params.className}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start"
+                      }}>
+                      <IconMaterial name="share-variant" size={20} color="#5D89F4" />
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
-          </View>
-          <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
-            <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginVertical: 20,
-                borderRadius: 8,
-                padding: 10
-              }}>
-              <View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Image
-                    source={require("../../assets/imgs/flights-1.png")}
-                    resizeMode="contain"
-                    style={{ width: 40 }}
-                  />
-                  <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
-                    Departure
-                  </Text>
+              <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+                <View
+                  style={{
+                    elevation: 2,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    marginVertical: 20,
+                    borderRadius: 8,
+                    padding: 10
+                  }}>
+                  <View>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Image
+                        source={require("../../assets/imgs/flights-1.png")}
+                        resizeMode="contain"
+                        style={{ width: 40 }}
+                      />
+                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                        Departure
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row", marginTop: 10 }}>
+                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
+                      <View style={{ marginStart: 10, flex: 1 }}>
+                        <Text>
+                          {params.departFlight.FlightSegments[0].AirLineName} |{" "}
+                          {params.departFlight.FlightUId}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between"
+                          }}>
+                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{dd}</Text>
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontWeight: "700"
+                            }}>
+                            {ad}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: 5
+                      }}>
+                      <View>
+                        <Text>{params.from}</Text>
+                        <Text>{departureDate}</Text>
+                      </View>
+                      <View>
+                        <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                        <View
+                          style={{
+                            height: 1.35,
+                            width: 90,
+                            backgroundColor: "#D1D1D1"
+                          }}></View>
+                      </View>
+                      <View>
+                        <Text>{params.to}</Text>
+                        <Text>{arrivalDate}</Text>
+                      </View>
+                    </View>
+                  </View>
+
+                  {params.tripType == 2 && params.flightType == 1 && (
+                    <View
+                      style={{
+                        height: 1.35,
+                        backgroundColor: "#F2F3F5",
+                        marginVertical: 10,
+                        flex: 1
+                      }}></View>
+                  )}
+                  {params.tripType == 2 && params.flightType == 1 && (
+                    <View>
+                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Image
+                          source={require("../../assets/imgs/flights-1.png")}
+                          resizeMode="contain"
+                          style={{ width: 40 }}
+                        />
+                        <Text
+                          style={{
+                            marginStart: 10,
+                            fontWeight: "300",
+                            fontSize: 16
+                          }}>
+                          Arrival
+                        </Text>
+                      </View>
+                      <View style={{ flexDirection: "row", marginTop: 10 }}>
+                        {/* <Image
+                          source={require("../../assets/imgs/indigo.png")}
+                          resizeMode="contain"
+                          style={{ width: 40 }}
+                        /> */}
+                        <Image
+                          style={{ width: 35, resizeMode: "contain" }}
+                          source={{ uri: imgRet }}
+                        />
+                        <View style={{ flex: 1, marginStart: 10 }}>
+                          <Text>
+                            {params.arrivalFlight.FlightSegments[0].AirLineName} |{" "}
+                            {params.arrivalFlight.FlightUId}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between"
+                            }}>
+                            <Text style={{ fontSize: 18, fontWeight: "700" }}>{ddReturn}</Text>
+                            <Text
+                              style={{
+                                fontSize: 18,
+                                fontWeight: "700"
+                              }}>
+                              {adReturn}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginTop: 5
+                        }}>
+                        <View>
+                          <Text>{params.to}</Text>
+                          <Text>{departureDateReturn}</Text>
+                        </View>
+                        <View>
+                          <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                          <View
+                            style={{
+                              height: 1.35,
+                              width: 90,
+                              backgroundColor: "#D1D1D1"
+                            }}></View>
+                        </View>
+                        <View>
+                          <Text>{params.from}</Text>
+                          <Text>{arrivalDateReturn}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  )}
                 </View>
-                <View style={{ flexDirection: "row", marginTop: 10 }}>
-                  <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
-                  <View style={{ marginStart: 10, flex: 1 }}>
-                    <Text>
-                      {params.departFlight.FlightSegments[0].AirLineName} |{" "}
-                      {params.departFlight.FlightUId}
+
+                <View
+                  style={{
+                    elevation: 2,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    borderRadius: 8
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginHorizontal: 10,
+                      marginVertical: 5,
+                      alignItems: "center"
+                    }}>
+                    <IconSimple name="bag" size={24} />
+                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                      Fare Backup
                     </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>No. of Adult</Text>
+                    <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.adult}</Text>
+                  </View>
+                  {params.child > 0 && (
                     <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ fontSize: 18, fontWeight: "700" }}>{dd}</Text>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: "700"
-                        }}>
-                        {ad}
+                      <Text style={{ marginStart: 10 }}>No. of Child</Text>
+                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
+                        {params.child}
                       </Text>
                     </View>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 5
-                  }}>
-                  <View>
-                    <Text>{params.from}</Text>
-                    <Text>{departureDate}</Text>
-                  </View>
-                  <View>
-                    <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                  )}
+                  {params.infant > 0 && (
                     <View
                       style={{
-                        height: 1.35,
-                        width: 90,
-                        backgroundColor: "#D1D1D1"
-                      }}></View>
-                  </View>
-                  <View>
-                    <Text>{params.to}</Text>
-                    <Text>{arrivalDate}</Text>
-                  </View>
-                </View>
-              </View>
-
-              {params.tripType == 2 && params.flightType == 1 && (
-                <View
-                  style={{
-                    height: 1.35,
-                    backgroundColor: "#F2F3F5",
-                    marginVertical: 10,
-                    flex: 1
-                  }}></View>
-              )}
-              {params.tripType == 2 && params.flightType == 1 && (
-                <View>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image
-                      source={require("../../assets/imgs/flights-1.png")}
-                      resizeMode="contain"
-                      style={{ width: 40 }}
-                    />
-                    <Text
-                      style={{
-                        marginStart: 10,
-                        fontWeight: "300",
-                        fontSize: 16
+                        flexDirection: "row",
+                        justifyContent: "space-between"
                       }}>
-                      Arrival
+                      <Text style={{ marginStart: 10 }}>No. of Infant</Text>
+                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
+                        {params.infant}
+                      </Text>
+                    </View>
+                  )}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Base Fare</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                   </View>
-                  <View style={{ flexDirection: "row", marginTop: 10 }}>
-                    <Image
-                      source={require("../../assets/imgs/indigo.png")}
-                      resizeMode="contain"
-                      style={{ width: 40 }}
-                    />
-                    <View style={{ flex: 1, marginStart: 10 }}>
-                      <Text>
-                        {params.arrivalFlight.FlightSegments[0].AirLineName} |{" "}
-                        {params.arrivalFlight.FlightUId}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between"
-                        }}>
-                        <Text style={{ fontSize: 18, fontWeight: "700" }}>{ddReturn}</Text>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: "700"
-                          }}>
-                          {adReturn}
-                        </Text>
-                      </View>
-                    </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.SCharge}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>GST</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.STax}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Tax</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.Tax}
+                    </Text>
                   </View>
                   <View
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: 5
+                      paddingVertical: 10,
+                      borderBottomLeftRadius: 8,
+                      borderBottomRightRadius: 8,
+                      backgroundColor: "#F2F3F5"
                     }}>
-                    <View>
-                      <Text>{params.to}</Text>
-                      <Text>{departureDateReturn}</Text>
-                    </View>
-                    <View>
-                      <Text style={{ alignSelf: "center" }}>{params.className}</Text>
-                      <View
-                        style={{
-                          height: 1.35,
-                          width: 90,
-                          backgroundColor: "#D1D1D1"
-                        }}></View>
-                    </View>
-                    <View>
-                      <Text>{params.from}</Text>
-                      <Text>{arrivalDateReturn}</Text>
-                    </View>
+                    <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
+                      Total Payable
+                    </Text>
+                    <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
+                      $ {params.departFlight.FareDetails.TotalFare}
+                    </Text>
                   </View>
                 </View>
-              )}
-            </View>
-
-            <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                borderRadius: 8
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 10,
-                  marginVertical: 5,
-                  alignItems: "center"
-                }}>
-                <IconSimple name="bag" size={24} />
-                <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>Fare Backup</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>No. of Adult</Text>
-                <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.adult}</Text>
-              </View>
-              {params.child > 0 && (
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
+                    elevation: 2,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    marginVertical: 20,
+                    borderRadius: 8,
+                    height: 40,
+                    justifyContent: "space-between",
+                    flexDirection: "row"
                   }}>
-                  <Text style={{ marginStart: 10 }}>No. of Child</Text>
-                  <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.child}</Text>
+                  <TextInput
+                    placeholder="Have a Promo Code?"
+                    style={{ marginStart: 5, flex: 1 }}></TextInput>
+                  <Button
+                    style={{
+                      backgroundColor: "#5B89F9",
+                      justifyContent: "center",
+                      borderBottomRightRadius: 8,
+                      borderTopRightRadius: 8
+                    }}>
+                    <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
+                  </Button>
                 </View>
-              )}
-              {params.infant > 0 && (
-                <View
+                <Button
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>No. of Infant</Text>
-                  <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.infant}</Text>
-                </View>
-              )}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Base Fare</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.SCharge}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>GST</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.STax}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Tax</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.Tax}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingVertical: 10,
-                  borderBottomLeftRadius: 8,
-                  borderBottomRightRadius: 8,
-                  backgroundColor: "#F2F3F5"
-                }}>
-                <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
-                  Total Payable
-                </Text>
-                <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                  $ {params.departFlight.FareDetails.TotalFare}
-                </Text>
-              </View>
+                    backgroundColor: "#F68E1D",
+                    marginHorizontal: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: 40,
+                    marginBottom: 20,
+                    borderRadius: 20
+                  }}
+                  onPress={this.navigateToScreen("CheckOut1", params)}>
+                  <Text style={{ color: "#fff" }}>Next</Text>
+                </Button>
+              </ScrollView>
+              {this.state.loading && <Activity_Indicator />}
             </View>
-            <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginVertical: 20,
-                borderRadius: 8,
-                height: 40,
-                justifyContent: "space-between",
-                flexDirection: "row"
-              }}>
-              <TextInput
-                placeholder="Have a Promo Code?"
-                style={{ marginStart: 5, flex: 1 }}></TextInput>
-              <Button
-                style={{
-                  backgroundColor: "#5B89F9",
-                  justifyContent: "center",
-                  borderBottomRightRadius: 8,
-                  borderTopRightRadius: 8
-                }}>
-                <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
-              </Button>
-            </View>
-            <Button
-              style={{
-                backgroundColor: "#F68E1D",
-                marginHorizontal: 100,
-                alignItems: "center",
-                justifyContent: "center",
-                height: 40,
-                marginBottom: 20,
-                borderRadius: 20
-              }}
-              onPress={this.navigateToScreen("CheckOut1", params)}>
-              <Text style={{ color: "#fff" }}>Next</Text>
-            </Button>
-          </ScrollView>
-          {this.state.loading && <Activity_Indicator />}
-        </View>
+          </SafeAreaView>
+        </>
       );
     } else if (params.flightType == 2) {
       return (
-        <View style={{ flexDirection: "column", flex: 1 }}>
-          <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
-            <View
-              style={{
-                flexDirection: "row",
-                marginHorizontal: 16,
-                marginVertical: 10
-              }}>
-              <Button onPress={() => this.props.navigation.goBack(null)}>
-                <Image
-                  style={{ width: 20, resizeMode: "contain" }}
-                  source={require("../../assets/imgs/white-arrow-left-side.png")}
-                />
-              </Button>
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  flex: 1
-                }}>
-                <View>
-                  <Text
-                    style={{
-                      fontWeight: "700",
-                      fontSize: 16,
-                      marginHorizontal: 5
-                    }}>
-                    Checkout
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      marginHorizontal: 5,
-                      color: "#717984"
-                    }}>
-                    {params.journey_date} {params.return_date ? "- " + params.return_date : null} |{" "}
-                    {params.adult > 0 ? params.adult + " Adult" : " "}
-                    {params.child > 0 ? " , " + params.child + " Child" : " "}
-                    {params.infant > 0 ? " , " + params.infant + " Infant" : " "} |{" "}
-                    {params.className}
-                  </Text>
-                </View>
+        <>
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+            <View style={{ flexDirection: "column", flex: 1 }}>
+              <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start"
+                    marginHorizontal: 16,
+                    marginVertical: 10
                   }}>
-                  <IconMaterial name="share-variant" size={20} color="#5D89F4" />
+                  <Button onPress={() => this.props.navigation.goBack(null)}>
+                    <Icon name="md-arrow-back" size={24} />
+                  </Button>
+                  <View
+                    style={{
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      flex: 1
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          fontWeight: "700",
+                          fontSize: 16,
+                          marginHorizontal: 5
+                        }}>
+                        Checkout
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          marginHorizontal: 5,
+                          color: "#717984"
+                        }}>
+                        {params.journey_date}{" "}
+                        {params.return_date ? "- " + params.return_date : null} |{" "}
+                        {params.adult > 0 ? params.adult + " Adult" : " "}
+                        {params.child > 0 ? " , " + params.child + " Child" : " "}
+                        {params.infant > 0 ? " , " + params.infant + " Infant" : " "} |{" "}
+                        {params.className}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start"
+                      }}>
+                      <IconMaterial name="share-variant" size={20} color="#5D89F4" />
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
-          </View>
-          <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
-            <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginVertical: 20,
-                borderRadius: 8,
-                padding: 10
-              }}>
-              <View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Image
-                    source={require("../../assets/imgs/flights-1.png")}
-                    resizeMode="contain"
-                    style={{ width: 40 }}
-                  />
-                  <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
-                    Departure
-                  </Text>
+              <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+                <View
+                  style={{
+                    elevation: 2,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    marginVertical: 20,
+                    borderRadius: 8,
+                    padding: 10
+                  }}>
+                  <View>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Image
+                        source={require("../../assets/imgs/flights-1.png")}
+                        resizeMode="contain"
+                        style={{ width: 40 }}
+                      />
+                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                        Departure
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row", marginTop: 10 }}>
+                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
+                      <View style={{ marginStart: 10, flex: 1 }}>
+                        <Text>
+                          {params.departFlight.IntOnward.FlightSegments[0].AirLineName} |{" "}
+                          {params.departFlight.FlightUId}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between"
+                          }}>
+                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{dd}</Text>
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontWeight: "700"
+                            }}>
+                            {ad}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: 5
+                      }}>
+                      <View>
+                        <Text>{params.from}</Text>
+                        <Text>{departureDate}</Text>
+                      </View>
+                      <View>
+                        <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                        <View
+                          style={{
+                            height: 1.35,
+                            width: 90,
+                            backgroundColor: "#D1D1D1"
+                          }}></View>
+                      </View>
+                      <View>
+                        <Text>{params.to}</Text>
+                        <Text>{arrivalDate}</Text>
+                      </View>
+                    </View>
+                  </View>
+
+                  {params.tripType == 2 && params.flightType == 2 && (
+                    <View
+                      style={{
+                        height: 1.35,
+                        backgroundColor: "#F2F3F5",
+                        marginVertical: 10,
+                        flex: 1
+                      }}></View>
+                  )}
+                  {params.tripType == 2 && params.flightType == 2 && (
+                    <View>
+                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Image
+                          source={require("../../assets/imgs/flights-1.png")}
+                          resizeMode="contain"
+                          style={{ width: 40 }}
+                        />
+                        <Text
+                          style={{
+                            marginStart: 10,
+                            fontWeight: "300",
+                            fontSize: 16
+                          }}>
+                          Arrival
+                        </Text>
+                      </View>
+                      <View style={{ flexDirection: "row", marginTop: 10 }}>
+                        <Image
+                          source={{ uri: imgIntRet }}
+                          resizeMode="contain"
+                          style={{ width: 40 }}
+                        />
+                        <View style={{ flex: 1, marginStart: 10 }}>
+                          <Text>
+                            {params.departFlight.IntReturn.FlightSegments[0].AirLineName} |{" "}
+                            {params.departFlight.FlightUId}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between"
+                            }}>
+                            <Text style={{ fontSize: 18, fontWeight: "700" }}>{ddIntReturn}</Text>
+                            <Text
+                              style={{
+                                fontSize: 18,
+                                fontWeight: "700"
+                              }}>
+                              {adIntReturn}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginTop: 5
+                        }}>
+                        <View>
+                          <Text>{params.to}</Text>
+                          <Text>{departureDateIntReturn}</Text>
+                        </View>
+                        <View>
+                          <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                          <View
+                            style={{
+                              height: 1.35,
+                              width: 90,
+                              backgroundColor: "#D1D1D1"
+                            }}></View>
+                        </View>
+                        <View>
+                          <Text>{params.from}</Text>
+                          <Text>{arrivalDateIntReturn}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  )}
                 </View>
-                <View style={{ flexDirection: "row", marginTop: 10 }}>
-                  <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
-                  <View style={{ marginStart: 10, flex: 1 }}>
-                    <Text>
-                      {params.departFlight.IntOnward.FlightSegments[0].AirLineName} |{" "}
-                      {params.departFlight.FlightUId}
+
+                <View
+                  style={{
+                    elevation: 2,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    borderRadius: 8
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginHorizontal: 10,
+                      marginVertical: 5,
+                      alignItems: "center"
+                    }}>
+                    <IconSimple name="bag" size={24} />
+                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                      Fare Backup
                     </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>No. of Adult</Text>
+                    <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.adult}</Text>
+                  </View>
+                  {params.child > 0 && (
                     <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ fontSize: 18, fontWeight: "700" }}>{dd}</Text>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: "700"
-                        }}>
-                        {ad}
+                      <Text style={{ marginStart: 10 }}>No. of Child</Text>
+                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
+                        {params.child}
                       </Text>
                     </View>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 5
-                  }}>
-                  <View>
-                    <Text>{params.from}</Text>
-                    <Text>{departureDate}</Text>
-                  </View>
-                  <View>
-                    <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                  )}
+                  {params.infant > 0 && (
                     <View
                       style={{
-                        height: 1.35,
-                        width: 90,
-                        backgroundColor: "#D1D1D1"
-                      }}></View>
-                  </View>
-                  <View>
-                    <Text>{params.to}</Text>
-                    <Text>{arrivalDate}</Text>
-                  </View>
-                </View>
-              </View>
-
-              {params.tripType == 2 && params.flightType == 2 && (
-                <View
-                  style={{
-                    height: 1.35,
-                    backgroundColor: "#F2F3F5",
-                    marginVertical: 10,
-                    flex: 1
-                  }}></View>
-              )}
-              {params.tripType == 2 && params.flightType == 2 && (
-                <View>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image
-                      source={require("../../assets/imgs/flights-1.png")}
-                      resizeMode="contain"
-                      style={{ width: 40 }}
-                    />
-                    <Text
-                      style={{
-                        marginStart: 10,
-                        fontWeight: "300",
-                        fontSize: 16
+                        flexDirection: "row",
+                        justifyContent: "space-between"
                       }}>
-                      Arrival
+                      <Text style={{ marginStart: 10 }}>No. of Infant</Text>
+                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
+                        {params.infant}
+                      </Text>
+                    </View>
+                  )}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Base Fare</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                   </View>
-                  <View style={{ flexDirection: "row", marginTop: 10 }}>
-                    <Image source={{ uri: imgIntRet }} resizeMode="contain" style={{ width: 40 }} />
-                    <View style={{ flex: 1, marginStart: 10 }}>
-                      <Text>
-                        {params.departFlight.IntReturn.FlightSegments[0].AirLineName} |{" "}
-                        {params.departFlight.FlightUId}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between"
-                        }}>
-                        <Text style={{ fontSize: 18, fontWeight: "700" }}>{ddIntReturn}</Text>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: "700"
-                          }}>
-                          {adIntReturn}
-                        </Text>
-                      </View>
-                    </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.SCharge}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>GST</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.IsGSTMandatory == false ? 0 : 0}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Tax</Text>
+                    <Text style={{ marginEnd: 10 }}>
+                      {params.departFlight.FareDetails.ChargeableFares.Tax +
+                        params.departFlight.FareDetails.ChargeableFares.STax}
+                    </Text>
                   </View>
                   <View
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: 5
+                      paddingVertical: 10,
+                      borderBottomLeftRadius: 8,
+                      borderBottomRightRadius: 8,
+                      backgroundColor: "#F2F3F5"
                     }}>
-                    <View>
-                      <Text>{params.to}</Text>
-                      <Text>{departureDateIntReturn}</Text>
-                    </View>
-                    <View>
-                      <Text style={{ alignSelf: "center" }}>{params.className}</Text>
-                      <View
-                        style={{
-                          height: 1.35,
-                          width: 90,
-                          backgroundColor: "#D1D1D1"
-                        }}></View>
-                    </View>
-                    <View>
-                      <Text>{params.from}</Text>
-                      <Text>{arrivalDateIntReturn}</Text>
-                    </View>
+                    <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
+                      Total Payable
+                    </Text>
+                    <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
+                      $ {params.departFlight.FareDetails.TotalFare}
+                    </Text>
                   </View>
                 </View>
-              )}
-            </View>
-
-            <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                borderRadius: 8
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 10,
-                  marginVertical: 5,
-                  alignItems: "center"
-                }}>
-                <IconSimple name="bag" size={24} />
-                <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>Fare Backup</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>No. of Adult</Text>
-                <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.adult}</Text>
-              </View>
-              {params.child > 0 && (
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
+                    elevation: 2,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    marginVertical: 20,
+                    borderRadius: 8,
+                    height: 40,
+                    justifyContent: "space-between",
+                    flexDirection: "row"
                   }}>
-                  <Text style={{ marginStart: 10 }}>No. of Child</Text>
-                  <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.child}</Text>
+                  <TextInput
+                    placeholder="Have a Promo Code?"
+                    style={{ marginStart: 5, flex: 1 }}></TextInput>
+                  <Button
+                    style={{
+                      backgroundColor: "#5B89F9",
+                      justifyContent: "center",
+                      borderBottomRightRadius: 8,
+                      borderTopRightRadius: 8
+                    }}>
+                    <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
+                  </Button>
                 </View>
-              )}
-              {params.infant > 0 && (
-                <View
+                <Button
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>No. of Infant</Text>
-                  <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.infant}</Text>
-                </View>
-              )}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Base Fare</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.SCharge}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>GST</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.IsGSTMandatory == false ? 0 : 0}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}>
-                <Text style={{ marginStart: 10 }}>Tax</Text>
-                <Text style={{ marginEnd: 10 }}>
-                  {params.departFlight.FareDetails.ChargeableFares.Tax +
-                    params.departFlight.FareDetails.ChargeableFares.STax}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingVertical: 10,
-                  borderBottomLeftRadius: 8,
-                  borderBottomRightRadius: 8,
-                  backgroundColor: "#F2F3F5"
-                }}>
-                <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
-                  Total Payable
-                </Text>
-                <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                  $ {params.departFlight.FareDetails.TotalFare}
-                </Text>
-              </View>
+                    backgroundColor: "#F68E1D",
+                    marginHorizontal: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: 40,
+                    marginBottom: 20,
+                    borderRadius: 20
+                  }}
+                  onPress={this.navigateToScreen("CheckOut1", params)}>
+                  <Text style={{ color: "#fff" }}>Next</Text>
+                </Button>
+              </ScrollView>
+              {this.state.loading && <Activity_Indicator />}
             </View>
-            <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginVertical: 20,
-                borderRadius: 8,
-                height: 40,
-                justifyContent: "space-between",
-                flexDirection: "row"
-              }}>
-              <TextInput
-                placeholder="Have a Promo Code?"
-                style={{ marginStart: 5, flex: 1 }}></TextInput>
-              <Button
-                style={{
-                  backgroundColor: "#5B89F9",
-                  justifyContent: "center",
-                  borderBottomRightRadius: 8,
-                  borderTopRightRadius: 8
-                }}>
-                <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
-              </Button>
-            </View>
-            <Button
-              style={{
-                backgroundColor: "#F68E1D",
-                marginHorizontal: 100,
-                alignItems: "center",
-                justifyContent: "center",
-                height: 40,
-                marginBottom: 20,
-                borderRadius: 20
-              }}
-              onPress={this.navigateToScreen("CheckOut1", params)}>
-              <Text style={{ color: "#fff" }}>Next</Text>
-            </Button>
-          </ScrollView>
-          {this.state.loading && <Activity_Indicator />}
-        </View>
+          </SafeAreaView>
+        </>
       );
     }
   }
