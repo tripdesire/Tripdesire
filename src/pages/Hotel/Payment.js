@@ -2,12 +2,11 @@ import React, { PureComponent } from "react";
 import {
   View,
   Image,
-  Modal,
-  StyleSheet,
   TouchableOpacity,
   TextInput,
   Picker,
-  ScrollView
+  ScrollView,
+  SafeAreaView
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -391,475 +390,482 @@ class Payment extends React.PureComponent {
     const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loader } = this.state;
 
     return (
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            height: 56,
-            backgroundColor: "#E5EBF7",
-            flexDirection: "row",
-            paddingHorizontal: 16,
-            paddingVertical: 10
-          }}>
-          <Button onPress={() => this.props.navigation.goBack(null)}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <View style={{ marginHorizontal: 5 }}>
-            <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
-            <Text style={{ fontSize: 12, color: "#717984" }}>
-              {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
-              {params.checkInDate ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM") : ""}
-              {params.checkOutDate
-                ? " - " + moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM") + " "
-                : ""}
-              |{params.adult > 0 ? " " + params.adult + " Adult" : " "}
-              {params.child > 0 ? " , " + params.child + " Child" : " "}
-              {params.infant > 0 ? " , " + params.infant + " Infant" : " "}
-              {params.className ? "| " + params.className : ""}
-            </Text>
-          </View>
-        </View>
-
-        <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
-          <ScrollView
-            contentContainerStyle={{ backgroundColor: "#ffffff" }}
-            showsVerticalScrollIndicator={false}>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
             <View
               style={{
-                elevation: 2,
-                borderRadius: 8,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginTop: 20
+                height: 56,
+                backgroundColor: "#E5EBF7",
+                flexDirection: "row",
+                paddingHorizontal: 16,
+                paddingVertical: 10
               }}>
-              <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Image
-                    source={require("../../assets/imgs/person.png")}
-                    resizeMode="contain"
-                    style={{ width: 30 }}
-                  />
-                  <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
-                    Passengers Details
-                  </Text>
-                </View>
-                {parseInt(params.adult) &&
-                  [...Array(parseInt(params.adult))].map((e, index) => (
-                    <View key={"adult_" + index}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginTop: 10,
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <Text>Adult {index + 1}</Text>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            marginStart: 2,
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}>
-                          <Picker
-                            selectedValue={this.state.adults[index].den}
-                            style={{ height: 50, width: 60 }}
-                            onValueChange={this.onAdultChange(index, "den")}>
-                            <Picker.Item label="Mr." value="Mr" />
-                            <Picker.Item label="Mrs." value="Mrs" />
-                          </Picker>
-                        </View>
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1,
-                            marginHorizontal: 2
-                          }}
-                          onChangeText={this.onAdultChange(index, "firstname")}
-                          placeholder="First Name"
-                        />
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1
-                          }}
-                          placeholder="Last Name"
-                          onChangeText={this.onAdultChange(index, "last_name")}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          marginTop: 5,
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <View
-                          style={{
-                            flex: 2,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center"
-                          }}>
-                          <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
-                          <Button
+              <Button onPress={() => this.props.navigation.goBack(null)}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <View style={{ marginHorizontal: 5 }}>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
+                <Text style={{ fontSize: 12, color: "#717984" }}>
+                  {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
+                  {params.checkInDate
+                    ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
+                    : ""}
+                  {params.checkOutDate
+                    ? " - " + moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM") + " "
+                    : ""}
+                  |{params.adult > 0 ? " " + params.adult + " Adult" : " "}
+                  {params.child > 0 ? " , " + params.child + " Child" : " "}
+                  {params.infant > 0 ? " , " + params.infant + " Infant" : " "}
+                  {params.className ? "| " + params.className : ""}
+                </Text>
+              </View>
+            </View>
+
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+              <ScrollView
+                contentContainerStyle={{ backgroundColor: "#ffffff" }}
+                showsVerticalScrollIndicator={false}>
+                <View
+                  style={{
+                    elevation: 2,
+                    borderRadius: 8,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    marginTop: 20
+                  }}>
+                  <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Image
+                        source={require("../../assets/imgs/person.png")}
+                        resizeMode="contain"
+                        style={{ width: 30 }}
+                      />
+                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                        Passengers Details
+                      </Text>
+                    </View>
+                    {parseInt(params.adult) &&
+                      [...Array(parseInt(params.adult))].map((e, index) => (
+                        <View key={"adult_" + index}>
+                          <View
                             style={{
-                              flex: 1,
-                              marginStart: 5,
-                              borderWidth: 1,
-                              borderColor: "#F2F2F2",
-                              height: 40,
+                              flexDirection: "row",
+                              marginTop: 10,
                               justifyContent: "center",
                               alignItems: "center"
-                            }}
-                            onPress={this.show("adults", index, true)}
-                            placeholder="DOB">
-                            <Text style={{ flex: 1 }}>
-                              {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
-                            </Text>
-                          </Button>
-                          <DateTimePicker
-                            date={this.state.adults[index].dob}
-                            isVisible={this.state.adults[index].show}
-                            onConfirm={this.onAdultChange(index, "dob")}
-                            onCancel={this.show("adults", index, false)}
-                            maximumDate={moment()
-                              .subtract(12, "years")
-                              .toDate()}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1,
-                            paddingHorizontal: 2,
-                            marginHorizontal: 2,
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}>
-                          <Picker
-                            selectedValue={this.state.adults[index].gender}
-                            style={{ height: 50, width: 80 }}
-                            onValueChange={this.onAdultChange(index, "gender")}>
-                            <Picker.Item label="Male" value="M" />
-                            <Picker.Item label="Female" value="F" />
-                          </Picker>
-                        </View>
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1
-                          }}
-                          placeholder="Age"
-                          keyboardType="numeric"
-                          onChangeText={this.onAdultChange(index, "age")}
-                        />
-                      </View>
-                      <Button style={{ marginTop: 10 }} onPress={this._FFN}>
-                        <Text style={{ color: "#5B89F9" }}>Optional (Frequent flyer Number)</Text>
-                      </Button>
-                      {ffn && (
-                        <View>
-                          <Text>Frequent Flyer Details</Text>
-                          <Text>
-                            Please verify the credit of your frequent flyer miles at the airport
-                            checkin counter.
-                          </Text>
-                          <View style={{ flexDirection: "row" }}>
+                            }}>
+                            <Text>Adult {index + 1}</Text>
+                            <View
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                marginStart: 2,
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                              <Picker
+                                selectedValue={this.state.adults[index].den}
+                                style={{ height: 50, width: 60 }}
+                                onValueChange={this.onAdultChange(index, "den")}>
+                                <Picker.Item label="Mr." value="Mr" />
+                                <Picker.Item label="Mrs." value="Mrs" />
+                              </Picker>
+                            </View>
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
-                                backgroundColor: "#F2F2F2",
                                 height: 40,
-                                paddingHorizontal: 10,
-                                marginEnd: 1,
-                                flex: 1
+                                flex: 1,
+                                marginHorizontal: 2
                               }}
-                              placeholder="Indigo-5031"
+                              onChangeText={this.onAdultChange(index, "firstname")}
+                              placeholder="First Name"
                             />
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
-                                paddingHorizontal: 10,
-                                flex: 1,
-                                marginStart: 1
+                                flex: 1
                               }}
-                              placeholder="Enter FNN"
+                              placeholder="Last Name"
+                              onChangeText={this.onAdultChange(index, "last_name")}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              marginTop: 5,
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}>
+                            <View
+                              style={{
+                                flex: 2,
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                              }}>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Button
+                                style={{
+                                  flex: 1,
+                                  marginStart: 5,
+                                  borderWidth: 1,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  justifyContent: "center",
+                                  alignItems: "center"
+                                }}
+                                onPress={this.show("adults", index, true)}
+                                placeholder="DOB">
+                                <Text style={{ flex: 1 }}>
+                                  {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
+                                </Text>
+                              </Button>
+                              <DateTimePicker
+                                date={this.state.adults[index].dob}
+                                isVisible={this.state.adults[index].show}
+                                onConfirm={this.onAdultChange(index, "dob")}
+                                onCancel={this.show("adults", index, false)}
+                                maximumDate={moment()
+                                  .subtract(12, "years")
+                                  .toDate()}
+                              />
+                            </View>
+                            <View
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                paddingHorizontal: 2,
+                                marginHorizontal: 2,
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                              <Picker
+                                selectedValue={this.state.adults[index].gender}
+                                style={{ height: 50, width: 80 }}
+                                onValueChange={this.onAdultChange(index, "gender")}>
+                                <Picker.Item label="Male" value="M" />
+                                <Picker.Item label="Female" value="F" />
+                              </Picker>
+                            </View>
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1
+                              }}
+                              placeholder="Age"
+                              keyboardType="numeric"
+                              onChangeText={this.onAdultChange(index, "age")}
+                            />
+                          </View>
+                          <Button style={{ marginTop: 10 }} onPress={this._FFN}>
+                            <Text style={{ color: "#5B89F9" }}>
+                              Optional (Frequent flyer Number)
+                            </Text>
+                          </Button>
+                          {ffn && (
+                            <View>
+                              <Text>Frequent Flyer Details</Text>
+                              <Text>
+                                Please verify the credit of your frequent flyer miles at the airport
+                                checkin counter.
+                              </Text>
+                              <View style={{ flexDirection: "row" }}>
+                                <TextInput
+                                  style={{
+                                    borderWidth: 1,
+                                    borderColor: "#F2F2F2",
+                                    backgroundColor: "#F2F2F2",
+                                    height: 40,
+                                    paddingHorizontal: 10,
+                                    marginEnd: 1,
+                                    flex: 1
+                                  }}
+                                  placeholder="Indigo-5031"
+                                />
+                                <TextInput
+                                  style={{
+                                    borderWidth: 1,
+                                    borderColor: "#F2F2F2",
+                                    height: 40,
+                                    paddingHorizontal: 10,
+                                    flex: 1,
+                                    marginStart: 1
+                                  }}
+                                  placeholder="Enter FNN"
+                                />
+                              </View>
+                            </View>
+                          )}
+                        </View>
+                      ))}
+
+                    {parseInt(params.child) > 0 &&
+                      [...Array(parseInt(params.child))].map((e, index) => (
+                        <View key={"child_" + index}>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              marginTop: 10,
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}>
+                            <Text>Child {index + 1}</Text>
+                            <View
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                marginStart: 2,
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                              <Picker
+                                selectedValue={this.state.childs[index].den}
+                                style={{ height: 50, width: 60 }}
+                                onValueChange={this.onChildsChange(index, "den")}>
+                                <Picker.Item label="Mr." value="Mr" />
+                                <Picker.Item label="Mrs." value="Mrs" />
+                              </Picker>
+                            </View>
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                marginHorizontal: 2
+                              }}
+                              placeholder="First Name"
+                              onChangeText={this.onChildsChange(index, "firstname")}
+                            />
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1
+                              }}
+                              placeholder="Last Name"
+                              onChangeText={this.onChildsChange(index, "last_name")}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              marginTop: 5,
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}>
+                            <View
+                              style={{
+                                flex: 2,
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                              }}>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Button
+                                style={{
+                                  flex: 1,
+                                  marginStart: 5,
+                                  borderWidth: 1,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  justifyContent: "center",
+                                  alignItems: "center"
+                                }}
+                                onPress={this.show("childs", index, true)}
+                                placeholder="DOB">
+                                <Text style={{ flex: 1 }}>
+                                  {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
+                                </Text>
+                              </Button>
+                              <DateTimePicker
+                                date={this.state.childs[index].dob}
+                                isVisible={this.state.childs[index].show}
+                                onConfirm={this.onChildsChange(index, "dob")}
+                                onCancel={this.show("childs", index, false)}
+                                minimumDate={moment()
+                                  .subtract(12, "years")
+                                  .toDate()}
+                                maximumDate={moment()
+                                  .subtract(2, "years")
+                                  .toDate()}
+                              />
+                            </View>
+                            <View
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                paddingHorizontal: 2,
+                                marginHorizontal: 2,
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                              <Picker
+                                selectedValue={this.state.childs[index].gender}
+                                style={{ height: 50, width: 80 }}
+                                onValueChange={this.onChildsChange(index, "gender")}>
+                                <Picker.Item label="Male" value="M" />
+                                <Picker.Item label="Female" value="F" />
+                              </Picker>
+                            </View>
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1
+                              }}
+                              placeholder="Age"
+                              keyboardType="numeric"
+                              onChangeText={this.onChildsChange(index, "age")}
                             />
                           </View>
                         </View>
-                      )}
-                    </View>
-                  ))}
+                      ))}
 
-                {parseInt(params.child) > 0 &&
-                  [...Array(parseInt(params.child))].map((e, index) => (
-                    <View key={"child_" + index}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginTop: 10,
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <Text>Child {index + 1}</Text>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            marginStart: 2,
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}>
-                          <Picker
-                            selectedValue={this.state.childs[index].den}
-                            style={{ height: 50, width: 60 }}
-                            onValueChange={this.onChildsChange(index, "den")}>
-                            <Picker.Item label="Mr." value="Mr" />
-                            <Picker.Item label="Mrs." value="Mrs" />
-                          </Picker>
-                        </View>
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1,
-                            marginHorizontal: 2
-                          }}
-                          placeholder="First Name"
-                          onChangeText={this.onChildsChange(index, "firstname")}
-                        />
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1
-                          }}
-                          placeholder="Last Name"
-                          onChangeText={this.onChildsChange(index, "last_name")}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          marginTop: 5,
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <View
-                          style={{
-                            flex: 2,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center"
-                          }}>
-                          <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
-                          <Button
+                    {parseInt(params.infant) > 0 &&
+                      [...Array(parseInt(params.infant))].map((e, index) => (
+                        <View key={"_infant" + index}>
+                          <View
                             style={{
-                              flex: 1,
-                              marginStart: 5,
-                              borderWidth: 1,
-                              borderColor: "#F2F2F2",
-                              height: 40,
+                              flexDirection: "row",
+                              marginTop: 10,
                               justifyContent: "center",
                               alignItems: "center"
-                            }}
-                            onPress={this.show("childs", index, true)}
-                            placeholder="DOB">
-                            <Text style={{ flex: 1 }}>
-                              {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
-                            </Text>
-                          </Button>
-                          <DateTimePicker
-                            date={this.state.childs[index].dob}
-                            isVisible={this.state.childs[index].show}
-                            onConfirm={this.onChildsChange(index, "dob")}
-                            onCancel={this.show("childs", index, false)}
-                            minimumDate={moment()
-                              .subtract(12, "years")
-                              .toDate()}
-                            maximumDate={moment()
-                              .subtract(2, "years")
-                              .toDate()}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1,
-                            paddingHorizontal: 2,
-                            marginHorizontal: 2,
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}>
-                          <Picker
-                            selectedValue={this.state.childs[index].gender}
-                            style={{ height: 50, width: 80 }}
-                            onValueChange={this.onChildsChange(index, "gender")}>
-                            <Picker.Item label="Male" value="M" />
-                            <Picker.Item label="Female" value="F" />
-                          </Picker>
-                        </View>
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1
-                          }}
-                          placeholder="Age"
-                          keyboardType="numeric"
-                          onChangeText={this.onChildsChange(index, "age")}
-                        />
-                      </View>
-                    </View>
-                  ))}
-
-                {parseInt(params.infant) > 0 &&
-                  [...Array(parseInt(params.infant))].map((e, index) => (
-                    <View key={"_infant" + index}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginTop: 10,
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <Text>Infant {index + 1}</Text>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            marginStart: 2,
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}>
-                          <Picker
-                            selectedValue={this.state.infants[index].den}
-                            style={{ height: 50, width: 60 }}
-                            onValueChange={this.onInfantChange(index, "den")}>
-                            <Picker.Item label="Mr." value="Mr" />
-                            <Picker.Item label="Mrs." value="Mrs" />
-                          </Picker>
-                        </View>
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1,
-                            marginHorizontal: 2
-                          }}
-                          placeholder="First Name"
-                          onChangeText={this.onInfantChange(index, "firstname")}
-                        />
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1
-                          }}
-                          placeholder="Last Name"
-                          onChangeText={this.onInfantChange(index, "last_name")}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          marginTop: 5,
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <View
-                          style={{
-                            flex: 2,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center"
-                          }}>
-                          <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
-                          <Button
+                            }}>
+                            <Text>Infant {index + 1}</Text>
+                            <View
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                marginStart: 2,
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                              <Picker
+                                selectedValue={this.state.infants[index].den}
+                                style={{ height: 50, width: 60 }}
+                                onValueChange={this.onInfantChange(index, "den")}>
+                                <Picker.Item label="Mr." value="Mr" />
+                                <Picker.Item label="Mrs." value="Mrs" />
+                              </Picker>
+                            </View>
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                marginHorizontal: 2
+                              }}
+                              placeholder="First Name"
+                              onChangeText={this.onInfantChange(index, "firstname")}
+                            />
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1
+                              }}
+                              placeholder="Last Name"
+                              onChangeText={this.onInfantChange(index, "last_name")}
+                            />
+                          </View>
+                          <View
                             style={{
-                              flex: 1,
-                              marginStart: 5,
-                              borderWidth: 1,
-                              borderColor: "#F2F2F2",
-                              height: 40,
+                              marginTop: 5,
+                              flexDirection: "row",
                               justifyContent: "center",
                               alignItems: "center"
-                            }}
-                            onPress={this.show("infants", index, true)}
-                            placeholder="DOB">
-                            <Text style={{ flex: 1 }}>
-                              {moment(this.state.infants[index].dob).format("DD-MMM-YYYY")}
-                            </Text>
-                          </Button>
-                          <DateTimePicker
-                            date={this.state.infants[index].dob}
-                            isVisible={this.state.infants[index].show}
-                            onConfirm={this.onInfantChange(index, "dob")}
-                            onCancel={this.show("infants", index, false)}
-                            maximumDate={new Date()}
-                            minimumDate={moment()
-                              .subtract(2, "years")
-                              .toDate()}
-                          />
+                            }}>
+                            <View
+                              style={{
+                                flex: 2,
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                              }}>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Button
+                                style={{
+                                  flex: 1,
+                                  marginStart: 5,
+                                  borderWidth: 1,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  justifyContent: "center",
+                                  alignItems: "center"
+                                }}
+                                onPress={this.show("infants", index, true)}
+                                placeholder="DOB">
+                                <Text style={{ flex: 1 }}>
+                                  {moment(this.state.infants[index].dob).format("DD-MMM-YYYY")}
+                                </Text>
+                              </Button>
+                              <DateTimePicker
+                                date={this.state.infants[index].dob}
+                                isVisible={this.state.infants[index].show}
+                                onConfirm={this.onInfantChange(index, "dob")}
+                                onCancel={this.show("infants", index, false)}
+                                maximumDate={new Date()}
+                                minimumDate={moment()
+                                  .subtract(2, "years")
+                                  .toDate()}
+                              />
+                            </View>
+                            <View
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                paddingHorizontal: 2,
+                                marginHorizontal: 2,
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                              <Picker
+                                selectedValue={this.state.infants[index].gender}
+                                style={{ height: 50, width: 80 }}
+                                onValueChange={this.onInfantChange(index, "gender")}>
+                                <Picker.Item label="Male" value="M" />
+                                <Picker.Item label="Female" value="F" />
+                              </Picker>
+                            </View>
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1
+                              }}
+                              placeholder="Age"
+                              keyboardType="numeric"
+                              onChangeText={this.onInfantChange(index, "age")}
+                            />
+                          </View>
                         </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1,
-                            paddingHorizontal: 2,
-                            marginHorizontal: 2,
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}>
-                          <Picker
-                            selectedValue={this.state.infants[index].gender}
-                            style={{ height: 50, width: 80 }}
-                            onValueChange={this.onInfantChange(index, "gender")}>
-                            <Picker.Item label="Male" value="M" />
-                            <Picker.Item label="Female" value="F" />
-                          </Picker>
-                        </View>
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            flex: 1
-                          }}
-                          placeholder="Age"
-                          keyboardType="numeric"
-                          onChangeText={this.onInfantChange(index, "age")}
-                        />
-                      </View>
-                    </View>
-                  ))}
-              </View>
-            </View>
-            {/* <View
+                      ))}
+                  </View>
+                </View>
+                {/* <View
               style={{
                 elevation: 2,
                 backgroundColor: "#ffffff",
@@ -913,73 +919,75 @@ class Payment extends React.PureComponent {
               />
             </View> */}
 
-            <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginTop: 20,
-                height: 190,
-                padding: 10,
-                borderRadius: 8
-              }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity onPress={() => this._radioButton("D")}>
-                  <View
-                    style={{
-                      height: 18,
-                      width: 18,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: "#000",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}>
-                    {radioDirect && (
+                <View
+                  style={{
+                    elevation: 2,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    marginTop: 20,
+                    height: 190,
+                    padding: 10,
+                    borderRadius: 8
+                  }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <TouchableOpacity onPress={() => this._radioButton("D")}>
                       <View
                         style={{
-                          height: 10,
-                          width: 10,
-                          borderRadius: 6,
-                          backgroundColor: "#000"
-                        }}
-                      />
-                    )}
+                          height: 18,
+                          width: 18,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: "#000",
+                          alignItems: "center",
+                          justifyContent: "center"
+                        }}>
+                        {radioDirect && (
+                          <View
+                            style={{
+                              height: 10,
+                              width: 10,
+                              borderRadius: 6,
+                              backgroundColor: "#000"
+                            }}
+                          />
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                    <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
                   </View>
-                </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
-              </View>
-              <Text
-                style={{
-                  flex: 1,
-                  fontSize: 12,
-                  color: "#696969",
-                  marginHorizontal: 20
-                }}>
-                Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast Onboarding.
-                Free & Easy Application Process.100+ Payment Modes, Secure Gateway, Simple
-                Integration. Easy Integration. Dashboard Reporting. Services: Customize Your
-                Checkout, Autofill OTP on Mobile.
-              </Text>
-            </View>
+                  <Text
+                    style={{
+                      flex: 1,
+                      fontSize: 12,
+                      color: "#696969",
+                      marginHorizontal: 20
+                    }}>
+                    Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast
+                    Onboarding. Free & Easy Application Process.100+ Payment Modes, Secure Gateway,
+                    Simple Integration. Easy Integration. Dashboard Reporting. Services: Customize
+                    Your Checkout, Autofill OTP on Mobile.
+                  </Text>
+                </View>
 
-            <Button
-              style={{
-                backgroundColor: "#F68E1D",
-                marginHorizontal: 100,
-                alignItems: "center",
-                marginVertical: 30,
-                justifyContent: "center",
-                height: 40,
-                borderRadius: 20
-              }}
-              onPress={this._order}>
-              <Text style={{ color: "#fff" }}>Place Order</Text>
-            </Button>
-          </ScrollView>
-        </View>
-        {loader && <Activity_Indicator />}
-      </View>
+                <Button
+                  style={{
+                    backgroundColor: "#F68E1D",
+                    marginHorizontal: 100,
+                    alignItems: "center",
+                    marginVertical: 30,
+                    justifyContent: "center",
+                    height: 40,
+                    borderRadius: 20
+                  }}
+                  onPress={this._order}>
+                  <Text style={{ color: "#fff" }}>Place Order</Text>
+                </Button>
+              </ScrollView>
+            </View>
+            {loader && <Activity_Indicator />}
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

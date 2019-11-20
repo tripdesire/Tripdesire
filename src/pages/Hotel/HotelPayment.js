@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, Dimensions } from "react-native";
+import { View, Image, StyleSheet, Dimensions, SafeAreaView } from "react-native";
 import { Button, Text, Activity_Indicator } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -56,114 +56,119 @@ class HotelPayment extends React.PureComponent {
     let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
     return (
-      <View style={{ flex: 1, flexDirection: "column" }}>
-        <View style={{ flex: 4, backgroundColor: "#5B89F9" }}>
-          <View
-            style={{
-              height: 56,
-              backgroundColor: "#5B89F9",
-              flexDirection: "row",
-              marginHorizontal: 16,
-              marginTop: 10
-            }}>
-            <Button onPress={() => this.props.navigation.goBack(null)}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <View style={{ marginHorizontal: 5 }}>
-              <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                Book Your Hotel
-              </Text>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#5B89F9" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1, flexDirection: "column" }}>
+            <View style={{ flex: 4, backgroundColor: "#5B89F9" }}>
               <View
                 style={{
+                  height: 56,
+                  backgroundColor: "#5B89F9",
                   flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start"
+                  marginHorizontal: 16,
+                  marginTop: 10
                 }}>
-                <IconMaterial name="calendar-month" size={18} color="#ffffff" />
-                <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
-                  {checkInDate} - {checkOutDate}
+                <Button onPress={() => this.props.navigation.goBack(null)}>
+                  <Icon name="md-arrow-back" size={24} />
+                </Button>
+                <View style={{ marginHorizontal: 5 }}>
+                  <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+                    Book Your Hotel
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start"
+                    }}>
+                    <IconMaterial name="calendar-month" size={18} color="#ffffff" />
+                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
+                      {checkInDate} - {checkOutDate}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+              <View
+                style={{
+                  elevation: 2,
+                  marginHorizontal: 16,
+                  borderRadius: 8,
+                  backgroundColor: "#ffffff",
+                  marginTop: -220
+                }}>
+                <Text
+                  style={{
+                    color: "#717A81",
+                    backgroundColor: "#E5EBF7",
+                    paddingTop: 16,
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                    paddingHorizontal: 16
+                  }}>
+                  From
                 </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "700",
+                    backgroundColor: "#E5EBF7",
+                    paddingBottom: 16,
+                    paddingHorizontal: 16
+                  }}>
+                  $ {params.selectedRoom.RoomTotal}
+                </Text>
+                <View style={style._textDetailsStyle}>
+                  <Text style={style._textHeading}>City</Text>
+                  <Text style={style._Details}>{params.city} (INDIA)</Text>
+                </View>
+                <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
+                  <Text style={style._textHeading}>Check In</Text>
+                  <Text style={style._Details}>{params.checkInDate}</Text>
+                </View>
+                <View style={style._textDetailsStyle}>
+                  <Text style={style._textHeading}>Check Out</Text>
+                  <Text style={style._Details}>{params.checkOutDate}</Text>
+                </View>
+                <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
+                  <Text style={style._textHeading}>Night(s)</Text>
+                  <Text style={style._Details}>{params.Night}</Text>
+                </View>
+                <View style={style._textDetailsStyle}>
+                  <Text style={style._textHeading}>Room(s)</Text>
+                  <Text style={style._Details}>{params.room}</Text>
+                </View>
+                <View
+                  style={[
+                    style._textDetailsStyle,
+                    {
+                      backgroundColor: "#E5EBF7"
+                    }
+                  ]}>
+                  <Text style={style._textHeading}>Guest(s)</Text>
+                  <Text style={style._Details}>{params.adult + params.child}</Text>
+                </View>
+                <Button
+                  style={{
+                    backgroundColor: "#F68E1D",
+                    marginHorizontal: 80,
+                    alignItems: "center",
+                    marginVertical: 30,
+                    justifyContent: "center",
+                    height: 40,
+                    paddingHorizontal: 20,
+                    borderRadius: 20
+                  }}
+                  onPress={this._payment}>
+                  <Text style={{ color: "#fff" }}>Continue Booking</Text>
+                </Button>
               </View>
             </View>
           </View>
-        </View>
-        <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
-          <View
-            style={{
-              elevation: 2,
-              marginHorizontal: 16,
-              borderRadius: 8,
-              backgroundColor: "#ffffff",
-              marginTop: -220
-            }}>
-            <Text
-              style={{
-                color: "#717A81",
-                backgroundColor: "#E5EBF7",
-                paddingTop: 16,
-                borderTopLeftRadius: 8,
-                borderTopRightRadius: 8,
-                paddingHorizontal: 16
-              }}>
-              From
-            </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "700",
-                backgroundColor: "#E5EBF7",
-                paddingBottom: 16,
-                paddingHorizontal: 16
-              }}>
-              $ {params.selectedRoom.RoomTotal}
-            </Text>
-            <View style={style._textDetailsStyle}>
-              <Text style={style._textHeading}>City</Text>
-              <Text style={style._Details}>{params.city} (INDIA)</Text>
-            </View>
-            <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
-              <Text style={style._textHeading}>Check In</Text>
-              <Text style={style._Details}>{params.checkInDate}</Text>
-            </View>
-            <View style={style._textDetailsStyle}>
-              <Text style={style._textHeading}>Check Out</Text>
-              <Text style={style._Details}>{params.checkOutDate}</Text>
-            </View>
-            <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
-              <Text style={style._textHeading}>Night(s)</Text>
-              <Text style={style._Details}>{params.Night}</Text>
-            </View>
-            <View style={style._textDetailsStyle}>
-              <Text style={style._textHeading}>Room(s)</Text>
-              <Text style={style._Details}>{params.room}</Text>
-            </View>
-            <View
-              style={[
-                style._textDetailsStyle,
-                {
-                  backgroundColor: "#E5EBF7"
-                }
-              ]}>
-              <Text style={style._textHeading}>Guest(s)</Text>
-              <Text style={style._Details}>{params.adult + params.child}</Text>
-            </View>
-            <Button
-              style={{
-                backgroundColor: "#F68E1D",
-                marginHorizontal: 80,
-                alignItems: "center",
-                marginVertical: 30,
-                justifyContent: "center",
-                height: 40,
-                paddingHorizontal: 20,
-                borderRadius: 20
-              }}
-              onPress={this._payment}>
-              <Text style={{ color: "#fff" }}>Continue Booking</Text>
-            </Button>
-          </View>
-        </View>
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

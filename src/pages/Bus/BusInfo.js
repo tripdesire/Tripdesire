@@ -1,13 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Dimensions
-} from "react-native";
+import { View, Image, Modal, StyleSheet, FlatList, Dimensions, SafeAreaView } from "react-native";
 import { Button, Text, Activity_Indicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconFontAwsm from "react-native-vector-icons/FontAwesome";
@@ -145,62 +137,67 @@ class BusInfo extends React.PureComponent {
       CancellationPolicy
     } = this.state;
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
-        <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%"
-            }}>
-            <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <View style={{ flex: 1, paddingTop: 16 }}>
-              <View>
-                <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                  {sourceName} to {destinationName}
-                </Text>
-                <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                  {journeyDate}, {day ? day + " " : ""}
-                  {No_of_buses_Available ? No_of_buses_Available + " Buses Found" : ""}
-                </Text>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flexDirection: "column", flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%"
+                }}>
+                <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+                  <Icon name="md-arrow-back" size={24} />
+                </Button>
+                <View style={{ flex: 1, paddingTop: 16 }}>
+                  <View>
+                    <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+                      {sourceName} to {destinationName}
+                    </Text>
+                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                      {journeyDate}, {day ? day + " " : ""}
+                      {No_of_buses_Available ? No_of_buses_Available + " Buses Found" : ""}
+                    </Text>
+                  </View>
+                </View>
+                <Button
+                  style={{
+                    flexDirection: "row",
+                    marginStart: "auto",
+                    paddingEnd: 8,
+                    paddingVertical: 16
+                  }}>
+                  <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                  <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                    Sort & Filter
+                  </Text>
+                </Button>
               </View>
             </View>
-            <Button
-              style={{
-                flexDirection: "row",
-                marginStart: "auto",
-                paddingEnd: 8,
-                paddingVertical: 16
-              }}>
-              <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-              <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                Sort & Filter
-              </Text>
-            </Button>
-          </View>
-        </View>
-        <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
-          <FlatList
-            data={this.state.buses}
-            keyExtractor={this._keyExtractoritems}
-            renderItem={this._renderItemList}
-          />
-          {nofound == 0 && (
-            <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
-              <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+              <FlatList
+                data={this.state.buses}
+                keyExtractor={this._keyExtractoritems}
+                renderItem={this._renderItemList}
+              />
+              {nofound == 0 && (
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
+                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+                </View>
+              )}
             </View>
-          )}
-        </View>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={CancellationPolicy}
-          onRequestClose={this.closePolicy}>
-          <CanPolicy onBackPress={this.closePolicy} />
-        </Modal>
-        {loader && <Activity_Indicator />}
-      </View>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={CancellationPolicy}
+              onRequestClose={this.closePolicy}>
+              <CanPolicy onBackPress={this.closePolicy} />
+            </Modal>
+            {loader && <Activity_Indicator />}
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 }
@@ -212,33 +209,40 @@ class CanPolicy extends React.PureComponent {
 
   render() {
     return (
-      <View>
-        <View style={styles.headerContainer}>
-          <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
-        </View>
-        <View style={{ marginHorizontal: 16 }}>
-          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-            <Text style={{ fontWeight: "700", flex: 3 }}>Cancellation Time</Text>
-            <Text style={{ fontWeight: "700", flex: 1 }}>Cancellation Charge</Text>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View>
+            <View style={styles.headerContainer}>
+              <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
+            </View>
+            <View style={{ marginHorizontal: 16 }}>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ fontWeight: "700", flex: 3 }}>Cancellation Time</Text>
+                <Text style={{ fontWeight: "700", flex: 1 }}>Cancellation Charge</Text>
+              </View>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ flex: 3 }}>
+                  Between 0 days 5 hours and 0 hours before journey time
+                </Text>
+                <Text style={{ flex: 1 }}>100.0%</Text>
+              </View>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ flex: 3 }}>Between 24 hours and 0 days before journey time</Text>
+                <Text style={{ flex: 1 }}>10.0%</Text>
+              </View>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ flex: 3 }}>24 hours before journey time</Text>
+                <Text style={{ flex: 1 }}>10.0%</Text>
+              </View>
+              <Text style={{ color: "red" }}>*Partial cancellation not allowed</Text>
+            </View>
           </View>
-          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-            <Text style={{ flex: 3 }}>Between 0 days 5 hours and 0 hours before journey time</Text>
-            <Text style={{ flex: 1 }}>100.0%</Text>
-          </View>
-          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-            <Text style={{ flex: 3 }}>Between 24 hours and 0 days before journey time</Text>
-            <Text style={{ flex: 1 }}>10.0%</Text>
-          </View>
-          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-            <Text style={{ flex: 3 }}>24 hours before journey time</Text>
-            <Text style={{ flex: 1 }}>10.0%</Text>
-          </View>
-          <Text style={{ color: "red" }}>*Partial cancellation not allowed</Text>
-        </View>
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, Modal, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal } from "../../components";
 import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -160,197 +160,210 @@ class Bus extends React.PureComponent {
       _select_round
     } = this.state;
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
-        <View style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
-          <Header
-            firstName="Bus"
-            lastName="Search"
-            onPress={() => this.props.navigation.goBack(null)}
-          />
-        </View>
-
-        <View style={{ height: 30, width: "100%" }}>
-          <View style={{ flex: 2, backgroundColor: "#E4EAF6" }}></View>
-          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "center", ...StyleSheet.absoluteFill }}>
-            <Button
-              style={{
-                backgroundColor: backgroundColor_oneway,
-                elevation: 1,
-                height: 30,
-                justifyContent: "center",
-                paddingHorizontal: 60,
-                borderBottomStartRadius: 5,
-                borderTopStartRadius: 5
-              }}
-              onPress={() => this._triptype("onewway")}>
-              <Text style={{ color: Button_text_color_oneway, fontSize: 12 }}>Oneway</Text>
-            </Button>
-            <Button
-              style={{
-                backgroundColor: backgroundColor_round,
-                elevation: 1,
-                height: 30,
-                justifyContent: "center",
-                paddingHorizontal: 60,
-                borderBottomEndRadius: 5,
-                borderTopEndRadius: 5
-              }}
-              onPress={() => this._triptype("round")}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: Button_text_color_round
-                }}>
-                Round
-              </Text>
-            </Button>
-          </View>
-        </View>
-
-        <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
-          <View
-            style={{
-              marginHorizontal: 16,
-              marginVertical: 20,
-              flexDirection: "row"
-            }}>
-            <IconMaterial name="bus" size={40} color="#A5A9AC" />
-            <View
-              style={{
-                flexDirection: "row",
-                marginStart: 20,
-                justifyContent: "space-between",
-                flex: 1
-              }}>
-              <View style={{ flex: 1 }}>
-                <Text style={{ color: "#5D666D" }}>From</Text>
-                <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalFrom", true)}>
-                  {from}
-                </Text>
-              </View>
-              <Button style={{ justifyContent: "center" }} onPress={this._exchange}>
-                <IconMaterial name="swap-vertical" size={40} />
-              </Button>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flexDirection: "column", flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
+              <Header
+                firstName="Bus"
+                lastName="Search"
+                onPress={() => this.props.navigation.goBack(null)}
+              />
             </View>
-          </View>
-          <View style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
-          <View
-            style={{
-              marginHorizontal: 16,
-              marginVertical: 20,
-              flexDirection: "row"
-            }}>
-            <IconMaterial name="bus" size={40} color="#A5A9AC" />
-            <View style={{ marginStart: 20, flex: 1 }}>
-              <Text style={{ color: "#5D666D" }}>To</Text>
-              <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalTo", true)}>
-                {to}
-              </Text>
-            </View>
-          </View>
-          <View style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
 
-          <View
-            style={{
-              marginHorizontal: 16,
-              marginVertical: 20,
-              flexDirection: "row",
-              alignItems: "center"
-            }}>
-            <Image
-              style={{ width: 25, resizeMode: "contain", marginStart: 10 }}
-              source={require("../../assets/imgs/cal.png")}
-            />
-            <View
-              style={{
-                flex: 1,
-                paddingStart: 20
-              }}>
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
-              <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
-                <Text style={{ fontSize: 18 }}>
-                  {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
-                </Text>
-              </Button>
-              {show_CheckIn && (
-                <RNDateTimePicker
-                  display="calendar"
-                  value={CheckIn}
-                  mode={mode}
-                  minimumDate={new Date()}
-                  onChange={this.setDate}
-                />
-              )}
-            </View>
-            {_select_round && (
+            <View style={{ height: 30, width: "100%" }}>
+              <View style={{ flex: 2, backgroundColor: "#E4EAF6" }}></View>
+              <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
               <View
                 style={{
-                  flex: 1,
-                  paddingStart: 20
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  ...StyleSheet.absoluteFill
                 }}>
-                <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-                <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
-                  <Text style={{ fontSize: 18 }}>
-                    {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
+                <Button
+                  style={{
+                    backgroundColor: backgroundColor_oneway,
+                    elevation: 1,
+                    height: 30,
+                    justifyContent: "center",
+                    paddingHorizontal: 60,
+                    borderBottomStartRadius: 5,
+                    borderTopStartRadius: 5
+                  }}
+                  onPress={() => this._triptype("onewway")}>
+                  <Text style={{ color: Button_text_color_oneway, fontSize: 12 }}>Oneway</Text>
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: backgroundColor_round,
+                    elevation: 1,
+                    height: 30,
+                    justifyContent: "center",
+                    paddingHorizontal: 60,
+                    borderBottomEndRadius: 5,
+                    borderTopEndRadius: 5
+                  }}
+                  onPress={() => this._triptype("round")}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Button_text_color_round
+                    }}>
+                    Round
                   </Text>
                 </Button>
-                {show_CheckOut && (
-                  <RNDateTimePicker
-                    display="calendar"
-                    value={CheckOut}
-                    mode={mode}
-                    minimumDate={new Date()}
-                    onChange={this.setDate_CheckOut}
-                  />
+              </View>
+            </View>
+
+            <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
+              <View
+                style={{
+                  marginHorizontal: 16,
+                  marginVertical: 20,
+                  flexDirection: "row"
+                }}>
+                <IconMaterial name="bus" size={40} color="#A5A9AC" />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginStart: 20,
+                    justifyContent: "space-between",
+                    flex: 1
+                  }}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ color: "#5D666D" }}>From</Text>
+                    <Text
+                      style={{ fontSize: 18 }}
+                      onPress={this.setModalVisible("modalFrom", true)}>
+                      {from}
+                    </Text>
+                  </View>
+                  <Button style={{ justifyContent: "center" }} onPress={this._exchange}>
+                    <IconMaterial name="swap-vertical" size={40} />
+                  </Button>
+                </View>
+              </View>
+              <View
+                style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
+              <View
+                style={{
+                  marginHorizontal: 16,
+                  marginVertical: 20,
+                  flexDirection: "row"
+                }}>
+                <IconMaterial name="bus" size={40} color="#A5A9AC" />
+                <View style={{ marginStart: 20, flex: 1 }}>
+                  <Text style={{ color: "#5D666D" }}>To</Text>
+                  <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalTo", true)}>
+                    {to}
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
+
+              <View
+                style={{
+                  marginHorizontal: 16,
+                  marginVertical: 20,
+                  flexDirection: "row",
+                  alignItems: "center"
+                }}>
+                <Image
+                  style={{ width: 25, resizeMode: "contain", marginStart: 10 }}
+                  source={require("../../assets/imgs/cal.png")}
+                />
+                <View
+                  style={{
+                    flex: 1,
+                    paddingStart: 20
+                  }}>
+                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
+                  <Button style={{ marginStart: 5 }} onPress={this.show("date")}>
+                    <Text style={{ fontSize: 18 }}>
+                      {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
+                    </Text>
+                  </Button>
+                  {show_CheckIn && (
+                    <RNDateTimePicker
+                      display="calendar"
+                      value={CheckIn}
+                      mode={mode}
+                      minimumDate={new Date()}
+                      onChange={this.setDate}
+                    />
+                  )}
+                </View>
+                {_select_round && (
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingStart: 20
+                    }}>
+                    <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
+                    <Button style={{ marginStart: 5 }} onPress={this.showTo("date")}>
+                      <Text style={{ fontSize: 18 }}>
+                        {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
+                      </Text>
+                    </Button>
+                    {show_CheckOut && (
+                      <RNDateTimePicker
+                        display="calendar"
+                        value={CheckOut}
+                        mode={mode}
+                        minimumDate={new Date()}
+                        onChange={this.setDate_CheckOut}
+                      />
+                    )}
+                  </View>
                 )}
               </View>
-            )}
+
+              <Button
+                style={{
+                  backgroundColor: "#F68E1F",
+                  marginHorizontal: 100,
+                  height: 40,
+                  justifyContent: "center",
+                  borderRadius: 20,
+                  marginVertical: 40
+                }}
+                onPress={this._search}>
+                <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
+              </Button>
+            </View>
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalFrom}
+              onRequestClose={this.setModalVisible("modalFrom", false)}>
+              <AutoCompleteModal
+                placeholder="Enter Source"
+                //visible={this.state.modalTo}
+                type="bus"
+                onChange={this.handleFrom}
+                onModalBackPress={this.setModalVisible("modalFrom", false)}
+              />
+            </Modal>
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalTo}
+              onRequestClose={this.setModalVisible("modalTo", false)}>
+              <AutoCompleteModal
+                placeholder="Enter Destination"
+                //visible={this.state.modalTo}
+                type="bus"
+                onChange={this.handleTo}
+                onModalBackPress={this.setModalVisible("modalTo", false)}
+              />
+            </Modal>
           </View>
-
-          <Button
-            style={{
-              backgroundColor: "#F68E1F",
-              marginHorizontal: 100,
-              height: 40,
-              justifyContent: "center",
-              borderRadius: 20,
-              marginVertical: 40
-            }}
-            onPress={this._search}>
-            <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
-          </Button>
-        </View>
-
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalFrom}
-          onRequestClose={this.setModalVisible("modalFrom", false)}>
-          <AutoCompleteModal
-            placeholder="Enter Source"
-            //visible={this.state.modalTo}
-            type="bus"
-            onChange={this.handleFrom}
-            onModalBackPress={this.setModalVisible("modalFrom", false)}
-          />
-        </Modal>
-
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalTo}
-          onRequestClose={this.setModalVisible("modalTo", false)}>
-          <AutoCompleteModal
-            placeholder="Enter Destination"
-            //visible={this.state.modalTo}
-            type="bus"
-            onChange={this.handleTo}
-            onModalBackPress={this.setModalVisible("modalTo", false)}
-          />
-        </Modal>
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }
