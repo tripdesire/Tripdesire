@@ -1,11 +1,20 @@
 import React, { PureComponent } from "react";
-import { View, Image, Modal, StyleSheet, TouchableOpacity, FlatList } from "react-native";
-import { Button, Text, Activity_Indicator } from "../../components";
+import {
+  View,
+  Image,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Dimensions
+} from "react-native";
+import { Button, Text, Activity_Indicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconFontAwsm from "react-native-vector-icons/FontAwesome";
-import Icon from "react-native-vector-icons/Ionicons";
+import Toast from "react-native-simple-toast";
 import moment from "moment";
 import Service from "../../service";
+const { height, width } = Dimensions.get("window");
 
 class BusInfo extends React.PureComponent {
   constructor(props) {
@@ -17,7 +26,9 @@ class BusInfo extends React.PureComponent {
       day: "",
       No_of_buses_Available: "",
       loader: true,
-      buses: []
+      buses: [],
+      nofound: 1,
+      CancellationPolicy: false
     };
   }
 
@@ -35,14 +46,29 @@ class BusInfo extends React.PureComponent {
     Service.get("/Buses/AvailableBuses", params)
       .then(({ data }) => {
         console.log(data.AvailableTrips);
+        if (data.AvailableTrips.length == 0) {
+          //  console.log(data.AvailableTrips.length);
+          this.setState({ nofound: data.AvailableTrips.length });
+          Toast.show("Data not found.", Toast.LONG);
+        }
         this.setState({
           buses: data.AvailableTrips,
           No_of_buses_Available: data.AvailableTrips.length,
           loader: false
         });
       })
-      .catch(() => {});
+      .catch(error => {
+        Toast.show(error, Toast.LONG);
+      });
   }
+
+  _onCanPolicy = () => {
+    this.setState({ CancellationPolicy: true });
+  };
+
+  closePolicy = () => {
+    this.setState({ CancellationPolicy: false });
+  };
 
   _renderItemList = ({ item, index }) => {
     return (
@@ -56,41 +82,45 @@ class BusInfo extends React.PureComponent {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            marginHorizontal: 30
+            marginHorizontal: 16
           }}>
           <Text style={{ flex: 1, fontWeight: "700" }}>{item.BusType}</Text>
           <Button
             style={{
-              backgroundColor: "#ED902D",
-              borderRadius: 15,
+              backgroundColor: "#5191FB",
+              borderRadius: 20,
               paddingHorizontal: 10,
               paddingVertical: 5
             }}>
-            <Text style={{ color: "#fff" }}>Select Seats</Text>
+            <Text style={{ color: "#fff", fontWeight: "600" }}>Select Seats</Text>
           </Button>
         </View>
         <View
           style={{
             flexDirection: "row",
-            marginHorizontal: 20,
+            marginHorizontal: 16,
             alignItems: "center",
             marginVertical: 10
           }}>
           <IconMaterial name="bus" size={50} color="#6287F9" />
           <View>
-            <Text style={{ fontSize: 20 }}>{item.DisplayName}</Text>
+            <Text style={{ fontSize: 18, lineHeight: 20 }}>{item.DisplayName}</Text>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 16 }}>{item.DepartureTime}</Text>
-              <Text style={{ fontSize: 16 }}> | </Text>
-              <Text style={{ color: "#ADADAF", alignSelf: "center" }}>{item.Duration}</Text>
-              <Text style={{ fontSize: 16 }}> | </Text>
-              <Text style={{ fontSize: 16 }}>{item.ArrivalTime}</Text>
+              <Text style={{ fontSize: 16, lineHeight: 18 }}>{item.DepartureTime}</Text>
+              <Text style={{ fontSize: 16, lineHeight: 18 }}> | </Text>
+              <Text style={{ color: "#ADADAF", alignSelf: "center", lineHeight: 18 }}>
+                {item.Duration}
+              </Text>
+              <Text style={{ fontSize: 16, lineHeight: 18 }}> | </Text>
+              <Text style={{ fontSize: 16, lineHeight: 18 }}>{item.ArrivalTime}</Text>
             </View>
           </View>
         </View>
-        <View style={{ flexDirection: "row", marginHorizontal: 30 }}>
+        <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
           <Text style={{ flex: 1, paddingEnd: 10 }}>Rs. {item.Fares}</Text>
-          <Button style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+          <Button
+            style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
+            onPress={this._onCanPolicy}>
             <IconFontAwsm name="mobile-phone" size={24} color="#6287F9" />
             <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9" }}>
               Cancellation Policy
@@ -110,21 +140,22 @@ class BusInfo extends React.PureComponent {
       journeyDate,
       No_of_buses_Available,
       day,
-      loader
+      loader,
+      nofound,
+      CancellationPolicy
     } = this.state;
     return (
       <View style={{ flexDirection: "column", flex: 1 }}>
-        <View style={{ flex: 1, height: 56, backgroundColor: "#E5EBF7" }}>
+        <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
           <View
             style={{
               flexDirection: "row",
-              marginHorizontal: 20,
-              marginTop: 20
+              width: "100%"
             }}>
-            <Button onPress={() => this.props.navigation.goBack(null)}>
+            <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: 16 }}>
               <View>
                 <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
                   {sourceName} to {destinationName}
@@ -134,23 +165,19 @@ class BusInfo extends React.PureComponent {
                   {No_of_buses_Available ? No_of_buses_Available + " Buses Found" : ""}
                 </Text>
               </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start"
-                }}>
-                <IconMaterial name="filter" fontSize={35} color="#5D89F4" />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginHorizontal: 5,
-                    color: "#717984"
-                  }}>
-                  Sort & Filter
-                </Text>
-              </View>
             </View>
+            <Button
+              style={{
+                flexDirection: "row",
+                marginStart: "auto",
+                paddingEnd: 8,
+                paddingVertical: 16
+              }}>
+              <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+              <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                Sort & Filter
+              </Text>
+            </Button>
           </View>
         </View>
         <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
@@ -159,11 +186,70 @@ class BusInfo extends React.PureComponent {
             keyExtractor={this._keyExtractoritems}
             renderItem={this._renderItemList}
           />
+          {nofound == 0 && (
+            <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
+              <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+            </View>
+          )}
         </View>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={CancellationPolicy}
+          onRequestClose={this.closePolicy}>
+          <CanPolicy onBackPress={this.closePolicy} />
+        </Modal>
         {loader && <Activity_Indicator />}
       </View>
     );
   }
 }
+
+class CanPolicy extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <View>
+        <View style={styles.headerContainer}>
+          <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
+            <Icon name="md-arrow-back" size={24} />
+          </Button>
+          <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
+        </View>
+        <View style={{ marginHorizontal: 16 }}>
+          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+            <Text style={{ fontWeight: "700", flex: 3 }}>Cancellation Time</Text>
+            <Text style={{ fontWeight: "700", flex: 1 }}>Cancellation Charge</Text>
+          </View>
+          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+            <Text style={{ flex: 3 }}>Between 0 days 5 hours and 0 hours before journey time</Text>
+            <Text style={{ flex: 1 }}>100.0%</Text>
+          </View>
+          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+            <Text style={{ flex: 3 }}>Between 24 hours and 0 days before journey time</Text>
+            <Text style={{ flex: 1 }}>10.0%</Text>
+          </View>
+          <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+            <Text style={{ flex: 3 }}>24 hours before journey time</Text>
+            <Text style={{ flex: 1 }}>10.0%</Text>
+          </View>
+          <Text style={{ color: "red" }}>*Partial cancellation not allowed</Text>
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 56,
+    backgroundColor: "#FFFFFF"
+  }
+});
 
 export default BusInfo;

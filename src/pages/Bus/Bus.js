@@ -172,7 +172,7 @@ class Bus extends React.PureComponent {
                 elevation: 1,
                 height: 30,
                 justifyContent: "center",
-                paddingHorizontal: 50,
+                paddingHorizontal: 60,
                 borderBottomStartRadius: 5,
                 borderTopStartRadius: 5
               }}
@@ -185,7 +185,7 @@ class Bus extends React.PureComponent {
                 elevation: 1,
                 height: 30,
                 justifyContent: "center",
-                paddingHorizontal: 50,
+                paddingHorizontal: 60,
                 borderBottomEndRadius: 5,
                 borderTopEndRadius: 5
               }}
@@ -204,7 +204,7 @@ class Bus extends React.PureComponent {
         <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
           <View
             style={{
-              marginHorizontal: 30,
+              marginHorizontal: 16,
               marginVertical: 20,
               flexDirection: "row"
             }}>
@@ -218,9 +218,7 @@ class Bus extends React.PureComponent {
               }}>
               <View style={{ flex: 1 }}>
                 <Text style={{ color: "#5D666D" }}>From</Text>
-                <Text
-                  style={{ fontSize: 18, flex: 1 }}
-                  onPress={this.setModalVisible("modalFrom", true)}>
+                <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalFrom", true)}>
                   {from}
                 </Text>
               </View>
@@ -229,28 +227,26 @@ class Bus extends React.PureComponent {
               </Button>
             </View>
           </View>
-          <View style={{ height: 1.35, marginHorizontal: 30, backgroundColor: "#CFCFCF" }}></View>
+          <View style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
           <View
             style={{
-              marginHorizontal: 30,
+              marginHorizontal: 16,
               marginVertical: 20,
               flexDirection: "row"
             }}>
             <IconMaterial name="bus" size={40} color="#A5A9AC" />
             <View style={{ marginStart: 20, flex: 1 }}>
               <Text style={{ color: "#5D666D" }}>To</Text>
-              <Text
-                style={{ fontSize: 18, flex: 1 }}
-                onPress={this.setModalVisible("modalTo", true)}>
+              <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalTo", true)}>
                 {to}
               </Text>
             </View>
           </View>
-          <View style={{ height: 1.35, marginHorizontal: 30, backgroundColor: "#CFCFCF" }}></View>
+          <View style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
 
           <View
             style={{
-              marginHorizontal: 30,
+              marginHorizontal: 16,
               marginVertical: 20,
               flexDirection: "row",
               alignItems: "center"
@@ -266,7 +262,7 @@ class Bus extends React.PureComponent {
               }}>
               <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
               <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
-                <Text style={{ flex: 1, fontSize: 18 }}>
+                <Text style={{ fontSize: 18 }}>
                   {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
                 </Text>
               </Button>
@@ -288,7 +284,7 @@ class Bus extends React.PureComponent {
                 }}>
                 <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
                 <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
-                  <Text style={{ flex: 1, fontSize: 18 }}>
+                  <Text style={{ fontSize: 18 }}>
                     {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
                   </Text>
                 </Button>
@@ -415,7 +411,4 @@ const mapStateToProps = state => ({
   busSuggestion: state.busSuggestion
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(Bus);
+export default connect(mapStateToProps, null)(Bus);

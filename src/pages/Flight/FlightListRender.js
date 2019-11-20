@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, FlatList, ScrollView, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, Activity_Indicator, DomesticFlights } from "../../components";
+import FareDetails from "./FareRules";
 import Icon from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
@@ -38,17 +39,24 @@ class FlightListRender extends React.PureComponent {
       user: "",
       userType: 5
     };
-    console.log("hey");
     console.log(data);
     Service.get("/Flights/GetFareRule", data)
       .then(res => {
-        console.log(res.data);
-        this.setState({ farerule: res.data });
+        //  console.log(res.data);
+        this.setState({ farerule: this.convertUnicode(res.data) }); //res.data
+        console.log(this.convertUnicode(res.data));
       })
       .catch(error => {
         Toast.show(error, Toast.LONG);
       });
   };
+
+  convertUnicode(input) {
+    return input.replace(/\\u(\w\w\w\w)/g, function(a, b) {
+      var charcode = parseInt(b, 16);
+      return String.fromCharCode(charcode);
+    });
+  }
 
   closeModal = () => {
     this.setState({ showModal: false });
@@ -386,33 +394,8 @@ class FlightListRender extends React.PureComponent {
           transparent={false}
           visible={this.state.showModal}
           onRequestClose={this.closeModal}>
-          <FareDetail data={this.state.farerule} onBackPress={this.closeModal} />
+          <FareDetails data={this.state.farerule} onBackPress={this.closeModal} />
         </Modal>
-      </View>
-    );
-  }
-}
-
-class FareDetail extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    console.log(this.props.data);
-  }
-
-  render() {
-    return (
-      <View>
-        <View style={{ flexDirection: "row", marginTop: 10, marginHorizontal: 16 }}>
-          <Button onPress={this.props.onBackPress}>
-            <Ionicons name="md-arrow-back" size={24} />
-          </Button>
-          <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
-            FareRules
-          </Text>
-        </View>
-        <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
-          <Text>{this.props.data}</Text>
-        </ScrollView>
       </View>
     );
   }
