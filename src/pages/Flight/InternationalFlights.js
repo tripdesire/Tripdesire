@@ -2,8 +2,8 @@ import React from "react";
 import { View, Image, StyleSheet, Picker, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal } from "../../components";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 
 class InternationalFlights extends React.PureComponent {
@@ -47,7 +47,9 @@ class InternationalFlights extends React.PureComponent {
       backgroundColor_international: "#FFFFFF",
       tripTypeColorOneway: "#000000",
       tripTypeColorRound: "#BDC4CA",
-      selectRound: false
+      selectRound: false,
+      fromDTpicker: false,
+      toDTpicker: false
     };
   }
 
@@ -100,6 +102,25 @@ class InternationalFlights extends React.PureComponent {
 
   submit = value => {
     this.setState({ ...value, modalPassengers: false });
+  };
+
+  showDateTimePicker = key => () => {
+    this.setState({ [key]: true });
+  };
+
+  hideDateTimePicker = key => () => {
+    this.setState({ [key]: false });
+  };
+
+  handleDatePicked = key => date => {
+    let data = {};
+    if (key == "fromDTpicker") {
+      data.Journey_date = date;
+    } else {
+      data.Return_date = date;
+    }
+    this.setState(data);
+    this.hideDateTimePicker(key)();
   };
 
   handleFrom = item => {
@@ -157,15 +178,10 @@ class InternationalFlights extends React.PureComponent {
     const {
       from,
       to,
-      show,
-      showTo,
       Journey_date,
       Return_date,
-      mode,
-      backgroundColor_domestic,
-      backgroundColor_international,
-      Button_text_color_domestic,
-      Button_text_color_international,
+      fromDTpicker,
+      toDTpicker,
       tripTypeColorOneway,
       tripTypeColorRound,
       selectRound
@@ -254,18 +270,17 @@ class InternationalFlights extends React.PureComponent {
               paddingStart: 20
             }}>
             <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
-            <Button style={{ flex: 1, marginStart: 5 }} onPress={this.show("date")}>
-              <Text>{moment(this.state.Journey_date).format("DD-MMM-YYYY")}</Text>
+            <Button
+              style={{ flex: 1, marginStart: 5 }}
+              onPress={this.showDateTimePicker("fromDTpicker")}>
+              <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
             </Button>
-            {show && (
-              <RNDateTimePicker
-                display="calendar"
-                value={Journey_date}
-                mode={mode}
-                minimumDate={new Date()}
-                onChange={this.setDate}
-              />
-            )}
+            <DateTimePicker
+              isVisible={fromDTpicker}
+              onConfirm={this.handleDatePicked("fromDTpicker")}
+              onCancel={this.hideDateTimePicker("fromDTpicker")}
+              minimumDate={new Date()}
+            />
           </View>
           {selectRound && (
             <View
@@ -274,18 +289,17 @@ class InternationalFlights extends React.PureComponent {
                 paddingStart: 20
               }}>
               <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-              <Button style={{ flex: 1, marginStart: 5 }} onPress={this.showTo("date")}>
-                <Text>{moment(this.state.Return_date).format("DD-MMM-YYYY")}</Text>
+              <Button
+                style={{ flex: 1, marginStart: 5 }}
+                onPress={this.showDateTimePicker("toDTpicker")}>
+                <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
               </Button>
-              {showTo && (
-                <RNDateTimePicker
-                  display="calendar"
-                  value={Return_date}
-                  mode={mode}
-                  minimumDate={new Date()}
-                  onChange={this.setDateTo}
-                />
-              )}
+              <DateTimePicker
+                isVisible={toDTpicker}
+                onConfirm={this.handleDatePicked("toDTpicker")}
+                onCancel={this.hideDateTimePicker("toDTpicker")}
+                minimumDate={new Date()}
+              />
             </View>
           )}
         </View>
