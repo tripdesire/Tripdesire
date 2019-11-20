@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { View, Image, Modal, StyleSheet, TouchableOpacity } from "react-native";
-import { Button, Text } from "../../components";
+import { Button, Text, AutoCompleteModal } from "../../components";
+import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconIonics from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -43,7 +44,14 @@ class Bus extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.setState({ suggestions: this.props.busSuggestion });
+    Service.get("/Buses/Sources")
+      .then(res => {
+        console.log(res);
+        this.setState({ suggestions: res.data });
+      })
+      .catch(error => {
+        Toast.show(error, Toast.LONG);
+      });
   }
 
   setDate = (event, date) => {
@@ -314,84 +322,35 @@ class Bus extends React.PureComponent {
             <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
           </Button>
         </View>
-        <AutoCompleteModal
-          placeholder="Enter Source"
+
+        <Modal
+          animationType="slide"
+          transparent={false}
           visible={this.state.modalFrom}
-          suggestions={this.state.suggestions}
-          onChange={this.handleFrom}
-          onModalBackPress={this.setModalVisible("modalFrom", false)}
-        />
-        <AutoCompleteModal
-          placeholder="Enter Destination"
+          onRequestClose={this.setModalVisible("modalFrom", false)}>
+          <AutoCompleteModal
+            placeholder="Enter Source"
+            //visible={this.state.modalTo}
+            type="bus"
+            onChange={this.handleFrom}
+            onModalBackPress={this.setModalVisible("modalFrom", false)}
+          />
+        </Modal>
+
+        <Modal
+          animationType="slide"
+          transparent={false}
           visible={this.state.modalTo}
-          suggestions={this.state.suggestions}
-          onChange={this.handleTo}
-          onModalBackPress={this.setModalVisible("modalTo", false)}
-        />
+          onRequestClose={this.setModalVisible("modalTo", false)}>
+          <AutoCompleteModal
+            placeholder="Enter Destination"
+            //visible={this.state.modalTo}
+            type="bus"
+            onChange={this.handleTo}
+            onModalBackPress={this.setModalVisible("modalTo", false)}
+          />
+        </Modal>
       </View>
-    );
-  }
-}
-
-class AutoCompleteModal extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filteredList: this.props.suggestions
-    };
-  }
-
-  filterList = text => {
-    console.log(text);
-    let filteredList = this.props.suggestions.filter(item =>
-      item.Name.toLowerCase().includes(text.toLowerCase())
-    );
-    this.setState({ filteredList });
-  };
-
-  handleItemChange = item => () => {
-    this.props.onChange && this.props.onChange(item);
-  };
-
-  renderItem = ({ item, i }) => (
-    <TouchableOpacity
-      style={{
-        backgroundColor: "#FFFFFF",
-        height: 30,
-        justifyContent: "center",
-        marginHorizontal: 10
-      }}
-      onPress={this.handleItemChange(item)}>
-      <Text>
-        {item.Name}, {item.Id} - (India)
-      </Text>
-    </TouchableOpacity>
-  );
-
-  keyExtractor = (item, index) => item.Name + index;
-
-  render() {
-    return (
-      <Modal animationType="slide" transparent={false} visible={this.props.visible}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Button
-            onPress={this.props.onModalBackPress}
-            style={{ alignItems: "center", justifyContent: "center", height: 48, width: 48 }}>
-            <IconIonics name="md-arrow-back" size={24} />
-          </Button>
-          <View style={styles.autocompleteContainer}>
-            <Autocomplete
-              placeholder={this.props.placeholder}
-              inputContainerStyle={{ borderWidth: 0, height: 48, justifyContent: "center" }}
-              data={this.state.filteredList}
-              onChangeText={this.filterList}
-              listStyle={{ maxHeight: 300 }}
-              renderItem={this.renderItem}
-              keyExtractor={this.keyExtractor}
-            />
-          </View>
-        </View>
-      </Modal>
     );
   }
 }
@@ -407,8 +366,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => ({
-  busSuggestion: state.busSuggestion
-});
-
-export default connect(mapStateToProps, null)(Bus);
+export default Bus;

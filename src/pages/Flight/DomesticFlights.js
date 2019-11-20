@@ -257,7 +257,7 @@ class DomesticFlights extends React.PureComponent {
               <DateTimePicker
                 isVisible={toDTpicker}
                 onConfirm={this.handleDatePicked("toDTpicker")}
-                onCancel={this.hideDateTimePicker("fromDTpicker")}
+                onCancel={this.hideDateTimePicker("toDTpicker")}
                 minimumDate={new Date()}
               />
             </View>

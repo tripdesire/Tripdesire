@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Image, StyleSheet, Picker, Modal } from "react-native";
-
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal } from "../../components";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
