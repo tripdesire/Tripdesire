@@ -51,6 +51,7 @@ class HotelInfo extends React.PureComponent {
           Toast.show("No Data Found.", Toast.SHORT);
         }
         console.log(data.AvailableHotels);
+        console.log(data.AvailableHotels[0].HotelImages[0].Imagepath);
         this.setState({ hotels: data.AvailableHotels, loader: false });
       })
       .catch(error => {
@@ -79,6 +80,8 @@ class HotelInfo extends React.PureComponent {
 
   _renderItemList = ({ item, index }) => {
     const { width, height } = Dimensions.get("window");
+    var str = item.HotelImages[0].Imagepath;
+    var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
     return (
       <View
         style={{
@@ -92,8 +95,8 @@ class HotelInfo extends React.PureComponent {
         }}>
         <Image
           style={{ width: width / 4, height: height / 6, borderRadius: 5 }}
-          source={require("../../assets/imgs/Hotel-Img.png")}
           resizeMode="cover"
+          source={{ uri: res }}
         />
         <View
           style={{

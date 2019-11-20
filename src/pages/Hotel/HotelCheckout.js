@@ -218,17 +218,32 @@ class HotelCheckout extends React.Component {
                     const { width, height } = Dimensions.get("window");
                     const { params } = this.props.navigation.state;
                     const { _selectRadio } = this.state;
+                    var str = params.HotelImages[0].Imagepath;
+                    var res = str.replace(
+                      "https://cdn.grnconnect.com/",
+                      "https://images.grnconnect.com/"
+                    );
                     return (
                       <View key={item.RoomIndex}>
                         <View style={{ marginVertical: 20, flexDirection: "row" }}>
-                          <Image
+                          {/* <Image
                             style={{
                               width: width / 4,
                               height: width / 5,
                               borderRadius: 5
                             }}
                             source={require("../../assets/imgs/Hotel-Img.png")}
+                          /> */}
+
+                          <Image
+                            style={{
+                              width: width / 4,
+                              height: width / 5,
+                              borderRadius: 5
+                            }}
+                            source={{ uri: res }}
                           />
+
                           <View
                             style={{
                               justifyContent: "space-between",
