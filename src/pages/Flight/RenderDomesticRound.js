@@ -86,9 +86,9 @@ class RenderDomesticRound extends React.PureComponent {
               {this.props.item.FlightSegments[0].Duration}
             </Text>
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
-              {this.props.item.FlightSegments[0].StopQuantity == 0
+              {this.props.item.FlightSegments.length - 1 == 0
                 ? "Non Stop"
-                : this.props.item.FlightSegments[0].StopQuantity}
+                : this.props.item.FlightSegments.length - 1 + " Stop(s)"}
             </Text>
           </View>
           <View>
@@ -275,9 +275,9 @@ class RenderDomesticRound extends React.PureComponent {
                   fontSize: 12
                 }}>
                 With{" "}
-                {this.props.item.FlightSegments[0].StopQuantity == 0
-                  ? "0"
-                  : this.props.item.FlightSegments[0].StopQuantity}{" "}
+                {this.props.item.FlightSegments.length - 1 == 0
+                  ? "0 "
+                  : this.props.item.FlightSegments.length - 1 + " Stop(s) "}
                 connection/s
               </Text>
               <Foundation name="shopping-bag" size={18} color="#5D666D" />

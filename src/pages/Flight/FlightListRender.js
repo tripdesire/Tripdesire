@@ -138,9 +138,9 @@ class FlightListRender extends React.PureComponent {
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 16, lineHeight: 20 }}>{item.FlightSegments[0].Duration}</Text>
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
-              {item.FlightSegments[0].StopQuantity == 0
+              {item.FlightSegments.length - 1 == 0
                 ? "Non Stop"
-                : item.FlightSegments[0].StopQuantity}
+                : item.FlightSegments.length - 1 + " Stop(s)"}
             </Text>
           </View>
 
@@ -350,9 +350,7 @@ class FlightListRender extends React.PureComponent {
                   fontSize: 12
                 }}>
                 With{" "}
-                {item.FlightSegments[0].StopQuantity == 0
-                  ? "0"
-                  : item.FlightSegments[0].StopQuantity}{" "}
+                {item.FlightSegments.length - 1 == 0 ? "0 " : item.FlightSegments.length - 1 + " "}
                 connection/s
               </Text>
               <Foundation name="shopping-bag" size={18} color="#5D666D" />

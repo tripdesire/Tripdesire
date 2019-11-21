@@ -182,9 +182,9 @@ class RenderInternationRound extends React.PureComponent {
                   width: width / 5
                 }}></View>
               <Text style={{ fontSize: 12, color: "#5D646A", alignSelf: "center" }}>
-                {this.props.item.IntOnward.FlightSegments[0].StopQuantity > 0
-                  ? this.props.item.IntOnward.FlightSegments[0].StopQuantity
-                  : "Non Stop"}
+                {this.props.item.IntOnward.FlightSegments.length - 1 == 0
+                  ? "Non Stop"
+                  : this.props.item.IntOnward.FlightSegments.length - 1 + " Stop(s) "}
               </Text>
             </View>
             <View>
@@ -368,10 +368,10 @@ class RenderInternationRound extends React.PureComponent {
                   color: "#5D666D",
                   fontSize: 12
                 }}>
-                With
-                {this.props.item.IntOnward.FlightSegments[0].StopQuantity == 0
+                With{" "}
+                {this.props.item.IntOnward.FlightSegments.length - 1 == 0
                   ? "Non Stop"
-                  : this.props.item.IntOnward.FlightSegments[0].StopQuantity}
+                  : this.props.item.IntOnward.FlightSegments.length - 1 + " "}
                 connection/s
               </Text>
               <Foundation name="shopping-bag" size={24} color="#5D666D" />
@@ -453,9 +453,9 @@ class RenderInternationRound extends React.PureComponent {
                     color: "#5D646A",
                     alignSelf: "center"
                   }}>
-                  {this.props.item.IntReturn.FlightSegments[0].StopQuantity == 0
+                  {this.props.item.IntReturn.FlightSegments.length - 1 == 0
                     ? "Non Stop"
-                    : this.props.item.IntReturn.FlightSegments[0].StopQuantity}
+                    : this.props.item.IntReturn.FlightSegments.length - 1 + " Stop(s) "}
                 </Text>
               </View>
               <View>
@@ -639,10 +639,10 @@ class RenderInternationRound extends React.PureComponent {
                     color: "#5D666D",
                     fontSize: 12
                   }}>
-                  With
-                  {this.props.item.IntReturn.FlightSegments[0].StopQuantity == 0
+                  With{" "}
+                  {this.props.item.IntReturn.FlightSegments.length - 1 == 0
                     ? "Non Stop"
-                    : this.props.item.IntReturn.FlightSegments[0].StopQuantity}
+                    : this.props.item.IntReturn.FlightSegments.length - 1 + " "}
                   connection/s
                 </Text>
                 <Foundation name="shopping-bag" size={24} color="#5D666D" />
