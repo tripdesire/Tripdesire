@@ -133,7 +133,10 @@ class RenderDomesticRound extends React.PureComponent {
           </View>
           <View>
             <Text style={{ fontSize: 16, lineHeight: 20 }}>
-              {this.props.item.FlightSegments[0].Duration}
+              {this.props.item.FlightSegments.length == 1
+                ? this.props.item.FlightSegments[0].Duration
+                : this.props.item.FlightSegments[this.props.item.FlightSegments.length - 1]
+                    .AccumulatedDuration}
             </Text>
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
               {this.props.item.FlightSegments.length - 1 == 0
@@ -204,172 +207,209 @@ class RenderDomesticRound extends React.PureComponent {
           </View>
         </View>
 
-        {this.state.expanded && (
-          <View style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginHorizontal: 8
-              }}>
-              <Text style={{ color: "#636C73", fontSize: 12 }}>
-                {this.props.item.FlightSegments[0].AirLineName} | {this.props.item.FlightUId}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                marginHorizontal: 8,
-                alignItems: "center",
-                justifyContent: "space-between"
-              }}>
-              <View style={{ alignItems: "center", flexDirection: "row" }}>
-                <Image
-                  style={{ width: 40, height: 40, marginEnd: 4 }}
-                  source={{ uri: img }}
-                  resizeMode="cover"
-                />
-                <View>
-                  <Text style={{ fontSize: 20, lineHeight: 22 }}>{dd}</Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      lineHeight: 14
-                    }}>
-                    {from}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      lineHeight: 14
-                    }}>
-                    {departureDate}
+        {this.state.expanded &&
+          this.props.item.FlightSegments.map((itemEach, index) => {
+            return (
+              <View
+                style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
+                key={"_Seg" + index}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginHorizontal: 8
+                  }}>
+                  <Text style={{ color: "#636C73", fontSize: 12 }}>
+                    {itemEach.AirLineName} | {this.props.item.FlightUId}
                   </Text>
                 </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginHorizontal: 8,
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                  }}>
+                  <View style={{ alignItems: "center", flexDirection: "row" }}>
+                    <Image
+                      style={{ width: 40, height: 40, marginEnd: 4 }}
+                      source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
+                      resizeMode="cover"
+                    />
+                    <View>
+                      <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                        {moment(itemEach.DepartureDateTime).format("HH:MM")}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          lineHeight: 14
+                        }}>
+                        {itemEach.IntDepartureAirportName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          lineHeight: 14
+                        }}>
+                        {moment(itemEach.DepartureDateTime).format("MMM DD")}
+                      </Text>
+                    </View>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#5D646A",
+                        lineHeight: 20,
+                        marginHorizontal: 3
+                      }}>
+                      {className}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                      {moment(itemEach.ArrivalDateTime).format("HH:MM")}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#5D646A",
+                        lineHeight: 14
+                      }}>
+                      {itemEach.IntArrivalAirportName}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#5D646A",
+                        lineHeight: 14
+                      }}>
+                      {moment(itemEach.ArrivalDateTime).format("MMM DD")}
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    borderStyle: "dashed",
+                    borderWidth: 1,
+                    marginHorizontal: 8,
+                    borderColor: "#D0D3DA",
+                    borderRadius: 0.5,
+                    marginTop: 10
+                  }}></View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginVertical: 5
+                  }}>
+                  <Text
+                    style={{
+                      flex: 1,
+                      marginHorizontal: 10,
+                      color: "#5D666D",
+                      fontSize: 12
+                    }}>
+                    {itemEach.Duration}
+                  </Text>
+                  <Text
+                    style={{
+                      flex: 1,
+                      marginHorizontal: 10,
+                      color: "#5D666D",
+                      fontSize: 12
+                    }}>
+                    With{" "}
+                    {this.props.item.FlightSegments.length - 1 == 0
+                      ? "0 "
+                      : this.props.item.FlightSegments.length - 1 + " Stop(s) "}
+                    connection/s
+                  </Text>
+                  <Foundation name="shopping-bag" size={18} color="#5D666D" />
+                  <Text
+                    style={{
+                      flex: 1,
+                      color: "#5D666D",
+                      fontSize: 12,
+                      marginStart: 2
+                    }}>
+                    {itemEach.BaggageAllowed.HandBaggage}
+                  </Text>
+                  <Foundation name="shopping-bag" size={18} color="#5D666D" />
+                  <Text
+                    style={{
+                      flex: 1,
+                      color: "#5D666D",
+                      fontSize: 12,
+                      marginStart: 2
+                    }}>
+                    {itemEach.BaggageAllowed.CheckInBaggage}
+                  </Text>
+                  <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
+                    Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderStyle: "dashed",
+                    borderWidth: 1,
+                    marginHorizontal: 8,
+                    borderColor: "#D0D3DA",
+                    borderRadius: 0.5
+                  }}></View>
+
+                {this.props.item.FlightSegments.length - 1 != index && (
+                  <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
+                    Change of Planes at{" "}
+                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                      {" "}
+                      {itemEach.IntArrivalAirportName}
+                    </Text>{" "}
+                    | Connection Time:
+                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                      {" "}
+                      {this.props.item.FlightSegments[index + 1].GroundTime}
+                    </Text>
+                  </Text>
+                )}
+
+                {this.props.item.FlightSegments.length - 1 == index && (
+                  <View style={{ flex: 1, marginStart: 3 }}>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#5D646A",
+                        alignSelf: "center",
+                        flex: 1
+                      }}>
+                      Base Fare : ₹{this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#5D646A",
+                        alignSelf: "center",
+                        flex: 1
+                      }}>
+                      Tax : ₹{this.props.item.FareDetails.ChargeableFares.Tax}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#5D646A",
+                        alignSelf: "center",
+                        flex: 1
+                      }}>
+                      Fee & SubCharges : ₹
+                      {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
+                    </Text>
+                  </View>
+                )}
               </View>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#5D646A",
-                    lineHeight: 20,
-                    marginHorizontal: 3
-                  }}>
-                  {className}
-                </Text>
-              </View>
-              <View>
-                <Text style={{ fontSize: 20, lineHeight: 22 }}>{ad}</Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#5D646A",
-                    lineHeight: 14
-                  }}>
-                  {to}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#5D646A",
-                    lineHeight: 14
-                  }}>
-                  {arrivalDate}
-                </Text>
-              </View>
-              <View style={{ flex: 1, marginStart: 3 }}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#5D646A",
-                    alignSelf: "center",
-                    flex: 1
-                  }}>
-                  Base Fare:122.02
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#5D646A",
-                    alignSelf: "center",
-                    flex: 1
-                  }}>
-                  Fee & SubCharges:47.23
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                borderStyle: "dashed",
-                borderWidth: 1,
-                marginHorizontal: 8,
-                borderColor: "#D0D3DA",
-                borderRadius: 0.5,
-                marginTop: 10
-              }}></View>
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: 5
-              }}>
-              <Text
-                style={{
-                  flex: 1,
-                  marginHorizontal: 10,
-                  color: "#5D666D",
-                  fontSize: 12
-                }}>
-                {this.props.item.FlightSegments[0].Duration}
-              </Text>
-              <Text
-                style={{
-                  flex: 1,
-                  marginHorizontal: 10,
-                  color: "#5D666D",
-                  fontSize: 12
-                }}>
-                With{" "}
-                {this.props.item.FlightSegments.length - 1 == 0
-                  ? "0 "
-                  : this.props.item.FlightSegments.length - 1 + " Stop(s) "}
-                connection/s
-              </Text>
-              <Foundation name="shopping-bag" size={18} color="#5D666D" />
-              <Text
-                style={{
-                  flex: 1,
-                  color: "#5D666D",
-                  fontSize: 12,
-                  marginStart: 2
-                }}>
-                {this.props.item.FlightSegments[0].BaggageAllowed.HandBaggage}
-              </Text>
-              <Foundation name="shopping-bag" size={18} color="#5D666D" />
-              <Text
-                style={{
-                  flex: 1,
-                  color: "#5D666D",
-                  fontSize: 12,
-                  marginStart: 2
-                }}>
-                {this.props.item.FlightSegments[0].BaggageAllowed.CheckInBaggage}
-              </Text>
-              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
-                Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
-              </Text>
-            </View>
-            <View
-              style={{
-                borderStyle: "dashed",
-                borderWidth: 1,
-                marginHorizontal: 8,
-                borderColor: "#D0D3DA",
-                borderRadius: 0.5
-              }}></View>
-          </View>
-        )}
+            );
+          })}
         <Modal
           animationType="slide"
           transparent={false}

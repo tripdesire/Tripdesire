@@ -180,8 +180,8 @@ class FlightsInfoRound extends React.PureComponent {
         index={index}
         selected={index == this.state.selectedReturn}
         getDomesticFlights={this._getDomesticFlightReturn}
-        from={this.state.from}
-        to={this.state.to}
+        from={this.state.to}
+        to={this.state.from}
         className={this.state.className}
         travelClass={this.state.travelClass}
         journeyDate={this.state.journeyDate}
