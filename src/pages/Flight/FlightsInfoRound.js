@@ -167,6 +167,8 @@ class FlightsInfoRound extends React.PureComponent {
         destinationCode={this.state.destinationCode}
         sourceAirportName={this.state.sourceAirportName}
         destinationAirportName={this.state.destinationAirportName}
+        trip_type={2}
+        flight_type={1}
       />
     );
   };
@@ -188,6 +190,8 @@ class FlightsInfoRound extends React.PureComponent {
         destinationCode={this.state.destinationCode}
         sourceAirportName={this.state.sourceAirportName}
         destinationAirportName={this.state.destinationAirportName}
+        trip_type={2}
+        flight_type={1}
       />
     );
   };

@@ -10,7 +10,6 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
 import Service from "../../service";
 import moment from "moment";
-import SimpleToast from "react-native-simple-toast";
 var newData = [];
 class FlightListRender extends React.PureComponent {
   constructor(props) {
@@ -202,7 +201,7 @@ class FlightListRender extends React.PureComponent {
                   color: "#5D666D",
                   fontSize: 12
                 }}>
-                Refundable
+                {item.FlightSegments[0].BookingClassFare.Rule}
               </Text>
             </Button>
             <Button onPress={this.fareRules}>
