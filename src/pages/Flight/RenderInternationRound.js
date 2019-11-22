@@ -529,7 +529,11 @@ class RenderInternationRound extends React.PureComponent {
               </View>
               <View style={{ alignItems: "center" }}>
                 <Text style={{ fontSize: 16 }}>
-                  {this.props.item.IntReturn.FlightSegments[0].Duration}
+                  {
+                    this.props.item.IntReturn.FlightSegments[
+                      this.props.item.IntReturn.FlightSegments.length - 1
+                    ].AccumulatedDuration
+                  }
                 </Text>
                 <View
                   style={{
@@ -603,166 +607,202 @@ class RenderInternationRound extends React.PureComponent {
                   <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
                 )}
                 {this.state.expandedReturn == true && (
-                  <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+Hide Details</Text>
+                  <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
                 )}
               </Button>
             </View>
           </View>
 
-          {this.state.expandedReturn && (
-            <View style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginHorizontal: 16
-                }}>
-                <Text style={{ color: "#636C73", fontSize: 12 }}>
-                  {this.props.item.IntReturn.FlightSegments[0].AirLineName} |{" "}
-                  {this.props.item.FlightUId}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 16,
-                  justifyContent: "space-around"
-                }}>
-                <Image
-                  style={{
-                    width: 35,
-                    resizeMode: "contain",
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start"
-                  }}
-                  source={{ uri: imgReturn }}
-                />
-                <View style={{ marginHorizontal: 8 }}>
-                  <Text style={{ fontSize: 20, alignSelf: "flex-start" }}>{ddRet}</Text>
-                  <Text
+          {this.state.expandedReturn &&
+            this.props.item.IntReturn.FlightSegments.map((itemEach, index) => {
+              return (
+                <View style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}>
+                  <View
                     style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      alignSelf: "flex-start"
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginHorizontal: 16
                     }}>
-                    {to}
-                  </Text>
-                  <Text
+                    <Text style={{ color: "#636C73", fontSize: 12 }}>
+                      {itemEach.AirLineName} | {this.props.item.FlightUId}
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      alignSelf: "flex-start"
+                      flexDirection: "row",
+                      marginHorizontal: 16,
+                      justifyContent: "space-around"
                     }}>
-                    {departureDateReturn}
-                  </Text>
+                    <Image
+                      style={{
+                        width: 35,
+                        resizeMode: "contain",
+                        alignItems: "flex-start",
+                        justifyContent: "flex-start"
+                      }}
+                      source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
+                    />
+                    <View style={{ marginHorizontal: 8 }}>
+                      <Text style={{ fontSize: 20, alignSelf: "flex-start" }}>
+                        {moment(itemEach.DepartureDateTime).format("HH:MM")}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          alignSelf: "flex-start"
+                        }}>
+                        {itemEach.IntDepartureAirportName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          alignSelf: "flex-start"
+                        }}>
+                        {moment(itemEach.DepartureDateTime).format("MMM DD")}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        marginHorizontal: 2,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}>
+                      <Text style={{ fontSize: 12, color: "#5D646A" }}>{className}</Text>
+                    </View>
+                    <View style={{ marginHorizontal: 8 }}>
+                      <Text style={{ fontSize: 20, alignSelf: "flex-start" }}>
+                        {moment(itemEach.ArrivalDateTime).format("HH:MM")}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          alignSelf: "flex-start"
+                        }}>
+                        {itemEach.IntArrivalAirportName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          alignSelf: "flex-start"
+                        }}>
+                        {moment(itemEach.ArrivalDateTime).format("MMM DD")}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      borderStyle: "dashed",
+                      borderWidth: 1,
+                      marginHorizontal: 16,
+                      borderColor: "#D0D3DA",
+                      borderRadius: 0.5,
+                      marginTop: 10
+                    }}></View>
+                  <View
+                    style={{
+                      marginHorizontal: 16,
+                      flexDirection: "row",
+                      marginVertical: 5
+                    }}>
+                    <Text
+                      style={{
+                        flex: 1,
+                        marginHorizontal: 10,
+                        color: "#5D666D",
+                        fontSize: 12
+                      }}>
+                      {itemEach.Duration}
+                    </Text>
+                    <Text
+                      style={{
+                        flex: 1,
+                        marginHorizontal: 10,
+                        color: "#5D666D",
+                        fontSize: 12
+                      }}>
+                      With{" "}
+                      {this.props.item.IntReturn.FlightSegments.length - 1 == 0
+                        ? "Non Stop"
+                        : this.props.item.IntReturn.FlightSegments.length - 1 + " "}
+                      connection/s
+                    </Text>
+                    <Foundation name="shopping-bag" size={24} color="#5D666D" />
+                    <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
+                      {itemEach.BaggageAllowed.HandBaggage != ""
+                        ? itemEach.BaggageAllowed.HandBaggage
+                        : 0 + " PC(s)"}
+                    </Text>
+                    <Foundation name="shopping-bag" size={24} color="#5D666D" />
+                    <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
+                      {itemEach.BaggageAllowed.CheckInBaggage}
+                    </Text>
+                    <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
+                      Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      borderStyle: "dashed",
+                      borderWidth: 1,
+                      marginHorizontal: 16,
+                      borderColor: "#D0D3DA",
+                      borderRadius: 0.5
+                    }}></View>
+
+                  {this.props.item.IntReturn.FlightSegments.length - 1 != index && (
+                    <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
+                      Change of Planes at{" "}
+                      <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                        {" "}
+                        {itemEach.IntArrivalAirportName}
+                      </Text>{" "}
+                      | Connection Time:
+                      <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                        {" "}
+                        {this.props.item.IntReturn.FlightSegments[index + 1].GroundTime}
+                      </Text>
+                    </Text>
+                  )}
+
+                  {this.props.item.IntReturn.FlightSegments.length - 1 == index && (
+                    <View style={{ flex: 1, marginStart: 3 }}>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          alignSelf: "center",
+                          flex: 1
+                        }}>
+                        Base Fare : ₹{this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          alignSelf: "center",
+                          flex: 1
+                        }}>
+                        Tax : ₹{this.props.item.FareDetails.ChargeableFares.Tax}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#5D646A",
+                          alignSelf: "center",
+                          flex: 1
+                        }}>
+                        Fee & SubCharges : ₹
+                        {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
+                      </Text>
+                    </View>
+                  )}
                 </View>
-                <View
-                  style={{
-                    marginHorizontal: 2,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}>
-                  <Text style={{ fontSize: 12, color: "#5D646A" }}>{className}</Text>
-                </View>
-                <View style={{ marginHorizontal: 8 }}>
-                  <Text style={{ fontSize: 20, alignSelf: "flex-start" }}>{adReturn}</Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      alignSelf: "flex-start"
-                    }}>
-                    {from}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      alignSelf: "flex-start"
-                    }}>
-                    {arrivalDate}
-                  </Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      alignSelf: "center",
-                      flex: 1
-                    }}>
-                    Base Fare:122.02
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: "#5D646A",
-                      alignSelf: "center",
-                      flex: 1
-                    }}>
-                    Free & SubCharges:47.23
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  borderStyle: "dashed",
-                  borderWidth: 1,
-                  marginHorizontal: 16,
-                  borderColor: "#D0D3DA",
-                  borderRadius: 0.5,
-                  marginTop: 10
-                }}></View>
-              <View
-                style={{
-                  marginHorizontal: 16,
-                  flexDirection: "row",
-                  marginVertical: 5
-                }}>
-                <Text
-                  style={{
-                    flex: 1,
-                    marginHorizontal: 10,
-                    color: "#5D666D",
-                    fontSize: 12
-                  }}>
-                  {this.props.item.IntReturn.FlightSegments[0].Duration}
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-                    marginHorizontal: 10,
-                    color: "#5D666D",
-                    fontSize: 12
-                  }}>
-                  With{" "}
-                  {this.props.item.IntReturn.FlightSegments.length - 1 == 0
-                    ? "Non Stop"
-                    : this.props.item.IntReturn.FlightSegments.length - 1 + " "}
-                  connection/s
-                </Text>
-                <Foundation name="shopping-bag" size={24} color="#5D666D" />
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
-                  {this.props.item.IntReturn.FlightSegments[0].BaggageAllowed.HandBaggage}
-                </Text>
-                <Foundation name="shopping-bag" size={24} color="#5D666D" />
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
-                  {this.props.item.IntReturn.FlightSegments[0].BaggageAllowed.CheckInBaggage}
-                </Text>
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>
-                  Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderStyle: "dashed",
-                  borderWidth: 1,
-                  marginHorizontal: 16,
-                  borderColor: "#D0D3DA",
-                  borderRadius: 0.5
-                }}></View>
-            </View>
-          )}
+              );
+            })}
         </View>
         <Modal
           animationType="slide"
