@@ -5,6 +5,7 @@ import { domesticHotelSuggestionReducer } from "./domesticHotelSuggestionReducer
 import { signInReducer } from "./signInReducer";
 import { signUpReducer } from "./signUpReducer";
 import { busSuggestionReducer } from "./busSuggestionReducer";
+import {cabSuggestionReducer} from "./cabSuggestionReducer";
 
 export default combineReducers({
   domesticSuggestion: domesticSuggestionReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   domesticHotelSuggestion: domesticHotelSuggestionReducer,
   signIn: signInReducer,
   signUp: signUpReducer,
-  busSuggestion: busSuggestionReducer
+  busSuggestion: busSuggestionReducer,
+  cabSuggestion:cabSuggestionReducer
 });

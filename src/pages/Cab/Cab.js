@@ -56,9 +56,9 @@ class Cab extends React.PureComponent {
   }
 
   componentDidMount() {
-    Service.get("/Buses/Sources")
+    Service.get("/Cabs/Cities")
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         this.setState({ suggestions: res.data });
       })
       .catch(error => {
@@ -169,6 +169,8 @@ class Cab extends React.PureComponent {
       CheckIn,
       CheckOut,
       mode,
+      modalFrom,
+      modalTo,
       tripType,
       tripTypeColorLocal,
       tripTypeColorTransferAirpot,
@@ -601,6 +603,34 @@ class Cab extends React.PureComponent {
                 <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
               </Button>
             </View>
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalFrom}
+              onRequestClose={this.setModalVisible("modalFrom", false)}>
+              <AutoCompleteModal
+                placeholder="Enter Source"
+                //visible={this.state.modalTo}
+                type="cab"
+                onChange={this.handleFrom}
+                onModalBackPress={this.setModalVisible("modalFrom", false)}
+              />
+            </Modal>
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalTo}
+              onRequestClose={this.setModalVisible("modalTo", false)}>
+              <AutoCompleteModal
+                placeholder="Enter Destination"
+                //visible={this.state.modalTo}
+                type="cab"
+                onChange={this.handleTo}
+                onModalBackPress={this.setModalVisible("modalTo", false)}
+              />
+            </Modal>
           </View>
         </SafeAreaView>
       </>

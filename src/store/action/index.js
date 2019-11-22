@@ -4,7 +4,8 @@ import {
   DOMESTIC_HOTEL_SUGGESTION,
   SIGN_IN,
   SIGN_UP,
-  BUS_SUGGESTION
+  BUS_SUGGESTION,
+  CAB_SUGGESTION
 } from "./actionTypes";
 
 export const DomSugg = data => {
@@ -45,6 +46,13 @@ export const Signin = data => {
 export const BusSugg = data => {
   return {
     type: BUS_SUGGESTION,
+    payload: data
+  };
+};
+
+export const CabSugg = data => {
+  return {
+    type: CAB_SUGGESTION,
     payload: data
   };
 };
