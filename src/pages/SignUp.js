@@ -10,7 +10,7 @@ import { Button, Text, TextInputComponent, Activity_Indicator } from "../compone
 import { connect } from "react-redux";
 import { Signup } from "../store/action";
 import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
-import { LoginButton, AccessToken } from "react-native-fbsdk";
+//import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
 
 class SignUp extends React.PureComponent {
@@ -178,7 +178,7 @@ class SignUp extends React.PureComponent {
               <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Sign Up by Facebook</Text>
             </Button>
             <View>
-              <LoginButton
+              {/* <LoginButton
                 onLoginFinished={(error, result) => {
                   if (error) {
                     console.log("login has error: " + result.error);
@@ -191,7 +191,7 @@ class SignUp extends React.PureComponent {
                   }
                 }}
                 onLogoutFinished={() => console.log("logout.")}
-              />
+              /> */}
             </View>
           </View>
         </ScrollView>
@@ -240,7 +240,4 @@ const mapDispatchToProps = {
   Signup
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SignUp);
+export default connect(null, mapDispatchToProps)(SignUp);
