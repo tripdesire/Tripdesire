@@ -2,16 +2,11 @@ import React, { PureComponent } from "react";
 import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal } from "../../components";
 import Toast from "react-native-simple-toast";
-import Icon from "react-native-vector-icons/AntDesign";
-import IconIonics from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import FontAwsm from "react-native-vector-icons/FontAwesome";
-import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import Service from "../../service";
 import { Header } from "../../components";
-import { connect } from "react-redux";
 
 class Bus extends React.PureComponent {
   constructor(props) {
@@ -367,16 +362,5 @@ class Bus extends React.PureComponent {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  autocompleteContainer: {
-    flex: 1,
-    start: 48,
-    position: "absolute",
-    end: 0,
-    top: 0,
-    zIndex: 1
-  }
-});
 
 export default Bus;

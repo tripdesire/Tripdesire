@@ -616,7 +616,9 @@ class RenderInternationRound extends React.PureComponent {
           {this.state.expandedReturn &&
             this.props.item.IntReturn.FlightSegments.map((itemEach, index) => {
               return (
-                <View style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}>
+                <View
+                  style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
+                  key={"_SepReturn" + index}>
                   <View
                     style={{
                       flexDirection: "row",
