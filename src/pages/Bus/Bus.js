@@ -3,7 +3,7 @@ import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal } from "../../components";
 import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import Service from "../../service";
 import { Header } from "../../components";
@@ -34,7 +34,9 @@ class Bus extends React.PureComponent {
       backgroundColor_round: "#FFFFFF",
       isselect: true,
       _select_round: false,
-      suggestions: []
+      suggestions: [],
+      fromDTpicker: false,
+      toDTpicker: false
     };
   }
 
@@ -48,6 +50,29 @@ class Bus extends React.PureComponent {
         Toast.show(error, Toast.LONG);
       });
   }
+
+  showDateTimePicker = key => () => {
+    this.setState({ [key]: true });
+  };
+
+  hideDateTimePicker = key => () => {
+    this.setState({ [key]: false });
+  };
+
+  handleDatePicked = key => date => {
+    let data = {};
+    if (key == "fromDTpicker") {
+      data.CheckIn = date;
+    } else {
+      data.CheckOut = date;
+    }
+    this.setState(data);
+    this.hideDateTimePicker(key)();
+  };
+
+  setModalVisible = (key, visible) => () => {
+    this.setState({ [key]: visible });
+  };
 
   setDate = (event, date) => {
     date = date || this.state.CheckIn;
@@ -143,16 +168,13 @@ class Bus extends React.PureComponent {
     const {
       from,
       to,
-      show_CheckIn,
-      show_CheckOut,
-      CheckIn,
-      CheckOut,
-      mode,
       backgroundColor_oneway,
       backgroundColor_round,
       Button_text_color_oneway,
       Button_text_color_round,
-      _select_round
+      _select_round,
+      fromDTpicker,
+      toDTpicker
     } = this.state;
     return (
       <>
@@ -275,20 +297,18 @@ class Bus extends React.PureComponent {
                     paddingStart: 20
                   }}>
                   <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
-                  <Button style={{ marginStart: 5 }} onPress={this.show("date")}>
-                    <Text style={{ fontSize: 18 }}>
-                      {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
-                    </Text>
+
+                  <Button
+                    style={{ flex: 1, marginStart: 5 }}
+                    onPress={this.showDateTimePicker("fromDTpicker")}>
+                    <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
                   </Button>
-                  {show_CheckIn && (
-                    <RNDateTimePicker
-                      display="calendar"
-                      value={CheckIn}
-                      mode={mode}
-                      minimumDate={new Date()}
-                      onChange={this.setDate}
-                    />
-                  )}
+                  <DateTimePicker
+                    isVisible={fromDTpicker}
+                    onConfirm={this.handleDatePicked("fromDTpicker")}
+                    onCancel={this.hideDateTimePicker("fromDTpicker")}
+                    minimumDate={new Date()}
+                  />
                 </View>
                 {_select_round && (
                   <View
@@ -297,20 +317,18 @@ class Bus extends React.PureComponent {
                       paddingStart: 20
                     }}>
                     <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-                    <Button style={{ marginStart: 5 }} onPress={this.showTo("date")}>
-                      <Text style={{ fontSize: 18 }}>
-                        {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
-                      </Text>
+
+                    <Button
+                      style={{ flex: 1, marginStart: 5 }}
+                      onPress={this.showDateTimePicker("toDTpicker")}>
+                      <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
                     </Button>
-                    {show_CheckOut && (
-                      <RNDateTimePicker
-                        display="calendar"
-                        value={CheckOut}
-                        mode={mode}
-                        minimumDate={new Date()}
-                        onChange={this.setDate_CheckOut}
-                      />
-                    )}
+                    <DateTimePicker
+                      isVisible={toDTpicker}
+                      onConfirm={this.handleDatePicked("toDTpicker")}
+                      onCancel={this.hideDateTimePicker("toDTpicker")}
+                      minimumDate={new Date()}
+                    />
                   </View>
                 )}
               </View>

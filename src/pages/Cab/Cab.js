@@ -4,8 +4,8 @@ import { Button, Text, AutoCompleteModal } from "../../components";
 import Toast from "react-native-simple-toast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import Service from "../../service";
@@ -16,10 +16,10 @@ class Cab extends React.PureComponent {
     this.state = {
       sourceName: "Hyderabad",
       destinationName: "Bangalore",
-      from: "Hyderabad ,100 - (India)",
-      sourceId: "100",
-      to: "Bangalore ,109 - (India)",
-      destinationId: "109",
+      from: "Hyderabad ,149 - (India)",
+      sourceId: "149",
+      to: "Bangalore ,113 - (India)",
+      destinationId: "113",
       Journey_date: "31-09-2019",
       Return_date: "31-09-2019",
       modalTo: false,
@@ -29,7 +29,7 @@ class Cab extends React.PureComponent {
       show_CheckIn: false,
       show_CheckOut: false,
       mode: "date",
-      tripType: 1,
+      tripType: 4,
       backgroundColorLocal: "#5B89F9",
       buttonTextColorLocal: "#FFFFFF",
       buttonTextColorOutstation: "#000000",
@@ -46,7 +46,10 @@ class Cab extends React.PureComponent {
       suggestions: [],
       pickuptime: "",
       picktrip: "",
-      transfer: 0
+      transfer: 0,
+      fromDTpicker: false,
+      toDTpicker: false,
+      travelType: 2
     };
 
     this.inputRefs = {
@@ -66,34 +69,23 @@ class Cab extends React.PureComponent {
       });
   }
 
-  setDate = (event, date) => {
-    date = date || this.state.CheckIn;
-    this.setState({
-      show_CheckIn: Platform.OS === "ios" ? true : false,
-      CheckIn: date
-    });
+  showDateTimePicker = key => () => {
+    this.setState({ [key]: true });
   };
 
-  setDate_CheckOut = (event, date) => {
-    date = date || this.state.CheckOut;
-    this.setState({
-      show_CheckOut: Platform.OS === "ios" ? true : false,
-      CheckOut: date
-    });
+  hideDateTimePicker = key => () => {
+    this.setState({ [key]: false });
   };
 
-  show = mode => () => {
-    this.setState({
-      show_CheckIn: true,
-      mode
-    });
-  };
-
-  showTo = mode => () => {
-    this.setState({
-      show_CheckOut: true,
-      mode
-    });
+  handleDatePicked = key => date => {
+    let data = {};
+    if (key == "fromDTpicker") {
+      data.CheckIn = date;
+    } else {
+      data.CheckOut = date;
+    }
+    this.setState(data);
+    this.hideDateTimePicker(key)();
   };
 
   handleFrom = item => {
@@ -120,15 +112,16 @@ class Cab extends React.PureComponent {
 
   _triptype = value => {
     this.setState({
-      backgroundColorLocal: value == "onewway" ? "#5B89F9" : "#FFFFFF",
+      backgroundColorLocal: value == "oneway" ? "#5B89F9" : "#FFFFFF",
       backgroundColorOutstation: value == "round" ? "#5B89F9" : "#FFFFFF",
       backgroundColorTransfer: value == "transfer" ? "#5B89F9" : "#FFFFFF",
-      buttonTextColorLocal: value == "onewway" ? "#ffffff" : "#000000",
+      buttonTextColorLocal: value == "oneway" ? "#ffffff" : "#000000",
       buttonTextColorOutstation: value == "round" ? "#ffffff" : "#000000",
       buttonTextColorTransfer: value == "transfer" ? "#ffffff" : "#000000",
       _select_round: value == "round" ? true : false,
-      tripType: value == "round" ? 1 : 2,
-      transfer: value == "transfer" ? 1 : 0
+      tripType: value == "oneway" ? 4 : value == "round" ? 1 : value == "transfer" ? 6 : "",
+      transfer: value == "transfer" ? 1 : 0,
+      travelType: value == "oneway" ? 2 : value == "round" ? 1 : value == "transfer" ? 3 : ""
     });
   };
 
@@ -146,31 +139,40 @@ class Cab extends React.PureComponent {
 
   _search = () => {
     let params = {
-      sourceName: this.state.sourceName,
-      destinationName: this.state.destinationName,
       sourceId: this.state.sourceId,
-      destinationId: this.state.destinationId,
+      destinationId: "0",
       journeyDate: moment(this.state.CheckIn).format("DD-MM-YYYY"),
-      returnDate: this.state.tripType == 2 ? moment(this.state.CheckOut).format("DD-MM-YYYY") : "",
+      operatorName: "",
+      pickUpTime: "7:30pm",
+      Pickuplocation: "",
+      Droplocation: "",
+      travelType: this.state.travelType,
       tripType: this.state.tripType,
+      sessionId: "xb5dllu3cp02infmtvgrlaiu",
       userType: 5,
-      user: ""
+      user: "",
+      dropoffTime: "",
+      cabType: 1,
+      affiliateId: "",
+      websiteUrl: ""
     };
     console.log(params);
-    this.props.navigation.navigate("BusInfo", params);
+    Service.get("/Cabs/AvailableCabs", params)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+        Toast.show(error, Toast.LONG);
+      });
+
+    // this.props.navigation.navigate("BusInfo", params);
   };
 
   render() {
     const {
       from,
       to,
-      show_CheckIn,
-      show_CheckOut,
-      CheckIn,
-      CheckOut,
-      mode,
-      modalFrom,
-      modalTo,
       tripType,
       tripTypeColorLocal,
       tripTypeColorTransferAirpot,
@@ -184,7 +186,9 @@ class Cab extends React.PureComponent {
       buttonTextColorTransfer,
       buttonTextColorOutstation,
       _select_round,
-      transfer
+      transfer,
+      fromDTpicker,
+      toDTpicker
     } = this.state;
 
     const placeholder = {
@@ -236,7 +240,7 @@ class Cab extends React.PureComponent {
                     borderBottomStartRadius: 5,
                     borderTopStartRadius: 5
                   }}
-                  onPress={() => this._triptype("onewway")}>
+                  onPress={() => this._triptype("oneway")}>
                   <Text style={{ color: buttonTextColorLocal, fontSize: 12 }}>Local</Text>
                 </Button>
                 <Button
@@ -487,20 +491,18 @@ class Cab extends React.PureComponent {
                     paddingStart: 20
                   }}>
                   <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
-                  <Button style={{ marginStart: 5 }} onPress={this.show("date")}>
-                    <Text style={{ fontSize: 18 }}>
-                      {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
-                    </Text>
+
+                  <Button
+                    style={{ flex: 1, marginStart: 5 }}
+                    onPress={this.showDateTimePicker("fromDTpicker")}>
+                    <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
                   </Button>
-                  {show_CheckIn && (
-                    <RNDateTimePicker
-                      display="calendar"
-                      value={CheckIn}
-                      mode={mode}
-                      minimumDate={new Date()}
-                      onChange={this.setDate}
-                    />
-                  )}
+                  <DateTimePicker
+                    isVisible={fromDTpicker}
+                    onConfirm={this.handleDatePicked("fromDTpicker")}
+                    onCancel={this.hideDateTimePicker("fromDTpicker")}
+                    minimumDate={new Date()}
+                  />
                 </View>
                 {_select_round && tripType == 2 && (
                   <View
@@ -509,20 +511,17 @@ class Cab extends React.PureComponent {
                       paddingStart: 20
                     }}>
                     <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-                    <Button style={{ marginStart: 5 }} onPress={this.showTo("date")}>
-                      <Text style={{ fontSize: 18 }}>
-                        {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
-                      </Text>
+                    <Button
+                      style={{ flex: 1, marginStart: 5 }}
+                      onPress={this.showDateTimePicker("toDTpicker")}>
+                      <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
                     </Button>
-                    {show_CheckOut && (
-                      <RNDateTimePicker
-                        display="calendar"
-                        value={CheckOut}
-                        mode={mode}
-                        minimumDate={new Date()}
-                        onChange={this.setDate_CheckOut}
-                      />
-                    )}
+                    <DateTimePicker
+                      isVisible={toDTpicker}
+                      onConfirm={this.handleDatePicked("toDTpicker")}
+                      onCancel={this.hideDateTimePicker("toDTpicker")}
+                      minimumDate={new Date()}
+                    />
                   </View>
                 )}
               </View>
