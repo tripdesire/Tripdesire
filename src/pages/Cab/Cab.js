@@ -1,6 +1,16 @@
 import React, { PureComponent } from "react";
-import { View, Image, Modal, StyleSheet, SafeAreaView, Icon } from "react-native";
-import { Button, Text, AutoCompleteModal } from "../../components";
+import {
+  View,
+  Image,
+  Modal,
+  StyleSheet,
+  SafeAreaView,
+  Platform,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity
+} from "react-native";
+import { Button, Text, AutoCompleteModal, Activity_Indicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -10,20 +20,27 @@ import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import Service from "../../service";
 import { Header } from "../../components";
+import SuggLoc from "./LocationModal";
+import Autocomplete from "react-native-autocomplete-input";
+
+const { height } = Dimensions.get("window");
+
 class Cab extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       sourceName: "Hyderabad",
       destinationName: "Bangalore",
-      from: "Hyderabad ,149 - (India)",
+      from: "Agra, 100 - (India)", //"Hyderabad ,149 - (India)",
       sourceId: "149",
       to: "Bangalore ,113 - (India)",
+      pickuplocation: "",
       destinationId: "113",
       Journey_date: "31-09-2019",
       Return_date: "31-09-2019",
       modalTo: false,
       modalFrom: false,
+      modalPickupLocationSugg: false,
       CheckIn: new Date(),
       CheckOut: new Date(),
       show_CheckIn: false,
@@ -44,12 +61,16 @@ class Cab extends React.PureComponent {
       isselect: true,
       _select_round: false,
       suggestions: [],
-      pickuptime: "",
-      picktrip: "",
+      pickuptime: "3:30pm",
+      picktrip: "4",
       transfer: 0,
       fromDTpicker: false,
       toDTpicker: false,
-      travelType: 2
+      travelType: 2,
+      suggestionsLocation: "",
+      SuggFrom: "",
+      selectedTransfer: 1,
+      suggItem: ""
     };
 
     this.inputRefs = {
@@ -58,16 +79,16 @@ class Cab extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    Service.get("/Cabs/Cities")
-      .then(res => {
-        console.log(res.data);
-        this.setState({ suggestions: res.data });
-      })
-      .catch(error => {
-        Toast.show(error, Toast.LONG);
-      });
-  }
+  // componentDidMount() {
+  //   Service.get("/Cabs/Cities")
+  //     .then(res => {
+  //       console.log(res.data);
+  //       this.setState({ suggestions: res.data });
+  //     })
+  //     .catch(error => {
+  //       Toast.show(error, Toast.LONG);
+  //     });
+  // }
 
   showDateTimePicker = key => () => {
     this.setState({ [key]: true });
@@ -89,11 +110,21 @@ class Cab extends React.PureComponent {
   };
 
   handleFrom = item => {
+    console.log(item);
     this.setState({
       from: item.Name + " ," + item.Id + " - (India)",
       sourceId: item.Id,
       sourceName: item.Name,
-      modalFrom: false
+      modalFrom: false,
+      suggItem: item,
+      SuggFrom:
+        this.state.selectedTransfer == 1
+          ? item.Airport
+          : this.state.selectedTransfer == 2
+          ? item.RailwayStation
+          : this.state.selectedTransfer == 3
+          ? item.Hotel
+          : ""
     });
   };
 
@@ -104,6 +135,14 @@ class Cab extends React.PureComponent {
       destinationName: item.Name,
       modalTo: false
     });
+  };
+
+  handleLocation = () => {
+    this.setState({ modalPickupLocationSugg: false });
+  };
+
+  itemSingle = item => {
+    this.setState({ SuggFrom: item });
   };
 
   setModalVisible = (key, visible) => () => {
@@ -132,18 +171,27 @@ class Cab extends React.PureComponent {
       tripTypeColorTransferAirpot: value == "airpot" ? "#BDC4CA" : "#000000",
       tripTypeColorTransferRailway: value == "railway" ? "#BDC4CA" : "#000000",
       tripTypeColorTransferHotel: value == "hotel" ? "#BDC4CA" : "#000000",
+      selectedTransfer: value == "airpot" ? 1 : value == "railway" ? 2 : value == "hotel" ? 3 : "",
       tripType: value == "oneway" ? 1 : 2,
-      selectRound: value == "round" ? true : false
+      selectRound: value == "round" ? true : false,
+      SuggFrom:
+        value == "airpot"
+          ? this.state.suggItem.Airport
+          : value == "railway"
+          ? this.state.suggItem.RailwayStation
+          : value == "hotel"
+          ? this.state.suggItem.Hotel
+          : ""
     });
   };
 
   _search = () => {
     let params = {
       sourceId: this.state.sourceId,
-      destinationId: "0",
+      destinationId: this.state.travelType == 1 ? this.state.destinationId : "0",
       journeyDate: moment(this.state.CheckIn).format("DD-MM-YYYY"),
       operatorName: "",
-      pickUpTime: "7:30pm",
+      pickUpTime: this.state.pickuptime,
       Pickuplocation: "",
       Droplocation: "",
       travelType: this.state.travelType,
@@ -156,6 +204,13 @@ class Cab extends React.PureComponent {
       affiliateId: "",
       websiteUrl: ""
     };
+
+    if (this.state.travelType == 1) {
+      Object.assign(params, {
+        returnDate: moment(this.state.CheckOut).format("DD-MM-YYYY")
+      });
+    }
+
     console.log(params);
     Service.get("/Cabs/AvailableCabs", params)
       .then(({ data }) => {
@@ -188,7 +243,9 @@ class Cab extends React.PureComponent {
       _select_round,
       transfer,
       fromDTpicker,
-      toDTpicker
+      toDTpicker,
+      modalPickupLocationSugg,
+      pickuplocation
     } = this.state;
 
     const placeholder = {
@@ -290,7 +347,7 @@ class Cab extends React.PureComponent {
               </View>
             </View>
 
-            <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
+            <ScrollView contentContainerStyle={{ backgroundColor: "#FFFFFF" }}>
               {_select_round && (
                 <View
                   style={{
@@ -436,8 +493,8 @@ class Cab extends React.PureComponent {
                       <Text style={{ color: "#5D666D" }}>Pickup Location</Text>
                       <Text
                         style={{ fontSize: 18 }}
-                        onPress={this.setModalVisible("modalTo", true)}>
-                        {to}
+                        onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
+                        {pickuplocation}
                       </Text>
                     </View>
                   </View>
@@ -533,7 +590,7 @@ class Cab extends React.PureComponent {
                     style={{
                       marginHorizontal: 16,
                       fontSize: 16,
-                      paddingVertical: 12,
+                      paddingVertical: Platform.OS === "ios" ? 12 : 0,
                       paddingHorizontal: 10,
                       borderWidth: 1,
                       borderColor: "gray",
@@ -565,7 +622,7 @@ class Cab extends React.PureComponent {
                   style={{
                     marginHorizontal: 16,
                     fontSize: 16,
-                    paddingVertical: 12,
+                    paddingVertical: Platform.OS === "ios" ? 12 : 0,
                     paddingHorizontal: 10,
                     borderWidth: 1,
                     borderColor: "gray",
@@ -601,7 +658,7 @@ class Cab extends React.PureComponent {
                 onPress={this._search}>
                 <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
               </Button>
-            </View>
+            </ScrollView>
 
             <Modal
               animationType="slide"
@@ -628,6 +685,22 @@ class Cab extends React.PureComponent {
                 type="cab"
                 onChange={this.handleTo}
                 onModalBackPress={this.setModalVisible("modalTo", false)}
+              />
+            </Modal>
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalPickupLocationSugg}
+              onRequestClose={this.setModalVisible("modalPickupLocationSugg", false)}>
+              <SuggLoc
+                placeholder="Enter Location"
+                type="cab"
+                selectedTransfer={this.state.selectedTransfer}
+                data={this.state.SuggFrom}
+                onChange={this.handleLocation}
+                item={this.itemSingle}
+                onModalBackPress={this.setModalVisible("modalPickupLocationSugg", false)}
               />
             </Modal>
           </View>
