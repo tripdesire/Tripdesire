@@ -35,12 +35,14 @@ class Cab extends React.PureComponent {
       sourceId: "149",
       to: "Bangalore ,113 - (India)",
       pickuplocation: "",
+      droplocation: "",
       destinationId: "113",
       Journey_date: "31-09-2019",
       Return_date: "31-09-2019",
       modalTo: false,
       modalFrom: false,
       modalPickupLocationSugg: false,
+      modalDropSugg: false,
       CheckIn: new Date(),
       CheckOut: new Date(),
       show_CheckIn: false,
@@ -68,7 +70,8 @@ class Cab extends React.PureComponent {
       toDTpicker: false,
       travelType: 2,
       suggestionsLocation: "",
-      SuggFrom: "",
+      SuggPickup: "",
+      SuggDrop: "",
       selectedTransfer: 1,
       suggItem: ""
     };
@@ -117,14 +120,15 @@ class Cab extends React.PureComponent {
       sourceName: item.Name,
       modalFrom: false,
       suggItem: item,
-      SuggFrom:
+      SuggPickup:
         this.state.selectedTransfer == 1
           ? item.Airport
           : this.state.selectedTransfer == 2
           ? item.RailwayStation
           : this.state.selectedTransfer == 3
           ? item.Hotel
-          : ""
+          : "",
+      SuggDrop: [...item.Airport, ...item.RailwayStation, ...item.Hotel]
     });
   };
 
@@ -137,12 +141,16 @@ class Cab extends React.PureComponent {
     });
   };
 
-  handleLocation = () => {
+  handlePickupLocation = () => {
     this.setState({ modalPickupLocationSugg: false });
   };
 
+  handleDropLocation = () => {
+    this.setState({ modalDropSugg: false });
+  };
+
   itemSingle = item => {
-    this.setState({ SuggFrom: item });
+    this.setState({ SuggPickup: item });
   };
 
   setModalVisible = (key, visible) => () => {
@@ -174,7 +182,7 @@ class Cab extends React.PureComponent {
       selectedTransfer: value == "airpot" ? 1 : value == "railway" ? 2 : value == "hotel" ? 3 : "",
       tripType: value == "oneway" ? 1 : 2,
       selectRound: value == "round" ? true : false,
-      SuggFrom:
+      SuggPickup:
         value == "airpot"
           ? this.state.suggItem.Airport
           : value == "railway"
@@ -245,7 +253,8 @@ class Cab extends React.PureComponent {
       fromDTpicker,
       toDTpicker,
       modalPickupLocationSugg,
-      pickuplocation
+      pickuplocation,
+      droplocation
     } = this.state;
 
     const placeholder = {
@@ -494,7 +503,7 @@ class Cab extends React.PureComponent {
                       <Text
                         style={{ fontSize: 18 }}
                         onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
-                        {pickuplocation}
+                        {pickuplocation != "" ? pickuplocation : "Tap To Enter"}
                       </Text>
                     </View>
                   </View>
@@ -520,8 +529,8 @@ class Cab extends React.PureComponent {
                       <Text style={{ color: "#5D666D" }}>Drop Location</Text>
                       <Text
                         style={{ fontSize: 18 }}
-                        onPress={this.setModalVisible("modalTo", true)}>
-                        {to}
+                        onPress={this.setModalVisible("modalDropSugg", true)}>
+                        {droplocation != "" ? droplocation : "Tap To Enter"}
                       </Text>
                     </View>
                   </View>
@@ -697,10 +706,26 @@ class Cab extends React.PureComponent {
                 placeholder="Enter Location"
                 type="cab"
                 selectedTransfer={this.state.selectedTransfer}
-                data={this.state.SuggFrom}
-                onChange={this.handleLocation}
+                data={this.state.SuggPickup}
+                onChange={this.handlePickupLocation}
                 item={this.itemSingle}
                 onModalBackPress={this.setModalVisible("modalPickupLocationSugg", false)}
+              />
+            </Modal>
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalDropSugg}
+              onRequestClose={this.setModalVisible("modalDropSugg", false)}>
+              <SuggLoc
+                placeholder="Enter Location"
+                type="cab"
+                // selectedTransfer={this.state.selectedTransfer}
+                data={this.state.SuggDrop}
+                onChange={this.handleDropLocation}
+                item={this.itemSingle}
+                onModalBackPress={this.setModalVisible("modalDropSugg", false)}
               />
             </Modal>
           </View>
