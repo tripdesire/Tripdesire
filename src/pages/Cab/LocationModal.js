@@ -70,6 +70,14 @@ class SuggLoc extends React.PureComponent {
         this.setState({
           suggestions: cabSuggestion[0].Hotel
         });
+      } else {
+        this.setState({
+          suggestions: [
+            ...cabSuggestion[0].Airport,
+            ...cabSuggestion[0].RailwayStation,
+            ...cabSuggestion[0].Hotel
+          ]
+        });
       }
     }
   }
