@@ -29,7 +29,7 @@ class Cab extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      sourceName: "Hyderabad",
+      sourceName: "Agra",
       destinationName: "Bangalore",
       from: "Agra, 100 - (India)", //"Hyderabad ,149 - (India)",
       sourceId: "149",
@@ -119,6 +119,7 @@ class Cab extends React.PureComponent {
       sourceId: item.Id,
       sourceName: item.Name,
       modalFrom: false,
+      sourceName: item.Name,
       suggItem: item,
       SuggPickup:
         this.state.selectedTransfer == 1
@@ -141,12 +142,13 @@ class Cab extends React.PureComponent {
     });
   };
 
-  handlePickupLocation = () => {
-    this.setState({ modalPickupLocationSugg: false });
+  handlePickupLocation = item => {
+    console.log(item);
+    this.setState({ modalPickupLocationSugg: false, pickuplocation: item });
   };
 
-  handleDropLocation = () => {
-    this.setState({ modalDropSugg: false });
+  handleDropLocation = item => {
+    this.setState({ modalDropSugg: false, droplocation: item });
   };
 
   itemSingle = item => {
@@ -200,8 +202,8 @@ class Cab extends React.PureComponent {
       journeyDate: moment(this.state.CheckIn).format("DD-MM-YYYY"),
       operatorName: "",
       pickUpTime: this.state.pickuptime,
-      Pickuplocation: "",
-      Droplocation: "",
+      Pickuplocation: this.state.pickuplocation,
+      Droplocation: this.state.droplocation,
       travelType: this.state.travelType,
       tripType: this.state.tripType,
       sessionId: "xb5dllu3cp02infmtvgrlaiu",
@@ -210,26 +212,28 @@ class Cab extends React.PureComponent {
       dropoffTime: "",
       cabType: 1,
       affiliateId: "",
-      websiteUrl: ""
+      websiteUrl: "",
+      sourceName: this.state.sourceName,
+      destinationName: this.state.travelType == 1 ? this.state.destinationName : ""
     };
 
     if (this.state.travelType == 1) {
       Object.assign(params, {
-        returnDate: moment(this.state.CheckOut).format("DD-MM-YYYY")
+        returnDate: this.state.tripType == 2 ? moment(this.state.CheckOut).format("DD-MM-YYYY") : ""
       });
     }
 
-    console.log(params);
-    Service.get("/Cabs/AvailableCabs", params)
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.log(error);
-        Toast.show(error, Toast.LONG);
-      });
+    // console.log(params);
+    // Service.get("/Cabs/AvailableCabs", params)
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     Toast.show(error, Toast.LONG);
+    //   });
 
-    // this.props.navigation.navigate("BusInfo", params);
+    this.props.navigation.navigate("CabList", params);
   };
 
   render() {
@@ -260,13 +264,13 @@ class Cab extends React.PureComponent {
     const placeholder = {
       label: "Select Pickup Time",
       value: null,
-      color: "#9EA0A4"
+      color: "#000000"
     };
 
     const placeholderTrip = {
       label: "Select Trip",
       value: null,
-      color: "#9EA0A4"
+      color: "#000000"
     };
 
     return (
@@ -282,78 +286,73 @@ class Cab extends React.PureComponent {
               />
             </View>
 
-            <View style={{ height: 30, width: "100%" }}>
-              <View style={{ flex: 2, backgroundColor: "#E4EAF6" }}></View>
-              <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
-              <View
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 16,
+                justifyContent: "center"
+              }}>
+              <Button
                 style={{
-                  flexDirection: "row",
-                  marginHorizontal: 16,
+                  backgroundColor: backgroundColorLocal,
+                  elevation: 1,
+                  height: 30,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   justifyContent: "center",
-                  ...StyleSheet.absoluteFill
-                }}>
-                <Button
+                  paddingHorizontal: 40,
+                  borderBottomStartRadius: 5,
+                  borderTopStartRadius: 5
+                }}
+                onPress={() => this._triptype("oneway")}>
+                <Text style={{ color: buttonTextColorLocal, fontSize: 12 }}>Local</Text>
+              </Button>
+              <Button
+                style={{
+                  backgroundColor: backgroundColorOutstation,
+                  elevation: 1,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  height: 30,
+                  justifyContent: "center",
+                  paddingHorizontal: 30
+                }}
+                onPress={() => this._triptype("round")}>
+                <Text
                   style={{
-                    backgroundColor: backgroundColorLocal,
-                    elevation: 1,
-                    height: 30,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    justifyContent: "center",
-                    paddingHorizontal: 40,
-                    borderBottomStartRadius: 5,
-                    borderTopStartRadius: 5
-                  }}
-                  onPress={() => this._triptype("oneway")}>
-                  <Text style={{ color: buttonTextColorLocal, fontSize: 12 }}>Local</Text>
-                </Button>
-                <Button
+                    fontSize: 12,
+                    color: buttonTextColorOutstation
+                  }}>
+                  Outstation
+                </Text>
+              </Button>
+              <Button
+                style={{
+                  backgroundColor: backgroundColorTransfer,
+                  elevation: 1,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  height: 30,
+                  justifyContent: "center",
+                  paddingHorizontal: 30,
+                  borderBottomEndRadius: 5,
+                  borderTopEndRadius: 5
+                }}
+                onPress={() => this._triptype("transfer")}>
+                <Text
                   style={{
-                    backgroundColor: backgroundColorOutstation,
-                    elevation: 1,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    height: 30,
-                    justifyContent: "center",
-                    paddingHorizontal: 40
-                  }}
-                  onPress={() => this._triptype("round")}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: buttonTextColorOutstation
-                    }}>
-                    Outstation
-                  </Text>
-                </Button>
-                <Button
-                  style={{
-                    backgroundColor: backgroundColorTransfer,
-                    elevation: 1,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    height: 30,
-                    justifyContent: "center",
-                    paddingHorizontal: 40,
-                    borderBottomEndRadius: 5,
-                    borderTopEndRadius: 5
-                  }}
-                  onPress={() => this._triptype("transfer")}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: buttonTextColorTransfer
-                    }}>
-                    Transfer
-                  </Text>
-                </Button>
-              </View>
+                    fontSize: 12,
+                    color: buttonTextColorTransfer
+                  }}>
+                  Transfer
+                </Text>
+              </Button>
             </View>
 
             <ScrollView contentContainerStyle={{ backgroundColor: "#FFFFFF" }}>
@@ -600,12 +599,11 @@ class Cab extends React.PureComponent {
                       marginHorizontal: 16,
                       fontSize: 16,
                       paddingVertical: Platform.OS === "ios" ? 12 : 0,
-                      paddingHorizontal: 10,
+                      paddingHorizontal: 16,
                       borderWidth: 1,
                       borderColor: "gray",
                       borderRadius: 4,
-                      color: "black",
-                      paddingRight: 30
+                      color: "black"
                     }}>
                     <RNPickerSelect
                       placeholder={placeholderTrip}
@@ -616,6 +614,12 @@ class Cab extends React.PureComponent {
                         { label: "12 hrs", value: "12" },
                         { label: "24 hrs", value: "24" }
                       ]}
+                      style={{
+                        iconContainer: {
+                          top: 10,
+                          right: 10
+                        }
+                      }}
                       value={this.state.picktrip}
                       Icon={() => {
                         return <Ionicons name="ios-arrow-down" size={24} color="gray" />;
@@ -632,12 +636,11 @@ class Cab extends React.PureComponent {
                     marginHorizontal: 16,
                     fontSize: 16,
                     paddingVertical: Platform.OS === "ios" ? 12 : 0,
-                    paddingHorizontal: 10,
+                    paddingHorizontal: 16,
                     borderWidth: 1,
                     borderColor: "gray",
                     borderRadius: 4,
-                    color: "black",
-                    paddingRight: 30
+                    color: "black"
                   }}>
                   <RNPickerSelect
                     placeholder={placeholder}
@@ -647,6 +650,12 @@ class Cab extends React.PureComponent {
                       { label: "3:45pm", value: "3:45pm" },
                       { label: "4:00pm", value: "4:00pm" }
                     ]}
+                    style={{
+                      iconContainer: {
+                        top: 10,
+                        right: 10
+                      }
+                    }}
                     value={this.state.pickuptime}
                     Icon={() => {
                       return <Ionicons name="ios-arrow-down" size={24} color="gray" />;

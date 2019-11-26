@@ -35,7 +35,8 @@ import {
   Order,
   OrderDetails,
   Filter,
-  Payment
+  Payment,
+  CabList
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -81,7 +82,8 @@ const HomeStack = createStackNavigator(
     RoomDetails,
     ThankYou,
     Filter,
-    Payment
+    Payment,
+    CabList
   },
   {
     headerMode: "none",
