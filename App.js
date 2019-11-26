@@ -1,11 +1,11 @@
 import React from "react";
-import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-import { Provider } from "react-redux";
-import { store, persistor } from "./src/store";
-import { PersistGate } from "redux-persist/lib/integration/react";
-import { createDrawerNavigator } from "react-navigation-drawer";
-import { CustomDrawer } from "./src/components";
+import {createAppContainer, createSwitchNavigator} from "react-navigation";
+import {createStackNavigator} from "react-navigation-stack";
+import {Provider} from "react-redux";
+import {store, persistor} from "./src/store";
+import {PersistGate} from "redux-persist/lib/integration/react";
+import {createDrawerNavigator} from "react-navigation-drawer";
+import {CustomDrawer} from "./src/components";
 import {
   Home,
   FlightSearch,
@@ -36,7 +36,8 @@ import {
   OrderDetails,
   Filter,
   Payment,
-  CabList
+  CabList,
+  CheckoutCab
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -83,7 +84,8 @@ const HomeStack = createStackNavigator(
     ThankYou,
     Filter,
     Payment,
-    CabList
+    CabList,
+    CheckoutCab
   },
   {
     headerMode: "none",

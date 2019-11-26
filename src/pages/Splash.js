@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
-import { Text } from "../components";
-import { Image, ImageBackground, Dimensions } from "react-native";
+import React, {PureComponent} from "react";
+import {Text} from "../components";
+import {Image, ImageBackground, Dimensions} from "react-native";
 
-const { height, width } = Dimensions.get("window");
+const {height, width} = Dimensions.get("window");
 
 class Splash extends React.PureComponent {
   constructor(props) {
@@ -11,7 +11,7 @@ class Splash extends React.PureComponent {
 
   componentDidMount() {
     setTimeout(() => {
-      this.props.navigation.navigate("Cab"); //DrawerNavigator
+      this.props.navigation.navigate("CheckoutCab"); //DrawerNavigator
     }, 2000);
   }
 

@@ -47,7 +47,7 @@ class RenderItems extends React.PureComponent {
     return (
       <View
         style={{
-          paddingVertical: this.props.index % 2 == 0 ? 40 : 20,
+          paddingVertical: 20,
           backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#E5EBF7"
         }}>
         <View

@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, {PureComponent} from "react";
 import {
   View,
   Image,
@@ -10,7 +10,7 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
+import {Button, Text, AutoCompleteModal, ActivityIndicator, Icon} from "../../components";
 import Toast from "react-native-simple-toast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -19,11 +19,11 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import Service from "../../service";
-import { Header } from "../../components";
+import {Header} from "../../components";
 import SuggLoc from "./LocationModal";
 import Autocomplete from "react-native-autocomplete-input";
 
-const { height } = Dimensions.get("window");
+const {height} = Dimensions.get("window");
 
 class Cab extends React.PureComponent {
   constructor(props) {
@@ -73,7 +73,39 @@ class Cab extends React.PureComponent {
       SuggPickup: "",
       SuggDrop: "",
       selectedTransfer: 1,
-      suggItem: ""
+      suggItem: "",
+      item: [
+        {label: "3:30pm", value: "3:30pm"},
+        {label: "3:45pm", value: "3:45pm"},
+        {label: "4:00pm", value: "4:00pm"},
+        {label: "4:15pm", value: "4:15pm"},
+        {label: "4:30pm", value: "4:30pm"},
+        {label: "4:45pm", value: "4:45pm"},
+        {label: "5:00pm", value: "5:00pm"},
+        {label: "5:15pm", value: "5:15pm"},
+        {label: "5:30pm", value: "5:30pm"},
+        {label: "5:45pm", value: "5:45pm"},
+        {label: "6:00pm", value: "6:00pm"},
+        {label: "6:15pm", value: "6:15pm"},
+        {label: "6:30pm", value: "6:30pm"},
+        {label: "6:45pm", value: "6:45pm"},
+        {label: "7:00pm", value: "7:00pm"},
+        {label: "7:15pm", value: "7:15pm"},
+        {label: "7:30pm", value: "7:30pm"},
+        {label: "7:45pm", value: "7:45pm"},
+        {label: "8:00pm", value: "8:00pm"},
+        {label: "8:15pm", value: "8:15pm"},
+        {label: "8:30pm", value: "8:30pm"},
+        {label: "8:45pm", value: "8:45pm"},
+        {label: "9:00pm", value: "9:00pm"},
+        {label: "9:15pm", value: "9:15pm"},
+        {label: "9:30pm", value: "9:30pm"},
+        {label: "9:45pm", value: "9:45pm"},
+        {label: "10:00pm", value: "10:00pm"},
+        {label: "10:15pm", value: "10:15pm"},
+        {label: "10:30pm", value: "10:30pm"},
+        {label: "10:45pm", value: "10:45pm"}
+      ]
     };
 
     this.inputRefs = {
@@ -94,11 +126,11 @@ class Cab extends React.PureComponent {
   // }
 
   showDateTimePicker = key => () => {
-    this.setState({ [key]: true });
+    this.setState({[key]: true});
   };
 
   hideDateTimePicker = key => () => {
-    this.setState({ [key]: false });
+    this.setState({[key]: false});
   };
 
   handleDatePicked = key => date => {
@@ -144,19 +176,19 @@ class Cab extends React.PureComponent {
 
   handlePickupLocation = item => {
     console.log(item);
-    this.setState({ modalPickupLocationSugg: false, pickuplocation: item });
+    this.setState({modalPickupLocationSugg: false, pickuplocation: item});
   };
 
   handleDropLocation = item => {
-    this.setState({ modalDropSugg: false, droplocation: item });
+    this.setState({modalDropSugg: false, droplocation: item});
   };
 
   itemSingle = item => {
-    this.setState({ SuggPickup: item });
+    this.setState({SuggPickup: item});
   };
 
   setModalVisible = (key, visible) => () => {
-    this.setState({ [key]: visible });
+    this.setState({[key]: visible});
   };
 
   _triptype = value => {
@@ -275,362 +307,323 @@ class Cab extends React.PureComponent {
 
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ backgroundColor: "#E4EAF6", flex: 1 }}>
+        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
+        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
+          <View style={{flexDirection: "column", backgroundColor: "#E4EAF6", height: 100}}>
+            <View style={{backgroundColor: "#E4EAF6", height: 56}}>
               <Header
                 firstName="Cab"
                 lastName="Search"
                 onPress={() => this.props.navigation.goBack(null)}
               />
             </View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              marginHorizontal: 16,
+              marginTop: -15,
+              justifyContent: "center",
+              backgroundColor: "#E4EAF6"
+            }}>
+            <Button
+              style={{
+                backgroundColor: backgroundColorLocal,
+                elevation: 1,
+                height: 30,
+                shadowOffset: {width: 0, height: 2},
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
+                justifyContent: "center",
+                paddingHorizontal: 40,
+                borderBottomStartRadius: 5,
+                borderTopStartRadius: 5
+              }}
+              onPress={() => this._triptype("oneway")}>
+              <Text style={{color: buttonTextColorLocal, fontSize: 12}}>Local</Text>
+            </Button>
+            <Button
+              style={{
+                backgroundColor: backgroundColorOutstation,
+                elevation: 1,
+                shadowOffset: {width: 0, height: 2},
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
+                height: 30,
+                justifyContent: "center",
+                paddingHorizontal: 30
+              }}
+              onPress={() => this._triptype("round")}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: buttonTextColorOutstation
+                }}>
+                Outstation
+              </Text>
+            </Button>
+            <Button
+              style={{
+                backgroundColor: backgroundColorTransfer,
+                elevation: 1,
+                shadowOffset: {width: 0, height: 2},
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
+                height: 30,
+                justifyContent: "center",
+                paddingHorizontal: 30,
+                borderBottomEndRadius: 5,
+                borderTopEndRadius: 5
+              }}
+              onPress={() => this._triptype("transfer")}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: buttonTextColorTransfer
+                }}>
+                Transfer
+              </Text>
+            </Button>
+          </View>
+
+          <ScrollView contentContainerStyle={{backgroundColor: "#FFFFFF"}}>
+            {_select_round && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginVertical: 40
+                }}>
+                <Image
+                  style={{
+                    width: 20,
+                    resizeMode: "contain",
+                    marginHorizontal: 5,
+                    alignSelf: "center"
+                  }}
+                  source={require("../../assets/imgs/white-arrow-left-side.png")}
+                />
+                <Button
+                  style={{justifyContent: "center"}}
+                  onPress={() => this._SelectTripType("oneway")}>
+                  <Text style={{color: tripTypeColorLocal}}>One Way</Text>
+                </Button>
+                <Image
+                  style={{width: 25, resizeMode: "contain", marginHorizontal: 5}}
+                  source={require("../../assets/imgs/Round-trip-arrow.png")}
+                />
+                <Button
+                  style={{justifyContent: "center"}}
+                  onPress={() => this._SelectTripType("round")}>
+                  <Text style={{color: tripTypeColorOutstation}}>Round Trip</Text>
+                </Button>
+              </View>
+            )}
+
+            {transfer == 1 && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginVertical: 40
+                }}>
+                <Image
+                  style={{
+                    width: 20,
+                    resizeMode: "contain",
+                    marginHorizontal: 5,
+                    alignSelf: "center"
+                  }}
+                  source={require("../../assets/imgs/white-arrow-left-side.png")}
+                />
+                <Button
+                  style={{justifyContent: "center"}}
+                  onPress={() => this._SelectTripType("airpot")}>
+                  <Text style={{color: tripTypeColorTransferAirpot}}>Airpot</Text>
+                </Button>
+                <Image
+                  style={{width: 25, resizeMode: "contain", marginHorizontal: 5}}
+                  source={require("../../assets/imgs/Round-trip-arrow.png")}
+                />
+                <Button
+                  style={{justifyContent: "center"}}
+                  onPress={() => this._SelectTripType("railway")}>
+                  <Text style={{color: tripTypeColorTransferRailway}}>Railway Station</Text>
+                </Button>
+                <Image
+                  style={{width: 25, resizeMode: "contain", marginHorizontal: 5}}
+                  source={require("../../assets/imgs/Round-trip-arrow.png")}
+                />
+                <Button
+                  style={{justifyContent: "center"}}
+                  onPress={() => this._SelectTripType("hotel")}>
+                  <Text style={{color: tripTypeColorTransferHotel}}>Area/Hotel</Text>
+                </Button>
+              </View>
+            )}
 
             <View
               style={{
-                flexDirection: "row",
                 marginHorizontal: 16,
-                justifyContent: "center"
+                marginVertical: 20,
+                flexDirection: "row"
               }}>
-              <Button
-                style={{
-                  backgroundColor: backgroundColorLocal,
-                  elevation: 1,
-                  height: 30,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  justifyContent: "center",
-                  paddingHorizontal: 40,
-                  borderBottomStartRadius: 5,
-                  borderTopStartRadius: 5
-                }}
-                onPress={() => this._triptype("oneway")}>
-                <Text style={{ color: buttonTextColorLocal, fontSize: 12 }}>Local</Text>
-              </Button>
-              <Button
-                style={{
-                  backgroundColor: backgroundColorOutstation,
-                  elevation: 1,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  height: 30,
-                  justifyContent: "center",
-                  paddingHorizontal: 30
-                }}
-                onPress={() => this._triptype("round")}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: buttonTextColorOutstation
-                  }}>
-                  Outstation
-                </Text>
-              </Button>
-              <Button
-                style={{
-                  backgroundColor: backgroundColorTransfer,
-                  elevation: 1,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  height: 30,
-                  justifyContent: "center",
-                  paddingHorizontal: 30,
-                  borderBottomEndRadius: 5,
-                  borderTopEndRadius: 5
-                }}
-                onPress={() => this._triptype("transfer")}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: buttonTextColorTransfer
-                  }}>
-                  Transfer
-                </Text>
-              </Button>
-            </View>
-
-            <ScrollView contentContainerStyle={{ backgroundColor: "#FFFFFF" }}>
-              {_select_round && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginVertical: 40
-                  }}>
-                  <Image
-                    style={{
-                      width: 20,
-                      resizeMode: "contain",
-                      marginHorizontal: 5,
-                      alignSelf: "center"
-                    }}
-                    source={require("../../assets/imgs/white-arrow-left-side.png")}
-                  />
-                  <Button
-                    style={{ justifyContent: "center" }}
-                    onPress={() => this._SelectTripType("oneway")}>
-                    <Text style={{ color: tripTypeColorLocal }}>One Way</Text>
-                  </Button>
-                  <Image
-                    style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
-                    source={require("../../assets/imgs/Round-trip-arrow.png")}
-                  />
-                  <Button
-                    style={{ justifyContent: "center" }}
-                    onPress={() => this._SelectTripType("round")}>
-                    <Text style={{ color: tripTypeColorOutstation }}>Round Trip</Text>
-                  </Button>
-                </View>
-              )}
-
-              {transfer == 1 && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginVertical: 40
-                  }}>
-                  <Image
-                    style={{
-                      width: 20,
-                      resizeMode: "contain",
-                      marginHorizontal: 5,
-                      alignSelf: "center"
-                    }}
-                    source={require("../../assets/imgs/white-arrow-left-side.png")}
-                  />
-                  <Button
-                    style={{ justifyContent: "center" }}
-                    onPress={() => this._SelectTripType("airpot")}>
-                    <Text style={{ color: tripTypeColorTransferAirpot }}>Airpot</Text>
-                  </Button>
-                  <Image
-                    style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
-                    source={require("../../assets/imgs/Round-trip-arrow.png")}
-                  />
-                  <Button
-                    style={{ justifyContent: "center" }}
-                    onPress={() => this._SelectTripType("railway")}>
-                    <Text style={{ color: tripTypeColorTransferRailway }}>Railway Station</Text>
-                  </Button>
-                  <Image
-                    style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
-                    source={require("../../assets/imgs/Round-trip-arrow.png")}
-                  />
-                  <Button
-                    style={{ justifyContent: "center" }}
-                    onPress={() => this._SelectTripType("hotel")}>
-                    <Text style={{ color: tripTypeColorTransferHotel }}>Area/Hotel</Text>
-                  </Button>
-                </View>
-              )}
-
+              <IconMaterial name="bus" size={40} color="#A5A9AC" />
               <View
                 style={{
-                  marginHorizontal: 16,
-                  marginVertical: 20,
-                  flexDirection: "row"
+                  flexDirection: "row",
+                  marginStart: 20,
+                  justifyContent: "space-between",
+                  flex: 1
                 }}>
-                <IconMaterial name="bus" size={40} color="#A5A9AC" />
+                <View style={{flex: 1}}>
+                  <Text style={{color: "#5D666D"}}>From</Text>
+                  <Text style={{fontSize: 18}} onPress={this.setModalVisible("modalFrom", true)}>
+                    {from}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            {_select_round && (
+              <View>
                 <View
                   style={{
-                    flexDirection: "row",
-                    marginStart: 20,
-                    justifyContent: "space-between",
-                    flex: 1
+                    height: 1.35,
+                    marginHorizontal: 16,
+                    backgroundColor: "#CFCFCF"
+                  }}></View>
+                <View
+                  style={{
+                    marginHorizontal: 16,
+                    marginVertical: 20,
+                    flexDirection: "row"
                   }}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#5D666D" }}>From</Text>
-                    <Text
-                      style={{ fontSize: 18 }}
-                      onPress={this.setModalVisible("modalFrom", true)}>
-                      {from}
+                  <IconMaterial name="bus" size={40} color="#A5A9AC" />
+                  <View style={{marginStart: 20, flex: 1}}>
+                    <Text style={{color: "#5D666D"}}>To</Text>
+                    <Text style={{fontSize: 18}} onPress={this.setModalVisible("modalTo", true)}>
+                      {to}
                     </Text>
                   </View>
                 </View>
               </View>
-              {_select_round && (
-                <View>
-                  <View
-                    style={{
-                      height: 1.35,
-                      marginHorizontal: 16,
-                      backgroundColor: "#CFCFCF"
-                    }}></View>
-                  <View
-                    style={{
-                      marginHorizontal: 16,
-                      marginVertical: 20,
-                      flexDirection: "row"
-                    }}>
-                    <IconMaterial name="bus" size={40} color="#A5A9AC" />
-                    <View style={{ marginStart: 20, flex: 1 }}>
-                      <Text style={{ color: "#5D666D" }}>To</Text>
-                      <Text
-                        style={{ fontSize: 18 }}
-                        onPress={this.setModalVisible("modalTo", true)}>
-                        {to}
-                      </Text>
-                    </View>
+            )}
+
+            {transfer == 1 && (
+              <View>
+                <View
+                  style={{
+                    height: 1.35,
+                    marginHorizontal: 16,
+                    backgroundColor: "#CFCFCF"
+                  }}></View>
+                <View
+                  style={{
+                    marginHorizontal: 16,
+                    marginVertical: 20,
+                    flexDirection: "row"
+                  }}>
+                  <SimpleLineIcons name="location-pin" size={40} color="#A5A9AC" />
+                  <View style={{marginStart: 20, flex: 1}}>
+                    <Text style={{color: "#5D666D"}}>Pickup Location</Text>
+                    <Text
+                      style={{fontSize: 18}}
+                      onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
+                      {pickuplocation != "" ? pickuplocation : "Tap To Enter"}
+                    </Text>
                   </View>
                 </View>
-              )}
+              </View>
+            )}
 
-              {transfer == 1 && (
-                <View>
-                  <View
-                    style={{
-                      height: 1.35,
-                      marginHorizontal: 16,
-                      backgroundColor: "#CFCFCF"
-                    }}></View>
-                  <View
-                    style={{
-                      marginHorizontal: 16,
-                      marginVertical: 20,
-                      flexDirection: "row"
-                    }}>
-                    <SimpleLineIcons name="location-pin" size={40} color="#A5A9AC" />
-                    <View style={{ marginStart: 20, flex: 1 }}>
-                      <Text style={{ color: "#5D666D" }}>Pickup Location</Text>
-                      <Text
-                        style={{ fontSize: 18 }}
-                        onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
-                        {pickuplocation != "" ? pickuplocation : "Tap To Enter"}
-                      </Text>
-                    </View>
+            {transfer == 1 && (
+              <View>
+                <View
+                  style={{
+                    height: 1.35,
+                    marginHorizontal: 16,
+                    backgroundColor: "#CFCFCF"
+                  }}></View>
+                <View
+                  style={{
+                    marginHorizontal: 16,
+                    marginVertical: 20,
+                    flexDirection: "row"
+                  }}>
+                  <SimpleLineIcons name="location-pin" size={40} color="#A5A9AC" />
+                  <View style={{marginStart: 20, flex: 1}}>
+                    <Text style={{color: "#5D666D"}}>Drop Location</Text>
+                    <Text
+                      style={{fontSize: 18}}
+                      onPress={this.setModalVisible("modalDropSugg", true)}>
+                      {droplocation != "" ? droplocation : "Tap To Enter"}
+                    </Text>
                   </View>
                 </View>
-              )}
+              </View>
+            )}
 
-              {transfer == 1 && (
-                <View>
-                  <View
-                    style={{
-                      height: 1.35,
-                      marginHorizontal: 16,
-                      backgroundColor: "#CFCFCF"
-                    }}></View>
-                  <View
-                    style={{
-                      marginHorizontal: 16,
-                      marginVertical: 20,
-                      flexDirection: "row"
-                    }}>
-                    <SimpleLineIcons name="location-pin" size={40} color="#A5A9AC" />
-                    <View style={{ marginStart: 20, flex: 1 }}>
-                      <Text style={{ color: "#5D666D" }}>Drop Location</Text>
-                      <Text
-                        style={{ fontSize: 18 }}
-                        onPress={this.setModalVisible("modalDropSugg", true)}>
-                        {droplocation != "" ? droplocation : "Tap To Enter"}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              )}
+            <View style={{height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF"}}></View>
 
-              <View
-                style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
-
+            <View
+              style={{
+                marginHorizontal: 16,
+                marginVertical: 20,
+                flexDirection: "row",
+                alignItems: "center"
+              }}>
+              <Image
+                style={{width: 25, resizeMode: "contain", marginStart: 10}}
+                source={require("../../assets/imgs/cal.png")}
+              />
               <View
                 style={{
-                  marginHorizontal: 16,
-                  marginVertical: 20,
-                  flexDirection: "row",
-                  alignItems: "center"
+                  flex: 1,
+                  paddingStart: 20
                 }}>
-                <Image
-                  style={{ width: 25, resizeMode: "contain", marginStart: 10 }}
-                  source={require("../../assets/imgs/cal.png")}
+                <Text style={{color: "#5D666D", marginStart: 5}}>Depart</Text>
+
+                <Button
+                  style={{flex: 1, marginStart: 5}}
+                  onPress={this.showDateTimePicker("fromDTpicker")}>
+                  <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
+                </Button>
+                <DateTimePicker
+                  isVisible={fromDTpicker}
+                  onConfirm={this.handleDatePicked("fromDTpicker")}
+                  onCancel={this.hideDateTimePicker("fromDTpicker")}
+                  minimumDate={new Date()}
                 />
+              </View>
+              {_select_round && tripType == 2 && (
                 <View
                   style={{
                     flex: 1,
                     paddingStart: 20
                   }}>
-                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
-
+                  <Text style={{color: "#5D666D", marginStart: 5}}>Return</Text>
                   <Button
-                    style={{ flex: 1, marginStart: 5 }}
-                    onPress={this.showDateTimePicker("fromDTpicker")}>
-                    <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
+                    style={{flex: 1, marginStart: 5}}
+                    onPress={this.showDateTimePicker("toDTpicker")}>
+                    <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
                   </Button>
                   <DateTimePicker
-                    isVisible={fromDTpicker}
-                    onConfirm={this.handleDatePicked("fromDTpicker")}
-                    onCancel={this.hideDateTimePicker("fromDTpicker")}
+                    isVisible={toDTpicker}
+                    onConfirm={this.handleDatePicked("toDTpicker")}
+                    onCancel={this.hideDateTimePicker("toDTpicker")}
                     minimumDate={new Date()}
                   />
                 </View>
-                {_select_round && tripType == 2 && (
-                  <View
-                    style={{
-                      flex: 1,
-                      paddingStart: 20
-                    }}>
-                    <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-                    <Button
-                      style={{ flex: 1, marginStart: 5 }}
-                      onPress={this.showDateTimePicker("toDTpicker")}>
-                      <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
-                    </Button>
-                    <DateTimePicker
-                      isVisible={toDTpicker}
-                      onConfirm={this.handleDatePicked("toDTpicker")}
-                      onCancel={this.hideDateTimePicker("toDTpicker")}
-                      minimumDate={new Date()}
-                    />
-                  </View>
-                )}
-              </View>
-
-              {!_select_round && transfer != 1 && (
-                <View>
-                  <Text style={{ marginHorizontal: 16 }}>Pickup Trip</Text>
-                  <View
-                    style={{
-                      marginHorizontal: 16,
-                      fontSize: 16,
-                      paddingVertical: Platform.OS === "ios" ? 12 : 0,
-                      paddingHorizontal: 16,
-                      borderWidth: 1,
-                      borderColor: "gray",
-                      borderRadius: 4,
-                      color: "black"
-                    }}>
-                    <RNPickerSelect
-                      placeholder={placeholderTrip}
-                      onValueChange={value => this.setState({ picktrip: value })}
-                      items={[
-                        { label: "4 hrs", value: "4" },
-                        { label: "8 hrs", value: "8" },
-                        { label: "12 hrs", value: "12" },
-                        { label: "24 hrs", value: "24" }
-                      ]}
-                      style={{
-                        iconContainer: {
-                          top: 10,
-                          right: 10
-                        }
-                      }}
-                      value={this.state.picktrip}
-                      Icon={() => {
-                        return <Ionicons name="ios-arrow-down" size={24} color="gray" />;
-                      }}
-                    />
-                  </View>
-                </View>
               )}
+            </View>
 
+            {!_select_round && transfer != 1 && (
               <View>
-                <Text style={{ marginHorizontal: 16 }}>Pickup Time</Text>
+                <Text style={{marginHorizontal: 16}}>Pickup Trip</Text>
                 <View
                   style={{
                     marginHorizontal: 16,
@@ -643,12 +636,13 @@ class Cab extends React.PureComponent {
                     color: "black"
                   }}>
                   <RNPickerSelect
-                    placeholder={placeholder}
-                    onValueChange={value => this.setState({ pickuptime: value })}
+                    //  placeholder={placeholderTrip}
+                    onValueChange={value => this.setState({picktrip: value})}
                     items={[
-                      { label: "3:30pm", value: "3:30pm" },
-                      { label: "3:45pm", value: "3:45pm" },
-                      { label: "4:00pm", value: "4:00pm" }
+                      {label: "4 hrs", value: "4"},
+                      {label: "8 hrs", value: "8"},
+                      {label: "12 hrs", value: "12"},
+                      {label: "24 hrs", value: "24"}
                     ]}
                     style={{
                       iconContainer: {
@@ -656,88 +650,119 @@ class Cab extends React.PureComponent {
                         right: 10
                       }
                     }}
-                    value={this.state.pickuptime}
+                    value={this.state.picktrip}
                     Icon={() => {
                       return <Ionicons name="ios-arrow-down" size={24} color="gray" />;
                     }}
                   />
                 </View>
               </View>
+            )}
 
-              <Button
+            <View>
+              <Text style={{marginHorizontal: 16}}>Pickup Time</Text>
+              <View
                 style={{
-                  backgroundColor: "#F68E1F",
-                  marginHorizontal: 100,
-                  height: 40,
-                  justifyContent: "center",
-                  borderRadius: 20,
-                  marginVertical: 40
-                }}
-                onPress={this._search}>
-                <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
-              </Button>
-            </ScrollView>
+                  marginHorizontal: 16,
+                  fontSize: 16,
+                  paddingVertical: Platform.OS === "ios" ? 12 : 0,
+                  paddingHorizontal: 16,
+                  borderWidth: 1,
+                  borderColor: "gray",
+                  borderRadius: 4,
+                  color: "black"
+                }}>
+                <RNPickerSelect
+                  // placeholder={placeholder}
+                  onValueChange={value => this.setState({pickuptime: value})}
+                  items={this.state.item}
+                  style={{
+                    iconContainer: {
+                      top: 10,
+                      right: 10
+                    }
+                  }}
+                  value={this.state.pickuptime}
+                  Icon={() => {
+                    return <Ionicons name="ios-arrow-down" size={24} color="gray" />;
+                  }}
+                />
+              </View>
+            </View>
 
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.modalFrom}
-              onRequestClose={this.setModalVisible("modalFrom", false)}>
-              <AutoCompleteModal
-                placeholder="Enter Source"
-                //visible={this.state.modalTo}
-                type="cab"
-                onChange={this.handleFrom}
-                onModalBackPress={this.setModalVisible("modalFrom", false)}
-              />
-            </Modal>
+            <Button
+              style={{
+                backgroundColor: "#F68E1F",
+                marginHorizontal: 100,
+                height: 40,
+                justifyContent: "center",
+                borderRadius: 20,
+                marginVertical: 40
+              }}
+              onPress={this._search}>
+              <Text style={{color: "#fff", alignSelf: "center"}}>Search</Text>
+            </Button>
+          </ScrollView>
 
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.modalTo}
-              onRequestClose={this.setModalVisible("modalTo", false)}>
-              <AutoCompleteModal
-                placeholder="Enter Destination"
-                //visible={this.state.modalTo}
-                type="cab"
-                onChange={this.handleTo}
-                onModalBackPress={this.setModalVisible("modalTo", false)}
-              />
-            </Modal>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalFrom}
+            onRequestClose={this.setModalVisible("modalFrom", false)}>
+            <AutoCompleteModal
+              placeholder="Enter Source"
+              //visible={this.state.modalTo}
+              type="cab"
+              onChange={this.handleFrom}
+              onModalBackPress={this.setModalVisible("modalFrom", false)}
+            />
+          </Modal>
 
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.modalPickupLocationSugg}
-              onRequestClose={this.setModalVisible("modalPickupLocationSugg", false)}>
-              <SuggLoc
-                placeholder="Enter Location"
-                type="cab"
-                selectedTransfer={this.state.selectedTransfer}
-                data={this.state.SuggPickup}
-                onChange={this.handlePickupLocation}
-                item={this.itemSingle}
-                onModalBackPress={this.setModalVisible("modalPickupLocationSugg", false)}
-              />
-            </Modal>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalTo}
+            onRequestClose={this.setModalVisible("modalTo", false)}>
+            <AutoCompleteModal
+              placeholder="Enter Destination"
+              //visible={this.state.modalTo}
+              type="cab"
+              onChange={this.handleTo}
+              onModalBackPress={this.setModalVisible("modalTo", false)}
+            />
+          </Modal>
 
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.modalDropSugg}
-              onRequestClose={this.setModalVisible("modalDropSugg", false)}>
-              <SuggLoc
-                placeholder="Enter Location"
-                type="cab"
-                // selectedTransfer={this.state.selectedTransfer}
-                data={this.state.SuggDrop}
-                onChange={this.handleDropLocation}
-                item={this.itemSingle}
-                onModalBackPress={this.setModalVisible("modalDropSugg", false)}
-              />
-            </Modal>
-          </View>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalPickupLocationSugg}
+            onRequestClose={this.setModalVisible("modalPickupLocationSugg", false)}>
+            <SuggLoc
+              placeholder="Enter Location"
+              type="cab"
+              selectedTransfer={this.state.selectedTransfer}
+              data={this.state.SuggPickup}
+              onChange={this.handlePickupLocation}
+              item={this.itemSingle}
+              onModalBackPress={this.setModalVisible("modalPickupLocationSugg", false)}
+            />
+          </Modal>
+
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalDropSugg}
+            onRequestClose={this.setModalVisible("modalDropSugg", false)}>
+            <SuggLoc
+              placeholder="Enter Location"
+              type="cab"
+              // selectedTransfer={this.state.selectedTransfer}
+              data={this.state.SuggDrop}
+              onChange={this.handleDropLocation}
+              item={this.itemSingle}
+              onModalBackPress={this.setModalVisible("modalDropSugg", false)}
+            />
+          </Modal>
         </SafeAreaView>
       </>
     );
