@@ -1,7 +1,7 @@
 import Button from "./Button";
 import HomeButtonComponent from "./HomeButtonComponent";
 import Text from "./TextComponent";
-import Activity_Indicator from "./Activity_Indicator";
+import ActivityIndicator from "./ActivityIndicator";
 import Header from "./Header";
 import HeaderFlights from "./HeaderFlights";
 import TextInputComponent from "./TextInput";
@@ -14,7 +14,7 @@ export {
   Button,
   HomeButtonComponent,
   Text,
-  Activity_Indicator,
+  ActivityIndicator,
   Header,
   HeaderFlights,
   TextInputComponent,

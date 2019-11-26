@@ -9,7 +9,7 @@ import {
   Dimensions,
   SafeAreaView
 } from "react-native";
-import { Button, Text, Activity_Indicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import Service from "../../service";
@@ -295,7 +295,7 @@ class HotelInfo extends React.PureComponent {
                 renderItem={this._renderItemList}
               />
             </View>
-            {loader && <Activity_Indicator />}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

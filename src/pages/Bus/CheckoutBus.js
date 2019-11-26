@@ -9,7 +9,7 @@ import {
   Picker,
   ScrollView
 } from "react-native";
-import { Button, Text, Activity_Indicator } from "../../components";
+import { Button, Text, ActivityIndicator } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";

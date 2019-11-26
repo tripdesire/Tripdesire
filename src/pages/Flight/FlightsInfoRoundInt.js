@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { Dimensions, Image, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
-import { Button, Text, Activity_Indicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import { withNavigation } from "react-navigation";
 import RenderInternationRound from "./RenderInternationRound";
 import Service from "../../service";
@@ -169,7 +169,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
             />
-            {loader && <Activity_Indicator />}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

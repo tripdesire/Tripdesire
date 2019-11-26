@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, FlatList, Modal, SafeAreaView } from "react-native";
-import { Button, Text, Activity_Indicator, Icon, HeaderFlights } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, HeaderFlights } from "../../components";
 import Toast from "react-native-simple-toast";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
@@ -328,7 +328,7 @@ class FlightsInfoOneway extends React.PureComponent {
                 filter={this.filter}
               />
             </Modal>
-            {loader && <Activity_Indicator />}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

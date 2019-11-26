@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, FlatList, ScrollView, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
-import { Button, Text, Activity_Indicator, DomesticFlights } from "../../components";
+import { Button, Text, ActivityIndicator, DomesticFlights } from "../../components";
 import FareDetails from "./FareRules";
 import Icon from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";

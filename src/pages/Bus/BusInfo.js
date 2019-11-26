@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, Image, Modal, StyleSheet, FlatList, Dimensions, SafeAreaView } from "react-native";
-import { Button, Text, Activity_Indicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconFontAwsm from "react-native-vector-icons/FontAwesome";
 import Toast from "react-native-simple-toast";
@@ -194,7 +194,7 @@ class BusInfo extends React.PureComponent {
               onRequestClose={this.closePolicy}>
               <CanPolicy onBackPress={this.closePolicy} />
             </Modal>
-            {loader && <Activity_Indicator />}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

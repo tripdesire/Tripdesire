@@ -10,7 +10,7 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import { Button, Text, AutoCompleteModal, Activity_Indicator, Icon } from "../../components";
+import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";

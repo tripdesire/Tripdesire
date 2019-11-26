@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView
 } from "react-native";
-import {Button, Text, Activity_Indicator, HeaderFlights, Icon} from "../../components";
+import {Button, Text, ActivityIndicator, HeaderFlights, Icon} from "../../components";
 import Toast from "react-native-simple-toast";
 import {withNavigation} from "react-navigation";
 import SwiperFlatList from "react-native-swiper-flatlist";
@@ -332,7 +332,7 @@ class FlightsInfoRound extends React.PureComponent {
                 extraData={this.state.selectedReturn}
               />
             </SwiperFlatList>
-            {loader && <Activity_Indicator />}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

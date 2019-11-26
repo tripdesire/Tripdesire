@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { View, Image, TextInput, ScrollView, SafeAreaView } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, Activity_Indicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
@@ -659,7 +659,7 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ color: "#fff" }}>Next</Text>
                 </Button>
               </ScrollView>
-              {this.state.loading && <Activity_Indicator />}
+              {this.state.loading && <ActivityIndicator />}
             </View>
           </SafeAreaView>
         </>
@@ -1030,7 +1030,7 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ color: "#fff" }}>Next</Text>
                 </Button>
               </ScrollView>
-              {this.state.loading && <Activity_Indicator />}
+              {this.state.loading && <ActivityIndicator />}
             </View>
           </SafeAreaView>
         </>

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { Button, Text, Activity_Indicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
@@ -984,7 +984,7 @@ class Payment extends React.PureComponent {
                 </Button>
               </ScrollView>
             </View>
-            {loader && <Activity_Indicator />}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>
