@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, {PureComponent} from "react";
 import {
   View,
   Image,
@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   FlatList
 } from "react-native";
-import { Button, Text, AutoCompleteModal, Activity_Indicator, Icon } from "../../components";
+import {Button, Text, AutoCompleteModal, ActivityIndicator, Icon} from "../../components";
 import Toast from "react-native-simple-toast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -20,11 +20,11 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import Service from "../../service";
-import { Header } from "../../components";
+import {Header} from "../../components";
 import SuggLoc from "./LocationModal";
 import Autocomplete from "react-native-autocomplete-input";
 import RenderItems from "./renderItems";
-const { height } = Dimensions.get("window");
+const {height} = Dimensions.get("window");
 
 class CabList extends React.PureComponent {
   constructor(props) {
@@ -37,15 +37,15 @@ class CabList extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
     console.log(params);
-    this.setState({ loader: true });
+    this.setState({loader: true});
     Service.get("/Cabs/AvailableCabs", params)
-      .then(({ data }) => {
+      .then(({data}) => {
         console.log(data);
         if (data.AvailableCabs == null) {
           //  console.log(data.AvailableTrips.length);
-          this.setState({ cabCount: 0, loader: false });
+          this.setState({cabCount: 0, loader: false});
           Toast.show("Data not found.", Toast.LONG);
         } else {
           this.setState({
@@ -61,36 +61,36 @@ class CabList extends React.PureComponent {
       });
   }
 
-  _renderItemList = ({ item, index }) => {
-    const { params } = this.props.navigation.state;
+  _renderItemList = ({item, index}) => {
+    const {params} = this.props.navigation.state;
     return <RenderItems item={item} index={index} params={params} />;
   };
 
   _keyExtractoritems = (item, index) => "key" + index;
 
   render() {
-    const { params } = this.props.navigation.state;
-    const { cabCount, loader } = this.state;
+    const {params} = this.props.navigation.state;
+    const {cabCount, loader} = this.state;
     let journeyDate = moment(params.journeyDate, "DD-MM-YYYY").format("DD MMM");
     let returnDate = moment(params.returnDate, "DD-MM-YYYY").format("DD MMM");
     return (
-      <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}>
-        <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
+      <View style={{backgroundColor: "#E5EBF7", flex: 1}}>
+        <View style={{flex: 1, backgroundColor: "#E5EBF7"}}>
           <View
             style={{
               flexDirection: "row",
               width: "100%"
             }}>
-            <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+            <Button onPress={() => this.props.navigation.goBack(null)} style={{padding: 16}}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <View style={{ flex: 1, paddingTop: 16 }}>
+            <View style={{flex: 1, paddingTop: 16}}>
               <View>
-                <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+                <Text style={{fontWeight: "700", fontSize: 16, marginHorizontal: 5}}>
                   {params.sourceName}{" "}
                   {params.destinationName != "" ? "to " + params.destinationName : ""}
                 </Text>
-                <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
                   {journeyDate}{" "}
                   {params.returnDate && params.returnDate != "" ? "- " + returnDate : ""}
                   {cabCount ? ", " + cabCount + " Cabs Found" : ""}
@@ -105,24 +105,24 @@ class CabList extends React.PureComponent {
                 paddingVertical: 16
               }}>
               <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-              <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+              <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
                 Sort & Filter
               </Text>
             </Button>
           </View>
         </View>
-        <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+        <View style={{flex: 4, backgroundColor: "#FFFFFF"}}>
           <FlatList
             data={this.state.cabs}
             keyExtractor={this._keyExtractoritems}
             renderItem={this._renderItemList}
           />
           {cabCount == 0 && (
-            <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
-              <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+            <View style={{alignItems: "center", justifyContent: "center", flex: 4}}>
+              <Text style={{fontSize: 18, fontWeight: "700"}}>Data not Found.</Text>
             </View>
           )}
-          {loader && <Activity_Indicator />}
+          {loader && <ActivityIndicator />}
         </View>
       </View>
     );
