@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Modal
 } from "react-native";
-import { Button, Text, Activity_Indicator, DomesticFlights } from "../../components";
+import { Button, Text, ActivityIndicator, DomesticFlights } from "../../components";
 import { withNavigation } from "react-navigation";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";

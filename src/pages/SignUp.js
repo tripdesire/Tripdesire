@@ -6,7 +6,7 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import Service from "../service";
 import moment from "moment";
-import { Button, Text, TextInputComponent, Activity_Indicator } from "../components";
+import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
 import { connect } from "react-redux";
 import { Signup } from "../store/action";
 import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";

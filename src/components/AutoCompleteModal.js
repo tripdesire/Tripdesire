@@ -2,7 +2,7 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from "react-native";
 import Button from "./Button";
 import Text from "./TextComponent";
-import Activity_Indicator from "./Activity_Indicator";
+import ActivityIndicator from "./ActivityIndicator";
 import Service from "../service";
 import Autocomplete from "react-native-autocomplete-input";
 import Toast from "react-native-simple-toast";
@@ -263,7 +263,7 @@ class AutoCompleteModal extends React.PureComponent {
                 />
               </View>
             </View>
-            {this.state.loader && <Activity_Indicator />}
+            {this.state.loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

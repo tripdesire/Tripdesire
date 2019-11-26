@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Text, Button, Activity_Indicator } from "../components";
+import { Text, Button, ActivityIndicator } from "../components";
 import { SafeAreaView } from "react-native";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -119,7 +119,7 @@ class Order extends React.PureComponent {
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
             />
-            {loader && <Activity_Indicator />}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

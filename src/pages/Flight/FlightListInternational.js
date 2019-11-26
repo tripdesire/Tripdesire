@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, FlatList, ScrollView, Modal } from "react-native";
-import { Button, Text, Activity_Indicator, InternationalFlights } from "../../components";
+import { Button, Text, ActivityIndicator, InternationalFlights } from "../../components";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
