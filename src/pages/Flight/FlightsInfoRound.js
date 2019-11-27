@@ -1,13 +1,5 @@
 import React, {PureComponent} from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableOpacity,
-  SafeAreaView
-} from "react-native";
+import {Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView} from "react-native";
 import {Button, Text, ActivityIndicator, HeaderFlights, Icon} from "../../components";
 import Toast from "react-native-simple-toast";
 import {withNavigation} from "react-navigation";
@@ -15,6 +7,7 @@ import SwiperFlatList from "react-native-swiper-flatlist";
 import Service from "../../service";
 import moment from "moment";
 import RenderDomesticRound from "./RenderDomesticRound";
+import Filter from "./Filter";
 
 const {width, height} = Dimensions.get("window");
 
@@ -36,6 +29,8 @@ class FlightsInfoRound extends React.PureComponent {
       flight_type: "",
       onwardFlights: [],
       returnFlights: [],
+      onwardFlightsList: [],
+      returnFlightsList: [],
       onwardFare: "",
       returnFare: "",
       loader: true,
@@ -46,7 +41,17 @@ class FlightsInfoRound extends React.PureComponent {
       sourceCode: "",
       destinationCode: "",
       sourceAirportName: "",
-      destinationAirportName: ""
+      destinationAirportName: "",
+      showFilter: false,
+      filterValues: {
+        stops: [],
+        fareType: [],
+        airlines: [],
+        connectingLocations: [],
+        price: [],
+        depature: [],
+        arrival: []
+      }
     };
   }
 
@@ -75,15 +80,21 @@ class FlightsInfoRound extends React.PureComponent {
     });
     Service.get("/Flights/AvailableFlights", data)
       .then(({data}) => {
-        if (data.DomesticOnwardFlights.length > 1) {
-          this._getDomesticFlightOnward(data.DomesticOnwardFlights[0], 0);
-        }
-        if (data.DomesticReturnFlights.length > 1) {
-          this._getDomesticFlightReturn(data.DomesticReturnFlights[0], 0);
-        }
         this.setState({
+          onwardFlightsList: data.DomesticOnwardFlights,
+          returnFlightsList: data.DomesticReturnFlights,
           onwardFlights: data.DomesticOnwardFlights,
           returnFlights: data.DomesticReturnFlights,
+          onwardFare:
+            data.DomesticOnwardFlights.length > 0
+              ? data.DomesticOnwardFlights[0].FareDetails.TotalFare
+              : 0,
+          selectedOnward: 0,
+          returnFare:
+            data.DomesticReturnFlights.length > 0
+              ? data.DomesticReturnFlights[0].FareDetails.TotalFare
+              : 0,
+          selectedReturn: 0,
           loader: false
         });
       })
@@ -148,6 +159,63 @@ class FlightsInfoRound extends React.PureComponent {
 
   _onChangeIndex = ({index}) => {
     this.setState({swiperIndex: index});
+  };
+
+  openFilter = () => {
+    this.setState({showFilter: true});
+  };
+  closeFilter = () => {
+    this.setState({showFilter: false});
+  };
+  onChangeFilter = filterValues => {
+    this.setState({filterValues});
+  };
+
+  filter = () => {
+    const {filterValues, onwardFlightsList, returnFlightsList, flight_type} = this.state;
+
+    let onwardFlights = onwardFlightsList.filter(
+      item =>
+        (filterValues.stops.length == 0 ||
+          filterValues.stops.includes(item.FlightSegments.length - 1)) &&
+        (filterValues.fareType.length == 0 ||
+          filterValues.fareType.includes(item.FlightSegments[0].BookingClassFare.Rule)) &&
+        (filterValues.airlines.length == 0 ||
+          filterValues.airlines.includes(item.FlightSegments[0].AirLineName)) &&
+        (filterValues.connectingLocations.length == 0 ||
+          item.FlightSegments.some(value =>
+            filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+          ))
+    );
+
+    let returnFlights = returnFlightsList.filter(
+      item =>
+        (filterValues.stops.length == 0 ||
+          filterValues.stops.includes(item.FlightSegments.length - 1)) &&
+        (filterValues.fareType.length == 0 ||
+          filterValues.fareType.includes(item.FlightSegments[0].BookingClassFare.Rule)) &&
+        (filterValues.airlines.length == 0 ||
+          filterValues.airlines.includes(item.FlightSegments[0].AirLineName)) &&
+        (filterValues.connectingLocations.length == 0 ||
+          item.FlightSegments.some(value =>
+            filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+          ))
+    );
+    if (onwardFlights.length == 0) {
+      Toast.show("No any onward flights available for selected filter", Toast.LONG);
+    } else if (returnFlights.length == 0) {
+      Toast.show("No any return flights available for selected filter", Toast.LONG);
+    } else {
+      this.setState({
+        onwardFlights,
+        returnFlights,
+        showFilter: false,
+        onwardFare: onwardFlights[0].FareDetails.TotalFare,
+        selectedOnward: 0,
+        returnFare: returnFlights[0].FareDetails.TotalFare,
+        selectedReturn: 0
+      });
+    }
   };
 
   _renderItemOnward = ({item, index}) => {
@@ -215,7 +283,12 @@ class FlightsInfoRound extends React.PureComponent {
       onwardFare,
       returnFare,
       swiperIndex,
-      flight_type
+      flight_type,
+      showFilter,
+      onwardFlights,
+      returnFlights,
+      onwardFlightsList,
+      returnFlightsList
     } = this.state;
     return (
       <>
@@ -239,8 +312,7 @@ class FlightsInfoRound extends React.PureComponent {
                   paddingEnd: 8,
                   paddingVertical: 16
                 }}
-                //onPress={this.openFilter}
-              >
+                onPress={this.openFilter}>
                 <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
                 <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
                   Sort & Filter
@@ -318,20 +390,35 @@ class FlightsInfoRound extends React.PureComponent {
               ref={ref => (this.scrollRef = ref)}
               onChangeIndex={this._onChangeIndex}>
               <FlatList
-                data={this.state.onwardFlights}
+                data={onwardFlights}
                 keyExtractor={this._keyExtractorOnward}
                 renderItem={this._renderItemOnward}
                 contentContainerStyle={{width, paddingHorizontal: 8}}
                 extraData={this.state.selectedOnward}
               />
               <FlatList
-                data={this.state.returnFlights}
+                data={returnFlights}
                 keyExtractor={this._keyExtractorReturn}
                 renderItem={this._renderItemReturn}
                 contentContainerStyle={{width, paddingHorizontal: 8}}
                 extraData={this.state.selectedReturn}
               />
             </SwiperFlatList>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={showFilter}
+              onRequestClose={this.closeFilter}>
+              <Filter
+                data={[...onwardFlightsList, ...returnFlightsList]}
+                //returnFlights={returnFlights}
+                onBackPress={this.closeFilter}
+                filterValues={this.state.filterValues}
+                onChangeFilter={this.onChangeFilter}
+                flight_type={flight_type}
+                filter={this.filter}
+              />
+            </Modal>
             {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
