@@ -1,14 +1,9 @@
-import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, SafeAreaView, Modal } from "react-native";
-import { Button, Text } from "../../components";
+import React from "react";
+import {View, StyleSheet, SafeAreaView} from "react-native";
+import {Button, Text} from "../../components";
 import DomesticFlights from "./DomesticFlights";
 import InternationalFlights from "./InternationalFlights";
-import Service from "../../service";
-import Autocomplete from "react-native-autocomplete-input";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
-import moment from "moment";
-import { Header } from "../../components";
-import Icon from "react-native-vector-icons/Ionicons";
+import {Header} from "../../components";
 
 class FlightSearch extends React.PureComponent {
   constructor(props) {
@@ -19,26 +14,26 @@ class FlightSearch extends React.PureComponent {
   }
 
   setDomesticActive = () => {
-    this.setState({ flightType: 1 });
+    this.setState({flightType: 1});
   };
   setInternationalActive = () => {
-    this.setState({ flightType: 2 });
+    this.setState({flightType: 2});
   };
 
   render() {
-    const { flightType } = this.state;
+    const {flightType} = this.state;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
-          <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ backgroundColor: "#E4EAF6", flex: 1 }}>
+        <SafeAreaView style={{flex: 0, backgroundColor: "#E4EAF6"}} />
+        <SafeAreaView style={{flex: 1, backgroundColor: "gray"}}>
+          <View style={{flexDirection: "column", flex: 1}}>
+            <View style={{backgroundColor: "#E4EAF6", flex: 1}}>
               <Header firstName="Flights" lastName="Search" />
             </View>
 
-            <View style={{ height: 30, width: "100%" }}>
-              <View style={{ flex: 2, backgroundColor: "#E4EAF6" }}></View>
-              <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
+            <View style={{height: 30, width: "100%"}}>
+              <View style={{flex: 2, backgroundColor: "#E4EAF6"}}></View>
+              <View style={{flex: 1, backgroundColor: "#FFFFFF"}}></View>
               <View
                 style={{
                   flexDirection: "row",
@@ -58,7 +53,7 @@ class FlightSearch extends React.PureComponent {
                     borderTopStartRadius: 5
                   }}
                   onPress={this.setDomesticActive}>
-                  <Text style={{ color: flightType == 1 ? "#FFFFFF" : "#000000", fontSize: 12 }}>
+                  <Text style={{color: flightType == 1 ? "#FFFFFF" : "#000000", fontSize: 12}}>
                     Domestic
                   </Text>
                 </Button>
@@ -77,15 +72,14 @@ class FlightSearch extends React.PureComponent {
                     borderTopEndRadius: 5
                   }}
                   onPress={this.setInternationalActive}>
-                  <Text style={{ fontSize: 12, color: flightType == 2 ? "#FFFFFF" : "#000000" }}>
+                  <Text style={{fontSize: 12, color: flightType == 2 ? "#FFFFFF" : "#000000"}}>
                     International
                   </Text>
                 </Button>
               </View>
             </View>
-            <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
-              {flightType == 1 && <DomesticFlights />}
-              {flightType == 2 && <InternationalFlights />}
+            <View style={{backgroundColor: "#FFFFFF", flex: 4}}>
+              {flightType == 1 ? <DomesticFlights /> : <InternationalFlights />}
             </View>
           </View>
         </SafeAreaView>
