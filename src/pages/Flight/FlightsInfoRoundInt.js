@@ -1,10 +1,11 @@
-import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
-import { withNavigation } from "react-navigation";
+import React from "react";
+import {Dimensions, View, FlatList, SafeAreaView, Modal} from "react-native";
+import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import RenderInternationRound from "./RenderInternationRound";
+import Filter from "./Filter";
 import Service from "../../service";
 import moment from "moment";
+
 class FlightsInfoRoundInt extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -27,7 +28,17 @@ class FlightsInfoRoundInt extends React.PureComponent {
       destinationCode: "",
       sourceAirportName: "",
       destinationAirportName: "",
-      loader: true
+      loader: true,
+      showFilter: false,
+      filterValues: {
+        stops: [],
+        fareType: [],
+        airlines: [],
+        connectingLocations: [],
+        price: [],
+        depature: [],
+        arrival: []
+      }
     };
   }
   componentDidMount() {
@@ -57,16 +68,56 @@ class FlightsInfoRoundInt extends React.PureComponent {
       destinationAirportName: data.destinationAirportName
     });
 
-    Service.get("/Flights/AvailableFlights", data).then(({ data }) => {
+    Service.get("/Flights/AvailableFlights", data).then(({data}) => {
       console.log(data);
       this.setState({
         flights: data.InternationalFlights,
+        filterFlights: data.InternationalFlights,
         loader: false
       });
     });
   }
 
-  _renderItem = ({ item, index }) => {
+  openFilter = () => {
+    this.setState({showFilter: true});
+  };
+  closeFilter = () => {
+    this.setState({showFilter: false});
+  };
+  onChangeFilter = filterValues => {
+    this.setState({filterValues});
+  };
+  filter = () => {
+    const {filterValues, flights} = this.state;
+    let filterFlights = flights.filter(
+      item =>
+        //stops
+        (filterValues.stops.length == 0 ||
+          filterValues.stops.includes(item.IntOnward.FlightSegments.length - 1) ||
+          filterValues.stops.includes(item.IntReturn.FlightSegments.length - 1)) &&
+        //faretype
+        (filterValues.fareType.length == 0 ||
+          filterValues.fareType.includes(item.IntOnward.FlightSegments[0].BookingClassFare.Rule) ||
+          filterValues.fareType.includes(item.IntReturn.FlightSegments[0].BookingClassFare.Rule)) &&
+        //airlines
+        (filterValues.airlines.length == 0 ||
+          filterValues.airlines.includes(item.IntOnward.FlightSegments[0].AirLineName) ||
+          filterValues.airlines.includes(item.IntReturn.FlightSegments[0].AirLineName)) &&
+        //connectingLocations
+        (filterValues.connectingLocations.length == 0 ||
+          item.IntOnward.FlightSegments.some(value =>
+            filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+          ) ||
+          item.IntReturn.FlightSegments.some(value =>
+            filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+          ))
+    );
+
+    console.log(filterFlights);
+    this.setState({filterFlights, showFilter: false});
+  };
+
+  _renderItem = ({item, index}) => {
     return (
       <RenderInternationRound
         item={item}
@@ -105,15 +156,18 @@ class FlightsInfoRoundInt extends React.PureComponent {
       Child,
       Infant,
       className,
-      loader
+      loader,
+      showFilter,
+      filterFlights,
+      flighttype
     } = this.state;
-    const { width, height } = Dimensions.get("window");
+
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View style={{ flex: 1 }}>
-            <View style={{ backgroundColor: "#E5EBF7", height: 56 }}>
+        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
+        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
+          <View style={{flex: 1}}>
+            <View style={{backgroundColor: "#E5EBF7", height: 56}}>
               <View
                 style={{
                   flexDirection: "row",
@@ -157,7 +211,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
                     }}
                     onPress={this.openFilter}>
                     <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                    <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
                       Sort & Filter
                     </Text>
                   </Button>
@@ -165,10 +219,24 @@ class FlightsInfoRoundInt extends React.PureComponent {
               </View>
             </View>
             <FlatList
-              data={flights}
+              data={filterFlights}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
             />
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={showFilter}
+              onRequestClose={this.closeFilter}>
+              <Filter
+                data={flights}
+                onBackPress={this.closeFilter}
+                filterValues={this.state.filterValues}
+                onChangeFilter={this.onChangeFilter}
+                flight_type={flighttype}
+                filter={this.filter}
+              />
+            </Modal>
             {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>

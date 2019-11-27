@@ -39,7 +39,8 @@ class FlightsInfoOneway extends React.PureComponent {
         price: [],
         depature: [],
         arrival: []
-      }
+      },
+      filterFlights: []
     };
   }
 
