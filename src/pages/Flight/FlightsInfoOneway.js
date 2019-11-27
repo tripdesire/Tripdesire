@@ -30,6 +30,7 @@ class FlightsInfoOneway extends React.PureComponent {
       dates: [],
       flights: [],
       showFilter: false,
+      flightCount: 0,
       filterValues: {
         stops: [],
         fareType: [],
@@ -70,11 +71,17 @@ class FlightsInfoOneway extends React.PureComponent {
         console.log(data);
         if (this.state.flight_type == 1) {
           console.log(data.DomesticOnwardFlights);
-          this.setState({
-            flights: data.DomesticOnwardFlights,
-            filterFlights: data.DomesticOnwardFlights,
-            loader: false
-          });
+          if (data.DomesticOnwardFlights.length != 0) {
+            this.setState({
+              flights: data.DomesticOnwardFlights,
+              filterFlights: data.DomesticOnwardFlights,
+              loader: false,
+              flightCount: 0
+            });
+          } else {
+            this.setState({loader: false, flightCount: 1});
+            Toast.show("Data not Found", Toast.LONG);
+          }
         }
         if (this.state.flight_type == 2) {
           console.log(data.InternationalFlights);
@@ -237,7 +244,8 @@ class FlightsInfoOneway extends React.PureComponent {
       showFilter,
       filterFlights,
       dates,
-      flight_type
+      flight_type,
+      flightCount
     } = this.state;
     return (
       <>
@@ -304,6 +312,11 @@ class FlightsInfoOneway extends React.PureComponent {
                 </Button>
               </View>
 
+              {flightCount == 1 && (
+                <View style={{alignItems: "center", justifyContent: "center", flex: 4}}>
+                  <Text>Data not Found</Text>
+                </View>
+              )}
               <FlatList
                 nestedScrollEnabled={true}
                 vertical={true}

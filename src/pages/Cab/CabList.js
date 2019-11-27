@@ -44,7 +44,6 @@ class CabList extends React.PureComponent {
       .then(({data}) => {
         console.log(data);
         if (data.AvailableCabs == null) {
-          //  console.log(data.AvailableTrips.length);
           this.setState({cabCount: 0, loader: false});
           Toast.show("Data not found.", Toast.LONG);
         } else {
