@@ -36,13 +36,13 @@ class CheckoutCab extends React.PureComponent {
   }
 
   onAdultChange = key => text => {
-    //console.log(moment().diff(moment(text), "years"));
+    console.log(moment().diff(moment(text), "years"));
     this.setState({
       [key]: text,
       dobShow: false,
       age: moment().diff(moment(text), "years")
     });
-    //console.log(this.state);
+    console.log(this.state);
   };
 
   show = () => {
@@ -109,11 +109,11 @@ class CheckoutCab extends React.PureComponent {
                     <Text style={{flex: 1, fontWeight: "700", fontSize: 16, lineHeight: 22}}>
                       Indica , WagonR or Similar
                     </Text>
-                    <Text style={{lineHeight: 18}}>Outstation(One Way)</Text>
-                    <Text style={{lineHeight: 18}}>Hyderabad To Bangalore</Text>
+                    <Text style={{lineHeight: 18, color: "#696969"}}>Outstation(One Way)</Text>
+                    <Text style={{lineHeight: 18, color: "#696969"}}>Hyderabad To Bangalore</Text>
                     <View
                       style={{
-                        backgroundColor: "black",
+                        backgroundColor: "#696969",
                         height: 1.35,
                         marginVertical: 5
                       }}></View>
@@ -225,9 +225,7 @@ class CheckoutCab extends React.PureComponent {
                           }}
                           onPress={this.showDatePicker}
                           placeholder="DOB">
-                          <Text style={{flex: 1}}>
-                            {moment(this.state.dob).format("DD-MMM-YYYY")}
-                          </Text>
+                          <Text>{moment(this.state.dob).format("DD-MMM-YYYY")}</Text>
                         </Button>
                         <DateTimePicker
                           date={this.state.dob}

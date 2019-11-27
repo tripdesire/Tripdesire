@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import {Button, Text, AutoCompleteModal, ActivityIndicator, Icon} from "../../components";
 import Toast from "react-native-simple-toast";
+import {withNavigation} from "react-navigation";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
@@ -42,6 +43,11 @@ class RenderItems extends React.PureComponent {
     this.setState({closeDetails: false});
   };
 
+  _BookNow = () => {
+    const {params} = this.props;
+    this.props.navigation.navigate("CheckoutCab", params);
+  };
+
   render() {
     const {closeDetails} = this.state;
     return (
@@ -64,7 +70,8 @@ class RenderItems extends React.PureComponent {
               borderRadius: 20,
               paddingHorizontal: 10,
               paddingVertical: 5
-            }}>
+            }}
+            onPress={this._BookNow}>
             <Text style={{color: "#fff", fontWeight: "600"}}>Book Now</Text>
           </Button>
         </View>
@@ -190,4 +197,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RenderItems;
+export default withNavigation(RenderItems);
