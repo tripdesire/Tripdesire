@@ -1,9 +1,8 @@
-import React, { PureComponent } from "react";
-import { View, Image, SafeAreaView } from "react-native";
-import { Button, HomeButtonComponent, Text } from "../../src/components";
-import { connect } from "react-redux";
-import { DomSugg, IntSugg, DomHotelSugg } from "../store/action";
-import Icon from "react-native-vector-icons/Ionicons";
+import React from "react";
+import {View, Image, SafeAreaView} from "react-native";
+import {Button, HomeButtonComponent, Text} from "../../src/components";
+import {connect} from "react-redux";
+import {DomSugg, IntSugg, DomHotelSugg} from "../store/action";
 
 class Home extends React.PureComponent {
   constructor(props) {
@@ -47,12 +46,12 @@ class Home extends React.PureComponent {
   // };
 
   render() {
-    const { IconcolorFlight, IconcolorHotels, IconcolorBus, IconcolorCab } = this.state;
+    const {IconcolorFlight, IconcolorHotels, IconcolorBus, IconcolorCab} = this.state;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
-          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+        <SafeAreaView style={{flex: 0, backgroundColor: "white"}} />
+        <SafeAreaView style={{flex: 1, backgroundColor: "gray"}}>
+          <View style={{flex: 1, backgroundColor: "#FFFFFF"}}>
             <View
               style={{
                 flexDirection: "row",
@@ -60,9 +59,9 @@ class Home extends React.PureComponent {
                 marginHorizontal: 20,
                 marginTop: 40
               }}>
-              <Text style={{ fontSize: 26, color: "#1B294C", fontWeight: "600" }}>WHERE WOULD</Text>
+              <Text style={{fontSize: 26, color: "#1B294C", fontWeight: "600"}}>WHERE WOULD</Text>
               <Button onPress={this.props.navigation.openDrawer}>
-                <Image style={{ width: 30 }} source={require("../assets/imgs/bar.png")} />
+                <Image style={{width: 30}} source={require("../assets/imgs/bar.png")} />
               </Button>
             </View>
             <Text
@@ -75,10 +74,10 @@ class Home extends React.PureComponent {
               }}>
               YOU WANT TO GO?
             </Text>
-            <Text style={{ marginHorizontal: 20, color: "#616A71" }}>
+            <Text style={{marginHorizontal: 20, color: "#616A71"}}>
               Search Amazing Flights,Hotels,Bus & Cabs
             </Text>
-            <Text style={{ marginHorizontal: 20, color: "#616A71" }}>at a good Price.</Text>
+            <Text style={{marginHorizontal: 20, color: "#616A71"}}>at a good Price.</Text>
             <View
               style={{
                 flexDirection: "row",
