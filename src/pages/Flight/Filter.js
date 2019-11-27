@@ -32,6 +32,16 @@ class Filter extends React.Component {
       index: 0
     };
   }
+
+  /*static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.filter != prevState.filter) {
+      return {filter: nextProps.filter};
+    } else {
+      return null;
+    }
+  }*/
+
+  getDerrived;
   componentDidMount() {
     const {data, flight_type, returnFlights} = this.props;
     //console.log(data);
@@ -86,11 +96,20 @@ class Filter extends React.Component {
           for (let j = 1; j < value.IntOnward.FlightSegments.length; j++) {
             connectingLocations.push(value.IntOnward.FlightSegments[j].IntDepartureAirportName);
           }
+          if (value.IntReturn.length > 0) {
+            stops.push(value.IntReturn.FlightSegments.length - 1);
+            fareType.push(value.IntReturn.FlightSegments[0].BookingClassFare.Rule);
+            airlines.push(value.IntReturn.FlightSegments[0].AirLineName);
+            for (let j = 1; j < value.IntReturn.FlightSegments.length; j++) {
+              connectingLocations.push(value.IntReturn.FlightSegments[j].IntDepartureAirportName);
+            }
+          }
         }
+
         stops = _.uniq(stops).sort();
-        fareType = _.uniq(fareType);
-        airlines = _.uniq(airlines);
-        connectingLocations = _.uniq(connectingLocations);
+        fareType = _.uniq(fareType).sort();
+        airlines = _.uniq(airlines).sort();
+        connectingLocations = _.uniq(connectingLocations).sort();
 
         price = data.map(value => value.FareDetails.TotalFare);
         price = [Math.min(...price), Math.max(...price)];
