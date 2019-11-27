@@ -43,9 +43,13 @@ class RenderItems extends React.PureComponent {
     this.setState({closeDetails: false});
   };
 
-  _BookNow = () => {
+  _BookNow = item => () => {
     const {params} = this.props;
-    this.props.navigation.navigate("CheckoutCab", params);
+    let param = {
+      params: params,
+      item: item
+    };
+    this.props.navigation.navigate("CheckoutCab", param);
   };
 
   render() {
@@ -71,7 +75,7 @@ class RenderItems extends React.PureComponent {
               paddingHorizontal: 10,
               paddingVertical: 5
             }}
-            onPress={this._BookNow}>
+            onPress={this._BookNow(this.props.item)}>
             <Text style={{color: "#fff", fontWeight: "600"}}>Book Now</Text>
           </Button>
         </View>

@@ -20,6 +20,7 @@ import Service from "../../service";
 class CheckoutCab extends React.PureComponent {
   constructor(props) {
     super(props);
+    console.log(props.navigation.state.params);
     this.state = {
       den: "Mr",
       firstname: "",
@@ -36,13 +37,13 @@ class CheckoutCab extends React.PureComponent {
   }
 
   onAdultChange = key => text => {
-    console.log(moment().diff(moment(text), "years"));
+    // console.log(moment().diff(moment(text), "years"));
     this.setState({
       [key]: text,
       dobShow: false,
       age: moment().diff(moment(text), "years")
     });
-    console.log(this.state);
+    //console.log(this.state);
   };
 
   show = () => {
@@ -59,7 +60,78 @@ class CheckoutCab extends React.PureComponent {
     });
   };
 
+  _order = () => {
+    let name = this.state.firstname.concat(
+      this.state.last_name != "" ? "~" + this.state.last_name : ""
+    );
+    console.log(name);
+
+    const {item, params} = this.props.navigation.state.params;
+
+    let param = {
+      TotalFare: item.TotalNetAmount, ///
+      Conveniencefee: item.ConvenienceFee,
+      NoofPassengers: item.VehicleId,
+      Name: name,
+      MobileNo: "9999999999",
+      EmailID: "test@test.gmail.com",
+      City: params.sourceName,
+      Address: params.sourceName, ////
+      State: "Telangana",
+      PostalCode: "502032",
+      PickUpAddress: params.travelType == 3 ? params.Pickuplocation : "", ////
+      Provider: item.Provider,
+      Operator: null,
+      CancellationPolicy: item.CancellationPolicy,
+      VehicleName: item.Name,
+      ApproxRoundTripDistance: item.ApproxDistance,
+      MinimumChargedDistance: item.MinimumChargedDistance,
+      PerKmRateCharge: item.PerKm,
+      PerKmRateOnewayCharge: item.PerKmRateOneWayCharge,
+      DriverCharges: item.DriverCharges,
+      NoOfCars: "1",
+      WaitingCharges: item.WaitingCharges,
+      ExtraHourRate: item.ExtraHourRate,
+      SMSUsageCount: 0,
+      BasicRate: item.BasicRate,
+      SourceId: parseInt(params.sourceId),
+      SourceName: params.sourceName,
+      DestinationId: parseInt(params.destinationId) != 0 ? parseInt(params.destinationId) : 0,
+      DestinationName: params.destinationName != "" ? params.destinationName : null,
+      JourneyDate: params.journeyDate,
+      ReturnDate: params.travelType == 1 ? params.ReturnDate : null,
+      TripType: parseInt(params.tripType),
+      TravelType: params.travelType,
+      OperatorId: null,
+      OperatorName: null,
+      PickUpTime: params.pickUpTime,
+      Days: 1,
+      SessionId: "vxpj0ccfqvg1dk2532zffrom",
+      User: "",
+      NightHalt: item.NightHalt,
+      UserType: 5,
+      key: item.key
+    };
+
+    console.log(param);
+
+    console.log(JSON.stringify(param));
+
+    if (this.state.firstname != "" && this.state.last_name != "") {
+      Service.post("/Cabs/BlockCab", param)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      Toast.show("Please fill all the Details.", Toast.LONG);
+    }
+  };
+
   render() {
+    const {item, params} = this.props.navigation.state.params;
     return (
       <>
         <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
@@ -107,10 +179,34 @@ class CheckoutCab extends React.PureComponent {
                   <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
                   <View style={{marginStart: 5, flex: 1}}>
                     <Text style={{flex: 1, fontWeight: "700", fontSize: 16, lineHeight: 22}}>
-                      Indica , WagonR or Similar
+                      {item.Name}
                     </Text>
-                    <Text style={{lineHeight: 18, color: "#696969"}}>Outstation(One Way)</Text>
-                    <Text style={{lineHeight: 18, color: "#696969"}}>Hyderabad To Bangalore</Text>
+                    <Text style={{lineHeight: 18, color: "#696969"}}>
+                      {params.travelType == 2
+                        ? "Local"
+                        : params.travelType == 1
+                        ? "Outstation"
+                        : params.travelType == 3
+                        ? "Transfer"
+                        : ""}
+                      {params.tripType == 1
+                        ? " (One Way)"
+                        : params.tripType == 2
+                        ? " (Round)"
+                        : params.tripType == 4
+                        ? " ( " + params.tripType + " hrs )"
+                        : params.tripType == 8
+                        ? " ( " + params.tripType + " hrs )"
+                        : params.tripType == 12
+                        ? " ( " + params.tripType + " hrs )"
+                        : params.tripType == 24
+                        ? " ( " + params.tripType + " hrs )"
+                        : ""}
+                    </Text>
+                    <Text style={{lineHeight: 18, color: "#696969"}}>
+                      {params.sourceName}{" "}
+                      {params.destinationName != "" ? "To " + params.destinationName : ""}
+                    </Text>
                     <View
                       style={{
                         backgroundColor: "#696969",
@@ -125,11 +221,13 @@ class CheckoutCab extends React.PureComponent {
                       }}>
                       <View>
                         <Text style={{fontWeight: "700"}}>Pick-Up</Text>
-                        <Text>01-04-2020(4:15pm)</Text>
+                        <Text>
+                          {params.journeyDate}( {params.pickUpTime})
+                        </Text>
                       </View>
                       <View>
                         <Text style={{fontWeight: "700"}}>Drop</Text>
-                        <Text>01-04-2020</Text>
+                        <Text>{params.journeyDate}</Text>
                       </View>
                     </View>
                   </View>

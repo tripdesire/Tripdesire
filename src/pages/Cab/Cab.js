@@ -48,7 +48,6 @@ class Cab extends React.PureComponent {
       show_CheckIn: false,
       show_CheckOut: false,
       mode: "date",
-      tripType: 4,
       backgroundColorLocal: "#5B89F9",
       buttonTextColorLocal: "#FFFFFF",
       buttonTextColorOutstation: "#000000",
@@ -64,7 +63,7 @@ class Cab extends React.PureComponent {
       _select_round: false,
       suggestions: [],
       pickuptime: "3:30pm",
-      picktrip: "4",
+      tripType: "4",
       transfer: 0,
       fromDTpicker: false,
       toDTpicker: false,
@@ -214,7 +213,18 @@ class Cab extends React.PureComponent {
       tripTypeColorTransferRailway: value == "railway" ? "#BDC4CA" : "#000000",
       tripTypeColorTransferHotel: value == "hotel" ? "#BDC4CA" : "#000000",
       selectedTransfer: value == "airpot" ? 1 : value == "railway" ? 2 : value == "hotel" ? 3 : "",
-      tripType: value == "oneway" ? 1 : 2,
+      tripType:
+        value == "oneway"
+          ? 1
+          : value == "round"
+          ? 2
+          : value == "airpot"
+          ? 6
+          : value == "railway"
+          ? 7
+          : value == "hotel"
+          ? 8
+          : "",
       selectRound: value == "round" ? true : false,
       SuggPickup:
         value == "airpot"
@@ -233,6 +243,7 @@ class Cab extends React.PureComponent {
       destinationId: this.state.travelType == 1 ? this.state.destinationId : "0",
       journeyDate: moment(this.state.CheckIn).format("DD-MM-YYYY"),
       operatorName: "",
+      // pickTrip: this.state.picktrip,
       pickUpTime: this.state.pickuptime,
       Pickuplocation: this.state.pickuplocation,
       Droplocation: this.state.droplocation,
@@ -264,8 +275,15 @@ class Cab extends React.PureComponent {
     //     console.log(error);
     //     Toast.show(error, Toast.LONG);
     //   });
-
-    this.props.navigation.navigate("CabList", params);
+    if (this.state.sourceName != this.state.destinationName) {
+      if (this.state.travelType == 3 && this.state.pickuplocation == this.state.droplocation) {
+        Toast.show("Pickup and Drop Location can't Same or empty.", Toast.LONG);
+      } else {
+        this.props.navigation.navigate("CabList", params);
+      }
+    } else {
+      Toast.show("Source and Destination can't Same.", Toast.LONG);
+    }
   };
 
   render() {
@@ -637,7 +655,7 @@ class Cab extends React.PureComponent {
                   }}>
                   <RNPickerSelect
                     //  placeholder={placeholderTrip}
-                    onValueChange={value => this.setState({picktrip: value})}
+                    onValueChange={value => this.setState({tripType: value})}
                     items={[
                       {label: "4 hrs", value: "4"},
                       {label: "8 hrs", value: "8"},
@@ -650,7 +668,7 @@ class Cab extends React.PureComponent {
                         right: 10
                       }
                     }}
-                    value={this.state.picktrip}
+                    value={this.state.tripType}
                     Icon={() => {
                       return <Ionicons name="ios-arrow-down" size={24} color="gray" />;
                     }}
