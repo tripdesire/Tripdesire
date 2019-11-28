@@ -40,7 +40,8 @@ class FlightsInfoOneway extends React.PureComponent {
         depature: [],
         arrival: []
       },
-      filterFlights: []
+      filterFlights: [],
+      propsName: props.navigation.state.params
     };
   }
 
@@ -86,11 +87,17 @@ class FlightsInfoOneway extends React.PureComponent {
         }
         if (this.state.flight_type == 2) {
           console.log(data.InternationalFlights);
-          this.setState({
-            flights: data.InternationalFlights,
-            filterFlights: data.InternationalFlights,
-            loader: false
-          });
+          if (data.InternationalFlights.length != 0) {
+            this.setState({
+              flights: data.InternationalFlights,
+              filterFlights: data.InternationalFlights,
+              loader: false,
+              flightCount: 0
+            });
+          } else {
+            this.setState({loader: false, flightCount: 1});
+            Toast.show("Data not Found", Toast.LONG);
+          }
         }
       })
       .catch(error => {
@@ -167,8 +174,61 @@ class FlightsInfoOneway extends React.PureComponent {
     this.setState({filterFlights, showFilter: false});
   };
 
+  _ChangeDate = item => () => {
+    const {params} = this.props.navigation.state;
+    console.log(params);
+    console.log(item);
+
+    this.setState(propsName => {
+      let newDate = Object.assign({}, propsName); // creating copy of state variable jasper
+      newDate.journeyDate = item.fullDate; // update the name property, assign a new value
+      return {newDate}; // return new object jasper object
+    });
+
+    console.log(this.state);
+    // Service.get("/Flights/AvailableFlights", this.props.navigation.state.params)
+    //   .then(({data}) => {
+    //     console.log(data);
+    //     if (this.state.flight_type == 1) {
+    //       console.log(data.DomesticOnwardFlights);
+    //       if (data.DomesticOnwardFlights.length != 0) {
+    //         this.setState({
+    //           flights: data.DomesticOnwardFlights,
+    //           filterFlights: data.DomesticOnwardFlights,
+    //           loader: false,
+    //           flightCount: 0
+    //         });
+    //       } else {
+    //         this.setState({loader: false, flightCount: 1});
+    //         Toast.show("Data not Found", Toast.LONG);
+    //       }
+    //     }
+    //     if (this.state.flight_type == 2) {
+    //       console.log(data.InternationalFlights);
+    //       if (data.InternationalFlights.length != 0) {
+    //         this.setState({
+    //           flights: data.InternationalFlights,
+    //           filterFlights: data.InternationalFlights,
+    //           loader: false,
+    //           flightCount: 0
+    //         });
+    //       } else {
+    //         this.setState({loader: false, flightCount: 1});
+    //         Toast.show("Data not Found", Toast.LONG);
+    //       }
+    //     }
+    //   })
+    //   .catch(error => {
+    //     Toast.show(error, Toast.LONG);
+    //     this.setState({loader: false});
+    //   });
+    // console.log(this.state);
+  };
+
   _renderItem = ({item}) => (
-    <Button style={{paddingHorizontal: 15, paddingVertical: 10, alignItems: "center"}}>
+    <Button
+      style={{paddingHorizontal: 15, paddingVertical: 10, alignItems: "center"}}
+      onPress={this._ChangeDate(item)}>
       <Text style={{fontSize: 12, color: "#717984"}}>{item.day}</Text>
       <Text style={{fontSize: 20, fontWeight: "700"}}>{item.date}</Text>
     </Button>

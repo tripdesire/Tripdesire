@@ -399,17 +399,17 @@ class RenderInternationRound extends React.PureComponent {
                     }}>
                     With{" "}
                     {this.props.item.IntOnward.FlightSegments.length - 1 == 0
-                      ? "Non Stop"
+                      ? "0 "
                       : this.props.item.IntOnward.FlightSegments.length - 1 + " "}
                     connection/s
                   </Text>
-                  <Foundation name="shopping-bag" size={24} color="#5D666D" />
+                  <Foundation name="shopping-bag" size={20} color="#5D666D" />
                   <Text style={{color: "#5D666D", fontSize: 12}}>
                     {itemEach.BaggageAllowed.HandBaggage != ""
                       ? itemEach.BaggageAllowed.HandBaggage
                       : 0 + " PC(s)"}
                   </Text>
-                  <Foundation name="shopping-bag" size={24} color="#5D666D" />
+                  <Foundation name="shopping-bag" size={20} color="#5D666D" />
                   <Text style={{color: "#5D666D", fontSize: 12}}>
                     {itemEach.BaggageAllowed.CheckInBaggage}
                   </Text>
@@ -472,7 +472,7 @@ class RenderInternationRound extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
+                      Total Fare : ₹{parseInt(this.props.item.FareDetails.TotalFare)}
                     </Text>
                   </View>
                 )}
@@ -698,12 +698,12 @@ class RenderInternationRound extends React.PureComponent {
                     style={{
                       marginHorizontal: 8,
                       flexDirection: "row",
-                      marginVertical: 5
+                      marginVertical: 5,
+                      flex: 1,
+                      justifyContent: "space-between"
                     }}>
                     <Text
                       style={{
-                        flex: 1,
-                        marginHorizontal: 8,
                         color: "#5D666D",
                         fontSize: 12
                       }}>
@@ -711,29 +711,25 @@ class RenderInternationRound extends React.PureComponent {
                     </Text>
                     <Text
                       style={{
-                        flex: 1,
                         marginHorizontal: 8,
                         color: "#5D666D",
                         fontSize: 12
                       }}>
                       With{" "}
                       {this.props.item.IntReturn.FlightSegments.length - 1 == 0
-                        ? "Non Stop"
+                        ? "0 "
                         : this.props.item.IntReturn.FlightSegments.length - 1 + " "}
                       connection/s
                     </Text>
-                    <Foundation name="shopping-bag" size={24} color="#5D666D" />
-                    <Text style={{flex: 1, color: "#5D666D", fontSize: 12}}>
+                    <Foundation name="shopping-bag" size={20} color="#5D666D" />
+                    <Text style={{color: "#5D666D", fontSize: 12}}>
                       {itemEach.BaggageAllowed.HandBaggage != ""
                         ? itemEach.BaggageAllowed.HandBaggage
                         : 0 + " PC(s)"}
                     </Text>
-                    <Foundation name="shopping-bag" size={24} color="#5D666D" />
-                    <Text style={{flex: 1, color: "#5D666D", fontSize: 12}}>
+                    <Foundation name="shopping-bag" size={20} color="#5D666D" />
+                    <Text style={{color: "#5D666D", fontSize: 12}}>
                       {itemEach.BaggageAllowed.CheckInBaggage}
-                    </Text>
-                    <Text style={{flex: 1, color: "#5D666D", fontSize: 12}}>
-                      Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
                     </Text>
                   </View>
                   <View
@@ -761,13 +757,12 @@ class RenderInternationRound extends React.PureComponent {
                   )}
 
                   {this.props.item.IntReturn.FlightSegments.length - 1 == index && (
-                    <View style={{flex: 1, marginStart: 3}}>
+                    <View style={{flex: 1, marginHorizontal: 8, marginTop: 5}}>
                       <Text
                         style={{
                           fontSize: 12,
                           color: "#5D646A",
-                          alignSelf: "center",
-                          flex: 1
+                          lineHeight: 14
                         }}>
                         Base Fare : ₹{this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                       </Text>
@@ -775,8 +770,7 @@ class RenderInternationRound extends React.PureComponent {
                         style={{
                           fontSize: 12,
                           color: "#5D646A",
-                          alignSelf: "center",
-                          flex: 1
+                          lineHeight: 14
                         }}>
                         Tax : ₹{this.props.item.FareDetails.ChargeableFares.Tax}
                       </Text>
@@ -784,11 +778,13 @@ class RenderInternationRound extends React.PureComponent {
                         style={{
                           fontSize: 12,
                           color: "#5D646A",
-                          alignSelf: "center",
-                          flex: 1
+                          lineHeight: 14
                         }}>
                         Fee & SubCharges : ₹
                         {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
+                      </Text>
+                      <Text style={{fontSize: 12, color: "#5D646A", lineHeight: 14}}>
+                        Total Fare:₹{parseInt(this.props.item.FareDetails.TotalFare)}
                       </Text>
                     </View>
                   )}

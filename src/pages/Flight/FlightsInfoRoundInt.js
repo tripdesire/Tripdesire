@@ -5,6 +5,7 @@ import RenderInternationRound from "./RenderInternationRound";
 import Filter from "./Filter";
 import Service from "../../service";
 import moment from "moment";
+import Toast from "react-native-simple-toast";
 
 class FlightsInfoRoundInt extends React.PureComponent {
   constructor(props) {
@@ -29,6 +30,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
       sourceAirportName: "",
       destinationAirportName: "",
       loader: true,
+      flightCount: 0,
       showFilter: false,
       filterValues: {
         stops: [],
@@ -70,11 +72,20 @@ class FlightsInfoRoundInt extends React.PureComponent {
 
     Service.get("/Flights/AvailableFlights", data).then(({data}) => {
       console.log(data);
-      this.setState({
-        flights: data.InternationalFlights,
-        filterFlights: data.InternationalFlights,
-        loader: false
-      });
+      if (data.InternationalFlights.length != 0) {
+        this.setState({
+          flights: data.InternationalFlights,
+          filterFlights: data.InternationalFlights,
+          loader: false,
+          flightCount: 1
+        });
+      } else {
+        this.setState({
+          loader: false,
+          flightCount: 0
+        });
+        Toast.show("Data not found", Toast.LONG);
+      }
     });
   }
 
@@ -159,7 +170,8 @@ class FlightsInfoRoundInt extends React.PureComponent {
       loader,
       showFilter,
       filterFlights,
-      flighttype
+      flighttype,
+      flightCount
     } = this.state;
 
     return (
@@ -237,6 +249,11 @@ class FlightsInfoRoundInt extends React.PureComponent {
                 filter={this.filter}
               />
             </Modal>
+            {flightCount == 0 && (
+              <View style={{flex: 1, alignItems: "center"}}>
+                <Text>Data not found</Text>
+              </View>
+            )}
             {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
