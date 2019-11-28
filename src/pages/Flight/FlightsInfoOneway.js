@@ -11,20 +11,23 @@ import Filter from "./Filter";
 class FlightsInfoOneway extends React.PureComponent {
   constructor(props) {
     super(props);
+    let data = this.props.navigation.state.params;
     this.state = {
-      from: "",
-      to: "",
-      journeyDate: "",
-      journey_date: "",
-      className: "",
-      Adult: "",
-      Child: "",
-      Infant: "",
-      flight_type: "",
-      loader: true,
-      trip_type: "",
-      sourceAirportName: "",
-      destinationAirportName: "",
+      from: data.sourceName,
+      to: data.destinationName,
+      className: data.className,
+      travelClass: data.travelClass,
+      journey_date: moment(data.journeyDate, "DD-MM-YYYY").format("DD MMM"),
+      journeyDate: data.journeyDate,
+      Adult: data.adults,
+      Child: data.children,
+      Infant: data.infants,
+      flight_type: data.flightType,
+      trip_type: data.tripType,
+      sourceCode: data.source,
+      destinationCode: data.destination,
+      sourceAirportName: data.sourceAirportName,
+      destinationAirportName: data.destinationAirportName,
       _selectFlightType: false,
       month: "",
       dates: [],
@@ -47,26 +50,9 @@ class FlightsInfoOneway extends React.PureComponent {
   componentDidMount() {
     let data = this.props.navigation.state.params;
     this.genrateDates(data.journeyDate);
+    data.journeyDate = this.state.journeyDate;
     console.log(data);
 
-    let jd = moment(data.journeyDate, "DD-MM-YYYY").format("DD MMM");
-    this.setState({
-      from: data.sourceName,
-      to: data.destinationName,
-      className: data.className,
-      travelClass: data.travelClass,
-      journey_date: jd,
-      journeyDate: data.journeyDate,
-      Adult: data.adults,
-      Child: data.children,
-      Infant: data.infants,
-      flight_type: data.flightType,
-      trip_type: data.tripType,
-      sourceCode: data.source,
-      destinationCode: data.destination,
-      sourceAirportName: data.sourceAirportName,
-      destinationAirportName: data.destinationAirportName
-    });
     Service.get("/Flights/AvailableFlights", data)
       .then(({data}) => {
         console.log(data);
@@ -236,7 +222,7 @@ class FlightsInfoOneway extends React.PureComponent {
     const {
       from,
       to,
-      journey_date,
+      journeyDate,
       className,
       Adult,
       Child,
@@ -257,7 +243,7 @@ class FlightsInfoOneway extends React.PureComponent {
               <HeaderFlights
                 from={from}
                 to={to}
-                journey_date={journey_date}
+                journey_date={moment(journeyDate, "DD-MM-YYYY").format("DD MMM")}
                 Adult={Adult}
                 Child={Child}
                 Infant={Infant}
