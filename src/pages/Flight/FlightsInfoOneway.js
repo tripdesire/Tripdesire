@@ -161,15 +161,7 @@ class FlightsInfoOneway extends React.PureComponent {
   };
 
   _ChangeDate = item => () => {
-    const {params} = this.props.navigation.state;
-    console.log(params);
-    console.log(item);
-
-    this.setState(propsName => {
-      let newDate = Object.assign({}, propsName); // creating copy of state variable jasper
-      newDate.journeyDate = item.fullDate; // update the name property, assign a new value
-      return {newDate}; // return new object jasper object
-    });
+    this.setState({journeyDate: item.fullDate});
 
     console.log(this.state);
     // Service.get("/Flights/AvailableFlights", this.props.navigation.state.params)
