@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, Text } from "react-native";
-import { createMaterialTopTabNavigator } from "react-navigation-tabs";
-import { ScrollView } from "react-native-gesture-handler";
+import React, {PureComponent} from "react";
+import {Dimensions, Image, StyleSheet, View, FlatList, Text} from "react-native";
+import {createMaterialTopTabNavigator} from "react-navigation-tabs";
+import {ScrollView} from "react-native-gesture-handler";
 import LowerSeats from "./LowerSeats";
 class Seats extends React.PureComponent {
   constructor(props) {
@@ -808,7 +808,7 @@ class Seats extends React.PureComponent {
   };
 
   render() {
-    const { rows, columns, seats } = this.state;
+    const {rows, columns, seats} = this.state;
     return (
       <ScrollView contentContainerStyle={{}}>
         <View
@@ -819,7 +819,7 @@ class Seats extends React.PureComponent {
             flex: 1,
             marginHorizontal: 16
           }}>
-          <View style={{ alignItems: "center" }}>
+          <View style={{alignItems: "center"}}>
             <View
               style={{
                 borderRadius: 5,
@@ -829,7 +829,7 @@ class Seats extends React.PureComponent {
                 width: 45,
                 height: 45
               }}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <View
                   style={{
                     borderColor: "black",
@@ -867,10 +867,10 @@ class Seats extends React.PureComponent {
                   paddingHorizontal: 4
                 }}></View>
             </View>
-            <Text style={{ fontSize: 12 }}>Seater</Text>
+            <Text style={{fontSize: 12}}>Seater</Text>
           </View>
 
-          <View style={{ alignItems: "center" }}>
+          <View style={{alignItems: "center"}}>
             <View
               style={{
                 borderRadius: 5,
@@ -881,7 +881,7 @@ class Seats extends React.PureComponent {
                 width: 45,
                 height: 45
               }}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <View
                   style={{
                     borderColor: "black",
@@ -919,10 +919,10 @@ class Seats extends React.PureComponent {
                   paddingHorizontal: 4
                 }}></View>
             </View>
-            <Text style={{ fontSize: 12 }}>Selected Seat</Text>
+            <Text style={{fontSize: 12}}>Selected Seat</Text>
           </View>
 
-          <View style={{ alignItems: "center" }}>
+          <View style={{alignItems: "center"}}>
             <View
               style={{
                 borderRadius: 2,
@@ -930,7 +930,7 @@ class Seats extends React.PureComponent {
                 borderWidth: 1,
                 paddingHorizontal: 8
               }}>
-              <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+              <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
               <View
                 style={{
                   borderRadius: 2,
@@ -942,10 +942,10 @@ class Seats extends React.PureComponent {
                   paddingVertical: 2
                 }}></View>
             </View>
-            <Text style={{ fontSize: 12 }}>Sleeper</Text>
+            <Text style={{fontSize: 12}}>Sleeper</Text>
           </View>
 
-          <View style={{ alignItems: "center" }}>
+          <View style={{alignItems: "center"}}>
             <View
               style={{
                 borderRadius: 2,
@@ -969,7 +969,7 @@ class Seats extends React.PureComponent {
                   marginVertical: 4
                 }}></View>
             </View>
-            <Text style={{ fontSize: 12 }}>Slepper</Text>
+            <Text style={{fontSize: 12}}>Slepper</Text>
           </View>
         </View>
 
@@ -981,7 +981,7 @@ class Seats extends React.PureComponent {
             flex: 1,
             marginHorizontal: 16
           }}>
-          <View style={{ alignItems: "center" }}>
+          <View style={{alignItems: "center"}}>
             <View
               style={{
                 borderRadius: 5,
@@ -992,7 +992,7 @@ class Seats extends React.PureComponent {
                 width: 45,
                 height: 45
               }}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <View
                   style={{
                     borderColor: "black",
@@ -1030,10 +1030,10 @@ class Seats extends React.PureComponent {
                   paddingHorizontal: 4
                 }}></View>
             </View>
-            <Text style={{ fontSize: 12 }}>Booked</Text>
+            <Text style={{fontSize: 12}}>Booked</Text>
           </View>
 
-          <View style={{ alignItems: "center" }}>
+          <View style={{alignItems: "center"}}>
             <View
               style={{
                 borderRadius: 5,
@@ -1044,7 +1044,7 @@ class Seats extends React.PureComponent {
                 width: 45,
                 height: 45
               }}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <View
                   style={{
                     borderColor: "black",
@@ -1082,7 +1082,7 @@ class Seats extends React.PureComponent {
                   paddingHorizontal: 4
                 }}></View>
             </View>
-            <Text style={{ fontSize: 12 }}>Female</Text>
+            <Text style={{fontSize: 12}}>Female</Text>
           </View>
         </View>
 
@@ -1112,7 +1112,7 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                (x.Length == 1 && x.Width == 1) && (
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1121,7 +1121,7 @@ class Seats extends React.PureComponent {
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
@@ -1152,7 +1152,7 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                (x.Length == 1 && x.Width == 2) && (
+                x.Length == 1 && x.Width == 2 && (
                   <View
                     style={{
                       borderRadius: 5,
@@ -1163,8 +1163,9 @@ class Seats extends React.PureComponent {
                       marginTop: 52,
                       width: 45,
                       height: 45
-                    }}>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    }}
+                    key={"_sap" + i}>
+                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                       <View
                         style={{
                           borderColor: "black",
@@ -1206,7 +1207,7 @@ class Seats extends React.PureComponent {
             )}
           </View>
 
-          <View style={{ marginStart: 10 }}>
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 2 &&
@@ -1220,7 +1221,7 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                (x.Length == 1 && x.Width == 1) && (
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1230,7 +1231,7 @@ class Seats extends React.PureComponent {
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
@@ -1246,7 +1247,7 @@ class Seats extends React.PureComponent {
                 )
             )}
           </View>
-          <View style={{ marginStart: 10 }}>
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 3 &&
@@ -1260,7 +1261,7 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                (x.Length == 1 && x.Width == 1) && (
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1270,7 +1271,7 @@ class Seats extends React.PureComponent {
                       alignSelf: "flex-end",
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
@@ -1286,7 +1287,7 @@ class Seats extends React.PureComponent {
                 )
             )}
           </View>
-          <View style={{ marginStart: 10 }}>
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 4 &&
@@ -1300,7 +1301,7 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                (x.Length == 1 && x.Width == 1) && (
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1309,7 +1310,7 @@ class Seats extends React.PureComponent {
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
@@ -1325,7 +1326,7 @@ class Seats extends React.PureComponent {
                 )
             )}
           </View>
-          <View style={{ marginStart: 10 }}>
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 5 &&
@@ -1339,7 +1340,7 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                (x.Length == 1 && x.Width == 1) && (
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1348,7 +1349,7 @@ class Seats extends React.PureComponent {
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
@@ -1372,13 +1373,13 @@ class Seats extends React.PureComponent {
 
 export default createMaterialTopTabNavigator(
   {
-    UPPER: { screen: Seats },
-    LOWER: { screen: LowerSeats }
+    UPPER: {screen: Seats},
+    LOWER: {screen: LowerSeats}
   },
   {
     initialRouteName: "UPPER",
     activeColor: "#f0edf6",
     inactiveColor: "#3e2465",
-    barStyle: { backgroundColor: "#694fad" }
+    barStyle: {backgroundColor: "#694fad"}
   }
 );

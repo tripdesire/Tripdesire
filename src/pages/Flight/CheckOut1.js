@@ -316,6 +316,7 @@ class CheckOut1 extends React.PureComponent {
         console.log(error);
       });
 
+    console.log(this.state.taxDetails);
     let data = {
       ActualBaseFare: this.state.taxDetails.ChargeableFares.ActualBaseFare, //params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
       ActualBaseFareRet:
@@ -331,7 +332,7 @@ class CheckOut1 extends React.PureComponent {
       BookingDate: this.state.date,
       ChildPax: params.child,
       City: "Hyderabad",
-      Conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
+      Conveniencefee: this.state.taxDetails.ChargeableFares.Conveniencefee, // params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
       ConveniencefeeRet:
         params.tripType == 2 && params.flightType == 1
           ? params.arrivalFlight.FareDetails.ChargeableFares.Conveniencefee
@@ -406,7 +407,7 @@ class CheckOut1 extends React.PureComponent {
       Source: params.sourceCode,
       SourceName: params.sourceAirportName,
       State: "Telangana",
-      STax: 0,
+      STax: this.state.taxDetails.ChargeableFares.STax,
       STaxRet: 0,
       Tax: params.departFlight.FareDetails.ChargeableFares.Tax,
       TaxRet:
@@ -427,7 +428,9 @@ class CheckOut1 extends React.PureComponent {
       telephone: "8888588888",
       TMarkup: 0,
       TMarkupRet: 0,
-      TPartnerCommission: 0,
+      TPartnerCommission: parseInt(
+        this.state.taxDetails.ChargeableFares.PartnerFareDatails.Commission
+      ),
       TPartnerCommissionRet: 0,
       TravelClass: params.travelClass,
       TripType: params.tripType,
