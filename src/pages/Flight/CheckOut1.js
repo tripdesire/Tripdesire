@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, {PureComponent} from "react";
 import {
   View,
   Image,
@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
@@ -18,7 +18,7 @@ import Service from "../../service";
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { params } = props.navigation.state;
+    const {params} = props.navigation.state;
     this.state = {
       loading: false,
       date: new Date(),
@@ -77,7 +77,8 @@ class CheckOut1 extends React.PureComponent {
       radioDirect: true,
       orderId: "",
       transactionId: "",
-      status: ""
+      status: "",
+      taxDetails: ""
     };
     console.log(props.navigation.state.params);
   }
@@ -107,7 +108,7 @@ class CheckOut1 extends React.PureComponent {
   // };
 
   _FFN = () => {
-    this.setState({ ffn: this.state.ffn == true ? false : true });
+    this.setState({ffn: this.state.ffn == true ? false : true});
   };
 
   onAdultChange = (index, key) => text => {
@@ -159,7 +160,7 @@ class CheckOut1 extends React.PureComponent {
   };
 
   _order = () => {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
 
     let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
@@ -201,8 +202,122 @@ class CheckOut1 extends React.PureComponent {
       ...this.state.infants.map(item => item.age)
     ].join("~");
 
-    let data = {
+    let taxDetail = {
       ActualBaseFare: params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
+      ActualBaseFareRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.ActualBaseFare
+          : 0,
+      AdultPax: params.adult,
+      BookedFrom: null,
+      BookingDate: this.state.date,
+      ChildPax: params.child,
+      Conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
+      ConveniencefeeRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.Conveniencefee
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.Conveniencefee
+          : 0,
+      Destination: params.destinationCode,
+      DestinationName: params.destinationAirportName,
+      FareDetails: params.departFlight.FareDetails,
+      FlightId: params.departFlight.FlightUId,
+      FlightIdRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FlightUId
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FlightUId
+          : null,
+      FlightType: params.flightType,
+      GSTDetails: params.departFlight.IsGSTMandatory
+        ? {
+            GSTCompanyAddress: "Hyderabad",
+            GSTCompanyContactNumber: "9234234234",
+            GSTCompanyName: "i2space",
+            GSTNumber: "534234234233",
+            GSTCompanyEmail: "guru.m@i2space.com",
+            GSTFirstName: "guru",
+            GSTLastName: "bharat"
+          }
+        : {},
+      InfantPax: params.infant,
+      IsLCC: true,
+      IsLCCRet: null,
+      IsNonStopFlight: false,
+      JourneyDate: params.journeyDate,
+      Key: params.departFlight.OriginDestinationoptionId.Key,
+      keyRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.OriginDestinationoptionId.Key
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.OriginDestinationoptionId.Key
+          : null,
+      OcTax: 0,
+      OnwardFlightSegments:
+        params.flightType == 1
+          ? params.departFlight.FlightSegments
+          : params.departFlight.IntOnward.FlightSegments,
+      provider: params.departFlight.Provider,
+      ReturnDate: params.tripType == 2 ? params.returnDate : params.journeyDate,
+      ReturnFlightSegments:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FlightSegments
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.IntReturn.FlightSegments
+          : [],
+      Rule: " ",
+      RuleRet: null,
+      SCharge: params.departFlight.FareDetails.ChargeableFares.SCharge,
+      SChargeRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.SCharge
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.SCharge
+          : 0,
+      Source: params.sourceCode,
+      SourceName: params.sourceAirportName,
+      Tax: params.departFlight.FareDetails.ChargeableFares.Tax,
+      TaxRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.Tax
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.Tax
+          : 0,
+      TCharge: 0,
+      TChargeRet: 0,
+      TDiscount: params.departFlight.FareDetails.ChargeableFares.TDiscount,
+      TDiscountRet:
+        params.tripType == 2 && params.flightType == 1
+          ? params.arrivalFlight.FareDetails.ChargeableFares.TDiscount
+          : params.tripType == 2 && params.flightType == 2
+          ? params.departFlight.FareDetails.ChargeableFares.TDiscount
+          : 0,
+      TMarkup: 0,
+      TMarkupRet: 0,
+      TPartnerCommission: 0,
+      TPartnerCommissionRet: 0,
+      TravelClass: params.travelClass,
+      TripType: params.tripType,
+      TSdiscount: 0,
+      TSdiscountRet: 0,
+      User: "",
+      UserType: 5
+    };
+
+    Service.post("/Flights/GetTaxDetails", taxDetail)
+      .then(res => {
+        console.log(res.data);
+        this.setState({taxDetails: res.data});
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    let data = {
+      ActualBaseFare: this.state.taxDetails.ChargeableFares.ActualBaseFare, //params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
       ActualBaseFareRet:
         params.tripType == 2 && params.flightType == 1
           ? params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare
@@ -325,10 +440,10 @@ class CheckOut1 extends React.PureComponent {
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
-      console.log(data);
+      console.log(data, this.state);
       let totalData = data;
 
-      this.setState({ loading: true });
+      this.setState({loading: true});
       Service.post("/Flights/BlockFlightTicket", data)
         .then(blockres => {
           console.log(blockres.data);
@@ -356,7 +471,7 @@ class CheckOut1 extends React.PureComponent {
                     contact: "9191919191",
                     name: "Razorpay Software"
                   },
-                  theme: { color: "#E5EBF7" }
+                  theme: {color: "#E5EBF7"}
                 };
 
                 RazorpayCheckout.open(options)
@@ -364,7 +479,7 @@ class CheckOut1 extends React.PureComponent {
                     // handle success
                     console.log(data);
                     alert(`Success: ${data.razorpay_payment_id}`);
-                    this.setState({ orderId: data.razorpay_payment_id });
+                    this.setState({orderId: data.razorpay_payment_id});
                     this.props.navigation.navigate("ThankYou", {
                       cartRes: res,
                       blockRes: blockres,
@@ -403,16 +518,16 @@ class CheckOut1 extends React.PureComponent {
               })
               .catch(error => {
                 Toast.show(error, Toast.LONG);
-                this.setState({ loading: false });
+                this.setState({loading: false});
               });
           } else {
-            this.setState({ loading: false });
+            this.setState({loading: false});
             Toast.show("Ticket is not block successfully ", Toast.LONG);
           }
         })
         .catch(error => {
           Toast.show(error, Toast.LONG);
-          this.setState({ loading: false });
+          this.setState({loading: false});
         });
     }
 
@@ -428,14 +543,14 @@ class CheckOut1 extends React.PureComponent {
     });
   };
   render() {
-    const { params } = this.props.navigation.state;
-    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults } = this.state;
+    const {params} = this.props.navigation.state;
+    const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults} = this.state;
 
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View style={{ flex: 1 }}>
+        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
+        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
+          <View style={{flex: 1}}>
             <View
               style={{
                 height: 56,
@@ -447,9 +562,9 @@ class CheckOut1 extends React.PureComponent {
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{ marginHorizontal: 5 }}>
-                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
-                <Text style={{ fontSize: 12, color: "#717984" }}>
+              <View style={{marginHorizontal: 5}}>
+                <Text style={{fontWeight: "700", fontSize: 16}}>Checkout</Text>
+                <Text style={{fontSize: 12, color: "#717984"}}>
                   {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
                   {params.checkInDate
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
@@ -465,9 +580,9 @@ class CheckOut1 extends React.PureComponent {
               </View>
             </View>
 
-            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+            <View style={{flex: 4, backgroundColor: "#FFFFFF"}}>
               <ScrollView
-                contentContainerStyle={{ backgroundColor: "#ffffff" }}
+                contentContainerStyle={{backgroundColor: "#ffffff"}}
                 showsVerticalScrollIndicator={false}>
                 <View
                   style={{
@@ -477,14 +592,14 @@ class CheckOut1 extends React.PureComponent {
                     marginHorizontal: 16,
                     marginTop: 20
                   }}>
-                  <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
                       <Image
                         source={require("../../assets/imgs/person.png")}
                         resizeMode="contain"
-                        style={{ width: 30 }}
+                        style={{width: 30}}
                       />
-                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                      <Text style={{marginStart: 10, fontWeight: "300", fontSize: 16}}>
                         Passengers Details
                       </Text>
                     </View>
@@ -510,7 +625,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].den}
-                                style={{ height: 50, width: 60 }}
+                                style={{height: 50, width: 60}}
                                 onValueChange={this.onAdultChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -552,7 +667,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -565,7 +680,7 @@ class CheckOut1 extends React.PureComponent {
                                 }}
                                 onPress={this.show("adults", index, true)}
                                 placeholder="DOB">
-                                <Text style={{ flex: 1 }}>
+                                <Text style={{flex: 1}}>
                                   {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
@@ -592,7 +707,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].gender}
-                                style={{ height: 50, width: 80 }}
+                                style={{height: 50, width: 80}}
                                 onValueChange={this.onAdultChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -610,10 +725,8 @@ class CheckOut1 extends React.PureComponent {
                               onChangeText={this.onAdultChange(index, "age")}
                             />
                           </View>
-                          <Button style={{ marginTop: 10 }} onPress={this._FFN}>
-                            <Text style={{ color: "#5B89F9" }}>
-                              Optional (Frequent flyer Number)
-                            </Text>
+                          <Button style={{marginTop: 10}} onPress={this._FFN}>
+                            <Text style={{color: "#5B89F9"}}>Optional (Frequent flyer Number)</Text>
                           </Button>
                           {ffn && (
                             <View>
@@ -622,7 +735,7 @@ class CheckOut1 extends React.PureComponent {
                                 Please verify the credit of your frequent flyer miles at the airport
                                 checkin counter.
                               </Text>
-                              <View style={{ flexDirection: "row" }}>
+                              <View style={{flexDirection: "row"}}>
                                 <TextInput
                                   style={{
                                     borderWidth: 1,
@@ -674,7 +787,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].den}
-                                style={{ height: 50, width: 60 }}
+                                style={{height: 50, width: 60}}
                                 onValueChange={this.onChildsChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -716,7 +829,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -729,7 +842,7 @@ class CheckOut1 extends React.PureComponent {
                                 }}
                                 onPress={this.show("childs", index, true)}
                                 placeholder="DOB">
-                                <Text style={{ flex: 1 }}>
+                                <Text style={{flex: 1}}>
                                   {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
@@ -759,7 +872,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].gender}
-                                style={{ height: 50, width: 80 }}
+                                style={{height: 50, width: 80}}
                                 onValueChange={this.onChildsChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -802,7 +915,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.infants[index].den}
-                                style={{ height: 50, width: 60 }}
+                                style={{height: 50, width: 60}}
                                 onValueChange={this.onInfantChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -844,7 +957,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -857,7 +970,7 @@ class CheckOut1 extends React.PureComponent {
                                 }}
                                 onPress={this.show("infants", index, true)}
                                 placeholder="DOB">
-                                <Text style={{ flex: 1 }}>
+                                <Text style={{flex: 1}}>
                                   {moment(this.state.infants[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
@@ -885,7 +998,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.infants[index].gender}
-                                style={{ height: 50, width: 80 }}
+                                style={{height: 50, width: 80}}
                                 onValueChange={this.onInfantChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -971,7 +1084,7 @@ class CheckOut1 extends React.PureComponent {
                     padding: 10,
                     borderRadius: 8
                   }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{flexDirection: "row", alignItems: "center"}}>
                     <TouchableOpacity onPress={() => this._radioButton("D")}>
                       <View
                         style={{
@@ -995,7 +1108,7 @@ class CheckOut1 extends React.PureComponent {
                         )}
                       </View>
                     </TouchableOpacity>
-                    <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
+                    <Text style={{marginStart: 5, fontSize: 18}}>RazorPay</Text>
                   </View>
                   <Text
                     style={{
@@ -1022,7 +1135,7 @@ class CheckOut1 extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._order}>
-                  <Text style={{ color: "#fff" }}>Place Order</Text>
+                  <Text style={{color: "#fff"}}>Place Order</Text>
                 </Button>
               </ScrollView>
             </View>

@@ -24,6 +24,7 @@ import Service from "../../service";
 import {Header} from "../../components";
 import SuggLoc from "./LocationModal";
 import Autocomplete from "react-native-autocomplete-input";
+import axios from "axios";
 
 const {height} = Dimensions.get("window");
 
@@ -45,11 +46,54 @@ class RenderItems extends React.PureComponent {
 
   _BookNow = item => () => {
     const {params} = this.props;
-    let param = {
-      params: params,
-      item: item
+    let data = {
+      id: 2238,
+      quantity: 1,
+      car_item_data: item,
+      image_path: "",
+      car_name: item.Name,
+      travel_type: params.travelType,
+      trip_type: parseInt(params.tripType),
+      pickup_time: params.pickUpTime,
+      journey_date: params.journeyDate,
+      return_date: params.travelType == 1 ? params.returnDate : "",
+      source_city: params.sourceName,
+      source_id: parseInt(params.sourceId),
+      destination_city: params.travelType == 1 ? params.destinationName : "",
+      destination_id: params.travelType == 1 ? parseInt(params.destinationId) : 0, /////
+      car_seat: item.SeatingCapacity,
+      car_bagesQty: parseInt(item.AdditionalInfo.BaggageQuantity),
+      per_km: item.PerKm,
+      convenience_fee: item.ConvenienceFee,
+      total_price: item.TotalAmount,
+      driver_charge: item.DriverCharges,
+      terms_conditions: item.TermsConditions
     };
-    this.props.navigation.navigate("CheckoutCab", param);
+
+    console.log(data);
+
+    axios
+      .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", data)
+      .then(res => {
+        console.log(res);
+        if (res.data.code == "1") {
+          Toast.show(res.data.message, Toast.LONG);
+          axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(res => {
+            console.log(res.data);
+            let param = {
+              params: params,
+              item: item,
+              cartData: res.data
+            };
+            this.props.navigation.navigate("CheckoutCab", param);
+          });
+        } else {
+          Toast.show(res.data.message, Toast.LONG);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   render() {

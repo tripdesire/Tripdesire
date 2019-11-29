@@ -16,6 +16,7 @@ import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
 import Service from "../../service";
+import HTML from "react-native-render-html";
 
 class CheckoutCab extends React.PureComponent {
   constructor(props) {
@@ -26,7 +27,7 @@ class CheckoutCab extends React.PureComponent {
       firstname: "",
       last_name: "",
       dob: moment()
-        .subtract(12, "years")
+        .subtract(18, "years")
         .toDate(),
       age: "",
       gender: "M",
@@ -37,13 +38,11 @@ class CheckoutCab extends React.PureComponent {
   }
 
   onAdultChange = key => text => {
-    // console.log(moment().diff(moment(text), "years"));
     this.setState({
       [key]: text,
       dobShow: false,
       age: moment().diff(moment(text), "years")
     });
-    //console.log(this.state);
   };
 
   show = () => {
@@ -64,12 +63,11 @@ class CheckoutCab extends React.PureComponent {
     let name = this.state.firstname.concat(
       this.state.last_name != "" ? "~" + this.state.last_name : ""
     );
-    console.log(name);
 
-    const {item, params} = this.props.navigation.state.params;
+    const {item, params, cartData} = this.props.navigation.state.params;
 
     let param = {
-      TotalFare: item.TotalNetAmount, ///
+      TotalFare: cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
       Conveniencefee: item.ConvenienceFee,
       NoofPassengers: item.VehicleId,
       Name: name,
@@ -79,7 +77,8 @@ class CheckoutCab extends React.PureComponent {
       Address: params.sourceName, ////
       State: "Telangana",
       PostalCode: "502032",
-      PickUpAddress: params.travelType == 3 ? params.Pickuplocation : "", ////
+      PickUpLocation: params.travelType == 3 ? params.Pickuplocation : "", ////
+      DropLocation: params.travelType == 3 ? params.Droplocation : "",
       Provider: item.Provider,
       Operator: null,
       CancellationPolicy: item.CancellationPolicy,
@@ -119,8 +118,21 @@ class CheckoutCab extends React.PureComponent {
 
     if (this.state.firstname != "" && this.state.last_name != "") {
       Service.post("/Cabs/BlockCab", param)
-        .then(res => {
-          console.log(res);
+        .then(response => {
+          console.log(response);
+
+          Service.get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+            .then(res => {
+              console.log(res);
+              if (res.data.BookingStatus == 3) {
+                Toast.show(res.data.Message, Toast.LONG);
+              } else {
+                Toast.show(res.data.Message, Toast.LONG);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
         })
         .catch(error => {
           console.log(error);
@@ -131,7 +143,7 @@ class CheckoutCab extends React.PureComponent {
   };
 
   render() {
-    const {item, params} = this.props.navigation.state.params;
+    const {item, params, cartData} = this.props.navigation.state.params;
     return (
       <>
         <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
@@ -429,7 +441,7 @@ class CheckoutCab extends React.PureComponent {
                     paddingHorizontal: 8
                   }}>
                   <Text style={{fontSize: 16, fontWeight: "700"}}>You Pay</Text>
-                  <Text style={{fontSize: 16, fontWeight: "700"}}>₹11231</Text>
+                  <HTML html={cartData.total} />
                 </View>
               </View>
               <View

@@ -52,8 +52,11 @@ class FlightsInfoOneway extends React.PureComponent {
     let data = this.props.navigation.state.params;
     this.genrateDates(data.journeyDate);
     data.journeyDate = this.state.journeyDate;
-    console.log(data);
+    this.setState({loader: true});
+    this.ApiCall(data);
+  }
 
+  ApiCall(data) {
     Service.get("/Flights/AvailableFlights", data)
       .then(({data}) => {
         console.log(data);
@@ -163,44 +166,11 @@ class FlightsInfoOneway extends React.PureComponent {
   _ChangeDate = item => () => {
     this.setState({journeyDate: item.fullDate});
 
+    let data = this.props.navigation.state.params;
+    data.journeyDate = item.fullDate;
+
     console.log(this.state);
-    // Service.get("/Flights/AvailableFlights", this.props.navigation.state.params)
-    //   .then(({data}) => {
-    //     console.log(data);
-    //     if (this.state.flight_type == 1) {
-    //       console.log(data.DomesticOnwardFlights);
-    //       if (data.DomesticOnwardFlights.length != 0) {
-    //         this.setState({
-    //           flights: data.DomesticOnwardFlights,
-    //           filterFlights: data.DomesticOnwardFlights,
-    //           loader: false,
-    //           flightCount: 0
-    //         });
-    //       } else {
-    //         this.setState({loader: false, flightCount: 1});
-    //         Toast.show("Data not Found", Toast.LONG);
-    //       }
-    //     }
-    //     if (this.state.flight_type == 2) {
-    //       console.log(data.InternationalFlights);
-    //       if (data.InternationalFlights.length != 0) {
-    //         this.setState({
-    //           flights: data.InternationalFlights,
-    //           filterFlights: data.InternationalFlights,
-    //           loader: false,
-    //           flightCount: 0
-    //         });
-    //       } else {
-    //         this.setState({loader: false, flightCount: 1});
-    //         Toast.show("Data not Found", Toast.LONG);
-    //       }
-    //     }
-    //   })
-    //   .catch(error => {
-    //     Toast.show(error, Toast.LONG);
-    //     this.setState({loader: false});
-    //   });
-    // console.log(this.state);
+    this.ApiCall(data);
   };
 
   _renderItem = ({item}) => (
