@@ -1,8 +1,13 @@
 import React, {PureComponent} from "react";
-import {Dimensions, Image, StyleSheet, View, FlatList, Text} from "react-native";
+import {Dimensions, Image, StyleSheet, View, FlatList} from "react-native";
 import {createMaterialTopTabNavigator} from "react-navigation-tabs";
 import {ScrollView} from "react-native-gesture-handler";
 import LowerSeats from "./LowerSeats";
+import {Button, Text, AutoCompleteModal} from "../../components";
+import moment from "moment";
+import axios from "axios";
+import Toast from "react-native-simple-toast";
+
 class Seats extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -807,10 +812,80 @@ class Seats extends React.PureComponent {
     }
   };
 
+  componentDidMount() {
+    ///  console.log(this.props.navigation.state.params);
+  }
+
+  _bookNow = () => {
+    const {params, sourceName, destinationName, tripType} = this.props.navigation.state.params;
+    console.log(params);
+    let param = {
+      id: 273,
+      quantity: 1,
+      bus_item_result_data: params,
+      display_name: params.DisplayName,
+      bus_type: params.BusType,
+      departure_time: params.DepartureTime,
+      arrival_time: params.ArrivalTime,
+      source_city: sourceName,
+      source_id: params.SourceId,
+      destination_city: destinationName,
+      destination_id: params.DestinationId,
+      boarding_point: params.SourceId + ";" + sourceName,
+      dropping_point: params.DestinationId + ";" + destinationName,
+      time_duration: params.Duration,
+      select_seat: 1,
+      select_seat_number: 20,
+      base_fare: params.Fares,
+      service_charge: params.ServiceTax,
+      service_tax: 0,
+      ConvenienceFee: params.ConvenienceFee,
+      trip_type: tripType,
+      journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
+    };
+
+    console.log(param);
+
+    axios
+      .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param)
+      .then(({data}) => {
+        console.log(data);
+        if (data.code == "1") {
+          Toast.show(data.message, Toast.LONG);
+          axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(({data}) => {
+            console.log(data);
+            this.props.navigation.navigate("CheckoutBus", {
+              cartData: data,
+              params,
+              sourceName,
+              destinationName
+            });
+          });
+        } else {
+          Toast.show(res.data.message, Toast.LONG);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
     const {rows, columns, seats} = this.state;
     return (
       <ScrollView contentContainerStyle={{}}>
+        <Button
+          style={{
+            backgroundColor: "#F68E1F",
+            marginHorizontal: 100,
+            height: 40,
+            justifyContent: "center",
+            borderRadius: 20,
+            marginVertical: 40
+          }}
+          onPress={this._bookNow}>
+          <Text style={{color: "#fff", alignSelf: "center"}}>Book Now</Text>
+        </Button>
         <View
           style={{
             flexDirection: "row",
@@ -1112,7 +1187,8 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                x.Length == 1 && x.Width == 1 && (
+                x.Length == 1 &&
+                x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1152,7 +1228,8 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                x.Length == 1 && x.Width == 2 && (
+                x.Length == 1 &&
+                x.Width == 2 && (
                   <View
                     style={{
                       borderRadius: 5,
@@ -1221,7 +1298,8 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                x.Length == 1 && x.Width == 1 && (
+                x.Length == 1 &&
+                x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1261,7 +1339,8 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                x.Length == 1 && x.Width == 1 && (
+                x.Length == 1 &&
+                x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1301,7 +1380,8 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                x.Length == 1 && x.Width == 1 && (
+                x.Length == 1 &&
+                x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -1340,7 +1420,8 @@ class Seats extends React.PureComponent {
                   x.Column == 8 ||
                   x.Column == 9 ||
                   x.Column == 10) &&
-                x.Length == 1 && x.Width == 1 && (
+                x.Length == 1 &&
+                x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,

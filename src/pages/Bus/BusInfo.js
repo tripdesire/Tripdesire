@@ -72,7 +72,13 @@ class BusInfo extends React.PureComponent {
   };
 
   _BookNow = item => () => {
-    this.props.navigation.navigate("Seats", item);
+    const {params} = this.props.navigation.state;
+    this.props.navigation.navigate("Seats", {
+      params: item,
+      sourceName: params.sourceName,
+      destinationName: params.destinationName,
+      tripType: params.tripType
+    });
   };
 
   _renderItemList = ({item, index}) => {
@@ -154,8 +160,8 @@ class BusInfo extends React.PureComponent {
       <>
         <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
         <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flexDirection: "column", flex: 1}}>
-            <View style={{flex: 1, backgroundColor: "#E5EBF7"}}>
+          <View style={{flex: 1}}>
+            <View style={{height: 56, backgroundColor: "#E5EBF7"}}>
               <View
                 style={{
                   flexDirection: "row",

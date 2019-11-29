@@ -33,6 +33,7 @@ class CheckoutCab extends React.PureComponent {
       gender: "M",
       show: false,
       dobShow: false,
+      loader: false,
       radioDirect: true
     };
   }
@@ -117,18 +118,57 @@ class CheckoutCab extends React.PureComponent {
     console.log(JSON.stringify(param));
 
     if (this.state.firstname != "" && this.state.last_name != "") {
+      this.setState({loader: true});
       Service.post("/Cabs/BlockCab", param)
         .then(response => {
+          this.setState({loader: false});
           console.log(response);
 
-          Service.get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
-            .then(res => {
-              console.log(res);
-              if (res.data.BookingStatus == 3) {
-                Toast.show(res.data.Message, Toast.LONG);
-              } else {
-                Toast.show(res.data.Message, Toast.LONG);
-              }
+          var options = {
+            description: "Credits towards consultation",
+            image: "https://i.imgur.com/3g7nmJC.png",
+            currency: "INR",
+            key: "rzp_test_a3aQYPLYowGvWJ",
+            amount: "5000",
+            name: "TripDesire",
+            prefill: {
+              email: "void@razorpay.com",
+              contact: "9191919191",
+              name: "Razorpay Software"
+            },
+            theme: {color: "#E5EBF7"}
+          };
+
+          RazorpayCheckout.open(options)
+            .then(data => {
+              // handle success
+              console.log(data);
+              alert(`Success: ${data.razorpay_payment_id}`);
+              this.setState({orderId: data.razorpay_payment_id});
+
+              this.setState({loader: true});
+              Service.get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+                .then(res => {
+                  this.setState({loader: false});
+                  console.log(res);
+                  if (res.data.BookingStatus == 3) {
+                    let stateData = this.state;
+                    this.props.navigation.navigate("ThankYouCab", {
+                      item,
+                      params,
+                      cartData,
+                      res,
+                      data,
+                      stateData
+                    });
+                    Toast.show(res.data.Message, Toast.LONG);
+                  } else {
+                    Toast.show(res.data.Message, Toast.LONG);
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
             })
             .catch(error => {
               console.log(error);
@@ -143,6 +183,7 @@ class CheckoutCab extends React.PureComponent {
   };
 
   render() {
+    const {loader} = this.state;
     const {item, params, cartData} = this.props.navigation.state.params;
     return (
       <>
@@ -507,6 +548,11 @@ class CheckoutCab extends React.PureComponent {
                 <Text style={{color: "#fff"}}>Place Order</Text>
               </Button>
             </ScrollView>
+            {loader && (
+              <View style={{justifyContent: "center", flex: 1}}>
+                <ActivityIndicator />
+              </View>
+            )}
           </View>
         </SafeAreaView>
       </>
