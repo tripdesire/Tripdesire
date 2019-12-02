@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, {PureComponent} from "react";
 import {
   View,
   Image,
@@ -9,7 +9,7 @@ import {
   Picker,
   ScrollView
 } from "react-native";
-import { Button, Text, ActivityIndicator } from "../../components";
+import {Button, Text, ActivityIndicator} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -26,7 +26,7 @@ class BusPayment extends React.PureComponent {
   }
 
   _FFN = () => {
-    this.setState({ ffn: true });
+    this.setState({ffn: true});
   };
 
   _radioButton = value => {
@@ -37,10 +37,10 @@ class BusPayment extends React.PureComponent {
     });
   };
   render() {
-    const { ffn, radioDirect, radioCheck, radioCOD } = this.state;
+    const {ffn, radioDirect, radioCheck, radioCOD} = this.state;
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
-        <View style={{ flex: 1, height: 56, backgroundColor: "#E5EBF7" }}>
+      <View style={{flexDirection: "column", flex: 1}}>
+        <View style={{flex: 1, height: 56, backgroundColor: "#E5EBF7"}}>
           <View
             style={{
               flexDirection: "row",
@@ -50,12 +50,10 @@ class BusPayment extends React.PureComponent {
             <Button onPress={() => this.props.navigation.goBack(null)}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
+            <View style={{justifyContent: "space-between", flexDirection: "row", flex: 1}}>
               <View>
-                <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                  Checkout
-                </Text>
-                <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                <Text style={{fontWeight: "700", fontSize: 16, marginHorizontal: 5}}>Checkout</Text>
+                <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
                   18 Sept | Thursday | 12 Buses Found
                 </Text>
               </View>
@@ -76,9 +74,9 @@ class BusPayment extends React.PureComponent {
               <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}></View>
              
             </View> */}
-        <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+        <View style={{flex: 4, backgroundColor: "#FFFFFF"}}>
           <ScrollView
-            contentContainerStyle={{ backgroundColor: "#ffffff" }}
+            contentContainerStyle={{backgroundColor: "#ffffff"}}
             showsVerticalScrollIndicator={false}>
             <View
               style={{
@@ -88,10 +86,10 @@ class BusPayment extends React.PureComponent {
                 marginHorizontal: 30,
                 marginTop: 20
               }}>
-              <View style={{ marginVertical: 10 }}>
-                <View style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 10 }}>
+              <View style={{marginVertical: 10}}>
+                <View style={{flexDirection: "row", alignItems: "center", marginHorizontal: 10}}>
                   <IconSimple name="bag" size={30} />
-                  <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                  <Text style={{marginStart: 10, fontWeight: "300", fontSize: 16}}>
                     Fare Backup
                   </Text>
                 </View>
@@ -132,8 +130,8 @@ class BusPayment extends React.PureComponent {
                     paddingHorizontal: 10,
                     marginBottom: 10
                   }}>
-                  <Text style={{ fontSize: 16 }}>TOTAL PAYABLE</Text>
-                  <Text style={{ fontSize: 16, fontWeight: "700" }}>$ 1175.00</Text>
+                  <Text style={{fontSize: 16}}>TOTAL PAYABLE</Text>
+                  <Text style={{fontSize: 16, fontWeight: "700"}}>$ 1175.00</Text>
                 </View>
               </View>
             </View>
@@ -149,7 +147,7 @@ class BusPayment extends React.PureComponent {
                 alignItems: "center",
                 justifyContent: "space-between"
               }}>
-              <TextInput style={{ marginStart: 10, flex: 1 }} placeholder="Have a Promo Code?" />
+              <TextInput style={{marginStart: 10, flex: 1}} placeholder="Have a Promo Code?" />
               <Button
                 style={{
                   height: 40,
@@ -159,7 +157,7 @@ class BusPayment extends React.PureComponent {
                   borderBottomRightRadius: 8,
                   borderTopRightRadius: 8
                 }}>
-                <Text style={{ color: "#fff" }}>Apply</Text>
+                <Text style={{color: "#fff"}}>Apply</Text>
               </Button>
             </View>
 
@@ -173,7 +171,7 @@ class BusPayment extends React.PureComponent {
                 padding: 10,
                 borderRadius: 8
               }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{flexDirection: "row", alignItems: "center"}}>
                 <TouchableOpacity onPress={() => this._radioButton("D")}>
                   <View
                     style={{
@@ -197,14 +195,14 @@ class BusPayment extends React.PureComponent {
                     )}
                   </View>
                 </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 16 }}>Direct Bank Transfer</Text>
+                <Text style={{marginStart: 5, fontSize: 16}}>Direct Bank Transfer</Text>
               </View>
-              <Text style={{ flex: 1, fontSize: 12, color: "#696969", marginHorizontal: 20 }}>
+              <Text style={{flex: 1, fontSize: 12, color: "#696969", marginHorizontal: 20}}>
                 Make your payment direct into our bank account.Please use your order ID as the
                 payment reference.Your order will not be shipped untill the funds have cleared in
                 our account
               </Text>
-              <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
+              <View style={{flexDirection: "row", alignItems: "center", marginTop: 5}}>
                 <TouchableOpacity onPress={() => this._radioButton("CP")}>
                   <View
                     style={{
@@ -228,9 +226,9 @@ class BusPayment extends React.PureComponent {
                     )}
                   </View>
                 </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 16 }}>Check Payments</Text>
+                <Text style={{marginStart: 5, fontSize: 16}}>Check Payments</Text>
               </View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{flexDirection: "row", alignItems: "center"}}>
                 <TouchableOpacity onPress={() => this._radioButton("C")}>
                   <View
                     style={{
@@ -254,7 +252,7 @@ class BusPayment extends React.PureComponent {
                     )}
                   </View>
                 </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 16 }}>Cash on Delivery</Text>
+                <Text style={{marginStart: 5, fontSize: 16}}>Cash on Delivery</Text>
               </View>
             </View>
 
@@ -268,7 +266,7 @@ class BusPayment extends React.PureComponent {
                 height: 40,
                 borderRadius: 20
               }}>
-              <Text style={{ color: "#fff" }}>Place Order</Text>
+              <Text style={{color: "#fff"}}>Place Order</Text>
             </Button>
           </ScrollView>
         </View>

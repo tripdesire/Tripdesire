@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import Toast from "react-native-simple-toast";
 
 class Service {
   constructor() {
@@ -21,6 +22,7 @@ class Service {
 
   handleError = error => {
     console.log(error);
+    Toast.show(error.toString(), Toast.LONG);
     // switch (error.response.status) {
     //   case 401:
     //     //this.redirectTo(document, "/");
@@ -36,7 +38,7 @@ class Service {
   };
 
   get(path, params = {}) {
-    return this.service.get(path, { params: params });
+    return this.service.get(path, {params: params});
   }
 
   patch(path, payload) {
