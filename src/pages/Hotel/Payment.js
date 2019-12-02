@@ -69,7 +69,7 @@ class Payment extends React.PureComponent {
       transactionId: "",
       status: ""
     };
-    console.log(props.navigation.state.params);
+    console.log(props.navigation.state);
   }
 
   componentDidMount() {
@@ -134,7 +134,6 @@ class Payment extends React.PureComponent {
   validate = () => {
     let needToValidateAdults = false;
     let needToValidateChilds = false;
-    let needToValidateInfants = false;
     needToValidateAdults = this.state.adults.every(
       item => item.firstname == "" || item.last_name == "" || item.age == ""
     );
@@ -143,19 +142,11 @@ class Payment extends React.PureComponent {
       this.state.childs.every(
         item => item.firstname == "" || item.last_name == "" || item.age == ""
       );
-    needToValidateInfants =
-      this.state.infants != 0 &&
-      this.state.infants.every(
-        item => item.firstname == "" || item.last_name == "" || item.age == ""
-      );
-
-    return needToValidateAdults || needToValidateChilds || needToValidateInfants;
+    return needToValidateAdults || needToValidateChilds;
   };
 
   _order = () => {
     const {params} = this.props.navigation.state;
-
-    let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
     let param = {
       user_id: "7",
@@ -379,6 +370,7 @@ class Payment extends React.PureComponent {
   };
   render() {
     const {params} = this.props.navigation.state;
+    console.log(this.props.navigation.state);
     const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loader} = this.state;
 
     return (
@@ -400,7 +392,6 @@ class Payment extends React.PureComponent {
               <View style={{marginHorizontal: 5}}>
                 <Text style={{fontWeight: "700", fontSize: 16}}>Checkout</Text>
                 <Text style={{fontSize: 12, color: "#717984"}}>
-                  {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
                   {params.checkInDate
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
                     : ""}
