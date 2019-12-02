@@ -17,6 +17,7 @@ import Service from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
+import axios from "axios";
 class BusPayment extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -25,7 +26,9 @@ class BusPayment extends React.PureComponent {
       ffn: false,
       radioDirect: true,
       radioCheck: false,
-      radioCOD: false
+      radioCOD: false,
+      orderId: "",
+      transaction_id: ""
     };
   }
 
@@ -37,7 +40,13 @@ class BusPayment extends React.PureComponent {
     console.log(this.props.navigation.state.params);
     const {BlockingReferenceNo} = this.props.navigation.state.params;
     console.log(BlockingReferenceNo);
-    //   this.props.navigation.navigate("ThankYouBus");
+
+    axios.post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7").then(({data}) => {
+      console.log(data);
+      this.setState({
+        orderId: data.id
+      });
+    });
 
     var options = {
       description: "Credits towards consultation",
@@ -57,23 +66,22 @@ class BusPayment extends React.PureComponent {
     RazorpayCheckout.open(options)
       .then(data => {
         // handle success
-        console.log(res);
         alert(`Success: ${data.razorpay_payment_id}`);
-        this.setState({orderId: data.razorpay_payment_id});
-        this.props.navigation.navigate("ThankYouBus");
+        this.setState({transaction_id: data.razorpay_payment_id});
 
         Service.get("/Buses/BookBusTicket?referenceNo=" + BlockingReferenceNo)
           .then(({data}) => {
             console.log(data);
             if (data.BookingStatus == 3) {
+              this.props.navigation.navigate("ThankYouBus");
               Toast.show(data.Message, Toast.LONG);
             }
 
             let paymentData = {
-              order_id: res.data.id,
+              order_id: this.state.orderId,
               status: "completed",
-              transaction_id: res.data.transaction_id,
-              reference_no: blockres.data.ReferenceNo
+              transaction_id: this.state.transaction_id,
+              reference_no: BlockingReferenceNo
             };
             console.log(paymentData);
 

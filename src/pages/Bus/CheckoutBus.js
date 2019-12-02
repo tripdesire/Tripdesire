@@ -27,7 +27,8 @@ class CheckoutBus extends React.PureComponent {
       IssuedBy: "",
       Name: "",
       Age: "",
-      ffn: false
+      ffn: false,
+      loader: false
     };
   }
 
@@ -61,12 +62,12 @@ class CheckoutBus extends React.PureComponent {
       DroppingPointDetails: "White Field White Field",
       EmailId: "nadeem@webiixx.com",
       EmergencyMobileNo: null,
-      Fares: "1500",
+      Fares: "1600",
       Genders: "M",
       IdCardNo: "123456",
       IdCardType: "PAN_CARD",
       IdCardIssuedBy: "GOV",
-      JourneyDate: "30-11-2019",
+      JourneyDate: "03-12-2019",
       MobileNo: 9999999999,
       Names: "rahul singh",
       NoofSeats: "1",
@@ -77,7 +78,7 @@ class CheckoutBus extends React.PureComponent {
       ReturnDate: "",
       State: "Telangana",
       Seatcodes: null,
-      SeatNos: "23",
+      SeatNos: "31",
       Servicetax: "225",
       ServiceCharge: "10.00",
       SourceId: "100",
@@ -91,12 +92,24 @@ class CheckoutBus extends React.PureComponent {
     console.log(this.state);
 
     if (this.state.Name != "" && this.state.IdNumber && this.state.IssuedBy && this.state.Age) {
+      this.setState({loader: true});
       Service.post("/Buses/BlockBusTicket", param)
         .then(({data}) => {
           console.log(data);
+          this.setState({loader: false});
+          const {
+            cartData,
+            destinationName,
+            sourceName,
+            params
+          } = this.props.navigation.state.params;
           if (data.BookingStatus == 1) {
             this.props.navigation.navigate("BusPayment", {
-              BlockingReferenceNo: data.BlockingReferenceNo
+              BlockingReferenceNo: data.BlockingReferenceNo,
+              cartData,
+              destinationName,
+              sourceName,
+              params
             });
           } else {
             Toast.show(data.Message, Toast.LONG);
@@ -111,7 +124,7 @@ class CheckoutBus extends React.PureComponent {
   };
   render() {
     const {params, cartData, destinationName, sourceName} = this.props.navigation.state.params;
-    const {ffn} = this.state;
+    const {ffn, loader} = this.state;
     return (
       <View style={{flexDirection: "column", flex: 1}}>
         <View style={{height: 56, backgroundColor: "#E5EBF7", flex: 1}}>
@@ -454,6 +467,7 @@ class CheckoutBus extends React.PureComponent {
               <Text style={{color: "#fff"}}>Next</Text>
             </Button>
           </ScrollView>
+          {loader && <ActivityIndicator />}
         </View>
       </View>
     );
