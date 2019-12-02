@@ -13,7 +13,7 @@ import {Button, Text, ActivityIndicator} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
@@ -62,7 +62,7 @@ class BusPayment extends React.PureComponent {
         this.setState({orderId: data.razorpay_payment_id});
         this.props.navigation.navigate("ThankYouBus");
 
-        Service.get("/Buses/BookBusTicket?referenceNo=" + BlockingReferenceNo)
+        etravosApi.get("/Buses/BookBusTicket?referenceNo=" + BlockingReferenceNo)
           .then(({data}) => {
             console.log(data);
             if (data.BookingStatus == 3) {

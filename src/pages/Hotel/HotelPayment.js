@@ -41,7 +41,7 @@ class HotelPayment extends React.PureComponent {
       single_ht_children: params.child,
       single_ht_price: params.selectedRoom.RoomTotal,
       single_ht_extra_guest: params.selectedRoom.ExtGuestTotal,
-      single_ht_tax_amount: params.selectedRoom.ServicetaxTotal,
+      single_ht_tax_amount: params.selectedRoom.etravosApitaxTotal,
       single_ht_convenience_fee: params.ConvenienceFeeTotal
     };
 

@@ -4,7 +4,7 @@ import {Button, Text, ActivityIndicator, Icon, HeaderFlights} from "../../compon
 import Toast from "react-native-simple-toast";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import moment from "moment";
 import Filter from "./Filter";
 
@@ -57,7 +57,7 @@ class FlightsInfoOneway extends React.PureComponent {
   }
 
   ApiCall(data) {
-    Service.get("/Flights/AvailableFlights", data)
+    etravosApi.get("/Flights/AvailableFlights", data)
       .then(({data}) => {
         console.log(data);
         if (this.state.flight_type == 1) {

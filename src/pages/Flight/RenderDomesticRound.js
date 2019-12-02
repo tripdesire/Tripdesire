@@ -4,7 +4,7 @@ import {Button, Text, ActivityIndicator, DomesticFlights} from "../../components
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import FareDetails from "./FareRules";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
@@ -34,7 +34,7 @@ class RenderDomesticRound extends React.PureComponent {
       userType: 5
     };
     //  console.log(data);
-    Service.get("/Flights/GetFareRule", data)
+    etravosApi.get("/Flights/GetFareRule", data)
       .then(res => {
         // console.log(res.data);
         this.setState({farerule: this.convertUnicode(res.data)}); //res.data

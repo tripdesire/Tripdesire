@@ -14,7 +14,7 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconFontAwsm from "react-native-vector-icons/FontAwesome";
 import Toast from "react-native-simple-toast";
 import moment from "moment";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 const {height, width} = Dimensions.get("window");
 
 class BusInfo extends React.PureComponent {
@@ -36,7 +36,7 @@ class BusInfo extends React.PureComponent {
 
   componentDidMount() {
     const {params} = this.props.navigation.state;
-    Service.get("/Buses/AvailableBuses", params)
+    etravosApi.get("/Buses/AvailableBuses", params)
       .then(({data}) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {

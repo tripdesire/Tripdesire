@@ -15,7 +15,7 @@ import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import HTML from "react-native-render-html";
 
 class CheckoutCab extends React.PureComponent {
@@ -119,7 +119,7 @@ class CheckoutCab extends React.PureComponent {
 
     if (this.state.firstname != "" && this.state.last_name != "") {
       this.setState({loader: true});
-      Service.post("/Cabs/BlockCab", param)
+      etravosApi.post("/Cabs/BlockCab", param)
         .then(response => {
           this.setState({loader: false});
           console.log(response);
@@ -147,7 +147,7 @@ class CheckoutCab extends React.PureComponent {
               this.setState({orderId: data.razorpay_payment_id});
 
               this.setState({loader: true});
-              Service.get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+              etravosApi.get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
                 .then(res => {
                   this.setState({loader: false});
                   console.log(res);
@@ -529,7 +529,7 @@ class CheckoutCab extends React.PureComponent {
                   }}>
                   Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast Onboarding.
                   Free & Easy Application Process.100+ Payment Modes, Secure Gateway, Simple
-                  Integration. Easy Integration. Dashboard Reporting. Services: Customize Your
+                  Integration. Easy Integration. Dashboard Reporting. etravosApis: Customize Your
                   Checkout, Autofill OTP on Mobile.
                 </Text>
               </View>

@@ -8,7 +8,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import moment from "moment";
 var newData = [];
 class FlightListRender extends React.PureComponent {
@@ -39,7 +39,7 @@ class FlightListRender extends React.PureComponent {
       userType: 5
     };
     console.log(data);
-    Service.get("/Flights/GetFareRule", data)
+    etravosApi.get("/Flights/GetFareRule", data)
       .then(res => {
         //  console.log(res.data);
         this.setState({farerule: this.convertUnicode(res.data)}); //res.data

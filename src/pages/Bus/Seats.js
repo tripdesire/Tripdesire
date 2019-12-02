@@ -40,7 +40,7 @@ class Seats extends React.PureComponent {
     console.log(data);
 
     this.setState({loading: true});
-    Service.get("/Buses/TripDetails", data)
+    etravosApi.get("/Buses/TripDetails", data)
       .then(({data}) => {
         if (Array.isArray(data.Seats) && data.Seats) {
           let seats = {upper: [], lower: []};
@@ -118,7 +118,7 @@ class Seats extends React.PureComponent {
       select_seat: 1,
       select_seat_number: 20,
       base_fare: params.Fares,
-      service_charge: params.ServiceTax,
+      service_charge: params.etravosApiTax,
       service_tax: 0,
       ConvenienceFee: params.ConvenienceFee,
       trip_type: tripType,

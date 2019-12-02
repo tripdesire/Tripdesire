@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import {
   View,
   Image,
@@ -14,13 +14,13 @@ import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
-import Service from "../../service";
+import {etravosApi, domainApi} from "../../service";
+
 class Payment extends React.PureComponent {
   constructor(props) {
     super(props);
     const {params} = props.navigation.state;
     this.state = {
-      loader: true,
       loading: false,
       date: new Date(),
       gender: "Mr",
@@ -73,7 +73,7 @@ class Payment extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.setState({loader: false});
+    this.setState({loading: false});
   }
 
   show = (key, index, isShow) => () => {
@@ -268,21 +268,16 @@ class Payment extends React.PureComponent {
     } else {
       console.log(data);
       let totalData = data;
-      this.setState({loader: true});
-      Service.post("/Hotels/BlockHotelRoom", data)
+      this.setState({loading: true});
+      etravosApi
+        .post("/Hotels/BlockHotelRoom", data)
         .then(blockres => {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 1) {
-            axios
-              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7", newOrder)
-              .then(res => {
-                console.log(res);
-                this.setState({
-                  transactionId: res.data.transaction_id,
-                  status: res.data.status,
-                  loader: false
-                });
-
+            domainApi
+              .get("/checkout/new-order?user_id=7")
+              .then(({data: order}) => {
+                console.log(order);
                 var options = {
                   description: "Credits towards consultation",
                   image: "https://i.imgur.com/3g7nmJC.png",
@@ -297,50 +292,37 @@ class Payment extends React.PureComponent {
                   },
                   theme: {color: "#E5EBF7"}
                 };
-
                 RazorpayCheckout.open(options)
-                  .then(data => {
+                  .then(razorpayRes => {
                     // handle success
-                    console.log(data);
-                    alert(`Success: ${data.razorpay_payment_id}`);
-                    this.setState({orderId: data.razorpay_payment_id});
-                    this.props.navigation.navigate("ThankYou", {
-                      cartRes: res,
-                      blockRes: blockres,
-                      data: totalData
-                    });
-
-                    this.setState({loader: true});
-                    Service.get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
-                      .then(Response => {
-                        this.setState({loader: false});
-                        console.log(Response.data);
+                    //console.log(data);
+                    this.setState({loading: true});
+                    etravosApi
+                      .get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
+                      .then(({data: Response}) => {
+                        this.setState({loading: false});
+                        console.log(Response);
                       })
                       .catch(error => {
                         console.log(error);
                       });
-
                     let paymentData = {
-                      order_id: res.data.id,
+                      order_id: order.id,
                       status: "completed",
-                      transaction_id: res.data.transaction_id,
-                      reference_no: Response.data // blockres.data.ReferenceNo
+                      transaction_id: razorpayRes.razorpay_payment_id,
+                      reference_no: Response // blockres.data.ReferenceNo
                     };
-                    console.log(paymentData);
-                    this.setState({loader: true});
-                    axios
-                      .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
-                      .then(res => {
-                        this.setState({loader: false});
-                        console.log(res);
-                      });
-
-                    this.props.navigation.navigate("ThankYouHotel", {});
+                    this.setState({loading: true});
+                    domainApi.post("/checkout/update-order", paymentData).then(res => {
+                      this.setState({loading: false});
+                      console.log(res);
+                    });
+                    this.props.navigation.navigate("ThankYouHotel", order);
                   })
                   .catch(error => {
                     // handle failure
-
-                    alert(`Error: ${error.code} | ${error.description}`);
+                    this.setState({loading: false});
+                    alert(`Error:  ${error.description}`);
                   });
               })
               .catch(error => {
@@ -359,6 +341,7 @@ class Payment extends React.PureComponent {
     }
 
     console.log(this.state);
+    return;
   };
 
   _radioButton = value => {
@@ -371,7 +354,7 @@ class Payment extends React.PureComponent {
   render() {
     const {params} = this.props.navigation.state;
     console.log(this.props.navigation.state);
-    const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loader} = this.state;
+    const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loading} = this.state;
 
     return (
       <>
@@ -819,8 +802,8 @@ class Payment extends React.PureComponent {
                     }}>
                     Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast
                     Onboarding. Free & Easy Application Process.100+ Payment Modes, Secure Gateway,
-                    Simple Integration. Easy Integration. Dashboard Reporting. Services: Customize
-                    Your Checkout, Autofill OTP on Mobile.
+                    Simple Integration. Easy Integration. Dashboard Reporting. etravosApis:
+                    Customize Your Checkout, Autofill OTP on Mobile.
                   </Text>
                 </View>
 
@@ -839,7 +822,7 @@ class Payment extends React.PureComponent {
                 </Button>
               </ScrollView>
             </View>
-            {loader && <ActivityIndicator />}
+            {loading && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

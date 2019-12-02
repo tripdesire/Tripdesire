@@ -20,7 +20,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import {Header} from "../../components";
 import SuggLoc from "./LocationModal";
 import Autocomplete from "react-native-autocomplete-input";

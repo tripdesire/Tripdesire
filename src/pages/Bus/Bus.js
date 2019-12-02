@@ -5,7 +5,7 @@ import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import {Header} from "../../components";
 
 class Bus extends React.PureComponent {
