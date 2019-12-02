@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, {PureComponent} from "react";
 import {
   View,
   Image,
@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
@@ -18,7 +18,7 @@ import Service from "../../service";
 class Payment extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { params } = props.navigation.state;
+    const {params} = props.navigation.state;
     this.state = {
       loader: true,
       loading: false,
@@ -44,7 +44,7 @@ class Payment extends React.PureComponent {
           firstname: "",
           last_name: "",
           dob: moment()
-            .subtract(12, "years")
+            .subtract(18, "years")
             .toDate(),
           age: "",
           gender: "M",
@@ -64,17 +64,6 @@ class Payment extends React.PureComponent {
           show: false
         };
       }),
-      infants: [...Array(parseInt(params.infant))].map(item => {
-        return {
-          den: parseInt(params.infant) > 0 ? "Mr" : "",
-          firstname: "",
-          last_name: "",
-          dob: new Date(),
-          age: "",
-          gender: parseInt(params.infant) > 0 ? "M" : "",
-          show: false
-        };
-      }),
       radioDirect: true,
       orderId: "",
       transactionId: "",
@@ -84,7 +73,7 @@ class Payment extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.setState({ loader: false });
+    this.setState({loader: false});
   }
 
   show = (key, index, isShow) => () => {
@@ -112,7 +101,7 @@ class Payment extends React.PureComponent {
   // };
 
   _FFN = () => {
-    this.setState({ ffn: this.state.ffn == true ? false : true });
+    this.setState({ffn: this.state.ffn == true ? false : true});
   };
 
   onAdultChange = (index, key) => text => {
@@ -164,7 +153,7 @@ class Payment extends React.PureComponent {
   };
 
   _order = () => {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
 
     let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
@@ -173,7 +162,7 @@ class Payment extends React.PureComponent {
       payment_method: "razopay",
       adult_details: this.state.adults,
       child_details: this.state.childs,
-      infant_details: this.state.infants
+      infant_details: []
     };
 
     var adults = params.adultDetail.split("~");
@@ -226,27 +215,24 @@ class Payment extends React.PureComponent {
 
     let dob = [
       ...this.state.adults.map(item => moment(item.dob).format("DD-MM-YYYY")),
-      ...this.state.childs.map(item => moment(item.dob).format("DD-MM-YYYY")),
-      ...this.state.infants.map(item => moment(item.dob).format("DD-MM-YYYY"))
+      ...this.state.childs.map(item => moment(item.dob).format("DD-MM-YYYY"))
     ].join("~");
     dob = finalArrDob.join("-");
 
     let gender = [
       ...this.state.adults.map(item => item.gender),
-      ...this.state.childs.map(item => item.gender),
-      ...this.state.infants.map(item => item.gender)
+      ...this.state.childs.map(item => item.gender)
     ].join("~");
     gender = finalArrGender.join("-");
 
     let age = [
       ...this.state.adults.map(item => item.age),
-      ...this.state.childs.map(item => item.age),
-      ...this.state.infants.map(item => item.age)
+      ...this.state.childs.map(item => item.age)
     ].join("~");
     age = finalArrAge.join("-");
 
     console.log(name, dob, gender, age);
-    console.log(this.state.adults, this.state.childs, this.state.infants);
+    console.log(this.state.adults, this.state.childs);
 
     let data = {
       AdditionalInfo: null,
@@ -291,7 +277,7 @@ class Payment extends React.PureComponent {
     } else {
       console.log(data);
       let totalData = data;
-      this.setState({ loading: true });
+      this.setState({loader: true});
       Service.post("/Hotels/BlockHotelRoom", data)
         .then(blockres => {
           console.log(blockres.data);
@@ -303,7 +289,7 @@ class Payment extends React.PureComponent {
                 this.setState({
                   transactionId: res.data.transaction_id,
                   status: res.data.status,
-                  loading: false
+                  loader: false
                 });
 
                 var options = {
@@ -318,7 +304,7 @@ class Payment extends React.PureComponent {
                     contact: "9191919191",
                     name: "Razorpay Software"
                   },
-                  theme: { color: "#E5EBF7" }
+                  theme: {color: "#E5EBF7"}
                 };
 
                 RazorpayCheckout.open(options)
@@ -326,15 +312,17 @@ class Payment extends React.PureComponent {
                     // handle success
                     console.log(data);
                     alert(`Success: ${data.razorpay_payment_id}`);
-                    this.setState({ orderId: data.razorpay_payment_id });
+                    this.setState({orderId: data.razorpay_payment_id});
                     this.props.navigation.navigate("ThankYou", {
                       cartRes: res,
                       blockRes: blockres,
                       data: totalData
                     });
 
+                    this.setState({loader: true});
                     Service.get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
                       .then(Response => {
+                        this.setState({loader: false});
                         console.log(Response.data);
                       })
                       .catch(error => {
@@ -348,11 +336,15 @@ class Payment extends React.PureComponent {
                       reference_no: Response.data // blockres.data.ReferenceNo
                     };
                     console.log(paymentData);
+                    this.setState({loader: true});
                     axios
                       .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
                       .then(res => {
+                        this.setState({loader: false});
                         console.log(res);
                       });
+
+                    this.props.navigation.navigate("ThankYouHotel", {});
                   })
                   .catch(error => {
                     // handle failure
@@ -362,16 +354,16 @@ class Payment extends React.PureComponent {
               })
               .catch(error => {
                 Toast.show(error, Toast.LONG);
-                this.setState({ loading: false });
+                this.setState({loading: false});
               });
           } else {
-            this.setState({ loading: false });
+            this.setState({loading: false});
             Toast.show("Hotel is not block successfully ", Toast.LONG);
           }
         })
         .catch(error => {
           Toast.show(error, Toast.LONG);
-          this.setState({ loading: false });
+          this.setState({loading: false});
         });
     }
 
@@ -386,14 +378,14 @@ class Payment extends React.PureComponent {
     });
   };
   render() {
-    const { params } = this.props.navigation.state;
-    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loader } = this.state;
+    const {params} = this.props.navigation.state;
+    const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loader} = this.state;
 
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View style={{ flex: 1 }}>
+        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
+        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
+          <View style={{flex: 1}}>
             <View
               style={{
                 height: 56,
@@ -405,9 +397,9 @@ class Payment extends React.PureComponent {
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{ marginHorizontal: 5 }}>
-                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
-                <Text style={{ fontSize: 12, color: "#717984" }}>
+              <View style={{marginHorizontal: 5}}>
+                <Text style={{fontWeight: "700", fontSize: 16}}>Checkout</Text>
+                <Text style={{fontSize: 12, color: "#717984"}}>
                   {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
                   {params.checkInDate
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
@@ -423,9 +415,9 @@ class Payment extends React.PureComponent {
               </View>
             </View>
 
-            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+            <View style={{flex: 4, backgroundColor: "#FFFFFF"}}>
               <ScrollView
-                contentContainerStyle={{ backgroundColor: "#ffffff" }}
+                contentContainerStyle={{backgroundColor: "#ffffff"}}
                 showsVerticalScrollIndicator={false}>
                 <View
                   style={{
@@ -435,14 +427,14 @@ class Payment extends React.PureComponent {
                     marginHorizontal: 16,
                     marginTop: 20
                   }}>
-                  <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
                       <Image
                         source={require("../../assets/imgs/person.png")}
                         resizeMode="contain"
-                        style={{ width: 30 }}
+                        style={{width: 30}}
                       />
-                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                      <Text style={{marginStart: 10, fontWeight: "300", fontSize: 16}}>
                         Passengers Details
                       </Text>
                     </View>
@@ -468,7 +460,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].den}
-                                style={{ height: 50, width: 60 }}
+                                style={{height: 50, width: 60}}
                                 onValueChange={this.onAdultChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -510,7 +502,7 @@ class Payment extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -523,7 +515,7 @@ class Payment extends React.PureComponent {
                                 }}
                                 onPress={this.show("adults", index, true)}
                                 placeholder="DOB">
-                                <Text style={{ flex: 1 }}>
+                                <Text>
                                   {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
@@ -550,7 +542,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].gender}
-                                style={{ height: 50, width: 80 }}
+                                style={{height: 50, width: 80}}
                                 onValueChange={this.onAdultChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -568,10 +560,8 @@ class Payment extends React.PureComponent {
                               onChangeText={this.onAdultChange(index, "age")}
                             />
                           </View>
-                          <Button style={{ marginTop: 10 }} onPress={this._FFN}>
-                            <Text style={{ color: "#5B89F9" }}>
-                              Optional (Frequent flyer Number)
-                            </Text>
+                          <Button style={{marginTop: 10}} onPress={this._FFN}>
+                            <Text style={{color: "#5B89F9"}}>Optional (Frequent flyer Number)</Text>
                           </Button>
                           {ffn && (
                             <View>
@@ -580,7 +570,7 @@ class Payment extends React.PureComponent {
                                 Please verify the credit of your frequent flyer miles at the airport
                                 checkin counter.
                               </Text>
-                              <View style={{ flexDirection: "row" }}>
+                              <View style={{flexDirection: "row"}}>
                                 <TextInput
                                   style={{
                                     borderWidth: 1,
@@ -632,7 +622,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].den}
-                                style={{ height: 50, width: 60 }}
+                                style={{height: 50, width: 60}}
                                 onValueChange={this.onChildsChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -674,7 +664,7 @@ class Payment extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -687,7 +677,7 @@ class Payment extends React.PureComponent {
                                 }}
                                 onPress={this.show("childs", index, true)}
                                 placeholder="DOB">
-                                <Text style={{ flex: 1 }}>
+                                <Text>
                                   {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
@@ -717,7 +707,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].gender}
-                                style={{ height: 50, width: 80 }}
+                                style={{height: 50, width: 80}}
                                 onValueChange={this.onChildsChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -733,132 +723,6 @@ class Payment extends React.PureComponent {
                               placeholder="Age"
                               keyboardType="numeric"
                               onChangeText={this.onChildsChange(index, "age")}
-                            />
-                          </View>
-                        </View>
-                      ))}
-
-                    {parseInt(params.infant) > 0 &&
-                      [...Array(parseInt(params.infant))].map((e, index) => (
-                        <View key={"_infant" + index}>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              marginTop: 10,
-                              justifyContent: "center",
-                              alignItems: "center"
-                            }}>
-                            <Text>Infant {index + 1}</Text>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                marginStart: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.infants[index].den}
-                                style={{ height: 50, width: 60 }}
-                                onValueChange={this.onInfantChange(index, "den")}>
-                                <Picker.Item label="Mr." value="Mr" />
-                                <Picker.Item label="Mrs." value="Mrs" />
-                              </Picker>
-                            </View>
-                            <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1,
-                                marginHorizontal: 2
-                              }}
-                              placeholder="First Name"
-                              onChangeText={this.onInfantChange(index, "firstname")}
-                            />
-                            <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1
-                              }}
-                              placeholder="Last Name"
-                              onChangeText={this.onInfantChange(index, "last_name")}
-                            />
-                          </View>
-                          <View
-                            style={{
-                              marginTop: 5,
-                              flexDirection: "row",
-                              justifyContent: "center",
-                              alignItems: "center"
-                            }}>
-                            <View
-                              style={{
-                                flex: 2,
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center"
-                              }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
-                              <Button
-                                style={{
-                                  flex: 1,
-                                  marginStart: 5,
-                                  borderWidth: 1,
-                                  borderColor: "#F2F2F2",
-                                  height: 40,
-                                  justifyContent: "center",
-                                  alignItems: "center"
-                                }}
-                                onPress={this.show("infants", index, true)}
-                                placeholder="DOB">
-                                <Text style={{ flex: 1 }}>
-                                  {moment(this.state.infants[index].dob).format("DD-MMM-YYYY")}
-                                </Text>
-                              </Button>
-                              <DateTimePicker
-                                date={this.state.infants[index].dob}
-                                isVisible={this.state.infants[index].show}
-                                onConfirm={this.onInfantChange(index, "dob")}
-                                onCancel={this.show("infants", index, false)}
-                                maximumDate={new Date()}
-                                minimumDate={moment()
-                                  .subtract(2, "years")
-                                  .toDate()}
-                              />
-                            </View>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1,
-                                paddingHorizontal: 2,
-                                marginHorizontal: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.infants[index].gender}
-                                style={{ height: 50, width: 80 }}
-                                onValueChange={this.onInfantChange(index, "gender")}>
-                                <Picker.Item label="Male" value="M" />
-                                <Picker.Item label="Female" value="F" />
-                              </Picker>
-                            </View>
-                            <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1
-                              }}
-                              placeholder="Age"
-                              keyboardType="numeric"
-                              onChangeText={this.onInfantChange(index, "age")}
                             />
                           </View>
                         </View>
@@ -929,7 +793,7 @@ class Payment extends React.PureComponent {
                     padding: 10,
                     borderRadius: 8
                   }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{flexDirection: "row", alignItems: "center"}}>
                     <TouchableOpacity onPress={() => this._radioButton("D")}>
                       <View
                         style={{
@@ -953,7 +817,7 @@ class Payment extends React.PureComponent {
                         )}
                       </View>
                     </TouchableOpacity>
-                    <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
+                    <Text style={{marginStart: 5, fontSize: 18}}>RazorPay</Text>
                   </View>
                   <Text
                     style={{
@@ -980,7 +844,7 @@ class Payment extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._order}>
-                  <Text style={{ color: "#fff" }}>Place Order</Text>
+                  <Text style={{color: "#fff"}}>Place Order</Text>
                 </Button>
               </ScrollView>
             </View>
