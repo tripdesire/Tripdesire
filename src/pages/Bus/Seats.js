@@ -1,9 +1,12 @@
-import React, {PureComponent} from "react";
-import {View, StyleSheet} from "react-native";
-import Toast from "react-native-simple-toast";
-import {Button, Text, ActivityIndicator, Header} from "../../components";
-import Service from "../../service";
+import React from "react";
+
+import {StyleSheet, View, ScrollView} from "react-native";
+import {} from "react-native-gesture-handler";
+import LowerSeats from "./LowerSeats";
+import {Button, Text} from "../../components";
 import moment from "moment";
+import axios from "axios";
+import Toast from "react-native-simple-toast";
 
 class Seats extends React.PureComponent {
   constructor(props) {
@@ -40,16 +43,6 @@ class Seats extends React.PureComponent {
     Service.get("/Buses/TripDetails", data)
       .then(({data}) => {
         if (Array.isArray(data.Seats) && data.Seats) {
-          //data = data.Seats.ma;
-          //   [upper, lower] = Object.values(
-          //     data.Seats.reduce((c, v) => {
-          //       let k = Object.values(v).join("_"); //Using the values as key.
-          //       c[k] = c[k] || [];
-          //       c[k].push(v);
-          //       return c;
-          //     }, {})
-          //   );
-
           let seats = {upper: [], lower: []};
           for (let i of data.Seats) {
             switch (i.Zindex) {
@@ -61,7 +54,6 @@ class Seats extends React.PureComponent {
                 break;
             }
           }
-
           const lowerRows = seats.lower.reduce((prev, current) => {
             return prev.Row > current.Row ? prev : current;
           });
@@ -83,7 +75,6 @@ class Seats extends React.PureComponent {
                   return prev.Column > current.Column ? prev : current;
                 })
               : null;
-
           this.setState({
             loading: false,
             seats,
@@ -106,15 +97,77 @@ class Seats extends React.PureComponent {
       });
   }
 
-  getColumn = () => {
-    return <Text>Row</Text>;
+  _bookNow = () => {
+    const {params, sourceName, destinationName, tripType} = this.props.navigation.state.params;
+    console.log(params);
+    let param = {
+      id: 273,
+      quantity: 1,
+      bus_item_result_data: params,
+      display_name: params.DisplayName,
+      bus_type: params.BusType,
+      departure_time: params.DepartureTime,
+      arrival_time: params.ArrivalTime,
+      source_city: sourceName,
+      source_id: params.SourceId,
+      destination_city: destinationName,
+      destination_id: params.DestinationId,
+      boarding_point: params.SourceId + ";" + sourceName,
+      dropping_point: params.DestinationId + ";" + destinationName,
+      time_duration: params.Duration,
+      select_seat: 1,
+      select_seat_number: 20,
+      base_fare: params.Fares,
+      service_charge: params.ServiceTax,
+      service_tax: 0,
+      ConvenienceFee: params.ConvenienceFee,
+      trip_type: tripType,
+      journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
+    };
+
+    console.log(param);
+
+    axios
+      .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param)
+      .then(({data}) => {
+        console.log(data);
+        if (data.code == "1") {
+          Toast.show(data.message, Toast.LONG);
+          axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(({data}) => {
+            console.log(data);
+            this.props.navigation.navigate("CheckoutBus", {
+              cartData: data,
+              params,
+              sourceName,
+              destinationName
+            });
+          });
+        } else {
+          Toast.show(res.data.message, Toast.LONG);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   render() {
-    const {seats, loading, selectedTab} = this.state;
+    const {seats, loading, selectedTab, rows, columns} = this.state;
     return (
       <View style={{flex: 1}}>
         <Header firstName="Seats" />
+        <Button
+          style={{
+            backgroundColor: "#F68E1F",
+            marginHorizontal: 100,
+            height: 40,
+            justifyContent: "center",
+            borderRadius: 20,
+            marginVertical: 40
+          }}
+          onPress={this._bookNow}>
+          <Text style={{color: "#fff", alignSelf: "center"}}>Book Now</Text>
+        </Button>
         {seats.lower.length > 0 && seats.upper.length > 0 && (
           <View style={styles.tabContainer}>
             <Button

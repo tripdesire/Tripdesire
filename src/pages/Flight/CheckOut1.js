@@ -18,7 +18,8 @@ import Service from "../../service";
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
     super(props);
-    const {params} = props.navigation.state;
+    const {params} = props.navigation.state.params;
+    console.log(props.navigation.state.params);
     this.state = {
       loading: false,
       date: new Date(),
@@ -37,15 +38,21 @@ class CheckOut1 extends React.PureComponent {
       childDob: "",
       childAge: "",
       childGender: "",
+      upDateOrder: "",
       adults: [...Array(parseInt(params.adult))].map(item => {
         return {
           den: "Mr",
           firstname: "",
           last_name: "",
           dob: moment()
-            .subtract(12, "years")
+            .subtract(18, "years")
             .toDate(),
-          age: "",
+          age: moment().diff(
+            moment()
+              .subtract(18, "years")
+              .toDate(),
+            "years"
+          ),
           gender: "M",
           show: false
         };
@@ -58,7 +65,12 @@ class CheckOut1 extends React.PureComponent {
           dob: moment()
             .subtract(2, "years")
             .toDate(),
-          age: "",
+          age: moment().diff(
+            moment()
+              .subtract(2, "years")
+              .toDate(),
+            "years"
+          ),
           gender: parseInt(params.child) > 0 ? "M" : "",
           show: false
         };
@@ -69,7 +81,12 @@ class CheckOut1 extends React.PureComponent {
           firstname: "",
           last_name: "",
           dob: new Date(),
-          age: "",
+          age: moment().diff(
+            moment()
+              .subtract(0, "years")
+              .toDate(),
+            "years"
+          ),
           gender: parseInt(params.infant) > 0 ? "M" : "",
           show: false
         };
@@ -114,6 +131,9 @@ class CheckOut1 extends React.PureComponent {
   onAdultChange = (index, key) => text => {
     let newData = Object.assign([], this.state.adults);
     newData[index][key] = text;
+    if ((key = "dob")) {
+      newData[index].age = moment().diff(moment(text), "years");
+    }
     newData[index].show = false;
     this.setState({
       adults: newData
@@ -123,6 +143,9 @@ class CheckOut1 extends React.PureComponent {
   onChildsChange = (index, key) => text => {
     let newData = Object.assign([], this.state.childs);
     newData[index][key] = text;
+    if ((key = "dob")) {
+      newData[index].age = moment().diff(moment(text), "years");
+    }
     newData[index].show = false;
     this.setState({
       childs: newData
@@ -132,6 +155,9 @@ class CheckOut1 extends React.PureComponent {
   onInfantChange = (index, key) => text => {
     let newData = Object.assign([], this.state.infants);
     newData[index][key] = text;
+    if ((key = "dob")) {
+      newData[index].age = moment().diff(moment(text), "years");
+    }
     newData[index].show = false;
     this.setState({
       infants: newData
@@ -160,7 +186,7 @@ class CheckOut1 extends React.PureComponent {
   };
 
   _order = () => {
-    const {params} = this.props.navigation.state;
+    const {params} = this.props.navigation.state.params;
 
     let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
@@ -316,9 +342,8 @@ class CheckOut1 extends React.PureComponent {
         console.log(error);
       });
 
-    console.log(this.state.taxDetails);
-    let data = {
-      ActualBaseFare: this.state.taxDetails.ChargeableFares.ActualBaseFare, //params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
+    let book = {
+      ActualBaseFare: params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
       ActualBaseFareRet:
         params.tripType == 2 && params.flightType == 1
           ? params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare
@@ -332,7 +357,7 @@ class CheckOut1 extends React.PureComponent {
       BookingDate: this.state.date,
       ChildPax: params.child,
       City: "Hyderabad",
-      Conveniencefee: this.state.taxDetails.ChargeableFares.Conveniencefee, // params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
+      Conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
       ConveniencefeeRet:
         params.tripType == 2 && params.flightType == 1
           ? params.arrivalFlight.FareDetails.ChargeableFares.Conveniencefee
@@ -407,7 +432,7 @@ class CheckOut1 extends React.PureComponent {
       Source: params.sourceCode,
       SourceName: params.sourceAirportName,
       State: "Telangana",
-      STax: this.state.taxDetails.ChargeableFares.STax,
+      STax: 0,
       STaxRet: 0,
       Tax: params.departFlight.FareDetails.ChargeableFares.Tax,
       TaxRet:
@@ -428,9 +453,7 @@ class CheckOut1 extends React.PureComponent {
       telephone: "8888588888",
       TMarkup: 0,
       TMarkupRet: 0,
-      TPartnerCommission: parseInt(
-        this.state.taxDetails.ChargeableFares.PartnerFareDatails.Commission
-      ),
+      TPartnerCommission: 0,
       TPartnerCommissionRet: 0,
       TravelClass: params.travelClass,
       TripType: params.tripType,
@@ -443,11 +466,12 @@ class CheckOut1 extends React.PureComponent {
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
-      console.log(data, this.state);
-      let totalData = data;
+      console.log(book, this.state);
+      const {params, data} = this.props.navigation.state.params;
+      console.log(params, data);
 
       this.setState({loading: true});
-      Service.post("/Flights/BlockFlightTicket", data)
+      Service.post("/Flights/BlockFlightTicket", book)
         .then(blockres => {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 8) {
@@ -467,7 +491,7 @@ class CheckOut1 extends React.PureComponent {
                   image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
                   key: "rzp_test_a3aQYPLYowGvWJ",
-                  amount: "5000",
+                  amount: parseInt(data.total_price) * 100,
                   name: "TripDesire",
                   prefill: {
                     email: "void@razorpay.com",
@@ -483,34 +507,43 @@ class CheckOut1 extends React.PureComponent {
                     console.log(data);
                     alert(`Success: ${data.razorpay_payment_id}`);
                     this.setState({orderId: data.razorpay_payment_id});
-                    this.props.navigation.navigate("ThankYou", {
-                      cartRes: res,
-                      blockRes: blockres,
-                      data: totalData
-                    });
 
+                    this.setState({loading: true});
                     Service.get(
                       "/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo
                     )
                       .then(Response => {
                         console.log(Response);
+                        this.setState({loading: false, upDateOrder: Response});
+
+                        let paymentData = {
+                          order_id: res.data.id,
+                          status: "completed",
+                          transaction_id: res.data.transaction_id,
+                          reference_no: blockres.data.ReferenceNo
+                        };
+                        console.log(paymentData);
+
+                        this.setState({loading: true});
+                        axios
+                          .post(
+                            "http://tripdesire.co/wp-json/wc/v2/checkout/update-order",
+                            paymentData
+                          )
+                          .then(resp => {
+                            this.setState({loading: false});
+                            console.log(resp);
+                          });
+
+                        this.props.navigation.navigate("ThankYou", {
+                          cartRes: res,
+                          blockRes: blockres,
+                          stateData: this.state,
+                          params: this.props.navigation.state.params
+                        });
                       })
                       .catch(error => {
                         console.log(error);
-                      });
-
-                    let paymentData = {
-                      order_id: res.data.id,
-                      status: "completed",
-                      transaction_id: res.data.transaction_id,
-                      reference_no: blockres.data.ReferenceNo
-                    };
-                    console.log(paymentData);
-
-                    axios
-                      .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
-                      .then(res => {
-                        console.log(res);
                       });
                   })
                   .catch(error => {
@@ -546,7 +579,7 @@ class CheckOut1 extends React.PureComponent {
     });
   };
   render() {
-    const {params} = this.props.navigation.state;
+    const {params} = this.props.navigation.state.params;
     const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults} = this.state;
 
     return (
@@ -683,7 +716,7 @@ class CheckOut1 extends React.PureComponent {
                                 }}
                                 onPress={this.show("adults", index, true)}
                                 placeholder="DOB">
-                                <Text style={{flex: 1}}>
+                                <Text>
                                   {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
@@ -845,7 +878,7 @@ class CheckOut1 extends React.PureComponent {
                                 }}
                                 onPress={this.show("childs", index, true)}
                                 placeholder="DOB">
-                                <Text style={{flex: 1}}>
+                                <Text>
                                   {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
@@ -973,7 +1006,7 @@ class CheckOut1 extends React.PureComponent {
                                 }}
                                 onPress={this.show("infants", index, true)}
                                 placeholder="DOB">
-                                <Text style={{flex: 1}}>
+                                <Text>
                                   {moment(this.state.infants[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>

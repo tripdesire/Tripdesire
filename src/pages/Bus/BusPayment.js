@@ -13,6 +13,10 @@ import {Button, Text, ActivityIndicator} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
+import Service from "../../service";
+import moment from "moment";
+import Toast from "react-native-simple-toast";
+import RazorpayCheckout from "react-native-razorpay";
 class BusPayment extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -27,6 +31,67 @@ class BusPayment extends React.PureComponent {
 
   _FFN = () => {
     this.setState({ffn: true});
+  };
+
+  _PlaceOrder = () => {
+    console.log(this.props.navigation.state.params);
+    const {BlockingReferenceNo} = this.props.navigation.state.params;
+    console.log(BlockingReferenceNo);
+    //   this.props.navigation.navigate("ThankYouBus");
+
+    var options = {
+      description: "Credits towards consultation",
+      image: "https://i.imgur.com/3g7nmJC.png",
+      currency: "INR",
+      key: "rzp_test_a3aQYPLYowGvWJ",
+      amount: "5000",
+      name: "TripDesire",
+      prefill: {
+        email: "void@razorpay.com",
+        contact: "9191919191",
+        name: "Razorpay Software"
+      },
+      theme: {color: "#E5EBF7"}
+    };
+
+    RazorpayCheckout.open(options)
+      .then(data => {
+        // handle success
+        console.log(res);
+        alert(`Success: ${data.razorpay_payment_id}`);
+        this.setState({orderId: data.razorpay_payment_id});
+        this.props.navigation.navigate("ThankYouBus");
+
+        Service.get("/Buses/BookBusTicket?referenceNo=" + BlockingReferenceNo)
+          .then(({data}) => {
+            console.log(data);
+            if (data.BookingStatus == 3) {
+              Toast.show(data.Message, Toast.LONG);
+            }
+
+            let paymentData = {
+              order_id: res.data.id,
+              status: "completed",
+              transaction_id: res.data.transaction_id,
+              reference_no: blockres.data.ReferenceNo
+            };
+            console.log(paymentData);
+
+            axios
+              .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
+              .then(res => {
+                console.log(res);
+              });
+          })
+          .catch(error => {
+            // handle failure
+
+            alert(`Error: ${error.code} | ${error.description}`);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   _radioButton = value => {
@@ -167,7 +232,6 @@ class BusPayment extends React.PureComponent {
                 backgroundColor: "#ffffff",
                 marginHorizontal: 30,
                 marginTop: 20,
-                height: 190,
                 padding: 10,
                 borderRadius: 8
               }}>
@@ -202,6 +266,7 @@ class BusPayment extends React.PureComponent {
                 payment reference.Your order will not be shipped untill the funds have cleared in
                 our account
               </Text>
+
               <View style={{flexDirection: "row", alignItems: "center", marginTop: 5}}>
                 <TouchableOpacity onPress={() => this._radioButton("CP")}>
                   <View
@@ -265,7 +330,8 @@ class BusPayment extends React.PureComponent {
                 justifyContent: "center",
                 height: 40,
                 borderRadius: 20
-              }}>
+              }}
+              onPress={this._PlaceOrder}>
               <Text style={{color: "#fff"}}>Place Order</Text>
             </Button>
           </ScrollView>

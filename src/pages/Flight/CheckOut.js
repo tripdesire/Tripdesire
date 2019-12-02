@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import { View, Image, TextInput, ScrollView, SafeAreaView } from "react-native";
+import React, {PureComponent} from "react";
+import {View, Image, TextInput, ScrollView, SafeAreaView} from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
@@ -18,7 +18,7 @@ class CheckOut extends React.PureComponent {
   }
 
   navigateToScreen = (page, params = {}) => () => {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
     Object.assign(params, {
       itemId: 87
     });
@@ -185,7 +185,7 @@ class CheckOut extends React.PureComponent {
       fl_ctype: params.className
     };
 
-    this.setState({ loading: true });
+    this.setState({loading: true});
     axios
       .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param)
       .then(res => {
@@ -193,25 +193,25 @@ class CheckOut extends React.PureComponent {
         // if (res.data.code == 1) {
         axios
           .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
-          .then(res => {
-            console.log(res);
-            this.props.navigation.navigate(page, params);
-            this.setState({ loading: false });
+          .then(({data}) => {
+            console.log(data);
+            this.props.navigation.navigate(page, {params, data});
+            this.setState({loading: false});
           })
           .catch(error => {
             Toast.show(error, Toast.LONG);
-            this.setState({ loading: false });
+            this.setState({loading: false});
           });
         // }
       })
       .catch(error => {
         Toast.show(error, Toast.LONG);
-        this.setState({ loading: false });
+        this.setState({loading: false});
       });
   };
 
   render() {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
 
     if (params.flightType == 2 && params.tripType == 2) {
       var imgIntRet =
@@ -293,10 +293,10 @@ class CheckOut extends React.PureComponent {
     if (params.flightType == 1) {
       return (
         <>
-          <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
-          <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-            <View style={{ flexDirection: "column", flex: 1 }}>
-              <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
+          <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
+          <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
+            <View style={{flexDirection: "column", flex: 1}}>
+              <View style={{height: 56, backgroundColor: "#E5EBF7"}}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -346,7 +346,7 @@ class CheckOut extends React.PureComponent {
                   </View>
                 </View>
               </View>
-              <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+              <ScrollView style={{flex: 4, backgroundColor: "#FFFFFF"}}>
                 <View
                   style={{
                     elevation: 2,
@@ -357,19 +357,19 @@ class CheckOut extends React.PureComponent {
                     padding: 10
                   }}>
                   <View>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
                       <Image
                         source={require("../../assets/imgs/flights-1.png")}
                         resizeMode="contain"
-                        style={{ width: 40 }}
+                        style={{width: 40}}
                       />
-                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                      <Text style={{marginStart: 10, fontWeight: "300", fontSize: 16}}>
                         Departure
                       </Text>
                     </View>
-                    <View style={{ flexDirection: "row", marginTop: 10 }}>
-                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
-                      <View style={{ marginStart: 10, flex: 1 }}>
+                    <View style={{flexDirection: "row", marginTop: 10}}>
+                      <Image style={{width: 35, resizeMode: "contain"}} source={{uri: img}} />
+                      <View style={{marginStart: 10, flex: 1}}>
                         <Text>
                           {params.departFlight.FlightSegments[0].AirLineName} |{" "}
                           {params.departFlight.FlightUId}
@@ -379,7 +379,7 @@ class CheckOut extends React.PureComponent {
                             flexDirection: "row",
                             justifyContent: "space-between"
                           }}>
-                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{dd}</Text>
+                          <Text style={{fontSize: 18, fontWeight: "700"}}>{dd}</Text>
                           <Text
                             style={{
                               fontSize: 18,
@@ -402,7 +402,7 @@ class CheckOut extends React.PureComponent {
                         <Text>{departureDate}</Text>
                       </View>
                       <View>
-                        <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                        <Text style={{alignSelf: "center"}}>{params.className}</Text>
                         <View
                           style={{
                             height: 1.35,
@@ -428,11 +428,11 @@ class CheckOut extends React.PureComponent {
                   )}
                   {params.tripType == 2 && params.flightType == 1 && (
                     <View>
-                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <View style={{flexDirection: "row", alignItems: "center"}}>
                         <Image
                           source={require("../../assets/imgs/flights-1.png")}
                           resizeMode="contain"
-                          style={{ width: 40 }}
+                          style={{width: 40}}
                         />
                         <Text
                           style={{
@@ -443,17 +443,14 @@ class CheckOut extends React.PureComponent {
                           Arrival
                         </Text>
                       </View>
-                      <View style={{ flexDirection: "row", marginTop: 10 }}>
+                      <View style={{flexDirection: "row", marginTop: 10}}>
                         {/* <Image
                           source={require("../../assets/imgs/indigo.png")}
                           resizeMode="contain"
                           style={{ width: 40 }}
                         /> */}
-                        <Image
-                          style={{ width: 35, resizeMode: "contain" }}
-                          source={{ uri: imgRet }}
-                        />
-                        <View style={{ flex: 1, marginStart: 10 }}>
+                        <Image style={{width: 35, resizeMode: "contain"}} source={{uri: imgRet}} />
+                        <View style={{flex: 1, marginStart: 10}}>
                           <Text>
                             {params.arrivalFlight.FlightSegments[0].AirLineName} |{" "}
                             {params.arrivalFlight.FlightUId}
@@ -463,7 +460,7 @@ class CheckOut extends React.PureComponent {
                               flexDirection: "row",
                               justifyContent: "space-between"
                             }}>
-                            <Text style={{ fontSize: 18, fontWeight: "700" }}>{ddReturn}</Text>
+                            <Text style={{fontSize: 18, fontWeight: "700"}}>{ddReturn}</Text>
                             <Text
                               style={{
                                 fontSize: 18,
@@ -486,7 +483,7 @@ class CheckOut extends React.PureComponent {
                           <Text>{departureDateReturn}</Text>
                         </View>
                         <View>
-                          <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                          <Text style={{alignSelf: "center"}}>{params.className}</Text>
                           <View
                             style={{
                               height: 1.35,
@@ -518,7 +515,7 @@ class CheckOut extends React.PureComponent {
                       alignItems: "center"
                     }}>
                     <IconSimple name="bag" size={24} />
-                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                    <Text style={{fontSize: 18, fontWeight: "500", marginStart: 5}}>
                       Fare Backup
                     </Text>
                   </View>
@@ -527,8 +524,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>No. of Adult</Text>
-                    <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.adult}</Text>
+                    <Text style={{marginStart: 10}}>No. of Adult</Text>
+                    <Text style={{marginEnd: 10, alignItems: "flex-start"}}>{params.adult}</Text>
                   </View>
                   {params.child > 0 && (
                     <View
@@ -536,10 +533,8 @@ class CheckOut extends React.PureComponent {
                         flexDirection: "row",
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ marginStart: 10 }}>No. of Child</Text>
-                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
-                        {params.child}
-                      </Text>
+                      <Text style={{marginStart: 10}}>No. of Child</Text>
+                      <Text style={{marginEnd: 10, alignItems: "flex-start"}}>{params.child}</Text>
                     </View>
                   )}
                   {params.infant > 0 && (
@@ -548,10 +543,8 @@ class CheckOut extends React.PureComponent {
                         flexDirection: "row",
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ marginStart: 10 }}>No. of Infant</Text>
-                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
-                        {params.infant}
-                      </Text>
+                      <Text style={{marginStart: 10}}>No. of Infant</Text>
+                      <Text style={{marginEnd: 10, alignItems: "flex-start"}}>{params.infant}</Text>
                     </View>
                   )}
                   <View
@@ -559,8 +552,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Base Fare</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Base Fare</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                   </View>
@@ -569,8 +562,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Fee & Surcharges</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.SCharge}
                     </Text>
                   </View>
@@ -579,8 +572,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>GST</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>GST</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.STax}
                     </Text>
                   </View>
@@ -589,8 +582,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Conve. Fee</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
                   </View>
@@ -599,8 +592,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Tax</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Tax</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.Tax}
                     </Text>
                   </View>
@@ -613,10 +606,10 @@ class CheckOut extends React.PureComponent {
                       borderBottomRightRadius: 8,
                       backgroundColor: "#F2F3F5"
                     }}>
-                    <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
+                    <Text style={{marginStart: 10, fontWeight: "600", fontSize: 16}}>
                       Total Payable
                     </Text>
-                    <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
+                    <Text style={{marginEnd: 10, fontWeight: "700", fontSize: 16}}>
                       $ {params.departFlight.FareDetails.TotalFare}
                     </Text>
                   </View>
@@ -634,7 +627,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <TextInput
                     placeholder="Have a Promo Code?"
-                    style={{ marginStart: 5, flex: 1 }}></TextInput>
+                    style={{marginStart: 5, flex: 1}}></TextInput>
                   <Button
                     style={{
                       backgroundColor: "#5B89F9",
@@ -642,7 +635,7 @@ class CheckOut extends React.PureComponent {
                       borderBottomRightRadius: 8,
                       borderTopRightRadius: 8
                     }}>
-                    <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
+                    <Text style={{color: "#fff", paddingHorizontal: 10}}>Apply</Text>
                   </Button>
                 </View>
                 <Button
@@ -656,7 +649,7 @@ class CheckOut extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this.navigateToScreen("CheckOut1", params)}>
-                  <Text style={{ color: "#fff" }}>Next</Text>
+                  <Text style={{color: "#fff"}}>Next</Text>
                 </Button>
               </ScrollView>
               {this.state.loading && <ActivityIndicator />}
@@ -667,10 +660,10 @@ class CheckOut extends React.PureComponent {
     } else if (params.flightType == 2) {
       return (
         <>
-          <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
-          <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-            <View style={{ flexDirection: "column", flex: 1 }}>
-              <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
+          <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
+          <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
+            <View style={{flexDirection: "column", flex: 1}}>
+              <View style={{height: 56, backgroundColor: "#E5EBF7"}}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -720,7 +713,7 @@ class CheckOut extends React.PureComponent {
                   </View>
                 </View>
               </View>
-              <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+              <ScrollView style={{flex: 4, backgroundColor: "#FFFFFF"}}>
                 <View
                   style={{
                     elevation: 2,
@@ -731,19 +724,19 @@ class CheckOut extends React.PureComponent {
                     padding: 10
                   }}>
                   <View>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
                       <Image
                         source={require("../../assets/imgs/flights-1.png")}
                         resizeMode="contain"
-                        style={{ width: 40 }}
+                        style={{width: 40}}
                       />
-                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                      <Text style={{marginStart: 10, fontWeight: "300", fontSize: 16}}>
                         Departure
                       </Text>
                     </View>
-                    <View style={{ flexDirection: "row", marginTop: 10 }}>
-                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
-                      <View style={{ marginStart: 10, flex: 1 }}>
+                    <View style={{flexDirection: "row", marginTop: 10}}>
+                      <Image style={{width: 35, resizeMode: "contain"}} source={{uri: img}} />
+                      <View style={{marginStart: 10, flex: 1}}>
                         <Text>
                           {params.departFlight.IntOnward.FlightSegments[0].AirLineName} |{" "}
                           {params.departFlight.FlightUId}
@@ -753,7 +746,7 @@ class CheckOut extends React.PureComponent {
                             flexDirection: "row",
                             justifyContent: "space-between"
                           }}>
-                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{dd}</Text>
+                          <Text style={{fontSize: 18, fontWeight: "700"}}>{dd}</Text>
                           <Text
                             style={{
                               fontSize: 18,
@@ -776,7 +769,7 @@ class CheckOut extends React.PureComponent {
                         <Text>{departureDate}</Text>
                       </View>
                       <View>
-                        <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                        <Text style={{alignSelf: "center"}}>{params.className}</Text>
                         <View
                           style={{
                             height: 1.35,
@@ -802,11 +795,11 @@ class CheckOut extends React.PureComponent {
                   )}
                   {params.tripType == 2 && params.flightType == 2 && (
                     <View>
-                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <View style={{flexDirection: "row", alignItems: "center"}}>
                         <Image
                           source={require("../../assets/imgs/flights-1.png")}
                           resizeMode="contain"
-                          style={{ width: 40 }}
+                          style={{width: 40}}
                         />
                         <Text
                           style={{
@@ -817,13 +810,9 @@ class CheckOut extends React.PureComponent {
                           Arrival
                         </Text>
                       </View>
-                      <View style={{ flexDirection: "row", marginTop: 10 }}>
-                        <Image
-                          source={{ uri: imgIntRet }}
-                          resizeMode="contain"
-                          style={{ width: 40 }}
-                        />
-                        <View style={{ flex: 1, marginStart: 10 }}>
+                      <View style={{flexDirection: "row", marginTop: 10}}>
+                        <Image source={{uri: imgIntRet}} resizeMode="contain" style={{width: 40}} />
+                        <View style={{flex: 1, marginStart: 10}}>
                           <Text>
                             {params.departFlight.IntReturn.FlightSegments[0].AirLineName} |{" "}
                             {params.departFlight.FlightUId}
@@ -833,7 +822,7 @@ class CheckOut extends React.PureComponent {
                               flexDirection: "row",
                               justifyContent: "space-between"
                             }}>
-                            <Text style={{ fontSize: 18, fontWeight: "700" }}>{ddIntReturn}</Text>
+                            <Text style={{fontSize: 18, fontWeight: "700"}}>{ddIntReturn}</Text>
                             <Text
                               style={{
                                 fontSize: 18,
@@ -856,7 +845,7 @@ class CheckOut extends React.PureComponent {
                           <Text>{departureDateIntReturn}</Text>
                         </View>
                         <View>
-                          <Text style={{ alignSelf: "center" }}>{params.className}</Text>
+                          <Text style={{alignSelf: "center"}}>{params.className}</Text>
                           <View
                             style={{
                               height: 1.35,
@@ -888,7 +877,7 @@ class CheckOut extends React.PureComponent {
                       alignItems: "center"
                     }}>
                     <IconSimple name="bag" size={24} />
-                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                    <Text style={{fontSize: 18, fontWeight: "500", marginStart: 5}}>
                       Fare Backup
                     </Text>
                   </View>
@@ -897,8 +886,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>No. of Adult</Text>
-                    <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>{params.adult}</Text>
+                    <Text style={{marginStart: 10}}>No. of Adult</Text>
+                    <Text style={{marginEnd: 10, alignItems: "flex-start"}}>{params.adult}</Text>
                   </View>
                   {params.child > 0 && (
                     <View
@@ -906,10 +895,8 @@ class CheckOut extends React.PureComponent {
                         flexDirection: "row",
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ marginStart: 10 }}>No. of Child</Text>
-                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
-                        {params.child}
-                      </Text>
+                      <Text style={{marginStart: 10}}>No. of Child</Text>
+                      <Text style={{marginEnd: 10, alignItems: "flex-start"}}>{params.child}</Text>
                     </View>
                   )}
                   {params.infant > 0 && (
@@ -918,10 +905,8 @@ class CheckOut extends React.PureComponent {
                         flexDirection: "row",
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ marginStart: 10 }}>No. of Infant</Text>
-                      <Text style={{ marginEnd: 10, alignItems: "flex-start" }}>
-                        {params.infant}
-                      </Text>
+                      <Text style={{marginStart: 10}}>No. of Infant</Text>
+                      <Text style={{marginEnd: 10, alignItems: "flex-start"}}>{params.infant}</Text>
                     </View>
                   )}
                   <View
@@ -929,8 +914,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Base Fare</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Base Fare</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                   </View>
@@ -939,8 +924,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Fee & Surcharges</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.SCharge}
                     </Text>
                   </View>
@@ -949,8 +934,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>GST</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>GST</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.IsGSTMandatory == false ? 0 : 0}
                     </Text>
                   </View>
@@ -959,8 +944,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Conve. Fee</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
                   </View>
@@ -969,8 +954,8 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Tax</Text>
-                    <Text style={{ marginEnd: 10 }}>
+                    <Text style={{marginStart: 10}}>Tax</Text>
+                    <Text style={{marginEnd: 10}}>
                       {params.departFlight.FareDetails.ChargeableFares.Tax +
                         params.departFlight.FareDetails.ChargeableFares.STax}
                     </Text>
@@ -984,10 +969,10 @@ class CheckOut extends React.PureComponent {
                       borderBottomRightRadius: 8,
                       backgroundColor: "#F2F3F5"
                     }}>
-                    <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
+                    <Text style={{marginStart: 10, fontWeight: "600", fontSize: 16}}>
                       Total Payable
                     </Text>
-                    <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
+                    <Text style={{marginEnd: 10, fontWeight: "700", fontSize: 16}}>
                       $ {params.departFlight.FareDetails.TotalFare}
                     </Text>
                   </View>
@@ -1005,7 +990,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <TextInput
                     placeholder="Have a Promo Code?"
-                    style={{ marginStart: 5, flex: 1 }}></TextInput>
+                    style={{marginStart: 5, flex: 1}}></TextInput>
                   <Button
                     style={{
                       backgroundColor: "#5B89F9",
@@ -1013,7 +998,7 @@ class CheckOut extends React.PureComponent {
                       borderBottomRightRadius: 8,
                       borderTopRightRadius: 8
                     }}>
-                    <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
+                    <Text style={{color: "#fff", paddingHorizontal: 10}}>Apply</Text>
                   </Button>
                 </View>
                 <Button
@@ -1027,7 +1012,7 @@ class CheckOut extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this.navigateToScreen("CheckOut1", params)}>
-                  <Text style={{ color: "#fff" }}>Next</Text>
+                  <Text style={{color: "#fff"}}>Next</Text>
                 </Button>
               </ScrollView>
               {this.state.loading && <ActivityIndicator />}

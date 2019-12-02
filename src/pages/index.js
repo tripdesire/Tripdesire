@@ -29,6 +29,9 @@ import Filter from "./Flight/Filter";
 import Payment from "./Hotel/Payment";
 import CabList from "./Cab/CabList";
 import CheckoutCab from "./Cab/CheckoutCab";
+import ThankYouCab from "./Cab/ThankYouCab";
+import ThankYouBus from "./Bus/ThankYouBus";
+import ThankYouHotel from "./Hotel/ThankYouHotel";
 
 export {
   Home,
@@ -61,5 +64,8 @@ export {
   Filter,
   Payment,
   CabList,
-  CheckoutCab
+  CheckoutCab,
+  ThankYouCab,
+  ThankYouBus,
+  ThankYouHotel
 };
