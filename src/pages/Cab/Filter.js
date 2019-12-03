@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Button, Icon, Text, CheckBox } from "../../components";
 import { uniq, max, min } from "lodash";
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeSlider from "rn-range-slider";
 
 function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
