@@ -90,6 +90,14 @@ class BusInfo extends React.PureComponent {
 
     let filteredBuses = buses.filter(
       item =>
+        (filterValues.busTimings.length == 0 ||
+          filterValues.busTimings.some(values => {
+            values = values.split("to").map(v => v.trim());
+            return moment(item.DepartureTime, "HH:mm A").isBetween(
+              moment(values[0], "HH:mm A"),
+              moment(values[1], "HH:mm A")
+            );
+          })) &&
         (filterValues.travels.length == 0 || filterValues.travels.includes(item.DisplayName)) &&
         (filterValues.boardingPoints.length == 0 ||
           item.BoardingTimes.some(value => filterValues.boardingPoints.includes(value.Location))) &&
@@ -199,7 +207,7 @@ class BusInfo extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>
-            <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
+            <View style={{ backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -208,7 +216,7 @@ class BusInfo extends React.PureComponent {
                 <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                   <Icon name="md-arrow-back" size={24} />
                 </Button>
-                <View style={{ flex: 1, paddingTop: 16 }}>
+                <View style={{ flex: 1, paddingTop: 16, paddingBottom: 8 }}>
                   <View>
                     <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
                       {sourceName} to {destinationName}

@@ -25,7 +25,7 @@ class Filter extends React.Component {
 
   componentDidMount() {
     const { data } = this.props;
-    console.log(data);
+    //console.log(data);
     let travels = [];
     let boardingPoints = [];
     let droppingPoints = [];
@@ -47,7 +47,7 @@ class Filter extends React.Component {
         droppingPoints
       }
     });
-    console.log(travels, boardingPoints, droppingPoints);
+    //console.log(travels, boardingPoints, droppingPoints);
   }
 
   changeActiveTab = index => () => {
@@ -66,7 +66,7 @@ class Filter extends React.Component {
     } else {
       newData[key].push(filters[key][index]);
     }
-    console.log(newData);
+    //console.log(newData);
     this.props.onChangeFilter && this.props.onChangeFilter(newData);
   };
 
