@@ -842,10 +842,6 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@ptomasroos/react-native-multi-slider@https://github.com/ptomasroos/react-native-multi-slider#master":
-  version "2.0.0"
-  resolved "https://github.com/ptomasroos/react-native-multi-slider#47c14f60d8e26392bcfb274d1468864d29b80865"
-
 "@react-native-community/async-storage@^1.6.3":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.6.3.tgz#1a713e8c5cacd543ab8539080a5ce57ad917da88"

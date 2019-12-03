@@ -10,7 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@ptomasroos/react-native-multi-slider": "https://github.com/ptomasroos/react-native-multi-slider#master",
     "@react-native-community/async-storage": "^1.6.3",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/google-signin": "^3.0.3",
