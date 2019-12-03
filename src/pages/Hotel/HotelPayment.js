@@ -1,20 +1,20 @@
-import React, {PureComponent} from "react";
-import {View, Image, StyleSheet, Dimensions, SafeAreaView} from "react-native";
-import {Button, Text, ActivityIndicator} from "../../components";
+import React, { PureComponent } from "react";
+import { View, Image, StyleSheet, Dimensions, SafeAreaView } from "react-native";
+import { Button, Text, ActivityIndicator } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
 import axios from "axios";
-import {etravosApi, domainApi} from "../../service";
+import { etravosApi, domainApi } from "../../service";
 
 class HotelPayment extends React.PureComponent {
   constructor(props) {
     super(props);
-    const {params} = props.navigation.state;
+    const { params } = props.navigation.state;
   }
 
   _payment = () => {
-    const {params} = this.props.navigation.state;
+    const { params } = this.props.navigation.state;
 
     Object.assign(params, {
       itemId: 222
@@ -50,23 +50,23 @@ class HotelPayment extends React.PureComponent {
       console.log(res);
     });
 
-    axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(({data}) => {
+    axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(({ data }) => {
       console.log(data);
-      this.props.navigation.navigate("Payment", params);
+      this.props.navigation.navigate("Payment", { params, data });
     });
   };
 
   render() {
-    const {params} = this.props.navigation.state;
-    const {width, height} = Dimensions.get("window");
+    const { params } = this.props.navigation.state;
+    const { width, height } = Dimensions.get("window");
     let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#5B89F9"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flex: 1, flexDirection: "column"}}>
-            <View style={{flex: 4, backgroundColor: "#5B89F9"}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#5B89F9" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1, flexDirection: "column" }}>
+            <View style={{ flex: 4, backgroundColor: "#5B89F9" }}>
               <View
                 style={{
                   height: 56,
@@ -78,8 +78,8 @@ class HotelPayment extends React.PureComponent {
                 <Button onPress={() => this.props.navigation.goBack(null)}>
                   <Icon name="md-arrow-back" size={24} />
                 </Button>
-                <View style={{marginHorizontal: 5}}>
-                  <Text style={{fontWeight: "700", fontSize: 16, marginHorizontal: 5}}>
+                <View style={{ marginHorizontal: 5 }}>
+                  <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
                     Book Your Hotel
                   </Text>
                   <View
@@ -89,14 +89,14 @@ class HotelPayment extends React.PureComponent {
                       alignItems: "flex-start"
                     }}>
                     <IconMaterial name="calendar-month" size={18} color="#ffffff" />
-                    <Text style={{fontSize: 12, marginHorizontal: 5, color: "#ffffff"}}>
+                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
                       {checkInDate} - {checkOutDate}
                     </Text>
                   </View>
                 </View>
               </View>
             </View>
-            <View style={{flex: 4, backgroundColor: "#FFFFFF"}}>
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <View
                 style={{
                   elevation: 2,
@@ -130,7 +130,7 @@ class HotelPayment extends React.PureComponent {
                   <Text style={style._textHeading}>City</Text>
                   <Text style={style._Details}>{params.city} (INDIA)</Text>
                 </View>
-                <View style={[style._textDetailsStyle, {backgroundColor: "#E5EBF7"}]}>
+                <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
                   <Text style={style._textHeading}>Check In</Text>
                   <Text style={style._Details}>{params.checkInDate}</Text>
                 </View>
@@ -138,7 +138,7 @@ class HotelPayment extends React.PureComponent {
                   <Text style={style._textHeading}>Check Out</Text>
                   <Text style={style._Details}>{params.checkOutDate}</Text>
                 </View>
-                <View style={[style._textDetailsStyle, {backgroundColor: "#E5EBF7"}]}>
+                <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
                   <Text style={style._textHeading}>Night(s)</Text>
                   <Text style={style._Details}>{params.Night}</Text>
                 </View>
@@ -168,7 +168,7 @@ class HotelPayment extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._payment}>
-                  <Text style={{color: "#fff"}}>Continue Booking</Text>
+                  <Text style={{ color: "#fff" }}>Continue Booking</Text>
                 </Button>
               </View>
             </View>
@@ -187,8 +187,8 @@ const style = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 16
   },
-  _Details: {color: "#717A81", flex: 1, alignItems: "flex-start"},
-  _textHeading: {color: "#717A81", flex: 2}
+  _Details: { color: "#717A81", flex: 1, alignItems: "flex-start" },
+  _textHeading: { color: "#717A81", flex: 2 }
 });
 
 export default HotelPayment;

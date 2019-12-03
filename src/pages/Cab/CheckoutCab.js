@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Image,
@@ -11,11 +11,11 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import {Button, Text, ActivityIndicator, Icon} from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
- import {etravosApi}  from "../../service";
+import { etravosApi, domainApi } from "../../service";
 import HTML from "react-native-render-html";
 
 class CheckoutCab extends React.PureComponent {
@@ -47,11 +47,11 @@ class CheckoutCab extends React.PureComponent {
   };
 
   show = () => {
-    this.setState({dobShow: false});
+    this.setState({ dobShow: false });
   };
 
   showDatePicker = () => {
-    this.setState({dobShow: true});
+    this.setState({ dobShow: true });
   };
 
   _radioButton = value => {
@@ -65,7 +65,7 @@ class CheckoutCab extends React.PureComponent {
       this.state.last_name != "" ? "~" + this.state.last_name : ""
     );
 
-    const {item, params, cartData} = this.props.navigation.state.params;
+    const { item, params, cartData } = this.props.navigation.state.params;
 
     let param = {
       TotalFare: cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
@@ -115,66 +115,92 @@ class CheckoutCab extends React.PureComponent {
 
     console.log(param);
 
-    console.log(JSON.stringify(param));
-
     if (this.state.firstname != "" && this.state.last_name != "") {
-      this.setState({loader: true});
-      etravosApi.post("/Cabs/BlockCab", param)
+      this.setState({ loader: true });
+      etravosApi
+        .post("/Cabs/BlockCab", param)
         .then(response => {
-          this.setState({loader: false});
+          this.setState({ loader: false });
           console.log(response);
 
-          var options = {
-            description: "Credits towards consultation",
-            image: "https://i.imgur.com/3g7nmJC.png",
-            currency: "INR",
-            key: "rzp_test_a3aQYPLYowGvWJ",
-            amount: "5000",
-            name: "TripDesire",
-            prefill: {
-              email: "void@razorpay.com",
-              contact: "9191919191",
-              name: "Razorpay Software"
-            },
-            theme: {color: "#E5EBF7"}
-          };
+          domainApi
+            .get("/checkout/new-order?user_id=7")
+            .then(({ data: order }) => {
+              console.log(order);
 
-          RazorpayCheckout.open(options)
-            .then(data => {
-              // handle success
-              console.log(data);
-              alert(`Success: ${data.razorpay_payment_id}`);
-              this.setState({orderId: data.razorpay_payment_id});
+              var options = {
+                description: "Credits towards consultation",
+                image: "https://i.imgur.com/3g7nmJC.png",
+                currency: "INR",
+                key: "rzp_test_a3aQYPLYowGvWJ",
+                amount: parseInt(order.total) * 100,
+                name: "TripDesire",
+                prefill: {
+                  email: "void@razorpay.com",
+                  contact: "9191919191",
+                  name: "Razorpay Software"
+                },
+                theme: { color: "#E5EBF7" }
+              };
 
-              this.setState({loader: true});
-              etravosApi.get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
-                .then(res => {
-                  this.setState({loader: false});
-                  console.log(res);
-                  if (res.data.BookingStatus == 3) {
-                    let stateData = this.state;
-                    this.props.navigation.navigate("ThankYouCab", {
-                      item,
-                      params,
-                      cartData,
-                      res,
-                      data,
-                      stateData
+              RazorpayCheckout.open(options)
+                .then(razorpayRes => {
+                  // handle success
+                  console.log(razorpayRes);
+                  // alert(`Success: ${razorpayRes.razorpay_payment_id}`);
+                  if (
+                    (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
+                    razorpayRes.code == 0
+                  ) {
+                    this.setState({ loader: true });
+                    etravosApi
+                      .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+                      .then(({ data: Response }) => {
+                        this.setState({ loader: false });
+                        console.log(Response);
+                        if (Response.BookingStatus == 3) {
+                          Toast.show(Response.Message, Toast.LONG);
+                        } else {
+                          Toast.show(Response.Message, Toast.LONG);
+                        }
+                      })
+                      .catch(error => {
+                        console.log(error);
+                      });
+                    let paymentData = {
+                      order_id: order.id,
+                      status: "completed",
+                      transaction_id: razorpayRes.razorpay_payment_id,
+                      reference_no: Response // blockres.data.ReferenceNo
+                    };
+                    this.setState({ loader: true });
+                    domainApi.post("/checkout/update-order", paymentData).then(res => {
+                      this.setState({ loader: false });
+                      console.log(res);
                     });
-                    Toast.show(res.data.Message, Toast.LONG);
+                    const { params } = this.props.navigation.state.params;
+                    this.props.navigation.navigate("ThankYouCab", {
+                      order,
+                      params,
+                      razorpayRes,
+                      item
+                    });
                   } else {
-                    Toast.show(res.data.Message, Toast.LONG);
+                    Toast.show("You have beem cancelled the order.", Toast.LONG);
                   }
                 })
                 .catch(error => {
+                  this.setState({ loader: false });
                   console.log(error);
                 });
             })
             .catch(error => {
+              this.setState({ loader: false });
               console.log(error);
             });
         })
         .catch(error => {
+          this.setState({ loader: false });
           console.log(error);
         });
     } else {
@@ -183,13 +209,13 @@ class CheckoutCab extends React.PureComponent {
   };
 
   render() {
-    const {loader} = this.state;
-    const {item, params, cartData} = this.props.navigation.state.params;
+    const { loader } = this.state;
+    const { item, params, cartData } = this.props.navigation.state.params;
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
             <View
               style={{
                 height: 56,
@@ -201,9 +227,9 @@ class CheckoutCab extends React.PureComponent {
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{marginHorizontal: 5}}>
-                <Text style={{fontWeight: "700", fontSize: 16}}>Checkout</Text>
-                <Text style={{fontSize: 12, color: "#717984"}}>
+              <View style={{ marginHorizontal: 5 }}>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
+                <Text style={{ fontSize: 12, color: "#717984" }}>
                   {/* {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
                   {params.checkInDate
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
@@ -218,7 +244,7 @@ class CheckoutCab extends React.PureComponent {
                 </Text>
               </View>
             </View>
-            <ScrollView style={{flex: 4, backgroundColor: "#FFFFFF"}}>
+            <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <View
                 style={{
                   elevation: 2,
@@ -228,13 +254,13 @@ class CheckoutCab extends React.PureComponent {
                   marginTop: 20,
                   padding: 8
                 }}>
-                <View style={{flexDirection: "row", width: "100%"}}>
+                <View style={{ flexDirection: "row", width: "100%" }}>
                   <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
-                  <View style={{marginStart: 5, flex: 1}}>
-                    <Text style={{flex: 1, fontWeight: "700", fontSize: 16, lineHeight: 22}}>
+                  <View style={{ marginStart: 5, flex: 1 }}>
+                    <Text style={{ flex: 1, fontWeight: "700", fontSize: 16, lineHeight: 22 }}>
                       {item.Name}
                     </Text>
-                    <Text style={{lineHeight: 18, color: "#696969"}}>
+                    <Text style={{ lineHeight: 18, color: "#696969" }}>
                       {params.travelType == 2
                         ? "Local"
                         : params.travelType == 1
@@ -256,7 +282,7 @@ class CheckoutCab extends React.PureComponent {
                         ? " ( " + params.tripType + " hrs )"
                         : ""}
                     </Text>
-                    <Text style={{lineHeight: 18, color: "#696969"}}>
+                    <Text style={{ lineHeight: 18, color: "#696969" }}>
                       {params.sourceName}{" "}
                       {params.destinationName != "" ? "To " + params.destinationName : ""}
                     </Text>
@@ -273,13 +299,13 @@ class CheckoutCab extends React.PureComponent {
                         width: "100%"
                       }}>
                       <View>
-                        <Text style={{fontWeight: "700"}}>Pick-Up</Text>
+                        <Text style={{ fontWeight: "700" }}>Pick-Up</Text>
                         <Text>
                           {params.journeyDate}( {params.pickUpTime})
                         </Text>
                       </View>
                       <View>
-                        <Text style={{fontWeight: "700"}}>Drop</Text>
+                        <Text style={{ fontWeight: "700" }}>Drop</Text>
                         <Text>{params.journeyDate}</Text>
                       </View>
                     </View>
@@ -294,10 +320,10 @@ class CheckoutCab extends React.PureComponent {
                   marginHorizontal: 16,
                   marginTop: 20
                 }}>
-                <View style={{marginHorizontal: 10, marginVertical: 10}}>
-                  <View style={{flexDirection: "row", alignItems: "center"}}>
+                <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Icon name={Platform.OS === "ios" ? "ios-person" : "md-person"} size={22} />
-                    <Text style={{marginStart: 10, fontWeight: "600", fontSize: 16}}>
+                    <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
                       Passengers Details
                     </Text>
                   </View>
@@ -321,8 +347,10 @@ class CheckoutCab extends React.PureComponent {
                         }}>
                         <Picker
                           selectedValue={this.state.den}
-                          style={{height: 50, width: 60}}
-                          onValueChange={(itemValue, itemIndex) => this.setState({den: itemValue})}>
+                          style={{ height: 50, width: 60 }}
+                          onValueChange={(itemValue, itemIndex) =>
+                            this.setState({ den: itemValue })
+                          }>
                           <Picker.Item label="Mr." value="Mr" />
                           <Picker.Item label="Mrs." value="Mrs" />
                         </Picker>
@@ -363,7 +391,7 @@ class CheckoutCab extends React.PureComponent {
                           justifyContent: "space-between",
                           alignItems: "center"
                         }}>
-                        <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
+                        <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
                         <Button
                           style={{
                             flex: 1,
@@ -400,17 +428,17 @@ class CheckoutCab extends React.PureComponent {
                         }}>
                         <Picker
                           selectedValue={this.state.gender}
-                          style={{height: 50, width: 90}}
+                          style={{ height: 50, width: 90 }}
                           onValueChange={(itemValue, itemIndex) =>
-                            this.setState({gender: itemValue})
+                            this.setState({ gender: itemValue })
                           }>
                           <Picker.Item label="Male" value="M" />
                           <Picker.Item label="Female" value="F" />
                         </Picker>
                       </View>
                     </View>
-                    <Button style={{marginTop: 10}}>
-                      <Text style={{color: "#5B89F9"}}>Optional (Frequent flyer Number)</Text>
+                    <Button style={{ marginTop: 10 }}>
+                      <Text style={{ color: "#5B89F9" }}>Optional (Frequent flyer Number)</Text>
                     </Button>
 
                     <View>
@@ -419,7 +447,7 @@ class CheckoutCab extends React.PureComponent {
                         Please verify the credit of your frequent flyer miles at the airport checkin
                         counter.
                       </Text>
-                      <View style={{flexDirection: "row"}}>
+                      <View style={{ flexDirection: "row" }}>
                         <TextInput
                           style={{
                             borderWidth: 1,
@@ -457,9 +485,9 @@ class CheckoutCab extends React.PureComponent {
                   padding: 10,
                   borderRadius: 8
                 }}>
-                <View style={{flexDirection: "row", alignItems: "center"}}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Icon type="Foundation" name="shopping-bag" size={22} />
-                  <Text style={{marginStart: 10, fontWeight: "600", fontSize: 16}}>
+                  <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
                     Fare Breakkup
                   </Text>
                 </View>
@@ -481,7 +509,7 @@ class CheckoutCab extends React.PureComponent {
                     flex: 1,
                     paddingHorizontal: 8
                   }}>
-                  <Text style={{fontSize: 16, fontWeight: "700"}}>You Pay</Text>
+                  <Text style={{ fontSize: 16, fontWeight: "700" }}>You Pay</Text>
                   <HTML html={cartData.total} />
                 </View>
               </View>
@@ -494,7 +522,7 @@ class CheckoutCab extends React.PureComponent {
                   padding: 10,
                   borderRadius: 8
                 }}>
-                <View style={{flexDirection: "row", alignItems: "center"}}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <TouchableOpacity onPress={() => this._radioButton("D")}>
                     <View
                       style={{
@@ -518,7 +546,7 @@ class CheckoutCab extends React.PureComponent {
                       )}
                     </View>
                   </TouchableOpacity>
-                  <Text style={{marginStart: 5, fontSize: 18}}>RazorPay</Text>
+                  <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
                 </View>
                 <Text
                   style={{
@@ -545,11 +573,11 @@ class CheckoutCab extends React.PureComponent {
                   borderRadius: 20
                 }}
                 onPress={this._order}>
-                <Text style={{color: "#fff"}}>Place Order</Text>
+                <Text style={{ color: "#fff" }}>Place Order</Text>
               </Button>
             </ScrollView>
             {loader && (
-              <View style={{justifyContent: "center", flex: 1}}>
+              <View style={{ justifyContent: "center", flex: 1 }}>
                 <ActivityIndicator />
               </View>
             )}

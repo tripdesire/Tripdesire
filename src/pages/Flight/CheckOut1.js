@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Image,
@@ -10,15 +10,15 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import {Button, Text, ActivityIndicator, Icon} from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
- import {etravosApi}  from "../../service";
+import { etravosApi, domainApi } from "../../service";
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
     super(props);
-    const {params} = props.navigation.state.params;
+    const { params } = props.navigation.state.params;
     console.log(props.navigation.state.params);
     this.state = {
       loading: false,
@@ -46,7 +46,7 @@ class CheckOut1 extends React.PureComponent {
           last_name: "",
           dob: moment()
             .subtract(18, "years")
-            .toDate(),
+            .toDate(), //
           age: moment().diff(
             moment()
               .subtract(18, "years")
@@ -125,7 +125,7 @@ class CheckOut1 extends React.PureComponent {
   // };
 
   _FFN = () => {
-    this.setState({ffn: this.state.ffn == true ? false : true});
+    this.setState({ ffn: this.state.ffn == true ? false : true });
   };
 
   onAdultChange = (index, key) => text => {
@@ -186,7 +186,8 @@ class CheckOut1 extends React.PureComponent {
   };
 
   _order = () => {
-    const {params} = this.props.navigation.state.params;
+    const { params } = this.props.navigation.state.params;
+    console.log(this.state);
 
     let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
@@ -333,10 +334,11 @@ class CheckOut1 extends React.PureComponent {
       UserType: 5
     };
 
-    etravosApi.post("/Flights/GetTaxDetails", taxDetail)
+    etravosApi
+      .post("/Flights/GetTaxDetails", taxDetail)
       .then(res => {
         console.log(res.data);
-        this.setState({taxDetails: res.data});
+        this.setState({ taxDetails: res.data });
       })
       .catch(error => {
         console.log(error);
@@ -467,103 +469,99 @@ class CheckOut1 extends React.PureComponent {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
       console.log(book, this.state);
-      const {params, data} = this.props.navigation.state.params;
+      const { params, data } = this.props.navigation.state.params;
       console.log(params, data);
 
-      this.setState({loading: true});
-      etravosApi.post("/Flights/BlockFlightTicket", book)
+      this.setState({ loading: true });
+      etravosApi
+        .post("/Flights/BlockFlightTicket", book)
         .then(blockres => {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 8) {
-            console.log("hey inner");
-            axios
-              .post("http://tripdesire.co/wp-json/wc/v2/checkout/new-order?user_id=7")
-              .then(res => {
-                console.log(res);
-                this.setState({
-                  transactionId: res.data.transaction_id,
-                  status: res.data.status,
-                  loading: false
-                });
+            domainApi
+              .get("/checkout/new-order?user_id=7")
+              .then(({ data: order }) => {
+                console.log(order);
 
                 var options = {
                   description: "Credits towards consultation",
                   image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
                   key: "rzp_test_a3aQYPLYowGvWJ",
-                  amount: parseInt(data.total_price) * 100,
+                  amount: parseInt(order.total) * 100,
                   name: "TripDesire",
                   prefill: {
                     email: "void@razorpay.com",
                     contact: "9191919191",
                     name: "Razorpay Software"
                   },
-                  theme: {color: "#E5EBF7"}
+                  theme: { color: "#E5EBF7" }
                 };
 
                 RazorpayCheckout.open(options)
-                  .then(data => {
+                  .then(razorpayRes => {
                     // handle success
-                    console.log(data);
-                    alert(`Success: ${data.razorpay_payment_id}`);
-                    this.setState({orderId: data.razorpay_payment_id});
+                    console.log(razorpayRes);
+                    // alert(`Success: ${data.razorpay_payment_id}`);
 
-                    this.setState({loading: true});
-                    etravosApi.get(
-                      "/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo
-                    )
-                      .then(Response => {
-                        console.log(Response);
-                        this.setState({loading: false, upDateOrder: Response});
+                    if (
+                      (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
+                      razorpayRes.code == 0
+                    ) {
+                      this.setState({ loading: true });
+                      etravosApi
+                        .get("/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo)
+                        .then(({ data: Response }) => {
+                          console.log(Response);
 
-                        let paymentData = {
-                          order_id: res.data.id,
-                          status: "completed",
-                          transaction_id: res.data.transaction_id,
-                          reference_no: blockres.data.ReferenceNo
-                        };
-                        console.log(paymentData);
+                          let paymentData = {
+                            order_id: order.id,
+                            status: "completed",
+                            transaction_id: razorpayRes.razorpay_payment_id,
+                            reference_no: Response // blockres.data.ReferenceNo
+                          };
+                          console.log(paymentData);
 
-                        this.setState({loading: true});
-                        axios
-                          .post(
-                            "http://tripdesire.co/wp-json/wc/v2/checkout/update-order",
-                            paymentData
-                          )
-                          .then(resp => {
-                            this.setState({loading: false});
+                          this.setState({ loading: true });
+                          domainApi.post("/checkout/update-order", paymentData).then(resp => {
+                            this.setState({ loading: false });
                             console.log(resp);
                           });
-
-                        this.props.navigation.navigate("ThankYou", {
-                          cartRes: res,
-                          blockRes: blockres,
-                          stateData: this.state,
-                          params: this.props.navigation.state.params
+                          const { params } = this.props.navigation.state.params;
+                          this.props.navigation.navigate("ThankYou", {
+                            order,
+                            params,
+                            razorpayRes
+                          });
+                        })
+                        .catch(error => {
+                          console.log(error);
                         });
-                      })
-                      .catch(error => {
-                        console.log(error);
-                      });
+                    } else {
+                      Toast.show("You have been cancelled the ticket", Toast.LONG);
+                    }
                   })
                   .catch(error => {
-                    // handle failure
-
-                    alert(`Error: ${error.code} | ${error.description}`);
+                    this.setState({ loading: false });
+                    console.log(error);
+                  })
+                  .catch(error => {
+                    this.setState({ loading: false });
+                    console.log(error);
                   });
               })
               .catch(error => {
                 Toast.show(error, Toast.LONG);
-                this.setState({loading: false});
+                this.setState({ loading: false });
               });
           } else {
-            this.setState({loading: false});
+            this.setState({ loading: false });
             Toast.show("Ticket is not block successfully ", Toast.LONG);
           }
         })
         .catch(error => {
           Toast.show(error, Toast.LONG);
-          this.setState({loading: false});
+          this.setState({ loading: false });
         });
     }
 
@@ -579,14 +577,14 @@ class CheckOut1 extends React.PureComponent {
     });
   };
   render() {
-    const {params} = this.props.navigation.state.params;
-    const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults} = this.state;
+    const { params } = this.props.navigation.state.params;
+    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults } = this.state;
 
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
             <View
               style={{
                 height: 56,
@@ -598,9 +596,9 @@ class CheckOut1 extends React.PureComponent {
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{marginHorizontal: 5}}>
-                <Text style={{fontWeight: "700", fontSize: 16}}>Checkout</Text>
-                <Text style={{fontSize: 12, color: "#717984"}}>
+              <View style={{ marginHorizontal: 5 }}>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
+                <Text style={{ fontSize: 12, color: "#717984" }}>
                   {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
                   {params.checkInDate
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
@@ -616,9 +614,9 @@ class CheckOut1 extends React.PureComponent {
               </View>
             </View>
 
-            <View style={{flex: 4, backgroundColor: "#FFFFFF"}}>
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <ScrollView
-                contentContainerStyle={{backgroundColor: "#ffffff"}}
+                contentContainerStyle={{ backgroundColor: "#ffffff" }}
                 showsVerticalScrollIndicator={false}>
                 <View
                   style={{
@@ -628,14 +626,14 @@ class CheckOut1 extends React.PureComponent {
                     marginHorizontal: 16,
                     marginTop: 20
                   }}>
-                  <View style={{marginHorizontal: 10, marginVertical: 10}}>
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                  <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
                       <Image
                         source={require("../../assets/imgs/person.png")}
                         resizeMode="contain"
-                        style={{width: 30}}
+                        style={{ width: 30 }}
                       />
-                      <Text style={{marginStart: 10, fontWeight: "300", fontSize: 16}}>
+                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
                         Passengers Details
                       </Text>
                     </View>
@@ -661,7 +659,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].den}
-                                style={{height: 50, width: 60}}
+                                style={{ height: 50, width: 60 }}
                                 onValueChange={this.onAdultChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -703,7 +701,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -717,7 +715,9 @@ class CheckOut1 extends React.PureComponent {
                                 onPress={this.show("adults", index, true)}
                                 placeholder="DOB">
                                 <Text>
-                                  {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
+                                  {this.state.adults[index].dob != ""
+                                    ? moment(this.state.adults[index].dob).format("DD-MMM-YYYY")
+                                    : "-- Enter Dob --"}
                                 </Text>
                               </Button>
                               <DateTimePicker
@@ -726,7 +726,7 @@ class CheckOut1 extends React.PureComponent {
                                 onConfirm={this.onAdultChange(index, "dob")}
                                 onCancel={this.show("adults", index, false)}
                                 maximumDate={moment()
-                                  .subtract(12, "years")
+                                  .subtract(18, "years")
                                   .toDate()}
                               />
                             </View>
@@ -743,26 +743,17 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].gender}
-                                style={{height: 50, width: 80}}
+                                style={{ height: 50, width: 100 }}
                                 onValueChange={this.onAdultChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
                               </Picker>
                             </View>
-                            <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1
-                              }}
-                              placeholder="Age"
-                              keyboardType="numeric"
-                              onChangeText={this.onAdultChange(index, "age")}
-                            />
                           </View>
-                          <Button style={{marginTop: 10}} onPress={this._FFN}>
-                            <Text style={{color: "#5B89F9"}}>Optional (Frequent flyer Number)</Text>
+                          <Button style={{ marginTop: 10 }} onPress={this._FFN}>
+                            <Text style={{ color: "#5B89F9" }}>
+                              Optional (Frequent flyer Number)
+                            </Text>
                           </Button>
                           {ffn && (
                             <View>
@@ -771,7 +762,7 @@ class CheckOut1 extends React.PureComponent {
                                 Please verify the credit of your frequent flyer miles at the airport
                                 checkin counter.
                               </Text>
-                              <View style={{flexDirection: "row"}}>
+                              <View style={{ flexDirection: "row" }}>
                                 <TextInput
                                   style={{
                                     borderWidth: 1,
@@ -823,7 +814,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].den}
-                                style={{height: 50, width: 60}}
+                                style={{ height: 50, width: 60 }}
                                 onValueChange={this.onChildsChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -865,7 +856,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -908,7 +899,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].gender}
-                                style={{height: 50, width: 80}}
+                                style={{ height: 50, width: 80 }}
                                 onValueChange={this.onChildsChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -951,7 +942,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.infants[index].den}
-                                style={{height: 50, width: 60}}
+                                style={{ height: 50, width: 60 }}
                                 onValueChange={this.onInfantChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -993,7 +984,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -1034,7 +1025,7 @@ class CheckOut1 extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.infants[index].gender}
-                                style={{height: 50, width: 80}}
+                                style={{ height: 50, width: 80 }}
                                 onValueChange={this.onInfantChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -1120,7 +1111,7 @@ class CheckOut1 extends React.PureComponent {
                     padding: 10,
                     borderRadius: 8
                   }}>
-                  <View style={{flexDirection: "row", alignItems: "center"}}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <TouchableOpacity onPress={() => this._radioButton("D")}>
                       <View
                         style={{
@@ -1144,7 +1135,7 @@ class CheckOut1 extends React.PureComponent {
                         )}
                       </View>
                     </TouchableOpacity>
-                    <Text style={{marginStart: 5, fontSize: 18}}>RazorPay</Text>
+                    <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
                   </View>
                   <Text
                     style={{
@@ -1155,8 +1146,8 @@ class CheckOut1 extends React.PureComponent {
                     }}>
                     Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast
                     Onboarding. Free & Easy Application Process.100+ Payment Modes, Secure Gateway,
-                    Simple Integration. Easy Integration. Dashboard Reporting. etravosApis: Customize
-                    Your Checkout, Autofill OTP on Mobile.
+                    Simple Integration. Easy Integration. Dashboard Reporting. etravosApis:
+                    Customize Your Checkout, Autofill OTP on Mobile.
                   </Text>
                 </View>
 
@@ -1171,7 +1162,7 @@ class CheckOut1 extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._order}>
-                  <Text style={{color: "#fff"}}>Place Order</Text>
+                  <Text style={{ color: "#fff" }}>Place Order</Text>
                 </Button>
               </ScrollView>
             </View>

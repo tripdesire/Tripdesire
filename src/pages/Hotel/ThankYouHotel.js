@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Image,
@@ -10,11 +10,10 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import {Button, Text, AutoCompleteModal, ActivityIndicator, Icon} from "../../components";
-import HTML from "react-native-render-html";
+import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 
-const {width, height} = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 class ThankYouHotel extends React.PureComponent {
   constructor(props) {
@@ -25,7 +24,7 @@ class ThankYouHotel extends React.PureComponent {
     this.props.navigation.navigate(page);
   };
   render() {
-    const {order, params, razorpayRes} = this.props.navigation.state.params;
+    const { order, params, razorpayRes } = this.props.navigation.state.params;
 
     var str = params.HotelImages[0].Imagepath;
     var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
@@ -33,8 +32,8 @@ class ThankYouHotel extends React.PureComponent {
     return (
       <ScrollView>
         <View>
-          <View style={{justifyContent: "center", marginHorizontal: 8, marginTop: 20}}>
-            <Text style={{fontWeight: "700", fontSize: 18}}>Booking Confirmed</Text>
+          <View style={{ justifyContent: "center", marginHorizontal: 8, marginTop: 20 }}>
+            <Text style={{ fontWeight: "700", fontSize: 18 }}>Booking Confirmed</Text>
             <Text>ThankYou. Your booking has been completed.</Text>
           </View>
 
@@ -53,34 +52,34 @@ class ThankYouHotel extends React.PureComponent {
                 flex: 1
               }}>
               <View>
-                <Text style={{lineHeight: 22}}>Booking Id : </Text>
-                <Text style={([styles.Heading], {lineHeight: 16})}>{order.id}</Text>
+                <Text style={{ lineHeight: 22 }}>Booking Id : </Text>
+                <Text style={([styles.Heading], { lineHeight: 16 })}>{order.id}</Text>
               </View>
               <View>
-                <Text style={{lineHeight: 22}}>Date : </Text>
-                <Text style={([styles.Heading], {lineHeight: 16})}>
+                <Text style={{ lineHeight: 22 }}>Date : </Text>
+                <Text style={([styles.Heading], { lineHeight: 16 })}>
                   {moment(order.date_created).format("DD-MM-YYYY")}
                 </Text>
               </View>
             </View>
-            <View style={{flexDirection: "row", justifyContent: "space-between", flex: 1}}>
-              <View style={{flexDirection: "row"}}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text>Email : </Text>
                 <Text style={styles.Heading}>kamlesh@webiixx.com</Text>
               </View>
-              <View style={{flexDirection: "row"}}>
+              <View style={{ flexDirection: "row" }}>
                 <Text>Total : </Text>
                 <Text style={styles.Heading}>{order.total}</Text>
               </View>
             </View>
-            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-              <View style={{flexDirection: "row"}}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text>Payment Method : </Text>
                 <Text style={styles.Heading}>Credit Card</Text>
               </View>
             </View>
-            <View style={{flexDirection: "row", justifyContent: "space-between", flex: 1}}>
-              <View style={{flexDirection: "row"}}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text>Booking Reference Number : </Text>
                 <Text style={styles.Heading}>{razorpayRes.razorpay_payment_id}</Text>
               </View>
@@ -98,13 +97,13 @@ class ThankYouHotel extends React.PureComponent {
               padding: 10
             }}>
             <Image
-              style={{width: width / 4, height: height / 6, borderRadius: 5}}
+              style={{ width: width / 4, height: height / 6, borderRadius: 5 }}
               resizeMode="cover"
-              source={{uri: res}}
+              source={{ uri: res }}
             />
-            <View style={{marginStart: 10, flex: 1}}>
-              <Text style={{fontSize: 16, fontWeight: "700"}}>{params.HotelName}</Text>
-              <Text style={{flex: 1}}>{params.selectedRoom.RoomType}</Text>
+            <View style={{ marginStart: 10, flex: 1 }}>
+              <Text style={{ fontSize: 16, fontWeight: "700" }}>{params.HotelName}</Text>
+              <Text style={{ flex: 1 }}>{params.selectedRoom.RoomType}</Text>
               <View
                 style={{
                   flexDirection: "row",
@@ -112,11 +111,11 @@ class ThankYouHotel extends React.PureComponent {
                   flex: 1
                 }}>
                 <View>
-                  <Text style={{fontWeight: "700"}}>Check-In</Text>
+                  <Text style={{ fontWeight: "700" }}>Check-In</Text>
                   <Text>{params.checkInDate}</Text>
                 </View>
                 <View>
-                  <Text style={{fontWeight: "700"}}>Check-Out</Text>
+                  <Text style={{ fontWeight: "700" }}>Check-Out</Text>
                   <Text>{params.checkOutDate}</Text>
                 </View>
               </View>
@@ -148,7 +147,7 @@ class ThankYouHotel extends React.PureComponent {
               justifyContent: "space-between",
               paddingHorizontal: 10
             }}>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <Text
                 style={{
                   fontWeight: "700",
@@ -158,12 +157,12 @@ class ThankYouHotel extends React.PureComponent {
               </Text>
               <Text>stateData.firstname " " + stateData.last_name</Text>
             </View>
-            <View style={{flex: 1, marginHorizontal: 10}}>
-              <Text style={{fontWeight: "700", fontSize: 16}}>Age</Text>
+            <View style={{ flex: 1, marginHorizontal: 10 }}>
+              <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
               <Text>stateData.age</Text>
             </View>
-            <View style={{flex: 1}}>
-              <Text style={{fontWeight: "700", fontSize: 16}}>Gender</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
               <Text>stateData.gender == "M" ? "Male" : "Female"</Text>
             </View>
           </View>
@@ -204,12 +203,12 @@ class ThankYouHotel extends React.PureComponent {
             <Text>0.00</Text>
           </View>
           <View style={styles.summaryView}>
-            <Text style={{fontWeight: "700", fontSize: 18}}>Total Price</Text>
-            <Text style={{fontWeight: "700", fontSize: 18}}>{order.total}</Text>
+            <Text style={{ fontWeight: "700", fontSize: 18 }}>Total Price</Text>
+            <Text style={{ fontWeight: "700", fontSize: 18 }}>{order.total}</Text>
           </View>
           <View style={styles.summaryView}>
-            <Text style={{flex: 1}}>Payment Method</Text>
-            <Text style={{flex: 1, marginStart: 10}}>Credit Card/Debit Card/Net Banking</Text>
+            <Text style={{ flex: 1 }}>Payment Method</Text>
+            <Text style={{ flex: 1, marginStart: 10 }}>Credit Card/Debit Card/Net Banking</Text>
           </View>
         </View>
         <Button
@@ -223,7 +222,7 @@ class ThankYouHotel extends React.PureComponent {
             alignItems: "center"
           }}
           onPress={this.navigateToScreen("Home")}>
-          <Text style={{color: "#fff", paddingHorizontal: 40}}>Go Home</Text>
+          <Text style={{ color: "#fff", paddingHorizontal: 40 }}>Go Home</Text>
         </Button>
       </ScrollView>
     );
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 10
   },
-  Heading: {fontSize: 16, fontWeight: "700"}
+  Heading: { fontSize: 16, fontWeight: "700" }
 });
 
 export default ThankYouHotel;

@@ -10,16 +10,17 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import {Button, Text, ActivityIndicator, Icon} from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
-import {etravosApi, domainApi} from "../../service";
+import { etravosApi, domainApi } from "../../service";
 
 class Payment extends React.PureComponent {
   constructor(props) {
     super(props);
-    const {params} = props.navigation.state;
+    console.log(props.navigation.state.params);
+    const { params } = props.navigation.state.params;
     this.state = {
       loading: false,
       date: new Date(),
@@ -69,11 +70,10 @@ class Payment extends React.PureComponent {
       transactionId: "",
       status: ""
     };
-    console.log(props.navigation.state);
   }
 
   componentDidMount() {
-    this.setState({loading: false});
+    this.setState({ loading: false });
   }
 
   show = (key, index, isShow) => () => {
@@ -101,7 +101,7 @@ class Payment extends React.PureComponent {
   // };
 
   _FFN = () => {
-    this.setState({ffn: this.state.ffn == true ? false : true});
+    this.setState({ ffn: this.state.ffn == true ? false : true });
   };
 
   onAdultChange = (index, key) => text => {
@@ -146,7 +146,7 @@ class Payment extends React.PureComponent {
   };
 
   _order = () => {
-    const {params} = this.props.navigation.state;
+    const { params } = this.props.navigation.state.params;
 
     let param = {
       user_id: "7",
@@ -268,7 +268,7 @@ class Payment extends React.PureComponent {
     } else {
       console.log(data);
       let totalData = data;
-      this.setState({loading: true});
+      this.setState({ loading: true });
       etravosApi
         .post("/Hotels/BlockHotelRoom", data)
         .then(blockres => {
@@ -276,31 +276,31 @@ class Payment extends React.PureComponent {
           if (blockres.data.BookingStatus == 1) {
             domainApi
               .get("/checkout/new-order?user_id=7")
-              .then(({data: order}) => {
+              .then(({ data: order }) => {
                 console.log(order);
                 var options = {
                   description: "Credits towards consultation",
                   image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
                   key: "rzp_test_a3aQYPLYowGvWJ",
-                  amount: "5000",
+                  amount: parseInt(order.total) * 100,
                   name: "TripDesire",
                   prefill: {
                     email: "void@razorpay.com",
                     contact: "9191919191",
                     name: "Razorpay Software"
                   },
-                  theme: {color: "#E5EBF7"}
+                  theme: { color: "#E5EBF7" }
                 };
                 RazorpayCheckout.open(options)
                   .then(razorpayRes => {
                     // handle success
                     //console.log(data);
-                    this.setState({loading: true});
+                    this.setState({ loading: true });
                     etravosApi
                       .get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
-                      .then(({data: Response}) => {
-                        this.setState({loading: false});
+                      .then(({ data: Response }) => {
+                        this.setState({ loading: false });
                         console.log(Response);
                       })
                       .catch(error => {
@@ -312,32 +312,32 @@ class Payment extends React.PureComponent {
                       transaction_id: razorpayRes.razorpay_payment_id,
                       reference_no: Response // blockres.data.ReferenceNo
                     };
-                    this.setState({loading: true});
+                    this.setState({ loading: true });
                     domainApi.post("/checkout/update-order", paymentData).then(res => {
-                      this.setState({loading: false});
+                      this.setState({ loading: false });
                       console.log(res);
                     });
-                    const {params} = this.props.navigation.state;
-                    this.props.navigation.navigate("ThankYouHotel", {order, params, razorpayRes});
+                    const { params } = this.props.navigation.state.params;
+                    this.props.navigation.navigate("ThankYouHotel", { order, params, razorpayRes });
                   })
                   .catch(error => {
                     // handle failure
-                    this.setState({loading: false});
+                    this.setState({ loading: false });
                     alert(`Error:  ${error.description}`);
                   });
               })
               .catch(error => {
                 Toast.show(error, Toast.LONG);
-                this.setState({loading: false});
+                this.setState({ loading: false });
               });
           } else {
-            this.setState({loading: false});
+            this.setState({ loading: false });
             Toast.show("Hotel is not block successfully ", Toast.LONG);
           }
         })
         .catch(error => {
           Toast.show(error, Toast.LONG);
-          this.setState({loading: false});
+          this.setState({ loading: false });
         });
     }
 
@@ -353,15 +353,14 @@ class Payment extends React.PureComponent {
     });
   };
   render() {
-    const {params} = this.props.navigation.state;
-    console.log(this.props.navigation.state);
-    const {ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loading} = this.state;
+    const { params } = this.props.navigation.state.params;
+    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loading } = this.state;
 
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
             <View
               style={{
                 height: 56,
@@ -373,9 +372,9 @@ class Payment extends React.PureComponent {
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{marginHorizontal: 5}}>
-                <Text style={{fontWeight: "700", fontSize: 16}}>Checkout</Text>
-                <Text style={{fontSize: 12, color: "#717984"}}>
+              <View style={{ marginHorizontal: 5 }}>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
+                <Text style={{ fontSize: 12, color: "#717984" }}>
                   {params.checkInDate
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
                     : ""}
@@ -390,9 +389,9 @@ class Payment extends React.PureComponent {
               </View>
             </View>
 
-            <View style={{flex: 4, backgroundColor: "#FFFFFF"}}>
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <ScrollView
-                contentContainerStyle={{backgroundColor: "#ffffff"}}
+                contentContainerStyle={{ backgroundColor: "#ffffff" }}
                 showsVerticalScrollIndicator={false}>
                 <View
                   style={{
@@ -402,14 +401,14 @@ class Payment extends React.PureComponent {
                     marginHorizontal: 16,
                     marginTop: 20
                   }}>
-                  <View style={{marginHorizontal: 10, marginVertical: 10}}>
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                  <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
                       <Image
                         source={require("../../assets/imgs/person.png")}
                         resizeMode="contain"
-                        style={{width: 30}}
+                        style={{ width: 30 }}
                       />
-                      <Text style={{marginStart: 10, fontWeight: "300", fontSize: 16}}>
+                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
                         Passengers Details
                       </Text>
                     </View>
@@ -435,7 +434,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].den}
-                                style={{height: 50, width: 60}}
+                                style={{ height: 50, width: 60 }}
                                 onValueChange={this.onAdultChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -477,7 +476,7 @@ class Payment extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -517,7 +516,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].gender}
-                                style={{height: 50, width: 80}}
+                                style={{ height: 50, width: 80 }}
                                 onValueChange={this.onAdultChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -535,8 +534,10 @@ class Payment extends React.PureComponent {
                               onChangeText={this.onAdultChange(index, "age")}
                             />
                           </View>
-                          <Button style={{marginTop: 10}} onPress={this._FFN}>
-                            <Text style={{color: "#5B89F9"}}>Optional (Frequent flyer Number)</Text>
+                          <Button style={{ marginTop: 10 }} onPress={this._FFN}>
+                            <Text style={{ color: "#5B89F9" }}>
+                              Optional (Frequent flyer Number)
+                            </Text>
                           </Button>
                           {ffn && (
                             <View>
@@ -545,7 +546,7 @@ class Payment extends React.PureComponent {
                                 Please verify the credit of your frequent flyer miles at the airport
                                 checkin counter.
                               </Text>
-                              <View style={{flexDirection: "row"}}>
+                              <View style={{ flexDirection: "row" }}>
                                 <TextInput
                                   style={{
                                     borderWidth: 1,
@@ -597,7 +598,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].den}
-                                style={{height: 50, width: 60}}
+                                style={{ height: 50, width: 60 }}
                                 onValueChange={this.onChildsChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -639,7 +640,7 @@ class Payment extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{color: "#5D666D", marginStart: 5}}>DOB</Text>
+                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -682,7 +683,7 @@ class Payment extends React.PureComponent {
                               }}>
                               <Picker
                                 selectedValue={this.state.childs[index].gender}
-                                style={{height: 50, width: 80}}
+                                style={{ height: 50, width: 80 }}
                                 onValueChange={this.onChildsChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
@@ -768,7 +769,7 @@ class Payment extends React.PureComponent {
                     padding: 10,
                     borderRadius: 8
                   }}>
-                  <View style={{flexDirection: "row", alignItems: "center"}}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <TouchableOpacity onPress={() => this._radioButton("D")}>
                       <View
                         style={{
@@ -792,7 +793,7 @@ class Payment extends React.PureComponent {
                         )}
                       </View>
                     </TouchableOpacity>
-                    <Text style={{marginStart: 5, fontSize: 18}}>RazorPay</Text>
+                    <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
                   </View>
                   <Text
                     style={{
@@ -819,7 +820,7 @@ class Payment extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._order}>
-                  <Text style={{color: "#fff"}}>Place Order</Text>
+                  <Text style={{ color: "#fff" }}>Place Order</Text>
                 </Button>
               </ScrollView>
             </View>
