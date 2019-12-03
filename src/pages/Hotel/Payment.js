@@ -47,7 +47,7 @@ class Payment extends React.PureComponent {
           dob: moment()
             .subtract(18, "years")
             .toDate(),
-          age: "",
+          age: 18,
           gender: "M",
           show: false
         };
@@ -60,7 +60,9 @@ class Payment extends React.PureComponent {
           dob: moment()
             .subtract(2, "years")
             .toDate(),
-          age: "",
+          age: moment()
+            .subtract(12, "years")
+            .toDate(),
           gender: parseInt(params.child) > 0 ? "M" : "",
           show: false
         };
@@ -108,6 +110,9 @@ class Payment extends React.PureComponent {
     let newData = Object.assign([], this.state.adults);
     newData[index][key] = text;
     newData[index].show = false;
+    if ((key = "dob")) {
+      newData[index].age = moment().diff(moment(text), "years");
+    }
     this.setState({
       adults: newData
     });
@@ -119,15 +124,6 @@ class Payment extends React.PureComponent {
     newData[index].show = false;
     this.setState({
       childs: newData
-    });
-  };
-
-  onInfantChange = (index, key) => text => {
-    let newData = Object.assign([], this.state.infants);
-    newData[index][key] = text;
-    newData[index].show = false;
-    this.setState({
-      infants: newData
     });
   };
 
@@ -262,6 +258,8 @@ class Payment extends React.PureComponent {
       UserType: 5,
       WebsiteUrl: ""
     };
+    console.log(this.state);
+    return;
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
@@ -499,7 +497,7 @@ class Payment extends React.PureComponent {
                                 onConfirm={this.onAdultChange(index, "dob")}
                                 onCancel={this.show("adults", index, false)}
                                 maximumDate={moment()
-                                  .subtract(12, "years")
+                                  .subtract(18, "years")
                                   .toDate()}
                               />
                             </View>
@@ -522,17 +520,6 @@ class Payment extends React.PureComponent {
                                 <Picker.Item label="Female" value="F" />
                               </Picker>
                             </View>
-                            <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1
-                              }}
-                              placeholder="Age"
-                              keyboardType="numeric"
-                              onChangeText={this.onAdultChange(index, "age")}
-                            />
                           </View>
                           <Button style={{ marginTop: 10 }} onPress={this._FFN}>
                             <Text style={{ color: "#5B89F9" }}>
