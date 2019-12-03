@@ -12,9 +12,10 @@ import {
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
- import {etravosApi}  from "../../service";
+import { etravosApi } from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
+import Filter from "./Filter";
 
 class HotelInfo extends React.PureComponent {
   constructor(props) {
@@ -44,7 +45,8 @@ class HotelInfo extends React.PureComponent {
   componentDidMount() {
     const { params } = this.props.navigation.state;
 
-    etravosApi.get("/Hotels/AvailableHotels", params)
+    etravosApi
+      .get("/Hotels/AvailableHotels", params)
       .then(({ data, status }) => {
         if (status != 200) {
           this.props.navigation.goBack(null);
@@ -89,7 +91,7 @@ class HotelInfo extends React.PureComponent {
           marginTop: 16,
           marginHorizontal: index % 2 == 0 ? 16 : null,
           flexDirection: "row",
-          elevation: index % 2 == 0 ? 2 : null,
+          elevation: index % 2 == 0 ? 1 : null,
           borderRadius: index % 2 == 0 ? 5 : null,
           backgroundColor: index % 2 == 0 ? null : "#E9ECF3"
         }}>
@@ -198,7 +200,7 @@ class HotelInfo extends React.PureComponent {
 
   render() {
     console.log(this.state);
-    const { city, checkIn, checkOut, loader } = this.state;
+    const { city, checkIn, checkOut, loader, hotelName } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
@@ -265,9 +267,7 @@ class HotelInfo extends React.PureComponent {
                   flexDirection: "row",
                   ...StyleSheet.absoluteFill
                 }}>
-                <TextInput
-                  placeholder="Hotel Name"
-                  style={{ marginStart: 20, color: "#61666A" }}></TextInput>
+                <TextInput placeholder="Hotel Name" style={{ marginStart: 20, color: "#61666A" }} />
                 <Button
                   style={{
                     backgroundColor: "#5B89F9",

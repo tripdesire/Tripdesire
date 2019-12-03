@@ -34,7 +34,7 @@ CheckBox.propTypes = {
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   checked: PropTypes.bool,
   onPress: PropTypes.func,
-  label: PropTypes.string
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 CheckBox.defaultProps = {
