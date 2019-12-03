@@ -31,7 +31,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
       price
     });
     console.log(filters);
-  }, []);
+  }, []);   
 
   const updateFilter = (key, index) => () => {
     let newData = Object.assign({}, filterValues);
