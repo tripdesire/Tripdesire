@@ -1,10 +1,10 @@
-import React, {PureComponent} from "react";
-import {View, Image, SafeAreaView, ScrollView, StyleSheet} from "react-native";
-import {Button, Text, CheckBox} from "../../components";
-import {_} from "lodash";
+import React, { PureComponent } from "react";
+import { View, Image, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { Button, Text, CheckBox } from "../../components";
+import { _ } from "lodash";
 import moment from "moment";
-import {connect} from "react-redux";
-import {Header, Icon} from "../../components";
+import { connect } from "react-redux";
+import { Header, Icon } from "../../components";
 import {} from "react-native-gesture-handler";
 
 class Filter extends React.Component {
@@ -41,9 +41,8 @@ class Filter extends React.Component {
     }
   }*/
 
-  getDerrived;
   componentDidMount() {
-    const {data, flight_type, returnFlights} = this.props;
+    const { data, flight_type, returnFlights } = this.props;
     //console.log(data);
     let stops = [];
     let fareType = [];
@@ -122,19 +121,19 @@ class Filter extends React.Component {
         stops,
         fareType,
         airlines,
-        connectingLocations: _.uniq(connectingLocations)
+        connectingLocations
       }
     });
     console.log(stops, fareType, airlines, connectingLocations, price);
   }
 
   changeActiveTab = index => () => {
-    this.setState({index});
+    this.setState({ index });
   };
 
   updateFilter = (key, index) => () => {
-    const {filterValues} = this.props;
-    const {filters} = this.state;
+    const { filterValues } = this.props;
+    const { filters } = this.state;
     let newData = Object.assign({}, filterValues);
     if (newData[key].includes(filters[key][index])) {
       newData[key].splice(
@@ -151,31 +150,31 @@ class Filter extends React.Component {
   reset = () => {};
 
   render() {
-    const {filterTabs, index, filters} = this.state;
-    const {filterValues} = this.props;
+    const { filterTabs, index, filters } = this.state;
+    const { filterValues } = this.props;
 
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "white"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "gray"}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
           <View style={styles.headerContainer}>
-            <Button onPress={this.props.onBackPress} style={{padding: 16}}>
+            <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <Text style={{fontWeight: "700", fontSize: 16}}>Filter</Text>
+            <Text style={{ fontWeight: "700", fontSize: 16 }}>Filter</Text>
           </View>
-          <View style={{flex: 1, flexDirection: "row"}}>
-            <View style={{flex: 2, backgroundColor: "#E8EEF6"}}>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View style={{ flex: 2, backgroundColor: "#E8EEF6" }}>
               {filterTabs.map((item, i) => (
                 <Button
-                  style={[styles.filterTabs, i == index ? {backgroundColor: "#FFFFFF"} : null]}
+                  style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
                   key={"filter_" + item + index}
                   onPress={this.changeActiveTab(i)}>
                   <Text>{item}</Text>
                 </Button>
               ))}
             </View>
-            <View style={{flex: 3, backgroundColor: "#FFFFFF"}}>
+            <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}>
               {index == 0 && (
                 <ScrollView>
                   {filters.stops.map((item, index) => (
@@ -231,7 +230,7 @@ class Filter extends React.Component {
             <Text style={{ fontWeight: "700" }}>Reset</Text>
           </Button> */}
             <Button style={styles.applyButton} onPress={this.props.filter}>
-              <Text style={{color: "#FFFFFF", fontWeight: "700"}}>Apply</Text>
+              <Text style={{ color: "#FFFFFF", fontWeight: "700" }}>Apply</Text>
             </Button>
           </View>
         </SafeAreaView>
