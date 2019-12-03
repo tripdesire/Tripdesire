@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Button, Icon, Text, CheckBox } from "../../components";
-import { uniq, max, min } from "lodash";
+import { uniq, max, min, isEmpty } from "lodash";
 import RangeSlider from "rn-range-slider";
 
 function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
@@ -31,7 +31,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
       price
     });
     console.log(filters);
-  }, []);   
+  }, []);
 
   const updateFilter = (key, index) => () => {
     let newData = Object.assign({}, filterValues);
@@ -100,7 +100,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                 ))}
               </ScrollView>
             )}
-            {index == 2 && (
+            {index == 2 && isEmpty(filters.price) && (
               <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
                 <RangeSlider
                   style={{

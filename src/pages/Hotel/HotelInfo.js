@@ -4,7 +4,7 @@ import {
   Image,
   StyleSheet,
   FlatList,
-  ScrollView,
+  Modal,
   TextInput,
   Dimensions,
   SafeAreaView
@@ -21,7 +21,7 @@ class HotelInfo extends React.PureComponent {
   constructor(props) {
     super(props);
     const { params } = props.navigation.state;
-    console.log(params);
+    //console.log(params);
     this.state = {
       loader: true,
       city: params.city,
@@ -38,7 +38,14 @@ class HotelInfo extends React.PureComponent {
       infant: 0,
       checkInDate: params.arrivalDate,
       checkOutDate: params.departureDate,
-      hotels: []
+      hotels: [],
+      filteredHotels: [],
+      filterModalVisible: false,
+      filterValues: {
+        price: {},
+        rating: [],
+        amenities: []
+      }
     };
   }
 
@@ -52,8 +59,8 @@ class HotelInfo extends React.PureComponent {
           this.props.navigation.goBack(null);
           Toast.show("No Data Found.", Toast.SHORT);
         }
-        console.log(data.AvailableHotels);
-        console.log(data.AvailableHotels[0].HotelImages[0].Imagepath);
+        //console.log(data.AvailableHotels);
+        //console.log(data.AvailableHotels[0].HotelImages[0].Imagepath);
         this.setState({
           hotels: data.AvailableHotels,
           filteredHotels: data.AvailableHotels,
@@ -61,7 +68,8 @@ class HotelInfo extends React.PureComponent {
         });
       })
       .catch(error => {
-        console.log(error, Toast.LONG);
+        Toast.show(error.toString(), Toast.LONG);
+        console.log(error);
       });
   }
 
@@ -74,6 +82,32 @@ class HotelInfo extends React.PureComponent {
       );
     }
     this.setState({ filteredHotels });
+  };
+  openFilter = () => {
+    this.setState({ filterModalVisible: true });
+  };
+  closeFilter = () => {
+    this.setState({ filterModalVisible: false });
+  };
+  onChangeFilter = filterValues => {
+    this.setState({ filterValues });
+  };
+  filter = () => {
+    const { filterValues, hotels } = this.state;
+    let filteredHotels = hotels.filter(
+      item =>
+        (filterValues.rating.length == 0 || filterValues.rating.includes(item.StarRating)) &&
+        (filterValues.amenities.length == 0 ||
+          filterValues.amenities.some(value => item.Facilities.includes(value))) &&
+        (!filterValues.price.min ||
+          item.RoomDetails.some(value => filterValues.price.min <= value.RoomTotal)) &&
+        (!filterValues.price.max ||
+          item.RoomDetails.some(value => filterValues.price.max >= value.RoomTotal))
+    );
+    this.setState({
+      filteredHotels,
+      filterModalVisible: false
+    });
   };
 
   _BookNow(param) {
@@ -214,59 +248,68 @@ class HotelInfo extends React.PureComponent {
   _keyExtractoritems = (item, index) => "key" + index;
 
   render() {
-    console.log(this.state);
-    const { city, checkIn, checkOut, loader, hotelName, hotels, filteredHotels } = this.state;
+    //console.log(this.state);
+    const {
+      city,
+      checkIn,
+      checkOut,
+      loader,
+      hotelName,
+      hotels,
+      filteredHotels,
+      filterModalVisible
+    } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#E5EBF7"
+              }}>
+              <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
               <View
                 style={{
-                  flexDirection: "row"
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  flex: 1,
+                  paddingTop: 16,
+                  paddingBottom: 16
                 }}>
-                <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
-                  <Icon name="md-arrow-back" size={24} />
-                </Button>
-                <View
-                  style={{
-                    justifyContent: "space-between",
-                    flexDirection: "row",
-                    flex: 1,
-                    paddingTop: 16
-                  }}>
-                  <View>
-                    <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                      {city}
+                <View>
+                  <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+                    {city}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start"
+                    }}>
+                    <IconMaterial name="calendar-month" size={18} color="#717984" />
+                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                      {checkIn} - {checkOut}
                     </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "flex-start"
-                      }}>
-                      <IconMaterial name="calendar-month" size={18} color="#717984" />
-                      <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                        {checkIn} - {checkOut}
-                      </Text>
-                    </View>
                   </View>
                 </View>
-                <Button
-                  style={{
-                    flexDirection: "row",
-                    marginStart: "auto",
-                    paddingEnd: 8,
-                    paddingVertical: 16
-                  }}
-                  onPress={this.openFilter}>
-                  <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                  <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                    Sort & Filter
-                  </Text>
-                </Button>
               </View>
+              <Button
+                style={{
+                  flexDirection: "row",
+                  marginStart: "auto",
+                  paddingEnd: 8,
+                  paddingVertical: 16
+                }}
+                onPress={this.openFilter}>
+                <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                  Sort & Filter
+                </Text>
+              </Button>
             </View>
             <View style={{ height: 40, width: "100%" }}>
               <View style={{ flex: 2, backgroundColor: "#E5EBF7" }}></View>
@@ -315,6 +358,19 @@ class HotelInfo extends React.PureComponent {
                 renderItem={this._renderItemList}
               />
             </View>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={filterModalVisible}
+              onRequestClose={this.closeFilter}>
+              <Filter
+                data={hotels}
+                onBackPress={this.closeFilter}
+                filterValues={this.state.filterValues}
+                onChangeFilter={this.onChangeFilter}
+                filter={this.filter}
+              />
+            </Modal>
             {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
