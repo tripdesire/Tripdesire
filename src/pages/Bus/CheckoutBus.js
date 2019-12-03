@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Picker,
+  Picker, 
   ScrollView
 } from "react-native";
 import {Button, Text, ActivityIndicator} from "../../components";
