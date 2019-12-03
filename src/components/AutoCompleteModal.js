@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from "re
 import Button from "./Button";
 import Text from "./TextComponent";
 import ActivityIndicator from "./ActivityIndicator";
-import Service from "../service";
+ import {etravosApi}  from "../service";
 import Autocomplete from "react-native-autocomplete-input";
 import Toast from "react-native-simple-toast";
 import Icon from "./IconNB";
@@ -54,7 +54,7 @@ class AutoCompleteModal extends React.PureComponent {
       case "domesticFlight":
         if (domesticSuggestion.length == 0) {
           this.setState({ loader: true });
-          Service.get("/Flights/Airports?flightType=1")
+          etravosApi.get("/Flights/Airports?flightType=1")
             .then(({ data }) => {
               this.props.DomSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -69,7 +69,7 @@ class AutoCompleteModal extends React.PureComponent {
       case "internationalFlight":
         if (internationalSuggestion.length == 0) {
           this.setState({ loader: true });
-          Service.get("/Flights/Airports?flightType=2")
+          etravosApi.get("/Flights/Airports?flightType=2")
             .then(({ data }) => {
               this.props.IntSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -83,7 +83,7 @@ class AutoCompleteModal extends React.PureComponent {
       case "domesticHotel":
         if (domesticHotelSuggestion.length == 0) {
           this.setState({ loader: true });
-          Service.get("Hotels/Cities?hoteltype=1")
+          etravosApi.get("Hotels/Cities?hoteltype=1")
             .then(({ data }) => {
               this.props.DomHotelSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -98,7 +98,7 @@ class AutoCompleteModal extends React.PureComponent {
       case "bus":
         if (busSuggestion.length == 0) {
           this.setState({ loader: true });
-          Service.get("/Buses/Sources")
+          etravosApi.get("/Buses/Sources")
             .then(({ data }) => {
               this.props.BusSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -113,7 +113,7 @@ class AutoCompleteModal extends React.PureComponent {
       case "cab":
         if (cabSuggestion.length == 0) {
           this.setState({ loader: true });
-          Service.get("/Cabs/Cities")
+          etravosApi.get("/Cabs/Cities")
             .then(({ data }) => {
               this.props.CabSugg(data);
               this.setState({ loader: false, filteredList: data });

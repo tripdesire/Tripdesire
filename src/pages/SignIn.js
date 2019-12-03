@@ -12,7 +12,7 @@ import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
-import Service from "../service";
+ import {etravosApi}  from "../service";
 import moment from "moment";
 import { Button, Text, TextInputComponent } from "../components";
 import { connect } from "react-redux";

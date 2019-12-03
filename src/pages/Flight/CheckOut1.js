@@ -14,7 +14,7 @@ import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -333,7 +333,7 @@ class CheckOut1 extends React.PureComponent {
       UserType: 5
     };
 
-    Service.post("/Flights/GetTaxDetails", taxDetail)
+    etravosApi.post("/Flights/GetTaxDetails", taxDetail)
       .then(res => {
         console.log(res.data);
         this.setState({taxDetails: res.data});
@@ -471,7 +471,7 @@ class CheckOut1 extends React.PureComponent {
       console.log(params, data);
 
       this.setState({loading: true});
-      Service.post("/Flights/BlockFlightTicket", book)
+      etravosApi.post("/Flights/BlockFlightTicket", book)
         .then(blockres => {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 8) {
@@ -509,7 +509,7 @@ class CheckOut1 extends React.PureComponent {
                     this.setState({orderId: data.razorpay_payment_id});
 
                     this.setState({loading: true});
-                    Service.get(
+                    etravosApi.get(
                       "/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo
                     )
                       .then(Response => {
@@ -1155,7 +1155,7 @@ class CheckOut1 extends React.PureComponent {
                     }}>
                     Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast
                     Onboarding. Free & Easy Application Process.100+ Payment Modes, Secure Gateway,
-                    Simple Integration. Easy Integration. Dashboard Reporting. Services: Customize
+                    Simple Integration. Easy Integration. Dashboard Reporting. etravosApis: Customize
                     Your Checkout, Autofill OTP on Mobile.
                   </Text>
                 </View>

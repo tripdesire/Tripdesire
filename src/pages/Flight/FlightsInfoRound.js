@@ -4,7 +4,7 @@ import {Button, Text, ActivityIndicator, HeaderFlights, Icon} from "../../compon
 import Toast from "react-native-simple-toast";
 import {withNavigation} from "react-navigation";
 import SwiperFlatList from "react-native-swiper-flatlist";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import moment from "moment";
 import RenderDomesticRound from "./RenderDomesticRound";
 import Filter from "./Filter";
@@ -78,7 +78,7 @@ class FlightsInfoRound extends React.PureComponent {
       sourceAirportName: data.sourceAirportName,
       destinationAirportName: data.destinationAirportName
     });
-    Service.get("/Flights/AvailableFlights", data)
+    etravosApi.get("/Flights/AvailableFlights", data)
       .then(({data}) => {
         this.setState({
           onwardFlightsList: data.DomesticOnwardFlights,

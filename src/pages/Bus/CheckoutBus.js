@@ -13,7 +13,7 @@ import {Button, Text, ActivityIndicator} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
-import Service from "../../service";
+import {etravosApi} from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import HTML from "react-native-render-html";
@@ -81,6 +81,9 @@ class CheckoutBus extends React.PureComponent {
       SeatNos: "31",
       Servicetax: "225",
       ServiceCharge: "10.00",
+      SeatNos: "23",
+      etravosApitax: "225",
+      etravosApiCharge: "10.00",
       SourceId: "100",
       SourceName: "Hyderabad",
       Titles: "Mr.",
@@ -93,7 +96,10 @@ class CheckoutBus extends React.PureComponent {
 
     if (this.state.Name != "" && this.state.IdNumber && this.state.IssuedBy && this.state.Age) {
       this.setState({loader: true});
-      Service.post("/Buses/BlockBusTicket", param)
+
+      etravosApi
+        .post("/Buses/BlockBusTicket", param)
+
         .then(({data}) => {
           console.log(data);
           this.setState({loader: false});

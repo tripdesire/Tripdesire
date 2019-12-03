@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, Modal, TouchableOpacity, Picker } from "react-native";
 import { Button, Text } from "../../components";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import Icon from "react-native-vector-icons/Ionicons";

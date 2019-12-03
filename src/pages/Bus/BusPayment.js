@@ -13,7 +13,7 @@ import {Button, Text, ActivityIndicator} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
@@ -69,7 +69,7 @@ class BusPayment extends React.PureComponent {
         alert(`Success: ${data.razorpay_payment_id}`);
         this.setState({transaction_id: data.razorpay_payment_id});
 
-        Service.get("/Buses/BookBusTicket?referenceNo=" + BlockingReferenceNo)
+        etravosApi.get("/Buses/BookBusTicket?referenceNo=" + BlockingReferenceNo)
           .then(({data}) => {
             console.log(data);
             if (data.BookingStatus == 3) {
@@ -274,6 +274,59 @@ class BusPayment extends React.PureComponent {
                 payment reference.Your order will not be shipped untill the funds have cleared in
                 our account
               </Text>
+
+              <View style={{flexDirection: "row", alignItems: "center", marginTop: 5}}>
+                <TouchableOpacity onPress={() => this._radioButton("CP")}>
+                  <View
+                    style={{
+                      height: 18,
+                      width: 18,
+                      borderRadius: 12,
+                      borderWidth: 2,
+                      borderColor: "#000",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}>
+                    {radioCheck && (
+                      <View
+                        style={{
+                          height: 10,
+                          width: 10,
+                          borderRadius: 6,
+                          backgroundColor: "#000"
+                        }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+                <Text style={{marginStart: 5, fontSize: 16}}>Check Payments</Text>
+              </View>
+              <View style={{flexDirection: "row", alignItems: "center"}}>
+                <TouchableOpacity onPress={() => this._radioButton("C")}>
+                  <View
+                    style={{
+                      height: 18,
+                      width: 18,
+                      borderRadius: 12,
+                      borderWidth: 2,
+                      borderColor: "#000",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}>
+                    {radioCOD && (
+                      <View
+                        style={{
+                          height: 10,
+                          width: 10,
+                          borderRadius: 6,
+                          backgroundColor: "#000"
+                        }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+                <Text style={{marginStart: 5, fontSize: 16}}>Cash on Delivery</Text>
+              </View>
             </View>
 
             <Button

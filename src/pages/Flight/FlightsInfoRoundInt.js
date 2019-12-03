@@ -3,7 +3,7 @@ import {Dimensions, View, FlatList, SafeAreaView, Modal} from "react-native";
 import {Button, Text, ActivityIndicator, Icon} from "../../components";
 import RenderInternationRound from "./RenderInternationRound";
 import Filter from "./Filter";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 
@@ -70,7 +70,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
       destinationAirportName: data.destinationAirportName
     });
 
-    Service.get("/Flights/AvailableFlights", data).then(({data}) => {
+    etravosApi.get("/Flights/AvailableFlights", data).then(({data}) => {
       console.log(data);
       if (data.InternationalFlights.length != 0) {
         this.setState({

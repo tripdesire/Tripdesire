@@ -12,7 +12,7 @@ import {
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 
@@ -44,7 +44,7 @@ class HotelInfo extends React.PureComponent {
   componentDidMount() {
     const { params } = this.props.navigation.state;
 
-    Service.get("/Hotels/AvailableHotels", params)
+    etravosApi.get("/Hotels/AvailableHotels", params)
       .then(({ data, status }) => {
         if (status != 200) {
           this.props.navigation.goBack(null);

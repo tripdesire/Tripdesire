@@ -18,7 +18,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import { Header } from "../../components";
 import Autocomplete from "react-native-autocomplete-input";
 import { CabSugg } from "../../store/action";
@@ -44,7 +44,7 @@ class SuggLoc extends React.PureComponent {
 
     if (cabSuggestion.length == 0) {
       this.setState({ loader: true });
-      Service.get("/Cabs/Cities")
+      etravosApi.get("/Cabs/Cities")
         .then(res => {
           this.props.CabSugg(res.data);
           this.setState({ loader: false });

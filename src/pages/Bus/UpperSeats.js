@@ -1,7 +1,9 @@
-import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, Text, ScrollView } from "react-native";
-import { createMaterialTopTabNavigator } from "react-navigation-tabs";
-class LowerSeats extends React.PureComponent {
+import React, {PureComponent} from "react";
+import {Dimensions, Image, StyleSheet, View, FlatList, Text} from "react-native";
+import {createMaterialTopTabNavigator} from "react-navigation-tabs";
+import {ScrollView} from "react-native-gesture-handler";
+import LowerSeats from "./LowerSeats";
+class Seats extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +19,7 @@ class LowerSeats extends React.PureComponent {
           Length: 1,
           Number: "1",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -31,12 +33,12 @@ class LowerSeats extends React.PureComponent {
           Column: 2,
           Fare: "500",
           NetFare: "500",
-          IsAvailableSeat: "True",
-          IsLadiesSeat: "False",
+          IsAvailableSeat: "False",
+          IsLadiesSeat: "True",
           Length: 1,
           Number: "2",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -51,11 +53,11 @@ class LowerSeats extends React.PureComponent {
           Fare: "500",
           NetFare: "500",
           IsAvailableSeat: "True",
-          IsLadiesSeat: "False",
+          IsLadiesSeat: "True",
           Length: 1,
           Number: "3",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -74,7 +76,7 @@ class LowerSeats extends React.PureComponent {
           Length: 1,
           Number: "4",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -93,7 +95,7 @@ class LowerSeats extends React.PureComponent {
           Length: 1,
           Number: "5",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -112,7 +114,7 @@ class LowerSeats extends React.PureComponent {
           Length: 1,
           Number: "6",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -131,7 +133,7 @@ class LowerSeats extends React.PureComponent {
           Length: 1,
           Number: "7",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -150,7 +152,7 @@ class LowerSeats extends React.PureComponent {
           Length: 1,
           Number: "8",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -164,12 +166,12 @@ class LowerSeats extends React.PureComponent {
           Column: 9,
           Fare: "500",
           NetFare: "500",
-          IsAvailableSeat: "True",
-          IsLadiesSeat: "False",
+          IsAvailableSeat: "False",
+          IsLadiesSeat: "True",
           Length: 1,
           Number: "9",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -188,7 +190,7 @@ class LowerSeats extends React.PureComponent {
           Length: 1,
           Number: "10",
           Row: 1,
-          Width: 1,
+          Width: 2,
           Zindex: 0,
           etravosApitax: "75",
           OperatoretravosApiCharge: "10.00",
@@ -221,8 +223,8 @@ class LowerSeats extends React.PureComponent {
           Column: 2,
           Fare: "500",
           NetFare: "500",
-          IsAvailableSeat: "True",
-          IsLadiesSeat: "False",
+          IsAvailableSeat: "False",
+          IsLadiesSeat: "True",
           Length: 1,
           Number: "12",
           Row: 2,
@@ -259,7 +261,7 @@ class LowerSeats extends React.PureComponent {
           Column: 4,
           Fare: "500",
           NetFare: "500",
-          IsAvailableSeat: "True",
+          IsAvailableSeat: "False",
           IsLadiesSeat: "False",
           Length: 1,
           Number: "14",
@@ -791,15 +793,299 @@ class LowerSeats extends React.PureComponent {
     };
   }
 
+  _backgroundColor = color => {
+    if (color.IsAvailableSeat == "False") {
+      return "#32CD32";
+    } else if (color.IsLadiesSeat == "True") {
+      return "#E6397F";
+    }
+  };
+
+  _backgroundColorHorizontal = color => {
+    if (color.IsAvailableSeat == "False") {
+      return "#32CD32";
+    }
+  };
+
   render() {
-    const { rows, columns, seats } = this.state;
+    const {rows, columns, seats} = this.state;
     return (
-      <ScrollView
-        contentContainerStyle={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center"
-        }}>
+      <ScrollView contentContainerStyle={{}}>
+        <View
+          style={{
+            flexDirection: "row",
+            marginTop: 20,
+            justifyContent: "space-between",
+            flex: 1,
+            marginHorizontal: 16
+          }}>
+          <View style={{alignItems: "center"}}>
+            <View
+              style={{
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "black",
+                marginHorizontal: 10,
+                width: 45,
+                height: 45
+              }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginStart: -3
+                  }}></View>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginEnd: -3
+                  }}></View>
+              </View>
+              <View
+                style={{
+                  borderColor: "black",
+                  borderRadius: 5,
+                  backgroundColor: "black",
+                  borderWidth: 1,
+                  height: 6,
+                  width: 45,
+                  marginTop: -5,
+                  paddingHorizontal: 4
+                }}></View>
+            </View>
+            <Text style={{fontSize: 12}}>Seater</Text>
+          </View>
+
+          <View style={{alignItems: "center"}}>
+            <View
+              style={{
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "black",
+                backgroundColor: "#32CD32",
+                marginHorizontal: 10,
+                width: 45,
+                height: 45
+              }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginStart: -3
+                  }}></View>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginEnd: -3
+                  }}></View>
+              </View>
+              <View
+                style={{
+                  borderColor: "black",
+                  borderRadius: 5,
+                  backgroundColor: "black",
+                  borderWidth: 1,
+                  height: 6,
+                  width: 45,
+                  marginTop: -5,
+                  paddingHorizontal: 4
+                }}></View>
+            </View>
+            <Text style={{fontSize: 12}}>Selected Seat</Text>
+          </View>
+
+          <View style={{alignItems: "center"}}>
+            <View
+              style={{
+                borderRadius: 2,
+                borderColor: "#000000",
+                borderWidth: 1,
+                paddingHorizontal: 8
+              }}>
+              <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
+              <View
+                style={{
+                  borderRadius: 2,
+                  borderColor: "#000000",
+                  borderWidth: 1,
+                  marginHorizontal: 1,
+                  marginVertical: 5,
+                  paddingHorizontal: 2,
+                  paddingVertical: 2
+                }}></View>
+            </View>
+            <Text style={{fontSize: 12}}>Sleeper</Text>
+          </View>
+
+          <View style={{alignItems: "center"}}>
+            <View
+              style={{
+                borderRadius: 2,
+                borderColor: "#000000",
+                borderWidth: 1,
+                marginStart: 5,
+                width: 90,
+                height: 45
+              }}>
+              <View
+                style={{
+                  borderColor: "black",
+                  borderWidth: 1,
+                  borderRadius: 2,
+                  width: 2,
+                  alignItems: "flex-end",
+                  justifyContent: "flex-end",
+                  paddingVertical: 16,
+                  paddingHorizontal: 2,
+                  marginStart: 4,
+                  marginVertical: 4
+                }}></View>
+            </View>
+            <Text style={{fontSize: 12}}>Slepper</Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            marginTop: 20,
+            justifyContent: "space-around",
+            flex: 1,
+            marginHorizontal: 16
+          }}>
+          <View style={{alignItems: "center"}}>
+            <View
+              style={{
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "black",
+                marginHorizontal: 10,
+                backgroundColor: "grey",
+                width: 45,
+                height: 45
+              }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginStart: -3
+                  }}></View>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginEnd: -3
+                  }}></View>
+              </View>
+              <View
+                style={{
+                  borderColor: "black",
+                  borderRadius: 5,
+                  backgroundColor: "black",
+                  borderWidth: 1,
+                  height: 6,
+                  width: 45,
+                  marginTop: -5,
+                  paddingHorizontal: 4
+                }}></View>
+            </View>
+            <Text style={{fontSize: 12}}>Booked</Text>
+          </View>
+
+          <View style={{alignItems: "center"}}>
+            <View
+              style={{
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "black",
+                marginHorizontal: 10,
+                backgroundColor: "#E6397F",
+                width: 45,
+                height: 45
+              }}>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginStart: -3
+                  }}></View>
+                <View
+                  style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    backgroundColor: "black",
+                    borderWidth: 1,
+                    height: 30,
+                    width: 6,
+                    paddingVertical: 4,
+                    marginTop: 15,
+                    marginEnd: -3
+                  }}></View>
+              </View>
+              <View
+                style={{
+                  borderColor: "black",
+                  borderRadius: 5,
+                  backgroundColor: "black",
+                  borderWidth: 1,
+                  height: 6,
+                  width: 45,
+                  marginTop: -5,
+                  paddingHorizontal: 4
+                }}></View>
+            </View>
+            <Text style={{fontSize: 12}}>Female</Text>
+          </View>
+        </View>
+
         <View
           style={{
             alignItems: "center",
@@ -807,6 +1093,7 @@ class LowerSeats extends React.PureComponent {
             flexDirection: "row",
             borderWidth: 1,
             marginVertical: 30,
+            marginHorizontal: 40,
             padding: 10,
             borderRadius: 5,
             borderColor: "black"
@@ -824,7 +1111,8 @@ class LowerSeats extends React.PureComponent {
                   x.Column == 7 ||
                   x.Column == 8 ||
                   x.Column == 9 ||
-                  x.Column == 10) && (
+                  x.Column == 10) &&
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -833,14 +1121,14 @@ class LowerSeats extends React.PureComponent {
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
                         borderColor: "#000000",
                         borderWidth: 1,
                         marginHorizontal: 1,
-                        backgroundColor: x.IsLadiesSeat == "True" ? "purple" : null,
+                        backgroundColor: this._backgroundColor(x),
                         marginVertical: 5,
                         paddingHorizontal: 2,
                         paddingVertical: 2
@@ -849,7 +1137,77 @@ class LowerSeats extends React.PureComponent {
                 )
             )}
           </View>
-          <View style={{ marginStart: 10 }}>
+
+          <View>
+            {seats.map(
+              (x, i) =>
+                x.Row == 1 &&
+                (x.Column == 1 ||
+                  x.Column == 2 ||
+                  x.Column == 3 ||
+                  x.Column == 4 ||
+                  x.Column == 5 ||
+                  x.Column == 6 ||
+                  x.Column == 7 ||
+                  x.Column == 8 ||
+                  x.Column == 9 ||
+                  x.Column == 10) &&
+                x.Length == 1 && x.Width == 2 && (
+                  <View
+                    style={{
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: "black",
+                      marginHorizontal: 10,
+                      backgroundColor: this._backgroundColor(x),
+                      marginTop: 52,
+                      width: 45,
+                      height: 45
+                    }}
+                    key={"_sap" + i}>
+                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                      <View
+                        style={{
+                          borderColor: "black",
+                          borderRadius: 5,
+                          backgroundColor: "black",
+                          borderWidth: 1,
+                          height: 30,
+                          width: 6,
+                          paddingVertical: 4,
+                          marginTop: 15,
+                          marginStart: -3
+                        }}></View>
+                      <View
+                        style={{
+                          borderColor: "black",
+                          borderRadius: 5,
+                          backgroundColor: "black",
+                          borderWidth: 1,
+                          height: 30,
+                          width: 6,
+                          paddingVertical: 4,
+                          marginTop: 15,
+                          marginEnd: -3
+                        }}></View>
+                    </View>
+                    <View
+                      style={{
+                        borderColor: "black",
+                        borderRadius: 5,
+                        backgroundColor: "black",
+                        borderWidth: 1,
+                        height: 6,
+                        width: 45,
+                        marginTop: -5,
+                        paddingHorizontal: 4
+                      }}></View>
+                  </View>
+                )
+            )}
+          </View>
+
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 2 &&
@@ -862,23 +1220,25 @@ class LowerSeats extends React.PureComponent {
                   x.Column == 7 ||
                   x.Column == 8 ||
                   x.Column == 9 ||
-                  x.Column == 10) && (
+                  x.Column == 10) &&
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
                       borderColor: "#000000",
                       borderWidth: 1,
+                      backgroundColor: this._backgroundColorHorizontal(x),
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
                         borderColor: "#000000",
                         borderWidth: 1,
                         marginHorizontal: 1,
-                        backgroundColor: x.IsLadiesSeat == "True" ? "purple" : null,
+                        backgroundColor: x.IsLadiesSeat == "True" ? "#E6397F" : null,
                         marginVertical: 5,
                         paddingHorizontal: 2,
                         paddingVertical: 2
@@ -887,7 +1247,7 @@ class LowerSeats extends React.PureComponent {
                 )
             )}
           </View>
-          <View style={{ marginStart: 10 }}>
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 3 &&
@@ -900,23 +1260,25 @@ class LowerSeats extends React.PureComponent {
                   x.Column == 7 ||
                   x.Column == 8 ||
                   x.Column == 9 ||
-                  x.Column == 10) && (
+                  x.Column == 10) &&
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
                       borderColor: "#000000",
                       borderWidth: 1,
                       marginTop: 20,
+                      alignSelf: "flex-end",
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
                         borderColor: "#000000",
                         borderWidth: 1,
                         marginHorizontal: 1,
-                        backgroundColor: x.IsLadiesSeat == "True" ? "red" : null,
+                        backgroundColor: x.IsLadiesSeat == "True" ? "#E6397F" : null,
                         marginVertical: 5,
                         paddingHorizontal: 2,
                         paddingVertical: 2
@@ -925,7 +1287,7 @@ class LowerSeats extends React.PureComponent {
                 )
             )}
           </View>
-          <View style={{ marginStart: 10 }}>
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 4 &&
@@ -938,7 +1300,8 @@ class LowerSeats extends React.PureComponent {
                   x.Column == 7 ||
                   x.Column == 8 ||
                   x.Column == 9 ||
-                  x.Column == 10) && (
+                  x.Column == 10) &&
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -947,14 +1310,14 @@ class LowerSeats extends React.PureComponent {
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
                         borderColor: "#000000",
                         borderWidth: 1,
                         marginHorizontal: 1,
-                        backgroundColor: x.IsLadiesSeat == "True" ? "red" : null,
+                        backgroundColor: x.IsLadiesSeat == "True" ? "#E6397F" : null,
                         marginVertical: 5,
                         paddingHorizontal: 2,
                         paddingVertical: 2
@@ -963,7 +1326,7 @@ class LowerSeats extends React.PureComponent {
                 )
             )}
           </View>
-          <View style={{ marginStart: 10 }}>
+          <View style={{marginStart: 10}}>
             {seats.map(
               (x, i) =>
                 x.Row == 5 &&
@@ -976,7 +1339,8 @@ class LowerSeats extends React.PureComponent {
                   x.Column == 7 ||
                   x.Column == 8 ||
                   x.Column == 9 ||
-                  x.Column == 10) && (
+                  x.Column == 10) &&
+                x.Length == 1 && x.Width == 1 && (
                   <View
                     style={{
                       borderRadius: 2,
@@ -985,14 +1349,14 @@ class LowerSeats extends React.PureComponent {
                       marginTop: 20,
                       paddingHorizontal: 8
                     }}>
-                    <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}></Text>
+                    <Text style={{paddingHorizontal: 10, paddingVertical: 20}}></Text>
                     <View
                       style={{
                         borderRadius: 2,
                         borderColor: "#000000",
                         borderWidth: 1,
                         marginHorizontal: 1,
-                        backgroundColor: x.IsLadiesSeat == "True" ? "red" : null,
+                        backgroundColor: x.IsLadiesSeat == "True" ? "#E6397F" : null,
                         marginVertical: 5,
                         paddingHorizontal: 2,
                         paddingVertical: 2
@@ -1007,4 +1371,15 @@ class LowerSeats extends React.PureComponent {
   }
 }
 
-export default LowerSeats;
+export default createMaterialTopTabNavigator(
+  {
+    UPPER: {screen: Seats},
+    LOWER: {screen: LowerSeats}
+  },
+  {
+    initialRouteName: "UPPER",
+    activeColor: "#f0edf6",
+    inactiveColor: "#3e2465",
+    barStyle: {backgroundColor: "#694fad"}
+  }
+);

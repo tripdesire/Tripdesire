@@ -18,7 +18,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 import {Header} from "../../components";
 import SuggLoc from "./LocationModal";
 import Autocomplete from "react-native-autocomplete-input";
@@ -114,7 +114,7 @@ class Cab extends React.PureComponent {
   }
 
   // componentDidMount() {
-  //   Service.get("/Cabs/Cities")
+  //   etravosApi.get("/Cabs/Cities")
   //     .then(res => {
   //       console.log(res.data);
   //       this.setState({ suggestions: res.data });
@@ -267,7 +267,7 @@ class Cab extends React.PureComponent {
     }
 
     // console.log(params);
-    // Service.get("/Cabs/AvailableCabs", params)
+    // etravosApi.get("/Cabs/AvailableCabs", params)
     //   .then(({ data }) => {
     //     console.log(data);
     //   })

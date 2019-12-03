@@ -14,17 +14,18 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconFontAwsm from "react-native-vector-icons/FontAwesome";
 import Toast from "react-native-simple-toast";
 import moment from "moment";
-import Service from "../../service";
+ import {etravosApi}  from "../../service";
 const {height, width} = Dimensions.get("window");
 
 class BusInfo extends React.PureComponent {
   constructor(props) {
     super(props);
+    const {params} = this.props.navigation.state;
     this.state = {
-      sourceName: "",
-      destinationName: "",
-      journeyDate: "",
-      day: "",
+      sourceName: params.sourceName,
+      destinationName: params.destinationName,
+      journeyDate: moment(params.journeyDate, "DD-MM-YYYY").format("DD MMM"),
+      day: moment(params.journeyDate, "DD-MM-YYYY").format("dddd"),
       No_of_buses_Available: "",
       loader: true,
       buses: [],
@@ -35,16 +36,7 @@ class BusInfo extends React.PureComponent {
 
   componentDidMount() {
     const {params} = this.props.navigation.state;
-    console.log(params);
-    let jd = moment(params.journeyDate, "DD-MM-YYYY").format("DD MMM");
-    let day = moment(params.journeyDate, "DD-MM-YYYY").format("dddd");
-    this.setState({
-      sourceName: params.sourceName,
-      destinationName: params.destinationName,
-      journeyDate: jd,
-      day: day
-    });
-    Service.get("/Buses/AvailableBuses", params)
+    etravosApi.get("/Buses/AvailableBuses", params)
       .then(({data}) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {
@@ -72,13 +64,8 @@ class BusInfo extends React.PureComponent {
   };
 
   _BookNow = item => () => {
-    const {params} = this.props.navigation.state;
-    this.props.navigation.navigate("Seats", {
-      params: item,
-      sourceName: params.sourceName,
-      destinationName: params.destinationName,
-      tripType: params.tripType
-    });
+    const {tripType, sourceName, destinationName} = this.props.navigation.state.params;
+    this.props.navigation.navigate("Seats", {params: item, tripType, sourceName, destinationName});
   };
 
   _renderItemList = ({item, index}) => {

@@ -3,7 +3,7 @@ import {Text, Button, Icon} from "../components";
 import {Image, ImageBackground, Dimensions, View, StyleSheet, ScrollView} from "react-native";
 import {connect} from "react-redux";
 import {DomSugg, IntSugg, DomHotelSugg, BusSugg} from "../store/action";
-import Service from "../service";
+ import {etravosApi}  from "../service";
 import axios from "axios";
 import moment from "moment";
 const {height, width} = Dimensions.get("window");
