@@ -62,8 +62,8 @@ class BusInfo extends React.PureComponent {
           loader: false
         });
       })
-      .catch(error => {
-        Toast.show(error, Toast.LONG);
+      .catch(() => {
+        this.setState({ loader: false });
       });
   }
 
