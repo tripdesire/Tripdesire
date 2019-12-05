@@ -1,10 +1,10 @@
 import React from "react";
-import {View, Image, FlatList, Modal, SafeAreaView} from "react-native";
-import {Button, Text, ActivityIndicator, Icon, HeaderFlights} from "../../components";
+import { View, Image, FlatList, Modal, SafeAreaView } from "react-native";
+import { Button, Text, ActivityIndicator, Icon, HeaderFlights } from "../../components";
 import Toast from "react-native-simple-toast";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
- import {etravosApi}  from "../../service";
+import { etravosApi } from "../../service";
 import moment from "moment";
 import Filter from "./Filter";
 
@@ -39,7 +39,7 @@ class FlightsInfoOneway extends React.PureComponent {
         fareType: [],
         airlines: [],
         connectingLocations: [],
-        price: [],
+        price: {},
         depature: [],
         arrival: []
       },
@@ -52,13 +52,14 @@ class FlightsInfoOneway extends React.PureComponent {
     let data = this.props.navigation.state.params;
     this.genrateDates(data.journeyDate);
     data.journeyDate = this.state.journeyDate;
-    this.setState({loader: true});
+    this.setState({ loader: true });
     this.ApiCall(data);
   }
 
   ApiCall(data) {
-    etravosApi.get("/Flights/AvailableFlights", data)
-      .then(({data}) => {
+    etravosApi
+      .get("/Flights/AvailableFlights", data)
+      .then(({ data }) => {
         console.log(data);
         if (this.state.flight_type == 1) {
           console.log(data.DomesticOnwardFlights);
@@ -70,7 +71,7 @@ class FlightsInfoOneway extends React.PureComponent {
               flightCount: 0
             });
           } else {
-            this.setState({loader: false, flightCount: 1});
+            this.setState({ loader: false, flightCount: 1 });
             Toast.show("Data not Found", Toast.LONG);
           }
         }
@@ -84,14 +85,14 @@ class FlightsInfoOneway extends React.PureComponent {
               flightCount: 0
             });
           } else {
-            this.setState({loader: false, flightCount: 1});
+            this.setState({ loader: false, flightCount: 1 });
             Toast.show("Data not Found", Toast.LONG);
           }
         }
       })
       .catch(error => {
         Toast.show(error, Toast.LONG);
-        this.setState({loader: false});
+        this.setState({ loader: false });
       });
   }
 
@@ -107,21 +108,21 @@ class FlightsInfoOneway extends React.PureComponent {
       });
     }
     let month = date.format("MMM");
-    this.setState({dates, month});
+    this.setState({ dates, month });
   }
 
   openFilter = () => {
-    this.setState({showFilter: true});
+    this.setState({ showFilter: true });
   };
   closeFilter = () => {
-    this.setState({showFilter: false});
+    this.setState({ showFilter: false });
   };
   onChangeFilter = filterValues => {
-    this.setState({filterValues});
+    this.setState({ filterValues });
   };
 
   filter = () => {
-    const {filterValues, flights, flight_type} = this.state;
+    const { filterValues, flights, flight_type } = this.state;
     let filterFlights = [];
 
     switch (flight_type) {
@@ -137,7 +138,9 @@ class FlightsInfoOneway extends React.PureComponent {
             (filterValues.connectingLocations.length == 0 ||
               item.FlightSegments.some(value =>
                 filterValues.connectingLocations.includes(value.IntDepartureAirportName)
-              ))
+              )) &&
+            (!filterValues.price.min || filterValues.price.min <= item.FareDetails.TotalFare) &&
+            (!filterValues.price.max || filterValues.price.max >= item.FareDetails.TotalFare)
         );
         break;
       case 2:
@@ -154,17 +157,21 @@ class FlightsInfoOneway extends React.PureComponent {
             (filterValues.connectingLocations.length == 0 ||
               item.IntOnward.FlightSegments.some(value =>
                 filterValues.connectingLocations.includes(value.IntDepartureAirportName)
-              ))
+              )) &&
+            (!filterValues.price.min ||
+              filterValues.price.min <= item.IntOnward.FareDetails.TotalFare) &&
+            (!filterValues.price.max ||
+              filterValues.price.max >= item.IntOnward.FareDetails.TotalFare)
         );
         break;
     }
 
     console.log(filterFlights);
-    this.setState({filterFlights, showFilter: false});
+    this.setState({ filterFlights, showFilter: false });
   };
 
   _ChangeDate = item => () => {
-    this.setState({journeyDate: item.fullDate});
+    this.setState({ journeyDate: item.fullDate });
 
     let data = this.props.navigation.state.params;
     data.journeyDate = item.fullDate;
@@ -173,25 +180,27 @@ class FlightsInfoOneway extends React.PureComponent {
     this.ApiCall(data);
   };
 
-  _renderItem = ({item}) => (
+  _renderItem = ({ item }) => (
     <Button
-      style={{paddingHorizontal: 15, paddingVertical: 10, alignItems: "center"}}
+      style={{ paddingHorizontal: 15, paddingVertical: 10, alignItems: "center" }}
       onPress={this._ChangeDate(item)}>
-      <Text style={{fontSize: 12, color: "#717984"}}>{item.day}</Text>
-      <Text style={{fontSize: 20, fontWeight: "700"}}>{item.date}</Text>
+      <Text style={{ fontSize: 12, color: "#717984" }}>{item.day}</Text>
+      <Text style={{ fontSize: 20, fontWeight: "700" }}>{item.date}</Text>
     </Button>
   );
   itemSeparator = () => (
-    <View style={{width: 1, backgroundColor: "#DFDFDF", paddingVertical: 10}} />
+    <View style={{ width: 1, backgroundColor: "#DFDFDF", paddingVertical: 10 }} />
   );
   listheaderComponent = () => (
-    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-      <Text style={{transform: [{rotate: "270deg"}], textAlign: "center"}}>{this.state.month}</Text>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ transform: [{ rotate: "270deg" }], textAlign: "center" }}>
+        {this.state.month}
+      </Text>
     </View>
   );
   _keyExtractor = (item, index) => "dates_" + index;
 
-  _renderItemList = ({item, index}) => {
+  _renderItemList = ({ item, index }) => {
     if (this.state.flight_type == 1) {
       return (
         <FlightListRender
@@ -258,10 +267,10 @@ class FlightsInfoOneway extends React.PureComponent {
     } = this.state;
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "gray"}}>
-          <View style={{flex: 1, backgroundColor: "white"}}>
-            <View style={{flex: 1, backgroundColor: "#E5EBF7"}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+          <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
               <HeaderFlights
                 from={from}
                 to={to}
@@ -279,14 +288,14 @@ class FlightsInfoOneway extends React.PureComponent {
                   }}
                   onPress={this.openFilter}>
                   <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                  <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
+                  <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
                     Sort & Filter
                   </Text>
                 </Button>
               </HeaderFlights>
             </View>
 
-            <View style={{flex: 4}}>
+            <View style={{ flex: 4 }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -314,7 +323,7 @@ class FlightsInfoOneway extends React.PureComponent {
                     borderTopRightRadius: 5
                   }}>
                   <Image
-                    style={{width: 20, marginHorizontal: 8}}
+                    style={{ width: 20, marginHorizontal: 8 }}
                     resizeMode="contain"
                     source={require("../../assets/imgs/cal.png")}
                   />
@@ -322,7 +331,7 @@ class FlightsInfoOneway extends React.PureComponent {
               </View>
 
               {flightCount == 1 && (
-                <View style={{alignItems: "center", justifyContent: "center", flex: 4}}>
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
                   <Text>Data not Found</Text>
                 </View>
               )}

@@ -5,8 +5,6 @@ import { uniq, max, min, isEmpty } from "lodash";
 import RangeSlider from "rn-range-slider";
 
 function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
-  let slider;
-
   const [index, setIndex] = useState(0);
   const [filterTabs, setFilterTab] = useState(["Price", "Rating", "Amenities"]);
   const [filters, setFilters] = useState({
@@ -88,7 +86,6 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                   gravity={"center"}
                   min={filters.price.min}
                   max={filters.price.max}
-                  ref={ref => (slider = ref)}
                   initialLowValue={
                     filterValues.price.min ? filterValues.price.min : filters.price.min
                   }

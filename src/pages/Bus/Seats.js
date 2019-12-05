@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
 import { Button, Text, Header } from "../../components";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
@@ -269,7 +269,7 @@ class Seats extends React.PureComponent {
     //console.log(lowerColumns);
 
     return (
-      <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <Header firstName="Seats" />
 
         {seats.lower.length > 0 && seats.upper.length > 0 && (
@@ -369,7 +369,7 @@ class Seats extends React.PureComponent {
             <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>
           </Button>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   }
 }

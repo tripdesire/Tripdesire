@@ -355,7 +355,7 @@ class HotelInfo extends React.PureComponent {
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}
               />
-              {this.state.hotels.length == 0 && (
+              {filteredHotels.length == 0 && (
                 <View style={{ flex: 5, alignItems: "center", justifyContent: "center" }}>
                   <Text>Data not found</Text>
                 </View>

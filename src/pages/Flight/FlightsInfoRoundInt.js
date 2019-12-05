@@ -1,9 +1,9 @@
 import React from "react";
-import {Dimensions, View, FlatList, SafeAreaView, Modal} from "react-native";
-import {Button, Text, ActivityIndicator, Icon} from "../../components";
+import { Dimensions, View, FlatList, SafeAreaView, Modal } from "react-native";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import RenderInternationRound from "./RenderInternationRound";
 import Filter from "./Filter";
- import {etravosApi}  from "../../service";
+import { etravosApi } from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 
@@ -70,7 +70,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
       destinationAirportName: data.destinationAirportName
     });
 
-    etravosApi.get("/Flights/AvailableFlights", data).then(({data}) => {
+    etravosApi.get("/Flights/AvailableFlights", data).then(({ data }) => {
       console.log(data);
       if (data.InternationalFlights.length != 0) {
         this.setState({
@@ -90,16 +90,16 @@ class FlightsInfoRoundInt extends React.PureComponent {
   }
 
   openFilter = () => {
-    this.setState({showFilter: true});
+    this.setState({ showFilter: true });
   };
   closeFilter = () => {
-    this.setState({showFilter: false});
+    this.setState({ showFilter: false });
   };
   onChangeFilter = filterValues => {
-    this.setState({filterValues});
+    this.setState({ filterValues });
   };
   filter = () => {
-    const {filterValues, flights} = this.state;
+    const { filterValues, flights } = this.state;
     let filterFlights = flights.filter(
       item =>
         //stops
@@ -121,14 +121,20 @@ class FlightsInfoRoundInt extends React.PureComponent {
           ) ||
           item.IntReturn.FlightSegments.some(value =>
             filterValues.connectingLocations.includes(value.IntDepartureAirportName)
-          ))
+          )) &&
+        (!filterValues.price.min ||
+          filterValues.price.min <= item.IntOnward.FareDetails.TotalFare) &&
+        (!filterValues.price.max ||
+          filterValues.price.max >= item.IntOnward.FareDetails.TotalFare) &&
+        (!filterValues.price.min || filterValues.price.min <= item.IntOnward.IntReturn.TotalFare) &&
+        (!filterValues.price.max || filterValues.price.max >= item.IntOnward.IntReturn.TotalFare)
     );
 
     console.log(filterFlights);
-    this.setState({filterFlights, showFilter: false});
+    this.setState({ filterFlights, showFilter: false });
   };
 
-  _renderItem = ({item, index}) => {
+  _renderItem = ({ item, index }) => {
     return (
       <RenderInternationRound
         item={item}
@@ -176,10 +182,10 @@ class FlightsInfoRoundInt extends React.PureComponent {
 
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flex: 1}}>
-            <View style={{backgroundColor: "#E5EBF7", height: 56}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
+            <View style={{ backgroundColor: "#E5EBF7", height: 56 }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -223,7 +229,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
                     }}
                     onPress={this.openFilter}>
                     <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                    <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
+                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
                       Sort & Filter
                     </Text>
                   </Button>
@@ -250,7 +256,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
               />
             </Modal>
             {flightCount == 0 && (
-              <View style={{flex: 1, alignItems: "center"}}>
+              <View style={{ flex: 1, alignItems: "center" }}>
                 <Text>Data not found</Text>
               </View>
             )}
