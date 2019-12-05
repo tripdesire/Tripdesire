@@ -214,13 +214,22 @@ class ThankYou extends React.PureComponent {
                     ? moment(
                         params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime
                       ).format("DD-MMM")
-                    : ""}
+                    : moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format(
+                        "DD-MMM"
+                      )}
                 </Text>
                 {params.flightType == 2 && (
                   <Text style={{ color: "#636C73", fontSize: 12 }}>
                     {params.departFlight.IntReturn.FlightSegments.length - 1 == 0
                       ? "Non Stop"
                       : params.departFlight.IntReturn.FlightSegments.length - 1 + " Stop(s)"}
+                  </Text>
+                )}
+                {params.flightType == 1 && (
+                  <Text style={{ color: "#636C73", fontSize: 12 }}>
+                    {params.arrivalFlight.FlightSegments.length - 1 == 0
+                      ? "Non Stop"
+                      : params.arrivalFlight.FlightSegments.length - 1 + " Stop(s)"}
                   </Text>
                 )}
               </View>
@@ -232,7 +241,9 @@ class ThankYou extends React.PureComponent {
                 }}>
                 <View style={{ flex: 2 }}>
                   <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                    {params.departFlight.IntReturn.FlightSegments[0].AirLineName}
+                    {params.flightType == 2
+                      ? params.departFlight.IntReturn.FlightSegments[0].AirLineName
+                      : params.arrivalFlight.FlightSegments[0].AirLineName}
                   </Text>
                   <Text
                     style={{
@@ -245,9 +256,13 @@ class ThankYou extends React.PureComponent {
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                    {moment(
-                      params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime
-                    ).format("HH:mm")}
+                    {params.flightType == 2
+                      ? moment(
+                          params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime
+                        ).format("HH:mm")
+                      : moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format(
+                          "HH:mm"
+                        )}
                   </Text>
                   <Text
                     style={{
@@ -255,16 +270,24 @@ class ThankYou extends React.PureComponent {
                       color: "#5D646A",
                       lineHeight: 14
                     }}>
-                    {params.departFlight.IntReturn.FlightSegments[0].IntDepartureAirportName}
+                    {params.flightType == 2
+                      ? params.departFlight.IntReturn.FlightSegments[0].IntDepartureAirportName
+                      : params.arrivalFlight.FlightSegments[0].IntDepartureAirportName}
                   </Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 20, lineHeight: 22 }}>
-                    {moment(
-                      params.departFlight.IntReturn.FlightSegments[
-                        params.departFlight.IntReturn.FlightSegments.length - 1
-                      ].ArrivalDateTime
-                    ).format("HH:mm")}
+                    {params.flightType == 2
+                      ? moment(
+                          params.departFlight.IntReturn.FlightSegments[
+                            params.departFlight.IntReturn.FlightSegments.length - 1
+                          ].ArrivalDateTime
+                        ).format("HH:mm")
+                      : moment(
+                          params.arrivalFlight.FlightSegments[
+                            params.arrivalFlight.FlightSegments.length - 1
+                          ].ArrivalDateTime
+                        ).format("HH:mm")}
                   </Text>
                   <Text
                     style={{
@@ -272,11 +295,13 @@ class ThankYou extends React.PureComponent {
                       color: "#5D646A",
                       lineHeight: 14
                     }}>
-                    {
-                      params.departFlight.IntReturn.FlightSegments[
-                        params.departFlight.IntReturn.FlightSegments.length - 1
-                      ].IntArrivalAirportName
-                    }
+                    {params.flightType == 2
+                      ? params.departFlight.IntReturn.FlightSegments[
+                          params.departFlight.IntReturn.FlightSegments.length - 1
+                        ].IntArrivalAirportName
+                      : params.arrivalFlight.FlightSegments[
+                          params.arrivalFlight.FlightSegments.length - 1
+                        ].IntArrivalAirportName}
                   </Text>
                 </View>
                 <View style={{ flex: 2 }}>
@@ -286,6 +311,15 @@ class ThankYou extends React.PureComponent {
                         ? params.departFlight.IntReturn.FlightSegments[0].Duration
                         : params.departFlight.IntReturn.FlightSegments[
                             params.departFlight.IntReturn.FlightSegments.length - 1
+                          ].AccumulatedDuration}
+                    </Text>
+                  )}
+                  {params.flightType == 1 && (
+                    <Text style={{ fontSize: 20, lineHeight: 22 }}>
+                      {params.arrivalFlight.FlightSegments.length == 1
+                        ? params.arrivalFlight.FlightSegments[0].Duration
+                        : params.arrivalFlight.FlightSegments[
+                            params.arrivalFlight.FlightSegments.length - 1
                           ].AccumulatedDuration}
                     </Text>
                   )}
@@ -320,7 +354,7 @@ class ThankYou extends React.PureComponent {
               justifyContent: "space-between",
               paddingHorizontal: 10
             }}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 2 }}>
               <Text
                 style={{
                   fontWeight: "700",
@@ -331,16 +365,36 @@ class ThankYou extends React.PureComponent {
               {order.adult_details.map((item, index) => {
                 return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
               })}
+              {order.child_details &&
+                order.child_details.map((item, index) => {
+                  return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
+                })}
+              {order.infan_details &&
+                order.infan_details.map((item, index) => {
+                  return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
+                })}
             </View>
             <View style={{ flex: 1, marginHorizontal: 10 }}>
               <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
               {order.adult_details.map((item, index) => {
                 return <Text key={item.index}>{item.age}</Text>;
               })}
+              {order.child_details.map((item, index) => {
+                return <Text key={item.index}>{item.age}</Text>;
+              })}
+              {order.infan_details.map((item, index) => {
+                return <Text key={item.index}>{item.age}</Text>;
+              })}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
               {order.adult_details.map((item, index) => {
+                return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
+              })}
+              {order.child_details.map((item, index) => {
+                return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
+              })}
+              {order.infan_details.map((item, index) => {
                 return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
               })}
             </View>

@@ -16,7 +16,7 @@ class Service {
   }
 
   handleSuccess(response) {
-    console.log(response);
+    // console.log(response);
     return response;
   }
 
@@ -38,7 +38,7 @@ class Service {
   };
 
   get(path, params = {}) {
-    return this.service.get(path, {params: params});
+    return this.service.get(path, { params: params });
   }
 
   patch(path, payload) {
