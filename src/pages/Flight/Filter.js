@@ -125,7 +125,7 @@ class Filter extends React.Component {
         price
       }
     });
-    console.log(stops, fareType, airlines, connectingLocations, price);
+    console.log(this.state);
   }
 
   changeActiveTab = index => () => {
@@ -148,14 +148,11 @@ class Filter extends React.Component {
     this.props.onChangeFilter && this.props.onChangeFilter(newData);
   };
 
-  //reset = () => {};
-
   priceUpdate = (low, high) => {
     const { filterValues, onChangeFilter } = this.props;
     let newData = Object.assign({}, filterValues);
     newData.price = { min: low, max: high };
     onChangeFilter && onChangeFilter(newData);
-    console.log(newData);
   };
 
   render() {
