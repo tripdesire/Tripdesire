@@ -39,7 +39,7 @@ class Hotel extends React.PureComponent {
   //   this.setState({ suggestions: this.props.domesticHotelSuggestionReducer });
   // }
 
-  navigateToScreen = () => {
+  goBack = () => {
     this.props.navigation.goBack(null);
   };
 
@@ -191,7 +191,7 @@ class Hotel extends React.PureComponent {
         <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>
             <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}>
-              <Header firstName="Hotel" lastName="Search" onPress={this.navigateToScreen} />
+              <Header firstName="Hotel" lastName="Search" onPress={this.goBack} />
             </View>
 
             <View style={{ height: 30, width: "100%" }}>
