@@ -85,7 +85,6 @@ class BusInfo extends React.PureComponent {
 
   filter = () => {
     const { filterValues, buses } = this.state;
-
     let filteredBuses = buses.filter(
       item =>
         (filterValues.busTimings.length == 0 ||
