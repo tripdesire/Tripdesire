@@ -50,12 +50,27 @@ class HotelInfo extends React.PureComponent {
       .then(({ data, status }) => {
         this.setState({ loader: false });
         console.log(data.AvailableHotels);
-        this.setState({ hotels: data.AvailableHotels, loader: false });
+        this.setState({
+          hotels: data.AvailableHotels,
+          filteredHotels: data.AvailableHotels,
+          loader: false
+        });
       })
       .catch(error => {
         console.log(error, Toast.LONG);
       });
   }
+
+  onHotelChange = text => {
+    if (text == "") {
+      var filteredHotels = [...this.state.hotels];
+    } else {
+      var filteredHotels = this.state.hotels.filter(item =>
+        item.HotelName.toLowerCase().includes(text.toLowerCase())
+      );
+    }
+    this.setState({ filteredHotels });
+  };
 
   _BookNow(param) {
     // let jd = moment(data.journeyDate, "DD-MM-YYYY").format("DD MMM");
@@ -196,7 +211,7 @@ class HotelInfo extends React.PureComponent {
 
   render() {
     console.log(this.state);
-    const { city, checkIn, checkOut, loader, hotelName } = this.state;
+    const { city, checkIn, checkOut, loader, hotelName, hotels, filteredHotels } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
@@ -263,7 +278,12 @@ class HotelInfo extends React.PureComponent {
                   flexDirection: "row",
                   ...StyleSheet.absoluteFill
                 }}>
-                <TextInput placeholder="Hotel Name" style={{ marginStart: 20, color: "#61666A" }} />
+                <TextInput
+                  placeholder="Hotel Name"
+                  style={{ marginStart: 20, color: "#61666A" }}
+                  value={hotelName}
+                  onChangeText={this.onHotelChange}
+                />
                 <Button
                   style={{
                     backgroundColor: "#5B89F9",
@@ -286,7 +306,7 @@ class HotelInfo extends React.PureComponent {
 
             <View style={{ flex: 5 }}>
               <FlatList
-                data={this.state.hotels}
+                data={filteredHotels}
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}
               />

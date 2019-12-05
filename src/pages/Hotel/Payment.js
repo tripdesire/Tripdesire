@@ -60,9 +60,7 @@ class Payment extends React.PureComponent {
           dob: moment()
             .subtract(2, "years")
             .toDate(),
-          age: moment()
-            .subtract(12, "years")
-            .toDate(),
+          age: 12,
           gender: parseInt(params.child) > 0 ? "M" : "",
           show: false
         };
@@ -82,7 +80,7 @@ class Payment extends React.PureComponent {
     let newData = Object.assign([], this.state[key]);
     newData[index].show = isShow;
     this.setState({
-      adults: newData
+      [key]: newData
     });
   };
 
@@ -122,6 +120,9 @@ class Payment extends React.PureComponent {
     let newData = Object.assign([], this.state.childs);
     newData[index][key] = text;
     newData[index].show = false;
+    if ((key = "dob")) {
+      newData[index].age = moment().diff(moment(text), "years");
+    }
     this.setState({
       childs: newData
     });
@@ -144,11 +145,29 @@ class Payment extends React.PureComponent {
   _order = () => {
     const { params } = this.props.navigation.state.params;
 
+    let adult_details = this.state.adults.map(item => ({
+      "ad-den": item.den,
+      "ad-fname": item.firstname,
+      "ad-lname": item.last_name,
+      "ad-dob": item.dob,
+      "ad-gender": item.gender,
+      "ad-age": item.age
+    }));
+
+    let child_details = this.state.childs.map(item => ({
+      "ad-den": item.den,
+      "ad-fname": item.firstname,
+      "ad-lname": item.last_name,
+      "ad-dob": item.dob,
+      "ad-gender": item.gender,
+      "ad-age": item.age
+    }));
+
     let param = {
       user_id: "7",
       payment_method: "razopay",
-      adult_details: this.state.adults,
-      child_details: this.state.childs,
+      adult_details: adult_details,
+      child_details: child_details,
       infant_details: []
     };
 
@@ -218,9 +237,6 @@ class Payment extends React.PureComponent {
     ].join("~");
     age = finalArrAge.join("-");
 
-    console.log(name, dob, gender, age);
-    console.log(this.state.adults, this.state.childs);
-
     let data = {
       AdditionalInfo: null,
       Address: "",
@@ -259,7 +275,6 @@ class Payment extends React.PureComponent {
       WebsiteUrl: ""
     };
     console.log(this.state);
-    return;
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
@@ -273,7 +288,7 @@ class Payment extends React.PureComponent {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 1) {
             domainApi
-              .get("/checkout/new-order?user_id=7")
+              .post("/checkout/new-order?user_id=7", param)
               .then(({ data: order }) => {
                 console.log(order);
                 var options = {

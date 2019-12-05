@@ -191,12 +191,41 @@ class CheckOut1 extends React.PureComponent {
 
     let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
+    let adult_details = this.state.adults.map(item => ({
+      "ad-den": item.den,
+      "ad-fname": item.firstname,
+      "ad-lname": item.last_name,
+      "ad-dob": item.dob,
+      "ad-gender": item.gender,
+      "ad-age": item.age
+    }));
+
+    let child_details = this.state.childs.map(item => ({
+      "ad-den": item.den,
+      "ad-fname": item.firstname,
+      "ad-lname": item.last_name,
+      "ad-dob": item.dob,
+      "ad-gender": item.gender,
+      "ad-age": item.age
+    }));
+
+    let infant_details = this.state.infants.map(item => ({
+      "ad-den": item.den,
+      "ad-fname": item.firstname,
+      "ad-lname": item.last_name,
+      "ad-dob": item.dob,
+      "ad-gender": item.gender,
+      "ad-age": item.age
+    }));
+
+    console.log(adult_details, child_details, infant_details);
+
     let param = {
       user_id: "7",
       payment_method: "razopay",
-      adult_details: this.state.adults,
-      child_details: this.state.childs,
-      infant_details: this.state.infants
+      adult_details: adult_details,
+      child_details: child_details,
+      infant_details: infant_details
     };
 
     let name = [
@@ -470,7 +499,7 @@ class CheckOut1 extends React.PureComponent {
     } else {
       console.log(book, this.state);
       const { params, data } = this.props.navigation.state.params;
-      console.log(params, data);
+      console.log(params, data, param);
 
       this.setState({ loading: true });
       etravosApi
@@ -479,7 +508,7 @@ class CheckOut1 extends React.PureComponent {
           console.log(blockres.data);
           if (blockres.data.BookingStatus == 8) {
             domainApi
-              .get("/checkout/new-order?user_id=7")
+              .post("/checkout/new-order?user_id=7", param)
               .then(({ data: order }) => {
                 console.log(order);
 
