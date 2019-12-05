@@ -65,6 +65,27 @@ class CheckoutCab extends React.PureComponent {
       this.state.last_name != "" ? "~" + this.state.last_name : ""
     );
 
+    const { den, firstname, last_name, dob, gender, age } = this.state;
+
+    let adult_details = [
+      {
+        "ad-den": den,
+        "ad-fname": firstname,
+        "ad-lname": last_name,
+        "ad-dob": dob,
+        "ad-gender": gender,
+        "ad-age": age
+      }
+    ];
+
+    let newOrder = {
+      user_id: "7",
+      payment_method: "razopay",
+      adult_details: adult_details,
+      child_details: [],
+      infant_details: []
+    };
+
     const { item, params, cartData } = this.props.navigation.state.params;
 
     let param = {
@@ -122,9 +143,8 @@ class CheckoutCab extends React.PureComponent {
         .then(response => {
           this.setState({ loader: false });
           console.log(response);
-
           domainApi
-            .get("/checkout/new-order?user_id=7")
+            .post("/checkout/new-order?user_id=7", newOrder)
             .then(({ data: order }) => {
               console.log(order);
 

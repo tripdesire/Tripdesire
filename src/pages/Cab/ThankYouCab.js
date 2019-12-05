@@ -169,15 +169,21 @@ class ThankYouCab extends React.PureComponent {
                 }}>
                 Passenger
               </Text>
-              <Text>stateData.firstname + stateData.last_name</Text>
+              {order.adult_details.map((item, index) => {
+                return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
+              })}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
-              <Text>stateData.age</Text>
+              {order.adult_details.map((item, index) => {
+                return <Text key={item.index}>{item.age}</Text>;
+              })}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
-              <Text>stateData.gender == "M" ? "Male" : "Female"</Text>
+              {order.adult_details.map((item, index) => {
+                return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
+              })}
             </View>
           </View>
         </View>

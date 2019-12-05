@@ -59,8 +59,6 @@ class HotelInfo extends React.PureComponent {
           this.props.navigation.goBack(null);
           Toast.show("No Data Found.", Toast.SHORT);
         }
-        //console.log(data.AvailableHotels);
-        //console.log(data.AvailableHotels[0].HotelImages[0].Imagepath);
         this.setState({
           hotels: data.AvailableHotels,
           filteredHotels: data.AvailableHotels,
@@ -357,6 +355,11 @@ class HotelInfo extends React.PureComponent {
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}
               />
+              {this.state.hotels.length == 0 && (
+                <View style={{ flex: 5, alignItems: "center", justifyContent: "center" }}>
+                  <Text>Data not found</Text>
+                </View>
+              )}
             </View>
             <Modal
               animationType="slide"
