@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Image,
@@ -10,9 +10,14 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import {Button, Text, AutoCompleteModal, ActivityIndicator, Icon} from "../../components";
+import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
 
 class ThankYouBus extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    console.log(props.navigation.state.params);
+  }
+
   render() {
     return (
       <View>

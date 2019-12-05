@@ -109,57 +109,16 @@ class Seats extends React.PureComponent {
   }
 
   _bookNow = () => {
-    const { params, sourceName, destinationName, tripType } = this.props.navigation.state.params;
-    console.log(params);
-    let param = {
-      id: 273,
-      quantity: 1,
-      bus_item_result_data: params,
-      display_name: params.DisplayName,
-      bus_type: params.BusType,
-      departure_time: params.DepartureTime,
-      arrival_time: params.ArrivalTime,
-      source_city: sourceName,
-      source_id: params.SourceId,
-      destination_city: destinationName,
-      destination_id: params.DestinationId,
-      boarding_point: params.SourceId + ";" + sourceName,
-      dropping_point: params.DestinationId + ";" + destinationName,
-      time_duration: params.Duration,
-      select_seat: 1,
-      select_seat_number: 20,
-      base_fare: params.Fares,
-      service_charge: params.etravosApiTax,
-      service_tax: 0,
-      ConvenienceFee: params.ConvenienceFee,
-      trip_type: tripType,
-      journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
-    };
-
-    console.log(param);
-
-    domainApi
-      .post("/cart/add", param)
-      .then(({ data }) => {
-        console.log(data);
-        if (data.code == "1") {
-          Toast.show(data.message, Toast.LONG);
-          domainApi.get("/cart").then(({ data }) => {
-            console.log(data);
-            this.props.navigation.navigate("CheckoutBus", {
-              cartData: data,
-              params,
-              sourceName,
-              destinationName
-            });
-          });
-        } else {
-          Toast.show(res.data.message, Toast.LONG);
-        }
-      })
-      .catch(error => {
-        console.log(error);
+    const { tripType, params } = this.props.navigation.state.params;
+    const { selectedSheets } = this.state;
+    if (this.state.selectedSheets.length > 0) {
+      this.props.navigation.navigate("Boarding", {
+        ...this.props.navigation.state.params,
+        selectedSheets: selectedSheets
       });
+    } else {
+      Toast.show("Please Select the Seat");
+    }
   };
 
   updateSheets = item => () => {
@@ -171,6 +130,7 @@ class Seats extends React.PureComponent {
       selectedSheets.push(item);
     }
     this.setState({ selectedSheets });
+    console.log(selectedSheets);
   };
 
   renderSeat = item => {
