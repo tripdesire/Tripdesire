@@ -42,7 +42,7 @@ export default [
     Fare: "500",
     NetFare: "500",
     IsAvailableSeat: "True",
-    IsLadiesSeat: "False",
+    IsLadiesSeat: "True",
     Length: 1,
     Number: "3",
     Row: 1,

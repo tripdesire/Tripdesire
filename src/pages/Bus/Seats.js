@@ -1,15 +1,12 @@
 import React from "react";
 
 import { StyleSheet, View, ScrollView } from "react-native";
-import {} from "react-native-gesture-handler";
-import LowerSeats from "./LowerSeats";
 import { Button, Text, Header } from "../../components";
 import moment from "moment";
-import axios from "axios";
 import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../../service";
 import data1 from "./data";
-console.log(data1);
+//console.log(data1);
 
 class Seats extends React.PureComponent {
   constructor(props) {
@@ -29,7 +26,7 @@ class Seats extends React.PureComponent {
       tripType,
       params: { Id, SourceId, DestinationId, Journeydate, Provider, Travels }
     } = this.props.navigation.state.params;
-    const data = {
+    const queryParams = {
       tripId: Id,
       sourceId: SourceId,
       destinationId: DestinationId,
@@ -41,11 +38,11 @@ class Seats extends React.PureComponent {
       user: ""
       //returnDate: null
     };
-    console.log(data);
+    //console.log(data);
 
     this.setState({ loading: true });
     etravosApi
-      .get("/Buses/TripDetails", data)
+      .get("/Buses/TripDetails", queryParams)
       .then(({ data }) => {
         //data.Seats = data1;
         if (Array.isArray(data.Seats) && data.Seats) {
@@ -61,17 +58,20 @@ class Seats extends React.PureComponent {
             }
           }
 
-          const lower = seats.lower.reduce((prev, current) => {
-            let d = {
-              Row: prev.Row > current.Row ? prev.Row : current.Row,
-              Column: prev.Column > current.Column ? prev.Column : current.Column
-            };
-            return d;
-          });
-          let lastHasTwoHeight = seats.lower.some(
-            val => lower.Column == val.Column && val.Length == 2
-          );
-
+          const lower =
+            seats.lower.length > 0
+              ? seats.lower.reduce((prev, current) => {
+                  let d = {
+                    Row: prev.Row > current.Row ? prev.Row : current.Row,
+                    Column: prev.Column > current.Column ? prev.Column : current.Column
+                  };
+                  return d;
+                })
+              : undefined;
+          let lastHasTwoHeight =
+            seats.lower.length > 0
+              ? seats.lower.some(val => lower.Column == val.Column && val.Length == 2)
+              : undefined;
           const upper =
             seats.upper.length > 0
               ? seats.upper.reduce((prev, current) => {
@@ -92,12 +92,11 @@ class Seats extends React.PureComponent {
             seats,
             data: data.Seats,
             selectedTab: seats.lower.length == 0 && seats.upper.length > 0 ? "upper" : "lower",
-            lowerRows: lower.Row,
+            lowerRows: lower ? lower.Row : 0,
             upperRows: upper ? upper.Row : 0,
-            lowerColumns: lastHasTwoHeight ? lower.Column + 1 : lower.Column,
+            lowerColumns: lower ? (lastHasTwoHeight ? lower.Column + 1 : lower.Column) : 0,
             upperColumns: upper ? (lastUpperHasTwoHeight ? upper.Column + 1 : upper.Column) : 0
           });
-          console.log(this.state);
         } else {
           Toast.show("Seats not available");
           this.setState({ loading: false });
@@ -163,13 +162,6 @@ class Seats extends React.PureComponent {
       });
   };
 
-  // renderTable=()=>{
-  //   const { seats, loading, selectedTab, lowerRows, lowerColumns } = this.state;
-  //   return(
-
-  //   )
-  // }
-
   updateSheets = item => () => {
     let selectedSheets = [...this.state.selectedSheets];
     let index = selectedSheets.findIndex(val => val.Number == item.Number);
@@ -179,22 +171,22 @@ class Seats extends React.PureComponent {
       selectedSheets.push(item);
     }
     this.setState({ selectedSheets });
-    console.log(selectedSheets);
   };
 
   renderSeat = item => {
     const { lowerRows, selectedSheets } = this.state;
     const backgroundColor = selectedSheets.some(val => item.Number == val.Number)
-      ? "#757575"
+      ? "#BBBBBB"
       : "#FFF";
+    const seatColor = item.IsLadiesSeat == "True" ? "pink" : "#757575";
 
     if (item.Length == 2 && item.Width == 1) {
-      //Horizonatl Sleeper
+      //Horizonatal Sleeper
       return (
         <Button
           style={{
             width: `${100 / lowerRows}%`,
-            height: item.Length * 60,
+            height: item.Length * 50,
             alignItems: "center",
             justifyContent: "center"
           }}
@@ -205,20 +197,21 @@ class Seats extends React.PureComponent {
               borderRadius: 5,
               borderColor: "#000000",
               borderWidth: 1,
-              paddingHorizontal: 8,
-              backgroundColor
+              backgroundColor,
+              height: 80,
+              width: 40
             }}>
-            <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}>{item.Number}</Text>
+            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+              {item.Number}
+            </Text>
             <View
               style={{
-                borderRadius: 2,
-                borderColor: "#000000",
-                borderWidth: 1,
-                marginHorizontal: 1,
-                marginVertical: 5,
-                paddingHorizontal: 2,
-                paddingVertical: 2
-              }}></View>
+                borderRadius: 3,
+                backgroundColor: seatColor,
+                paddingVertical: 3,
+                margin: 5
+              }}
+            />
           </View>
         </Button>
       );
@@ -228,37 +221,34 @@ class Seats extends React.PureComponent {
         <Button
           style={{
             width: `${100 / lowerRows}%`,
-            height: item.Length * 60,
+            height: item.Length * 50,
             alignItems: "center",
             justifyContent: "center",
-            transform: [{ translateX: 20 }]
+            transform: [{ translateX: 35 }]
           }}
           key={"seat_" + item.Number}
           onPress={this.updateSheets(item)}>
           <View
             style={{
-              borderRadius: 2,
+              borderRadius: 5,
               borderColor: "#000000",
               borderWidth: 1,
-              marginStart: 5,
-              width: 90,
-              height: 45,
-              backgroundColor
+              width: 80,
+              height: 40,
+              backgroundColor,
+              flexDirection: "row"
             }}>
-            {/* <Text style={{ paddingHorizontal: 10, paddingVertical: 20 }}>{item.Number}</Text> */}
+            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+              {item.Number}
+            </Text>
             <View
               style={{
-                borderColor: "black",
-                borderWidth: 1,
-                borderRadius: 2,
-                width: 2,
-                alignItems: "flex-end",
-                justifyContent: "flex-end",
-                paddingVertical: 16,
-                paddingHorizontal: 2,
-                marginStart: 4,
-                marginVertical: 4
-              }}></View>
+                borderRadius: 3,
+                backgroundColor: seatColor,
+                paddingHorizontal: 3,
+                margin: 5
+              }}
+            />
           </View>
         </Button>
       );
@@ -268,7 +258,7 @@ class Seats extends React.PureComponent {
         <Button
           style={{
             width: `${100 / lowerRows}%`,
-            height: item.Length * 60,
+            height: item.Length * 50,
             alignItems: "center",
             justifyContent: "center"
           }}
@@ -278,48 +268,28 @@ class Seats extends React.PureComponent {
             style={{
               borderRadius: 5,
               borderWidth: 1,
-              borderColor: "black",
-              width: 45,
-              height: 45,
+              borderColor: "#000000",
+              width: 40,
+              height: 40,
               backgroundColor
             }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <View
-                style={{
-                  borderRadius: 5,
-                  backgroundColor: "black",
-                  borderWidth: 1,
-                  height: 30,
-                  width: 6,
-                  paddingVertical: 4,
-                  marginTop: 15,
-                  marginStart: -3
-                }}
-              />
-              <View
-                style={{
-                  borderRadius: 5,
-                  backgroundColor: "black",
-                  borderWidth: 1,
-                  height: 30,
-                  width: 6,
-                  paddingVertical: 4,
-                  marginTop: 15,
-                  marginEnd: -3
-                }}
-              />
-            </View>
             <View
               style={{
-                borderRadius: 5,
-                backgroundColor: "black",
-                borderWidth: 1,
-                height: 6,
-                width: 45,
-                marginTop: -5,
-                paddingHorizontal: 4
+                ...StyleSheet.absoluteFill,
+                borderEndWidth: 6,
+                borderStartWidth: 6,
+                borderBottomWidth: 6,
+                borderRadius: 3,
+                borderColor: seatColor,
+                marginTop: 15,
+                marginStart: -3,
+                marginEnd: -3,
+                marginBottom: -3
               }}
             />
+            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+              {item.Number}
+            </Text>
           </View>
         </Button>
       );
@@ -356,91 +326,69 @@ class Seats extends React.PureComponent {
             </Button>
           </View>
         )}
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 32 }}>
-          {/* <View style={{ flexDirection: "row-reverse", width: "100%", flex: 1 }}> */}
-
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
           {selectedTab == "lower" && lowerRows > 0 && lowerColumns > 0 && (
             <View
               style={{
-                //flex: lowerRows,
+                paddingHorizontal: lowerRows < 5 ? 48 : 24,
                 flexDirection: "column",
                 flexWrap: "wrap",
-                height: 60 * lowerColumns
+                height: 50 * lowerColumns
               }}>
               {[...Array(lowerRows)].map((c, row) => {
                 return [...Array(lowerColumns)].map((r, column) => {
                   let item = seats.lower.find(v => v.Row == row + 1 && v.Column == column + 1);
                   let rowSpan = seats.lower.find(v => v.Row == row + 1 && v.Column == column);
-                  let colSpan = seats.lower.find(v => v.Row == row && v.Column == column + 1);
+                  //let colSpan = seats.lower.find(v => v.Row == row && v.Column == column + 1);
                   if (item) {
                     return this.renderSeat(item);
                   } else if (rowSpan && rowSpan.Length == 2) {
                     return (
                       <View
-                        style={{
-                          width: `${100 / lowerRows}%`,
-                          height: 0,
-                          backgroundColor: "green"
-                        }}
                         key={"seat_blank" + row + column}
+                        style={{ width: `${100 / lowerRows}%`, height: 0 }}
                       />
                     );
-                    /* } else if (colSpan && colSpan.Width == 2) {
-                    console.log("here");
-                    return <View style={{ width: "0%", height: 60 }}></View>; */
                   } else {
                     return (
                       <View
                         key={"seat_blank" + row + column}
-                        style={{
-                          width: `${100 / lowerRows}%`,
-                          height: 60
-                        }}
+                        style={{ width: `${100 / lowerRows}%`, height: 50 }}
                       />
                     );
                   }
                 });
               })}
-              {/* </View> */}
             </View>
           )}
 
           {selectedTab == "upper" && upperRows > 0 && upperColumns > 0 && (
             <View
               style={{
+                paddingHorizontal: upperRows < 5 ? 48 : 24,
                 flexDirection: "column",
                 flexWrap: "wrap",
-                height: 60 * upperColumns
+                height: 50 * upperColumns
               }}>
               {[...Array(upperRows)].map((c, row) => {
                 return [...Array(upperColumns)].map((r, column) => {
                   let item = seats.upper.find(v => v.Row == row + 1 && v.Column == column + 1);
                   let rowSpan = seats.upper.find(v => v.Row == row + 1 && v.Column == column);
-                  let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
+                  //let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
                   if (item) {
                     return this.renderSeat(item);
                   } else if (rowSpan && rowSpan.Length == 2) {
                     return (
                       <View
-                        style={{
-                          width: `${100 / upperRows}%`,
-                          height: 0,
-                          backgroundColor: "green"
-                        }}
-                        key={"seat_blank" + row + column}
+                        style={{ width: `${100 / upperRows}%`, height: 0 }}
+                        key={"seat_blank_" + row + column}
                       />
                     );
-                    /* } else if (colSpan && colSpan.Width == 2) {
-                    console.log("here");
-                    return <View style={{ width: "0%", height: 60 }}></View>; */
                   } else {
                     return (
                       <View
-                        ey={"seat_blank" + row + column}
-                        style={{
-                          width: `${100 / upperRows}%`,
-                          height: 60
-                        }}
+                        key={"seat_blank_" + row + column}
+                        style={{ width: `${100 / upperRows}%`, height: 50 }}
                       />
                     );
                   }
@@ -448,7 +396,6 @@ class Seats extends React.PureComponent {
               })}
             </View>
           )}
-
           <Button
             style={{
               backgroundColor: "#F68E1F",
@@ -476,7 +423,8 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
-    paddingVertical: 10,
+    marginHorizontal: 32,
+    paddingVertical: 6,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 4
