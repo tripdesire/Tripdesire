@@ -155,12 +155,12 @@ class Payment extends React.PureComponent {
     }));
 
     let child_details = this.state.childs.map(item => ({
-      "ad-den": item.den,
-      "ad-fname": item.firstname,
-      "ad-lname": item.last_name,
-      "ad-dob": item.dob,
-      "ad-gender": item.gender,
-      "ad-age": item.age
+      "ch-den": item.den,
+      "ch-fname": item.firstname,
+      "ch-lname": item.last_name,
+      "ch-dob": item.dob,
+      "ch-gender": item.gender,
+      "ch-age": item.age
     }));
 
     let param = {

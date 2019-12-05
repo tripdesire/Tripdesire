@@ -149,7 +149,7 @@ class ThankYouHotel extends React.PureComponent {
               justifyContent: "space-between",
               paddingHorizontal: 10
             }}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 2 }}>
               <Text
                 style={{
                   fontWeight: "700",
@@ -160,18 +160,30 @@ class ThankYouHotel extends React.PureComponent {
               {order.adult_details.map((item, index) => {
                 return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
               })}
+              {order.child_details &&
+                order.child_details.map((item, index) => {
+                  return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
+                })}
             </View>
             <View style={{ flex: 1, marginHorizontal: 10 }}>
               <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
               {order.adult_details.map((item, index) => {
                 return <Text key={item.index}>{item.age}</Text>;
               })}
+              {order.child_details &&
+                order.child_details.map((item, index) => {
+                  return <Text key={item.index}>{item.age}</Text>;
+                })}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
               {order.adult_details.map((item, index) => {
                 return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
               })}
+              {order.child_details &&
+                order.child_details.map((item, index) => {
+                  return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
+                })}
             </View>
           </View>
         </View>
