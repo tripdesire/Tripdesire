@@ -28,9 +28,9 @@ class BusInfo extends React.PureComponent {
       destinationName: params.destinationName,
       journeyDate: moment(params.journeyDate, "DD-MM-YYYY").format("DD MMM"),
       day: moment(params.journeyDate, "DD-MM-YYYY").format("dddd"),
-      No_of_buses_Available: "",
       loader: true,
       buses: [],
+      filteredBuses: [],
       nofound: 1,
       CancellationPolicy: false,
       filterModalVisible: false,
@@ -51,14 +51,12 @@ class BusInfo extends React.PureComponent {
       .then(({ data }) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {
-          //  console.log(data.AvailableTrips.length);
           this.setState({ nofound: data.AvailableTrips.length });
           Toast.show("Data not found.", Toast.LONG);
         }
         this.setState({
           buses: data.AvailableTrips,
           filteredBuses: data.AvailableTrips,
-          No_of_buses_Available: data.AvailableTrips.length,
           loader: false
         });
       })
@@ -93,27 +91,30 @@ class BusInfo extends React.PureComponent {
         (filterValues.busTimings.length == 0 ||
           filterValues.busTimings.some(values => {
             values = values.split("to").map(v => v.trim());
-            return moment(item.DepartureTime, "HH:mm A").isBetween(
-              moment(values[0], "HH:mm A"),
-              moment(values[1], "HH:mm A")
-            );
+            if (values[1].toLowerCase().includes("p")) {
+              return moment(item.DepartureTime, "HH:mm A").isBetween(
+                moment(values[0], "HH:mm A"),
+                moment(values[1], "HH:mm A")
+              );
+            } else {
+              return moment(item.DepartureTime, "HH:mm A").isBetween(
+                moment(values[0], "HH:mm A"),
+                moment(values[1], "HH:mm A").add("1", "days")
+              );
+            }
           })) &&
+        (filterValues.busType.length == 0 ||
+          filterValues.busType.some(val => item.BusType.includes(val))) &&
         (filterValues.travels.length == 0 || filterValues.travels.includes(item.DisplayName)) &&
         (filterValues.boardingPoints.length == 0 ||
           item.BoardingTimes.some(value => filterValues.boardingPoints.includes(value.Location))) &&
         (filterValues.droppingPoints.length == 0 ||
           item.DroppingTimes.some(value => filterValues.droppingPoints.includes(value.Location)))
     );
-    // if (onwardFlights.length == 0) {
-    //   Toast.show("No any onward flights available for selected filter", Toast.LONG);
-    // } else if (returnFlights.length == 0) {
-    //   Toast.show("No any return flights available for selected filter", Toast.LONG);
-    // } else {
     this.setState({
       filteredBuses,
       filterModalVisible: false
     });
-    //}
   };
 
   _BookNow = item => () => {
@@ -195,12 +196,12 @@ class BusInfo extends React.PureComponent {
       sourceName,
       destinationName,
       journeyDate,
-      No_of_buses_Available,
       day,
       loader,
       nofound,
       CancellationPolicy,
-      filterModalVisible
+      filterModalVisible,
+      filteredBuses
     } = this.state;
     return (
       <>
@@ -223,7 +224,7 @@ class BusInfo extends React.PureComponent {
                     </Text>
                     <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
                       {journeyDate}, {day ? day + " " : ""}
-                      {No_of_buses_Available ? No_of_buses_Available + " Buses Found" : ""}
+                      {!loader ? filteredBuses.length + " Buses Found" : ""}
                     </Text>
                   </View>
                 </View>
@@ -244,7 +245,7 @@ class BusInfo extends React.PureComponent {
             </View>
             <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <FlatList
-                data={this.state.filteredBuses}
+                data={filteredBuses}
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}
               />
