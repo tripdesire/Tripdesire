@@ -94,12 +94,16 @@ class BusInfo extends React.PureComponent {
             if (values[1].toLowerCase().includes("p")) {
               return moment(item.DepartureTime, "HH:mm A").isBetween(
                 moment(values[0], "HH:mm A"),
-                moment(values[1], "HH:mm A")
+                moment(values[1], "HH:mm A"),
+                null,
+                "[)"
               );
             } else {
               return moment(item.DepartureTime, "HH:mm A").isBetween(
                 moment(values[0], "HH:mm A"),
-                moment(values[1], "HH:mm A").add("1", "days")
+                moment(values[1], "HH:mm A").add("1", "days"),
+                null,
+                "[)"
               );
             }
           })) &&
