@@ -1,11 +1,10 @@
 import React, { PureComponent } from "react";
 import { View, Image, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { Button, Text, CheckBox } from "../../components";
-import { _ } from "lodash";
+import { uniq, intersection, max, min, isEmpty } from "lodash";
+import { Icon } from "../../components";
+import RangeSlider from "rn-range-slider";
 import moment from "moment";
-import { connect } from "react-redux";
-import { Header, Icon } from "../../components";
-import {} from "react-native-gesture-handler";
 
 class Filter extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class Filter extends React.Component {
         fareType: [],
         airlines: [],
         connectingLocations: [],
-        price: [],
+        price: {},
         depature: [],
         arrival: []
       },
@@ -58,9 +57,10 @@ class Filter extends React.Component {
           for (let j = 1; j < value.FlightSegments.length; j++) {
             connectingLocations.push(value.FlightSegments[j].IntDepartureAirportName);
           }
+          price.push(value.FareDetails.TotalFare);
         }
 
-        /*if (Array.isArray(returnFlights) && returnFlights.length > 0) {
+        if (Array.isArray(returnFlights) && returnFlights.length > 0) {
           let stopsR = [];
           let fareTypeR = [];
           let airlinesR = [];
@@ -72,20 +72,19 @@ class Filter extends React.Component {
             for (let j = 1; j < value.FlightSegments.length; j++) {
               connectingLocationsR.push(value.FlightSegments[j].IntDepartureAirportName);
             }
+            price.push(value.FareDetails.TotalFare);
           }
-          stops = _.intersection(stops, stopsR).sort();
-          fareType = _.intersection(fareType, fareTypeR);
-          airlines = _.intersection(airlines, airlinesR);
-          connectingLocations = _.intersection(connectingLocations, connectingLocationsR);
-        } else {*/
-        stops = _.uniq(stops).sort();
-        fareType = _.uniq(fareType);
-        airlines = _.uniq(airlines);
-        connectingLocations = _.uniq(connectingLocations);
-        // }
-
-        price = data.map(value => value.FareDetails.TotalFare);
-        price = [Math.min(...price), Math.max(...price)];
+          stops = intersection(stops, stopsR).sort();
+          fareType = intersection(fareType, fareTypeR);
+          airlines = intersection(airlines, airlinesR);
+          connectingLocations = intersection(connectingLocations, connectingLocationsR);
+        } else {
+          stops = uniq(stops).sort();
+          fareType = uniq(fareType);
+          airlines = uniq(airlines);
+          connectingLocations = uniq(connectingLocations);
+        }
+        price = { min: Math.floor(min(price)), max: Math.ceil(max(price)) };
         break;
       case 2:
         for (let value of data) {
@@ -95,6 +94,8 @@ class Filter extends React.Component {
           for (let j = 1; j < value.IntOnward.FlightSegments.length; j++) {
             connectingLocations.push(value.IntOnward.FlightSegments[j].IntDepartureAirportName);
           }
+          price.push(value.IntOnward.FareDetails.TotalFare);
+
           if (value.IntReturn.length > 0) {
             stops.push(value.IntReturn.FlightSegments.length - 1);
             fareType.push(value.IntReturn.FlightSegments[0].BookingClassFare.Rule);
@@ -102,16 +103,15 @@ class Filter extends React.Component {
             for (let j = 1; j < value.IntReturn.FlightSegments.length; j++) {
               connectingLocations.push(value.IntReturn.FlightSegments[j].IntDepartureAirportName);
             }
+            price.push(value.IntReturn.FareDetails.TotalFare);
           }
         }
 
-        stops = _.uniq(stops).sort();
-        fareType = _.uniq(fareType).sort();
-        airlines = _.uniq(airlines).sort();
-        connectingLocations = _.uniq(connectingLocations).sort();
-
-        price = data.map(value => value.FareDetails.TotalFare);
-        price = [Math.min(...price), Math.max(...price)];
+        stops = uniq(stops).sort();
+        fareType = uniq(fareType).sort();
+        airlines = uniq(airlines).sort();
+        connectingLocations = uniq(connectingLocations).sort();
+        price = { min: Math.floor(min(price)), max: Math.ceil(max(price)) };
         break;
     }
 
@@ -121,7 +121,8 @@ class Filter extends React.Component {
         stops,
         fareType,
         airlines,
-        connectingLocations
+        connectingLocations,
+        price
       }
     });
     console.log(stops, fareType, airlines, connectingLocations, price);
@@ -147,7 +148,15 @@ class Filter extends React.Component {
     this.props.onChangeFilter && this.props.onChangeFilter(newData);
   };
 
-  reset = () => {};
+  //reset = () => {};
+
+  priceUpdate = (low, high) => {
+    const { filterValues, onChangeFilter } = this.props;
+    let newData = Object.assign({}, filterValues);
+    newData.price = { min: low, max: high };
+    onChangeFilter && onChangeFilter(newData);
+    console.log(newData);
+  };
 
   render() {
     const { filterTabs, index, filters } = this.state;
@@ -223,6 +232,80 @@ class Filter extends React.Component {
                   ))}
                 </ScrollView>
               )}
+              {index == 4 && !isEmpty(filters.price) && (
+                <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
+                  <RangeSlider
+                    style={{
+                      //flex: 1,
+                      width: "100%",
+                      height: 80
+                    }}
+                    isMarkersSeparated={true}
+                    gravity={"center"}
+                    min={filters.price.min}
+                    max={filters.price.max}
+                    initialLowValue={
+                      filterValues.price.min ? filterValues.price.min : filters.price.min
+                    }
+                    initialHighValue={
+                      filterValues.price.max ? filterValues.price.max : filters.price.max
+                    }
+                    selectionColor="#F68E1F"
+                    blankColor="#757575"
+                    labelBackgroundColor="#E8EEF6"
+                    labelBorderColor="#E8EEF6"
+                    labelTextColor="#000"
+                    onValueChanged={this.priceUpdate}
+                  />
+                  <View
+                    style={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      flexDirection: "row"
+                    }}>
+                    <Text style={{ fontWeight: "700" }}>{filters.price.min}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filters.price.max}</Text>
+                  </View>
+                </View>
+              )}
+
+              {/*index == 6 && !isEmpty(filters.price) && (
+                <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
+                  <RangeSlider
+                    style={{
+                      //flex: 1,
+                      width: "100%",
+                      height: 80
+                    }}
+                    isMarkersSeparated={true}
+                    gravity={"center"}
+                    min={moment()
+                      .startOf("day")
+                      .format("HH:MM")}
+                    // max={moment()
+                    //   .endOf("day")
+                    //   .toDate()}
+                    //initialLowValue={new Date()}
+                    //initialHighValue={new Date()}
+                    time
+                    selectionColor="#F68E1F"
+                    blankColor="#757575"
+                    labelBackgroundColor="#E8EEF6"
+                    labelBorderColor="#E8EEF6"
+                    labelTextColor="#000"
+                    //onValueChanged={this.priceUpdate}
+                  />
+                  <View
+                    style={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      flexDirection: "row"
+                    }}>
+                    <Text style={{ fontWeight: "700" }}>{filters.price.min}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filters.price.max}</Text>
+                  </View>
+                </View>
+              )*/}
             </View>
           </View>
           <View style={styles.footer}>
