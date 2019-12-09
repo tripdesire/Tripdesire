@@ -139,14 +139,17 @@ class CheckoutCab extends React.PureComponent {
 
     if (this.state.firstname != "" && this.state.last_name != "") {
       if (this.props.signIn == {}) {
+        Toast.show("Please login or signup", Toast.LONG);
+      } else {
         this.setState({ loader: true });
         etravosApi
           .post("/Cabs/BlockCab", param)
           .then(response => {
             this.setState({ loader: false });
             console.log(response);
+            const { signIn } = this.props;
             domainApi
-              .post("/checkout/new-order?user_id=7", newOrder)
+              .post("/checkout/new-order?user_id=" + signIn.id, newOrder)
               .then(({ data: order }) => {
                 console.log(order);
 
@@ -225,8 +228,6 @@ class CheckoutCab extends React.PureComponent {
             this.setState({ loader: false });
             console.log(error);
           });
-      } else {
-        Toast.show("Please login or signup", Toast.LONG);
       }
     } else {
       Toast.show("Please fill all the Details.", Toast.LONG);

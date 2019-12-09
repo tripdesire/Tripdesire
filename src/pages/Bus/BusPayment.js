@@ -64,7 +64,8 @@ class BusPayment extends React.PureComponent {
     };
 
     if (this.props.signIn == {}) {
-      domainApi.post("/checkout/new-order?user_id=7", param).then(({ data: order }) => {
+      const { signIn } = this.props;
+      domainApi.post("/checkout/new-order?user_id=" + signIn.id, param).then(({ data: order }) => {
         console.log(order);
 
         var options = {

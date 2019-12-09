@@ -5,6 +5,9 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
 import axios from "axios";
+import { isEmpty } from "lodash";
+import { connect } from "react-redux";
+import { etravosApi, domainApi } from "../service";
 import moment from "moment";
 
 class Order extends React.PureComponent {
@@ -22,23 +25,33 @@ class Order extends React.PureComponent {
   };
 
   componentDidMount() {
-    axios
-      .get("https://demo66.tutiixx.com/wp-json/wc/v2/nutri-user/7/order-list")
-      .then(({ data }) => {
-        console.log(data);
-        if (data.status == 1) {
-          this.setState({
-            orders: data.data,
-            loader: false
-          });
-        } else {
-          Toast.show("Data not found.", Toast.SHORT);
-          this.setState({ loader: false });
-        }
-      })
-      .catch(error => {
-        console.log(error, Toast.LONG);
+    const { signIn } = this.props;
+
+    if (isEmpty(signIn)) {
+      this.setState({
+        loader: false,
+        orders: 0
       });
+      Toast.show("Please login or signup", Toast.LONG);
+    } else {
+      domainApi
+        .get("/nutri-user/" + signIn.id + "/order-list")
+        .then(({ data }) => {
+          console.log(data);
+          if (data.status == 1) {
+            this.setState({
+              orders: data.data,
+              loader: false
+            });
+          } else {
+            Toast.show("Orders are not found", Toast.SHORT);
+            this.setState({ loader: false });
+          }
+        })
+        .catch(error => {
+          console.log(error, Toast.LONG);
+        });
+    }
   }
 
   status = value => {
@@ -94,7 +107,7 @@ class Order extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View>
+          <View style={{ flex: 1 }}>
             <View
               style={{
                 flexDirection: "row",
@@ -116,11 +129,19 @@ class Order extends React.PureComponent {
               </Text>
             </View>
 
-            <FlatList
-              data={this.state.orders}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
+            {this.state.orders > 0 && (
+              <FlatList
+                data={this.state.orders}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
+              />
+            )}
+
+            {this.state.orders <= 0 && (
+              <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                <Text>Orders are not found</Text>
+              </View>
+            )}
           </View>
           {loader && <ActivityIndicator />}
         </SafeAreaView>
@@ -133,4 +154,8 @@ const styles = StyleSheet.create({
   Heading: { fontSize: 16, fontWeight: "700" }
 });
 
-export default Order;
+const mapStateToProps = state => ({
+  signIn: state.signIn
+});
+
+export default connect(mapStateToProps, null)(Order);

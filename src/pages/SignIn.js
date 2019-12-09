@@ -14,7 +14,7 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import { etravosApi, domainApi } from "../service";
 import moment from "moment";
-import { Button, Text, TextInputComponent } from "../components";
+import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
 import { connect } from "react-redux";
 import { Signup, Signin } from "../store/action";
 import axios from "axios";
@@ -24,22 +24,36 @@ class SignIn extends React.PureComponent {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      loader: false
     };
   }
 
   navigateToScreen = () => {
     console.log(this.state);
     if (this.state.email != "" && this.state.password != "") {
-      domainApi.post("/login", this.state).then(({ data }) => {
-        console.log(data);
-        if (data.code == "1") {
-          this.props.Signin(data.details);
-          this.props.navigation.navigate("Home");
-        } else {
-          Toast.show("Wrong Email And Password.", ToastAndroid.SHORT);
-        }
-      });
+      this.setState({ loader: true });
+      let param = {
+        email: this.state.email,
+        password: this.state.password
+      };
+      domainApi
+        .post("/login", param)
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code == "1") {
+            this.setState({ loader: false });
+            this.props.Signin(data.details);
+            this.props.navigation.navigate("Home");
+            Toast.show("You have successfully login", ToastAndroid.SHORT);
+          } else {
+            Toast.show("Wrong Email And Password.", ToastAndroid.SHORT);
+          }
+        })
+        .catch(error => {
+          this.setState({ loader: false });
+          Toast.show(error, ToastAndroid.SHORT);
+        });
     } else {
       Toast.show("Please enter the email and password.", ToastAndroid.SHORT);
     }
@@ -132,6 +146,7 @@ class SignIn extends React.PureComponent {
             </Button>
           </View>
         </ScrollView>
+        {this.state.loader && <ActivityIndicator />}
       </View>
     );
   }

@@ -109,22 +109,6 @@ class CheckOut1 extends React.PureComponent {
     });
   };
 
-  // showChild = (mode, index, isShow) => () => {
-  //   let newData = Object.assign([], this.state.childs);
-  //   newData[index].show = isShow;
-  //   this.setState({
-  //     childs: newData
-  //   });
-  // };
-
-  // showInfant = (mode, index, isShow) => () => {
-  //   let newData = Object.assign([], this.state.infants);
-  //   newData[index].show = isShow;
-  //   this.setState({
-  //     infants: newData
-  //   });
-  // };
-
   _FFN = () => {
     this.setState({ ffn: this.state.ffn == true ? false : true });
   };
@@ -554,8 +538,9 @@ class CheckOut1 extends React.PureComponent {
             .then(blockres => {
               console.log(blockres.data);
               if (blockres.data.BookingStatus == 8) {
+                const { signIn } = this.props;
                 domainApi
-                  .post("/checkout/new-order?user_id=7", param)
+                  .post("/checkout/new-order?user_id=" + signIn.id, param)
                   .then(({ data: order }) => {
                     console.log(order);
 

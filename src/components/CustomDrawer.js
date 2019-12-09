@@ -3,17 +3,19 @@ import React, { PureComponent } from "react";
 import { SafeAreaView, View, TouchableOpacity, Image } from "react-native";
 import Text from "./TextComponent";
 import Icon from "./IconNB";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Logout } from "../store/action";
 import Toast from "react-native-simple-toast";
-import { Button } from ".";
+import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
+import Button from "./Button";
 class CustomDrawer extends React.PureComponent {
   constructor(props) {
     super(props);
   }
 
   _navigateToScreen = () => {
-    if (this.props.signIn != {}) {
+    if (isEmpty(this.props.signIn)) {
       this.props.navigation.navigate("SignIn");
     } else {
       Toast.show("You have already Login", Toast.LONG);
@@ -22,6 +24,8 @@ class CustomDrawer extends React.PureComponent {
 
   _Logout = () => {
     this.props.Logout(null);
+    let logout = GoogleSignin.signOut();
+    console.log(logout);
   };
 
   render() {

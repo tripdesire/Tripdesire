@@ -41,7 +41,7 @@ class SignUp extends React.PureComponent {
     console.log(params);
     if (this.state.firstname != "" && this.state.email != "" && this.state.password != "") {
       if (reg.test(this.state.email) === true) {
-        //  this.setState({ loader: true });
+        this.setState({ loader: true });
         axios({
           method: "post",
           url: "https://demo66.tutiixx.com/wp-json/wc/v2/register",
@@ -51,16 +51,17 @@ class SignUp extends React.PureComponent {
           if (response.data.status == 1) {
             console.log(response);
             this.props.Signup(params);
+            this.setState({ loader: false });
+            Toast.show("You have successfully Signup", Toast.LONG);
             this.props.navigation.navigate(page);
-            // this.setState({ loader: false });
           } else if (response.data.error) {
-            Toast.show(response.data.error, Toast.SHORT);
-            //  this.setState({ loader: false });
+            this.setState({ loader: false });
+            Toast.show(response.data.error, Toast.LONG);
           }
           console.log(response);
         });
       } else {
-        Toast.show("Please enter the valid email.", Toast.SHORT);
+        Toast.show("Please enter the valid email.", Toast.LONG);
       }
     }
   };
@@ -198,6 +199,7 @@ class SignUp extends React.PureComponent {
             </View>
           </View>
         </ScrollView>
+        {loader && <ActivityIndicator />}
       </View>
     );
   }
