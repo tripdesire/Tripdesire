@@ -1,14 +1,15 @@
-import React, {PureComponent} from "react";
-import {View, Image, StyleSheet, FlatList, ScrollView, Modal} from "react-native";
-import {withNavigation} from "react-navigation";
-import {Button, Text, ActivityIndicator, DomesticFlights} from "../../components";
+import React, { PureComponent } from "react";
+import { View, Image, StyleSheet, FlatList, ScrollView, Modal } from "react-native";
+import { withNavigation } from "react-navigation";
+import { Button, Text, ActivityIndicator, DomesticFlights } from "../../components";
 import FareDetails from "./FareRules";
 import Icon from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
- import {etravosApi}  from "../../service";
+import { etravosApi } from "../../service";
+
 import moment from "moment";
 var newData = [];
 class FlightListRender extends React.PureComponent {
@@ -21,11 +22,11 @@ class FlightListRender extends React.PureComponent {
     };
   }
   viewDetails = () => {
-    this.setState({expanded: !this.state.expanded});
+    this.setState({ expanded: !this.state.expanded });
   };
 
   fareRules = () => {
-    this.setState({showModal: true});
+    this.setState({ showModal: true });
     let data = {
       airlineId: this.props.item.FlightUId,
       classCode: this.props.item.FlightSegments[0].BookingClassFare.ClassType,
@@ -39,10 +40,11 @@ class FlightListRender extends React.PureComponent {
       userType: 5
     };
     console.log(data);
-    etravosApi.get("/Flights/GetFareRule", data)
+    etravosApi
+      .get("/Flights/GetFareRule", data)
       .then(res => {
         //  console.log(res.data);
-        this.setState({farerule: this.convertUnicode(res.data)}); //res.data
+        this.setState({ farerule: this.convertUnicode(res.data) }); //res.data
         console.log(this.convertUnicode(res.data));
       })
       .catch(error => {
@@ -58,7 +60,7 @@ class FlightListRender extends React.PureComponent {
   }
 
   closeModal = () => {
-    this.setState({showModal: false});
+    this.setState({ showModal: false });
   };
 
   bookNow = () => {
@@ -84,7 +86,7 @@ class FlightListRender extends React.PureComponent {
   };
 
   render() {
-    const {item, index, from, to, className} = this.props;
+    const { item, index, from, to, className } = this.props;
     let dd = moment(item.FlightSegments[0].DepartureDateTime).format("HH:mm");
     let departureDate = moment(item.FlightSegments[0].DepartureDateTime).format("MMM DD");
     let ad = moment(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime).format(
@@ -108,10 +110,10 @@ class FlightListRender extends React.PureComponent {
             marginHorizontal: 8,
             marginBottom: 6
           }}>
-          <Text style={{color: "#636C73", fontSize: 12}}>
+          <Text style={{ color: "#636C73", fontSize: 12 }}>
             {item.FlightSegments[0].AirLineName} | {item.FlightUId}
           </Text>
-          <Text style={{fontSize: 18, fontWeight: "700"}}>
+          <Text style={{ fontSize: 18, fontWeight: "700" }}>
             ₹{parseInt(item.FareDetails.TotalFare)}
           </Text>
         </View>
@@ -122,35 +124,35 @@ class FlightListRender extends React.PureComponent {
             justifyContent: "space-between",
             alignItems: "center"
           }}>
-          <View style={{flexDirection: "row", alignItems: "center"}}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{width: 40, height: 40, marginEnd: 4}}
-              source={{uri: img}}
+              style={{ width: 40, height: 40, marginEnd: 4 }}
+              source={{ uri: img }}
               resizeMode="cover"
             />
             <View>
-              <Text style={{fontSize: 18, lineHeight: 20}}>{dd}</Text>
-              <Text style={{fontSize: 12, lineHeight: 14, color: "#5D646A"}}>{from}</Text>
+              <Text style={{ fontSize: 18, lineHeight: 20 }}>{dd}</Text>
+              <Text style={{ fontSize: 12, lineHeight: 14, color: "#5D646A" }}>{from}</Text>
             </View>
           </View>
 
-          <View style={{alignItems: "center"}}>
-            <Text style={{fontSize: 16, lineHeight: 20}}>
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 16, lineHeight: 20 }}>
               {item.FlightSegments.length == 1
                 ? item.FlightSegments[0].Duration
                 : item.FlightSegments[item.FlightSegments.length - 1].AccumulatedDuration}
             </Text>
-            <Text style={{fontSize: 12, color: "#5D646A", lineHeight: 14}}>
+            <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
               {item.FlightSegments.length - 1 == 0
                 ? "Non Stop"
                 : item.FlightSegments.length - 1 + " Stop(s)"}
             </Text>
           </View>
 
-          <View style={{flexDirection: "row"}}>
+          <View style={{ flexDirection: "row" }}>
             <View>
-              <Text style={{fontSize: 18, lineHeight: 20}}>{ad}</Text>
-              <Text style={{fontSize: 12, color: "#5D646A", lineHeight: 14}}>{to}</Text>
+              <Text style={{ fontSize: 18, lineHeight: 20 }}>{ad}</Text>
+              <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>{to}</Text>
             </View>
             <Button
               style={{
@@ -196,7 +198,7 @@ class FlightListRender extends React.PureComponent {
               marginHorizontal: 2
             }}></View>
           <IconMaterial name="message-text-outline" size={20} color="#F68E1F" />
-          <View style={{justifyContent: "space-between", flexDirection: "row", flex: 1}}>
+          <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
             <Button>
               <Text
                 style={{
@@ -209,14 +211,14 @@ class FlightListRender extends React.PureComponent {
               </Text>
             </Button>
             <Button onPress={this.fareRules}>
-              <Text style={{flex: 1, color: "#5D666D", fontSize: 12}}>Fare Rules</Text>
+              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
             </Button>
             <Button onPress={this.viewDetails}>
               {this.state.expanded == false && (
-                <Text style={{flex: 1, color: "#5D666D", fontSize: 12}}>+View Details</Text>
+                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
               )}
               {this.state.expanded == true && (
-                <Text style={{flex: 1, color: "#5D666D", fontSize: 12}}>-Hide Details</Text>
+                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
               )}
             </Button>
           </View>
@@ -225,14 +227,16 @@ class FlightListRender extends React.PureComponent {
         {this.state.expanded &&
           item.FlightSegments.map((itemEach, index) => {
             return (
-              <View style={{paddingVertical: 10, backgroundColor: "#F4F4F4"}} key={"_Seg" + index}>
+              <View
+                style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
+                key={"_Seg" + index}>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
                     marginHorizontal: 8
                   }}>
-                  <Text style={{color: "#636C73", fontSize: 12}}>
+                  <Text style={{ color: "#636C73", fontSize: 12 }}>
                     {itemEach.AirLineName} | {item.FlightUId}
                   </Text>
                 </View>
@@ -243,14 +247,14 @@ class FlightListRender extends React.PureComponent {
                     justifyContent: "space-between",
                     alignItems: "center"
                   }}>
-                  <View style={{flexDirection: "row", alignItems: "center"}}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image
-                      style={{width: 40, height: 40, marginEnd: 4}}
-                      source={{uri: "http://webapi.i2space.co.in" + itemEach.ImagePath}}
+                      style={{ width: 40, height: 40, marginEnd: 4 }}
+                      source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
                       resizeMode="cover"
                     />
                     <View>
-                      <Text style={{fontSize: 20, lineHeight: 22}}>
+                      <Text style={{ fontSize: 20, lineHeight: 22 }}>
                         {moment(itemEach.DepartureDateTime).format("HH:mm")}
                       </Text>
                       <Text
@@ -287,7 +291,7 @@ class FlightListRender extends React.PureComponent {
                     </Text>
                   </View>
                   <View>
-                    <Text style={{fontSize: 20, lineHeight: 22}}>
+                    <Text style={{ fontSize: 20, lineHeight: 22 }}>
                       {moment(itemEach.ArrivalDateTime).format("HH:mm")}
                     </Text>
                     <Text
@@ -375,14 +379,14 @@ class FlightListRender extends React.PureComponent {
                   }}></View>
 
                 {item.FlightSegments.length - 1 != index && (
-                  <Text style={{marginHorizontal: 8, marginVertical: 10, color: "green"}}>
+                  <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
                     Change of Planes at{" "}
-                    <Text style={{fontSize: 16, fontWeight: "700"}}>
+                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
                       {" "}
                       {itemEach.IntArrivalAirportName}
                     </Text>{" "}
                     | Connection Time:
-                    <Text style={{fontSize: 16, fontWeight: "700"}}>
+                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
                       {" "}
                       {item.FlightSegments[index + 1].GroundTime}
                     </Text>
@@ -390,7 +394,7 @@ class FlightListRender extends React.PureComponent {
                 )}
 
                 {item.FlightSegments.length - 1 == index && (
-                  <View style={{alignItems: "flex-start", marginStart: 8}}>
+                  <View style={{ alignItems: "flex-start", marginStart: 8 }}>
                     <Text
                       style={{
                         fontSize: 12,

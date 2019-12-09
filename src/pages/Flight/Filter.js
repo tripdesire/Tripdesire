@@ -17,7 +17,8 @@ class Filter extends React.Component {
         "Connecting Locations",
         "Price",
         "Depature",
-        "Arrival"
+        "Arrival",
+        "Sort By"
       ],
       filters: {
         stops: [],
@@ -26,7 +27,13 @@ class Filter extends React.Component {
         connectingLocations: [],
         price: {},
         depature: [],
-        arrival: []
+        arrival: [],
+        sortBy: [
+          { value: "Airline", bool: false },
+          { value: "Price", bool: false },
+          { value: "Departure", bool: false },
+          { value: "Arrival", bool: false }
+        ]
       },
       index: 0
     };
@@ -303,6 +310,19 @@ class Filter extends React.Component {
                   </View>
                 </View>
               )*/}
+
+              {index == 7 && (
+                <ScrollView>
+                  {filters.sortBy.map((item, index) => (
+                    <CheckBox
+                      label={item.value}
+                      key={"sortBy_" + item + index}
+                      // checked={filterValues.sortBy.includes(item.value)}
+                      onPress={this.updateFilter("sortBy", index)}
+                    />
+                  ))}
+                </ScrollView>
+              )}
             </View>
           </View>
           <View style={styles.footer}>
