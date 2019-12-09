@@ -10,7 +10,7 @@ import { Button, Text, TextInputComponent, ActivityIndicator } from "../componen
 import { connect } from "react-redux";
 import { Signup, Signin } from "../store/action";
 import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
-//import { LoginButton, AccessToken } from "react-native-fbsdk";
+import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
 
 class SignUp extends React.PureComponent {
@@ -66,25 +66,37 @@ class SignUp extends React.PureComponent {
     }
   };
 
-  _googlelogin = () => {
-    GoogleSignin.configure();
-    GoogleSignin.signIn().then(user => {
-      console.log(user.user);
-      let data = user.user;
-      data.mode = "google";
-      console.log(data);
-      domainApi.post("/social-login", data).then(res => {
-        console.log(res);
+  _Social_login = social => {
+    if (social == "google") {
+      GoogleSignin.configure();
+      GoogleSignin.signIn().then(user => {
+        let details = user.user;
+        details.mode = "google";
+        this.setState({ loader: true });
+        domainApi.post("/social-login", details).then(({ data }) => {
+          console.log(data);
+          if (data.code == 1) {
+            this.setState({ loader: false });
+            this.props.Signin(data.details);
+            this.props.navigation.navigate("Home");
+            Toast.show("you are login successfully", Toast.LONG);
+          } else {
+            Toast.show("you are not login successfully", Toast.LONG);
+          }
+        });
       });
-    });
-    // this.props.Signin(data.details);
+    } else if (social == "facebook") {
+      AccessToken.getCurrentAccessToken().then(data => {
+        console.log(data);
+      });
+    }
   };
 
-  _SignOut = () => {
-    console.log("hey");
-    let logout = GoogleSignin.signOut();
-    console.log(logout);
-  };
+  // _SignOut = () => {
+  //   console.log("hey");
+  //   let logout = GoogleSignin.signOut();
+  //   console.log(logout);
+  // };
 
   render() {
     const { loader } = this.state;
@@ -176,11 +188,13 @@ class SignUp extends React.PureComponent {
             </View>
             <Button
               style={[styles.facebook_google_button, { marginTop: 20 }]}
-              onPress={this._googlelogin}>
+              onPress={() => this._Social_login("google")}>
               <Image source={require("../assets/imgs/google.png")} />
               <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
             </Button>
-            <Button style={[styles.facebook_google_button, { marginTop: 10, marginBottom: 60 }]}>
+            <Button
+              style={[styles.facebook_google_button, { marginTop: 10, marginBottom: 60 }]}
+              onPress={() => this._Social_login("facebook")}>
               <Image
                 style={{ width: 40, height: 40 }}
                 resizeMode="contain"
@@ -216,9 +230,10 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#F68E1F",
     height: 48,
+    width: 200,
     marginVertical: 40,
     marginHorizontal: 50,
-    paddingHorizontal: 80,
+    paddingHorizontal: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25
@@ -227,6 +242,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#Fff",
     height: 48,
+    width: 200,
     borderWidth: 1,
     borderColor: "#D2D1D1",
     marginHorizontal: 50,

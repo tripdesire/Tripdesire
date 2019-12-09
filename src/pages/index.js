@@ -33,6 +33,7 @@ import ThankYouCab from "./Cab/ThankYouCab";
 import ThankYouBus from "./Bus/ThankYouBus";
 import ThankYouHotel from "./Hotel/ThankYouHotel";
 import Boarding from "./Bus/Boarding";
+import ForgetPassword from "./ForgetPassword";
 
 export {
   Home,
@@ -69,5 +70,6 @@ export {
   ThankYouCab,
   ThankYouBus,
   ThankYouHotel,
-  Boarding
+  Boarding,
+  ForgetPassword
 };

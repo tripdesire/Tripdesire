@@ -129,13 +129,11 @@ class Order extends React.PureComponent {
               </Text>
             </View>
 
-            {this.state.orders > 0 && (
-              <FlatList
-                data={this.state.orders}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-              />
-            )}
+            <FlatList
+              data={this.state.orders}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+            />
 
             {this.state.orders <= 0 && (
               <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>

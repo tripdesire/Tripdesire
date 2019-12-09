@@ -41,7 +41,8 @@ import {
   ThankYouCab,
   ThankYouBus,
   ThankYouHotel,
-  Boarding
+  Boarding,
+  ForgetPassword
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -93,7 +94,8 @@ const HomeStack = createStackNavigator(
     ThankYouCab,
     ThankYouBus,
     ThankYouHotel,
-    Boarding
+    Boarding,
+    ForgetPassword
   },
   {
     headerMode: "none",

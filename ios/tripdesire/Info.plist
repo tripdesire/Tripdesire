@@ -32,9 +32,9 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>{your-app-id}</string>
+	<string>{582619505836102}</string>
 	<key>FacebookDisplayName</key>
-	<string>{your-app-name}</string>
+	<string>{TripDesire}</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
