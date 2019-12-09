@@ -17,7 +17,9 @@ import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
+import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
+import { Signin } from "../../store/action";
 
 class BusPayment extends React.PureComponent {
   constructor(props) {
@@ -61,63 +63,66 @@ class BusPayment extends React.PureComponent {
       infant_details: []
     };
 
-    domainApi.post("/checkout/new-order?user_id=7", param).then(({ data: order }) => {
-      console.log(order);
+    if (this.props.signIn == {}) {
+      domainApi.post("/checkout/new-order?user_id=7", param).then(({ data: order }) => {
+        console.log(order);
 
-      var options = {
-        description: "Credits towards consultation",
-        image: "https://i.imgur.com/3g7nmJC.png",
-        currency: "INR",
-        key: "rzp_test_a3aQYPLYowGvWJ",
-        amount: parseInt(order.total) * 100,
-        name: "TripDesire",
-        prefill: {
-          email: "void@razorpay.com",
-          contact: "9191919191",
-          name: "Razorpay Software"
-        },
-        theme: { color: "#E5EBF7" }
-      };
+        var options = {
+          description: "Credits towards consultation",
+          image: "https://i.imgur.com/3g7nmJC.png",
+          currency: "INR",
+          key: "rzp_test_a3aQYPLYowGvWJ",
+          amount: parseInt(order.total) * 100,
+          name: "TripDesire",
+          prefill: {
+            email: "void@razorpay.com",
+            contact: "9191919191",
+            name: "Razorpay Software"
+          },
+          theme: { color: "#E5EBF7" }
+        };
 
-      RazorpayCheckout.open(options)
-        .then(razorpayRes => {
-          etravosApi
-            .get("/Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
-            .then(({ data: Response }) => {
-              console.log(Response);
-              if (Response.BookingStatus == 3) {
-                this.props.navigation.navigate("ThankYouBus", {
-                  order,
-                  razorpayRes,
-                  ...this.props.navigation.state.params
-                });
-                Toast.show(Response.Message, Toast.LONG);
-              }
+        RazorpayCheckout.open(options)
+          .then(razorpayRes => {
+            etravosApi
+              .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
+              .then(({ data: Response }) => {
+                console.log(Response);
+                if (Response.BookingStatus == 3) {
+                  this.props.navigation.navigate("ThankYouBus", {
+                    order,
+                    razorpayRes,
+                    Response,
+                    ...this.props.navigation.state.params
+                  });
+                  Toast.show(Response.Message, Toast.LONG);
+                  let paymentData = {
+                    order_id: order.id,
+                    status: "completed",
+                    transaction_id: razorpayRes.razorpay_payment_id,
+                    reference_no: Response
+                  };
+                  console.log(paymentData);
 
-              let paymentData = {
-                order_id: order.id,
-                status: "completed",
-                transaction_id: razorpayRes.razorpay_payment_id,
-                reference_no: Response
-              };
-              console.log(paymentData);
-
-              axios
-                .post("http://tripdesire.co/wp-json/wc/v2/checkout/update-order", paymentData)
-                .then(res => {
-                  console.log(res);
-                });
-            })
-            .catch(error => {
-              // handle failure
-
-              alert(`Error: ${error.code} | ${error.description}`);
-            });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
+                  domainApi.post("/checkout/update-order", paymentData).then(res => {
+                    console.log(res);
+                  });
+                } else {
+                  Toast.show("Your ticket is not booked succesfully.", Toast.LONG);
+                }
+              })
+              .catch(error => {
+                // handle failure
+                alert(`Error: ${error.code} | ${error.description}`);
+              });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      });
+    } else {
+      Toast.show("Please login or signup", Toast.LONG);
+    }
   };
 
   _radioButton = value => {
@@ -129,6 +134,7 @@ class BusPayment extends React.PureComponent {
   };
   render() {
     const { ffn, radioDirect, radioCheck, radioCOD } = this.state;
+    const { cartData, params } = this.props.navigation.state.params;
     return (
       <View style={{ flexDirection: "column", flex: 1 }}>
         <View style={{ flex: 1, height: 56, backgroundColor: "#E5EBF7" }}>
@@ -147,7 +153,8 @@ class BusPayment extends React.PureComponent {
                   Checkout
                 </Text>
                 <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                  18 Sept | Thursday | 12 Buses Found
+                  {moment(params.Journeydate, "YYYY-MM-DD").format("DD MMM")} |{" "}
+                  {moment(params.Journeydate, "YYYY-MM-DD").format("dddd")}
                 </Text>
               </View>
               <View
@@ -161,12 +168,6 @@ class BusPayment extends React.PureComponent {
             </View>
           </View>
         </View>
-
-        {/* <View style={{ height: 100, width: "100%" }}>
-              <View style={{ flex: 1, backgroundColor: "#E4EAF6" }}></View>
-              <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}></View>
-             
-            </View> */}
         <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
           <ScrollView
             contentContainerStyle={{ backgroundColor: "#ffffff" }}
@@ -176,7 +177,7 @@ class BusPayment extends React.PureComponent {
                 elevation: 2,
                 borderRadius: 8,
                 backgroundColor: "#ffffff",
-                marginHorizontal: 30,
+                marginHorizontal: 16,
                 marginTop: 20
               }}>
               <View style={{ marginVertical: 10 }}>
@@ -204,7 +205,7 @@ class BusPayment extends React.PureComponent {
                     paddingHorizontal: 10
                   }}>
                   <Text>Fare</Text>
-                  <Text>1175.00</Text>
+                  <Text>0.00</Text>
                 </View>
                 <View
                   style={{
@@ -213,7 +214,7 @@ class BusPayment extends React.PureComponent {
                     paddingHorizontal: 10
                   }}>
                   <Text>Conv. Fare</Text>
-                  <Text>25.90</Text>
+                  <Text>0.00</Text>
                 </View>
                 <View
                   style={{
@@ -224,7 +225,7 @@ class BusPayment extends React.PureComponent {
                     marginBottom: 10
                   }}>
                   <Text style={{ fontSize: 16 }}>TOTAL PAYABLE</Text>
-                  <Text style={{ fontSize: 16, fontWeight: "700" }}>$ 1175.00</Text>
+                  <Text style={{ fontSize: 16, fontWeight: "700" }}>{cartData.total_price}</Text>
                 </View>
               </View>
             </View>
@@ -232,7 +233,7 @@ class BusPayment extends React.PureComponent {
               style={{
                 elevation: 2,
                 backgroundColor: "#ffffff",
-                marginHorizontal: 30,
+                marginHorizontal: 16,
                 marginTop: 20,
                 height: 40,
                 flexDirection: "row",
@@ -258,7 +259,7 @@ class BusPayment extends React.PureComponent {
               style={{
                 elevation: 2,
                 backgroundColor: "#ffffff",
-                marginHorizontal: 30,
+                marginHorizontal: 16,
                 marginTop: 20,
                 padding: 10,
                 borderRadius: 8
@@ -287,66 +288,13 @@ class BusPayment extends React.PureComponent {
                     )}
                   </View>
                 </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 16 }}>Direct Bank Transfer</Text>
+                <Text style={{ marginStart: 5, fontSize: 16 }}>RazorPay</Text>
               </View>
               <Text style={{ flex: 1, fontSize: 12, color: "#696969", marginHorizontal: 20 }}>
                 Make your payment direct into our bank account.Please use your order ID as the
                 payment reference.Your order will not be shipped untill the funds have cleared in
                 our account
               </Text>
-
-              <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
-                <TouchableOpacity onPress={() => this._radioButton("CP")}>
-                  <View
-                    style={{
-                      height: 18,
-                      width: 18,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: "#000",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}>
-                    {radioCheck && (
-                      <View
-                        style={{
-                          height: 10,
-                          width: 10,
-                          borderRadius: 6,
-                          backgroundColor: "#000"
-                        }}
-                      />
-                    )}
-                  </View>
-                </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 16 }}>Check Payments</Text>
-              </View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity onPress={() => this._radioButton("C")}>
-                  <View
-                    style={{
-                      height: 18,
-                      width: 18,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: "#000",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}>
-                    {radioCOD && (
-                      <View
-                        style={{
-                          height: 10,
-                          width: 10,
-                          borderRadius: 6,
-                          backgroundColor: "#000"
-                        }}
-                      />
-                    )}
-                  </View>
-                </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 16 }}>Cash on Delivery</Text>
-              </View>
             </View>
 
             <Button
@@ -369,4 +317,8 @@ class BusPayment extends React.PureComponent {
   }
 }
 
-export default BusPayment;
+const mapStateToProps = state => ({
+  signIn: state.signIn
+});
+
+export default connect(mapStateToProps, null)(BusPayment);

@@ -136,7 +136,6 @@ class CheckoutBus extends React.PureComponent {
 
     if (this.state.IdNumber && this.state.IssuedBy) {
       this.setState({ loader: true });
-
       etravosApi
         .post("/Buses/BlockBusTicket", param)
 
@@ -336,7 +335,7 @@ class CheckoutBus extends React.PureComponent {
                 placeholder="Identification Document Issued By"
               />
               {selectedSheets &&
-                [...Array(selectedSheets.length)].map((item, index) => {
+                selectedSheets.map((item, index) => {
                   return (
                     <View key={"sap" + index}>
                       <View
@@ -349,7 +348,7 @@ class CheckoutBus extends React.PureComponent {
                         }}>
                         <Text style={{ color: "#5B6974" }}>Seat No.</Text>
 
-                        <Text style={{ marginHorizontal: 5 }}>12 U</Text>
+                        <Text style={{ marginHorizontal: 5 }}>{item.Number}</Text>
                         <View
                           style={{
                             borderWidth: 1,

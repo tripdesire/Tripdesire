@@ -4,11 +4,11 @@ import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
- import {etravosApi}  from "../service";
+import { etravosApi } from "../service";
 import moment from "moment";
 import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
 import { connect } from "react-redux";
-import { Signup } from "../store/action";
+import { Signup, Signin } from "../store/action";
 import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
 //import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
@@ -66,10 +66,10 @@ class SignUp extends React.PureComponent {
   };
 
   _googlelogin = () => {
-    console.log("hey");
     GoogleSignin.configure();
     let u = GoogleSignin.signIn();
     console.log(u);
+    // this.props.Signin(data.details);
   };
 
   _SignOut = () => {
@@ -93,7 +93,14 @@ class SignUp extends React.PureComponent {
           <Button onPress={() => this.props.navigation.goBack(null)}>
             <Icon name="md-arrow-back" size={24} />
           </Button>
-          <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "#1E293B",
+              marginStart: 10,
+              fontWeight: "700",
+              lineHeight: 24
+            }}>
             Register
           </Text>
         </View>
@@ -140,10 +147,6 @@ class SignUp extends React.PureComponent {
             />
             <Button style={styles.button} onPress={this.navigateToScreen("SignIn")}>
               <Text style={{ color: "#fff" }}>Sign Up</Text>
-            </Button>
-
-            <Button style={styles.button} onPress={this._SignOut}>
-              <Text style={{ color: "#fff" }}>Sign Out</Text>
             </Button>
             <View
               style={{
@@ -237,7 +240,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = {
-  Signup
+  Signup,
+  Signin
 };
 
 export default connect(null, mapDispatchToProps)(SignUp);

@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
 import axios from "axios";
 import moment from "moment";
+
 class Order extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -22,12 +23,12 @@ class Order extends React.PureComponent {
 
   componentDidMount() {
     axios
-      .get("http://tripdesire.co/wp-json/wc/v2/nutri-user/7/order-list")
-      .then(res => {
-        console.log(res.data);
-        if (res.data.status == 1) {
+      .get("https://demo66.tutiixx.com/wp-json/wc/v2/nutri-user/7/order-list")
+      .then(({ data }) => {
+        console.log(data);
+        if (data.status == 1) {
           this.setState({
-            orders: res.data.data,
+            orders: data.data,
             loader: false
           });
         } else {
@@ -41,11 +42,12 @@ class Order extends React.PureComponent {
   }
 
   status = value => {
-    if (value == "completed") return <Text style={{ color: "green" }}>{value}</Text>;
+    if (value == "completed")
+      return <Text style={{ color: "green", lineHeight: 18 }}>{value}</Text>;
   };
 
   _renderItem = ({ item, index }) => {
-    let date = moment(item.date_created).format("MMM DD YYYY");
+    let date = moment(item.order_data.date_created).format("MMM DD YYYY");
     return (
       <TouchableOpacity
         style={{
@@ -62,22 +64,22 @@ class Order extends React.PureComponent {
             justifyContent: "space-between"
           }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.Heading}>Booking Id :</Text>
-            <Text>{item.id}</Text>
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Booking Id : </Text>
+            <Text style={{ lineHeight: 18 }}>{item.order_data.id}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.Heading}>Status :</Text>
-            {this.status(item.status)}
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Status : </Text>
+            {this.status(item.order_data.status)}
           </View>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.Heading}>Date :</Text>
-            <Text>{date}</Text>
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Date : </Text>
+            <Text style={{ lineHeight: 20 }}>{date}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.Heading}>Total :</Text>
-            <Text>{item.total}</Text>
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Total : </Text>
+            <Text style={{ lineHeight: 20 }}>{item.order_data.total}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -119,8 +121,8 @@ class Order extends React.PureComponent {
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
             />
-            {loader && <ActivityIndicator />}
           </View>
+          {loader && <ActivityIndicator />}
         </SafeAreaView>
       </>
     );

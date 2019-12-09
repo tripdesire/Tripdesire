@@ -15,6 +15,7 @@ import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
 import { etravosApi, domainApi } from "../../service";
+import { connect } from "react-redux";
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -542,102 +543,108 @@ class CheckOut1 extends React.PureComponent {
       if (this.validate()) {
         Toast.show("Please enter all the fields.", Toast.SHORT);
       } else {
-        console.log(book, this.state);
-        const { params, data } = this.props.navigation.state.params;
-        console.log(params, data, param);
+        if (this.props.signIn == {}) {
+          console.log(book, this.state);
+          const { params, data } = this.props.navigation.state.params;
+          console.log(params, data, param);
 
-        this.setState({ loading: true });
-        etravosApi
-          .post("/Flights/BlockFlightTicket", book)
-          .then(blockres => {
-            console.log(blockres.data);
-            if (blockres.data.BookingStatus == 8) {
-              domainApi
-                .post("/checkout/new-order?user_id=7", param)
-                .then(({ data: order }) => {
-                  console.log(order);
+          this.setState({ loading: true });
+          etravosApi
+            .post("/Flights/BlockFlightTicket", book)
+            .then(blockres => {
+              console.log(blockres.data);
+              if (blockres.data.BookingStatus == 8) {
+                domainApi
+                  .post("/checkout/new-order?user_id=7", param)
+                  .then(({ data: order }) => {
+                    console.log(order);
 
-                  var options = {
-                    description: "Credits towards consultation",
-                    image: "https://i.imgur.com/3g7nmJC.png",
-                    currency: "INR",
-                    key: "rzp_test_a3aQYPLYowGvWJ",
-                    amount: parseInt(order.total) * 100,
-                    name: "TripDesire",
-                    prefill: {
-                      email: "void@razorpay.com",
-                      contact: "9191919191",
-                      name: "Razorpay Software"
-                    },
-                    theme: { color: "#E5EBF7" }
-                  };
+                    var options = {
+                      description: "Credits towards consultation",
+                      image: "https://i.imgur.com/3g7nmJC.png",
+                      currency: "INR",
+                      key: "rzp_test_a3aQYPLYowGvWJ",
+                      amount: parseInt(order.total) * 100,
+                      name: "TripDesire",
+                      prefill: {
+                        email: "void@razorpay.com",
+                        contact: "9191919191",
+                        name: "Razorpay Software"
+                      },
+                      theme: { color: "#E5EBF7" }
+                    };
 
-                  RazorpayCheckout.open(options)
-                    .then(razorpayRes => {
-                      // handle success
-                      console.log(razorpayRes);
-                      // alert(`Success: ${data.razorpay_payment_id}`);
+                    RazorpayCheckout.open(options)
+                      .then(razorpayRes => {
+                        // handle success
+                        console.log(razorpayRes);
+                        // alert(`Success: ${data.razorpay_payment_id}`);
 
-                      if (
-                        (razorpayRes.razorpay_payment_id &&
-                          razorpayRes.razorpay_payment_id != "") ||
-                        razorpayRes.code == 0
-                      ) {
-                        this.setState({ loading: true });
-                        etravosApi
-                          .get("/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo)
-                          .then(({ data: Response }) => {
-                            console.log(Response);
+                        if (
+                          (razorpayRes.razorpay_payment_id &&
+                            razorpayRes.razorpay_payment_id != "") ||
+                          razorpayRes.code == 0
+                        ) {
+                          this.setState({ loading: true });
+                          etravosApi
+                            .get(
+                              "/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo
+                            )
+                            .then(({ data: Response }) => {
+                              console.log(Response);
 
-                            let paymentData = {
-                              order_id: order.id,
-                              status: "completed",
-                              transaction_id: razorpayRes.razorpay_payment_id,
-                              reference_no: Response // blockres.data.ReferenceNo
-                            };
-                            console.log(paymentData);
+                              let paymentData = {
+                                order_id: order.id,
+                                status: "completed",
+                                transaction_id: razorpayRes.razorpay_payment_id,
+                                reference_no: Response // blockres.data.ReferenceNo
+                              };
+                              console.log(paymentData);
 
-                            this.setState({ loading: true });
-                            domainApi.post("/checkout/update-order", paymentData).then(resp => {
-                              this.setState({ loading: false });
-                              console.log(resp);
+                              this.setState({ loading: true });
+                              domainApi.post("/checkout/update-order", paymentData).then(resp => {
+                                this.setState({ loading: false });
+                                console.log(resp);
+                              });
+                              const { params } = this.props.navigation.state.params;
+                              this.props.navigation.navigate("ThankYou", {
+                                order,
+                                params,
+                                razorpayRes
+                              });
+                            })
+                            .catch(error => {
+                              console.log(error);
                             });
-                            const { params } = this.props.navigation.state.params;
-                            this.props.navigation.navigate("ThankYou", {
-                              order,
-                              params,
-                              razorpayRes
-                            });
-                          })
-                          .catch(error => {
-                            console.log(error);
-                          });
-                      } else {
-                        Toast.show("You have been cancelled the ticket", Toast.LONG);
-                      }
-                    })
-                    .catch(error => {
-                      this.setState({ loading: false });
-                      console.log(error);
-                    })
-                    .catch(error => {
-                      this.setState({ loading: false });
-                      console.log(error);
-                    });
-                })
-                .catch(error => {
-                  Toast.show(error, Toast.LONG);
-                  this.setState({ loading: false });
-                });
-            } else {
+                        } else {
+                          Toast.show("You have been cancelled the ticket", Toast.LONG);
+                        }
+                      })
+                      .catch(error => {
+                        this.setState({ loading: false });
+                        console.log(error);
+                      })
+                      .catch(error => {
+                        this.setState({ loading: false });
+                        console.log(error);
+                      });
+                  })
+                  .catch(error => {
+                    Toast.show(error, Toast.LONG);
+                    this.setState({ loading: false });
+                  });
+              } else {
+                this.setState({ loading: false });
+                Toast.show("Ticket is not block successfully ", Toast.LONG);
+              }
+            })
+            .catch(error => {
+              Toast.show(error, Toast.LONG);
               this.setState({ loading: false });
-              Toast.show("Ticket is not block successfully ", Toast.LONG);
-            }
-          })
-          .catch(error => {
-            Toast.show(error, Toast.LONG);
-            this.setState({ loading: false });
-          });
+            });
+        } else {
+          Toast.show("Please login or signup", Toast.SHORT);
+        }
       }
     } catch (e) {
       Toast.show(e.toString());
@@ -1252,4 +1259,8 @@ class CheckOut1 extends React.PureComponent {
   }
 }
 
-export default CheckOut1;
+const mapStateToProps = state => ({
+  signIn: state.signIn
+});
+
+export default connect(mapStateToProps, null)(CheckOut1);

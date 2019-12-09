@@ -14,6 +14,7 @@ import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
+import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
 
 class Payment extends React.PureComponent {
@@ -279,79 +280,87 @@ class Payment extends React.PureComponent {
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
-      console.log(data);
-      let totalData = data;
-      this.setState({ loading: true });
-      etravosApi
-        .post("/Hotels/BlockHotelRoom", data)
-        .then(blockres => {
-          console.log(blockres.data);
-          if (blockres.data.BookingStatus == 1) {
-            domainApi
-              .post("/checkout/new-order?user_id=7", param)
-              .then(({ data: order }) => {
-                console.log(order);
-                var options = {
-                  description: "Credits towards consultation",
-                  image: "https://i.imgur.com/3g7nmJC.png",
-                  currency: "INR",
-                  key: "rzp_test_a3aQYPLYowGvWJ",
-                  amount: parseInt(order.total) * 100,
-                  name: "TripDesire",
-                  prefill: {
-                    email: "void@razorpay.com",
-                    contact: "9191919191",
-                    name: "Razorpay Software"
-                  },
-                  theme: { color: "#E5EBF7" }
-                };
-                RazorpayCheckout.open(options)
-                  .then(razorpayRes => {
-                    // handle success
-                    //console.log(data);
-                    this.setState({ loading: true });
-                    etravosApi
-                      .get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
-                      .then(({ data: Response }) => {
+      if (this.props.signIn == {}) {
+        console.log(data);
+        let totalData = data;
+        this.setState({ loading: true });
+        etravosApi
+          .post("/Hotels/BlockHotelRoom", data)
+          .then(blockres => {
+            console.log(blockres.data);
+            if (blockres.data.BookingStatus == 1) {
+              domainApi
+                .post("/checkout/new-order?user_id=7", param)
+                .then(({ data: order }) => {
+                  console.log(order);
+                  var options = {
+                    description: "Credits towards consultation",
+                    image: "https://i.imgur.com/3g7nmJC.png",
+                    currency: "INR",
+                    key: "rzp_test_a3aQYPLYowGvWJ",
+                    amount: parseInt(order.total) * 100,
+                    name: "TripDesire",
+                    prefill: {
+                      email: "void@razorpay.com",
+                      contact: "9191919191",
+                      name: "Razorpay Software"
+                    },
+                    theme: { color: "#E5EBF7" }
+                  };
+                  RazorpayCheckout.open(options)
+                    .then(razorpayRes => {
+                      // handle success
+                      //console.log(data);
+                      this.setState({ loading: true });
+                      etravosApi
+                        .get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
+                        .then(({ data: Response }) => {
+                          this.setState({ loading: false });
+                          console.log(Response);
+                        })
+                        .catch(error => {
+                          console.log(error);
+                        });
+                      let paymentData = {
+                        order_id: order.id,
+                        status: "completed",
+                        transaction_id: razorpayRes.razorpay_payment_id,
+                        reference_no: Response // blockres.data.ReferenceNo
+                      };
+                      this.setState({ loading: true });
+                      domainApi.post("/checkout/update-order", paymentData).then(res => {
                         this.setState({ loading: false });
-                        console.log(Response);
-                      })
-                      .catch(error => {
-                        console.log(error);
+                        console.log(res);
                       });
-                    let paymentData = {
-                      order_id: order.id,
-                      status: "completed",
-                      transaction_id: razorpayRes.razorpay_payment_id,
-                      reference_no: Response // blockres.data.ReferenceNo
-                    };
-                    this.setState({ loading: true });
-                    domainApi.post("/checkout/update-order", paymentData).then(res => {
+                      const { params } = this.props.navigation.state.params;
+                      this.props.navigation.navigate("ThankYouHotel", {
+                        order,
+                        params,
+                        razorpayRes
+                      });
+                    })
+                    .catch(error => {
+                      // handle failure
                       this.setState({ loading: false });
-                      console.log(res);
+                      alert(`Error:  ${error.description}`);
                     });
-                    const { params } = this.props.navigation.state.params;
-                    this.props.navigation.navigate("ThankYouHotel", { order, params, razorpayRes });
-                  })
-                  .catch(error => {
-                    // handle failure
-                    this.setState({ loading: false });
-                    alert(`Error:  ${error.description}`);
-                  });
-              })
-              .catch(error => {
-                Toast.show(error, Toast.LONG);
-                this.setState({ loading: false });
-              });
-          } else {
+                })
+                .catch(error => {
+                  Toast.show(error, Toast.LONG);
+                  this.setState({ loading: false });
+                });
+            } else {
+              this.setState({ loading: false });
+              Toast.show("Hotel is not block successfully ", Toast.LONG);
+            }
+          })
+          .catch(error => {
+            Toast.show(error, Toast.LONG);
             this.setState({ loading: false });
-            Toast.show("Hotel is not block successfully ", Toast.LONG);
-          }
-        })
-        .catch(error => {
-          Toast.show(error, Toast.LONG);
-          this.setState({ loading: false });
-        });
+          });
+      } else {
+        Toast.show("Please login or signup", Toast.LONG);
+      }
     }
 
     console.log(this.state);
@@ -834,4 +843,8 @@ class Payment extends React.PureComponent {
   }
 }
 
-export default Payment;
+const mapStateToProps = state => ({
+  signIn: state.signIn
+});
+
+export default connect(mapStateToProps, null)(Payment);

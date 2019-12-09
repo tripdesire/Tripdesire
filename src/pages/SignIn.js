@@ -12,12 +12,11 @@ import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
- import {etravosApi}  from "../service";
+import { etravosApi, domainApi } from "../service";
 import moment from "moment";
 import { Button, Text, TextInputComponent } from "../components";
 import { connect } from "react-redux";
-import { Signup } from "../store/action";
-import { Signin } from "../store/action";
+import { Signup, Signin } from "../store/action";
 import axios from "axios";
 
 class SignIn extends React.PureComponent {
@@ -29,19 +28,21 @@ class SignIn extends React.PureComponent {
     };
   }
 
-  navigateToScreen = (page, params = {}) => () => {
-    axios.post("https://demo66.tutiixx.com/wp-json/wc/v2/login", this.state).then(res => {
-      console.log(res);
-      if (this.state.email != "" && this.state.password != "") {
-        if (res.data.code == 1) {
-          this.props.navigation.navigate(page);
+  navigateToScreen = () => {
+    console.log(this.state);
+    if (this.state.email != "" && this.state.password != "") {
+      domainApi.post("/login", this.state).then(({ data }) => {
+        console.log(data);
+        if (data.code == "1") {
+          this.props.Signin(data.details);
+          this.props.navigation.navigate("Home");
         } else {
           Toast.show("Wrong Email And Password.", ToastAndroid.SHORT);
         }
-      } else {
-        Toast.show("Please enter the email and password.", ToastAndroid.SHORT);
-      }
-    });
+      });
+    } else {
+      Toast.show("Please enter the email and password.", ToastAndroid.SHORT);
+    }
   };
 
   NavigateToScreen = page => () => {
@@ -88,7 +89,7 @@ class SignIn extends React.PureComponent {
               value={this.state.password}
               onChangeText={text => this.setState({ password: text })}
             />
-            <Button style={styles.button} onPress={this.navigateToScreen("Home")}>
+            <Button style={styles.button} onPress={this.navigateToScreen}>
               <Text style={{ color: "#fff" }}>Login</Text>
             </Button>
             <View style={{ flexDirection: "row", justifyContent: "center", marginVertical: 20 }}>
@@ -161,11 +162,12 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapDispatchToProps = {
+  Signin
+};
+
 const mapStateToProps = state => ({
   signUp: state.signUp
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -5,7 +5,8 @@ import {
   SIGN_IN,
   SIGN_UP,
   BUS_SUGGESTION,
-  CAB_SUGGESTION
+  CAB_SUGGESTION,
+  LOGOUT
 } from "./actionTypes";
 
 export const DomSugg = data => {
@@ -53,6 +54,13 @@ export const BusSugg = data => {
 export const CabSugg = data => {
   return {
     type: CAB_SUGGESTION,
+    payload: data
+  };
+};
+
+export const Logout = data => {
+  return {
+    type: LOGOUT,
     payload: data
   };
 };

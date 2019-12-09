@@ -15,6 +15,7 @@ import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
+import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
 import HTML from "react-native-render-html";
 
@@ -137,92 +138,96 @@ class CheckoutCab extends React.PureComponent {
     console.log(param);
 
     if (this.state.firstname != "" && this.state.last_name != "") {
-      this.setState({ loader: true });
-      etravosApi
-        .post("/Cabs/BlockCab", param)
-        .then(response => {
-          this.setState({ loader: false });
-          console.log(response);
-          domainApi
-            .post("/checkout/new-order?user_id=7", newOrder)
-            .then(({ data: order }) => {
-              console.log(order);
+      if (this.props.signIn == {}) {
+        this.setState({ loader: true });
+        etravosApi
+          .post("/Cabs/BlockCab", param)
+          .then(response => {
+            this.setState({ loader: false });
+            console.log(response);
+            domainApi
+              .post("/checkout/new-order?user_id=7", newOrder)
+              .then(({ data: order }) => {
+                console.log(order);
 
-              var options = {
-                description: "Credits towards consultation",
-                image: "https://i.imgur.com/3g7nmJC.png",
-                currency: "INR",
-                key: "rzp_test_a3aQYPLYowGvWJ",
-                amount: parseInt(order.total) * 100,
-                name: "TripDesire",
-                prefill: {
-                  email: "void@razorpay.com",
-                  contact: "9191919191",
-                  name: "Razorpay Software"
-                },
-                theme: { color: "#E5EBF7" }
-              };
+                var options = {
+                  description: "Credits towards consultation",
+                  image: "https://i.imgur.com/3g7nmJC.png",
+                  currency: "INR",
+                  key: "rzp_test_a3aQYPLYowGvWJ",
+                  amount: parseInt(order.total) * 100,
+                  name: "TripDesire",
+                  prefill: {
+                    email: "void@razorpay.com",
+                    contact: "9191919191",
+                    name: "Razorpay Software"
+                  },
+                  theme: { color: "#E5EBF7" }
+                };
 
-              RazorpayCheckout.open(options)
-                .then(razorpayRes => {
-                  // handle success
-                  console.log(razorpayRes);
-                  // alert(`Success: ${razorpayRes.razorpay_payment_id}`);
-                  if (
-                    (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
-                    razorpayRes.code == 0
-                  ) {
-                    this.setState({ loader: true });
-                    etravosApi
-                      .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
-                      .then(({ data: Response }) => {
+                RazorpayCheckout.open(options)
+                  .then(razorpayRes => {
+                    // handle success
+                    console.log(razorpayRes);
+                    // alert(`Success: ${razorpayRes.razorpay_payment_id}`);
+                    if (
+                      (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
+                      razorpayRes.code == 0
+                    ) {
+                      this.setState({ loader: true });
+                      etravosApi
+                        .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+                        .then(({ data: Response }) => {
+                          this.setState({ loader: false });
+                          console.log(Response);
+                          if (Response.BookingStatus == 3) {
+                            Toast.show(Response.Message, Toast.LONG);
+                          } else {
+                            Toast.show(Response.Message, Toast.LONG);
+                          }
+                        })
+                        .catch(error => {
+                          console.log(error);
+                        });
+                      let paymentData = {
+                        order_id: order.id,
+                        status: "completed",
+                        transaction_id: razorpayRes.razorpay_payment_id,
+                        reference_no: Response // blockres.data.ReferenceNo
+                      };
+                      this.setState({ loader: true });
+                      domainApi.post("/checkout/update-order", paymentData).then(res => {
                         this.setState({ loader: false });
-                        console.log(Response);
-                        if (Response.BookingStatus == 3) {
-                          Toast.show(Response.Message, Toast.LONG);
-                        } else {
-                          Toast.show(Response.Message, Toast.LONG);
-                        }
-                      })
-                      .catch(error => {
-                        console.log(error);
+                        console.log(res);
                       });
-                    let paymentData = {
-                      order_id: order.id,
-                      status: "completed",
-                      transaction_id: razorpayRes.razorpay_payment_id,
-                      reference_no: Response // blockres.data.ReferenceNo
-                    };
-                    this.setState({ loader: true });
-                    domainApi.post("/checkout/update-order", paymentData).then(res => {
-                      this.setState({ loader: false });
-                      console.log(res);
-                    });
-                    const { params } = this.props.navigation.state.params;
-                    this.props.navigation.navigate("ThankYouCab", {
-                      order,
-                      params,
-                      razorpayRes,
-                      item
-                    });
-                  } else {
-                    Toast.show("You have beem cancelled the order.", Toast.LONG);
-                  }
-                })
-                .catch(error => {
-                  this.setState({ loader: false });
-                  console.log(error);
-                });
-            })
-            .catch(error => {
-              this.setState({ loader: false });
-              console.log(error);
-            });
-        })
-        .catch(error => {
-          this.setState({ loader: false });
-          console.log(error);
-        });
+                      const { params } = this.props.navigation.state.params;
+                      this.props.navigation.navigate("ThankYouCab", {
+                        order,
+                        params,
+                        razorpayRes,
+                        item
+                      });
+                    } else {
+                      Toast.show("You have beem cancelled the order.", Toast.LONG);
+                    }
+                  })
+                  .catch(error => {
+                    this.setState({ loader: false });
+                    console.log(error);
+                  });
+              })
+              .catch(error => {
+                this.setState({ loader: false });
+                console.log(error);
+              });
+          })
+          .catch(error => {
+            this.setState({ loader: false });
+            console.log(error);
+          });
+      } else {
+        Toast.show("Please login or signup", Toast.LONG);
+      }
     } else {
       Toast.show("Please fill all the Details.", Toast.LONG);
     }
@@ -608,4 +613,8 @@ class CheckoutCab extends React.PureComponent {
   }
 }
 
-export default CheckoutCab;
+const mapStateToProps = state => ({
+  signIn: state.signIn
+});
+
+export default connect(mapStateToProps, null)(CheckoutCab);
