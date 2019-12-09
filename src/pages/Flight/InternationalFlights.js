@@ -1,11 +1,11 @@
 import React from "react";
-import {View, Image, StyleSheet, Picker, Modal} from "react-native";
-import {withNavigation} from "react-navigation";
-import {Button, Text, AutoCompleteModal} from "../../components";
+import { View, Image, StyleSheet, Picker, Modal } from "react-native";
+import { withNavigation } from "react-navigation";
+import { Button, Text, AutoCompleteModal } from "../../components";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import RNPickerSelect from "react-native-picker-select";
 class InternationalFlights extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -13,10 +13,10 @@ class InternationalFlights extends React.PureComponent {
       class: "E",
       index: 0,
       className: [
-        {value: "E", label: "Economy"},
-        {value: "PE", label: "Premium Economy"},
-        {value: "B", label: "Business"},
-        {value: "F", label: "First Class"}
+        { value: "E", label: "Economy" },
+        { value: "PE", label: "Premium Economy" },
+        { value: "B", label: "Business" },
+        { value: "F", label: "First Class" }
       ],
       suggestions: [],
       passengers: 1,
@@ -28,14 +28,14 @@ class InternationalFlights extends React.PureComponent {
       modalFrom: false,
       modalTo: false,
       modalPassengers: false,
-      from: "DEL, Delhi",
-      to: "BOM, Mumbai",
-      sourceName: "Delhi",
-      destinationName: "Mumbai",
-      fromCode: "DEL",
-      ToCode: "BOM",
-      sourceAirportName: "New Delhi, India - (DEL) - Indira Gandhi International",
-      destinationAirportName: "Mumbai, India - (BOM) - Chhatrapati Shivaji International",
+      from: "DXB, Dubai",
+      to: "SFO, San Francisco",
+      sourceName: "Dubai",
+      destinationName: "San Francisco",
+      fromCode: "DXB",
+      ToCode: "SFO",
+      sourceAirportName: "Dubai, United Arab Emirates - (DXB) - Dubai",
+      destinationAirportName: "San Francisco, Unites State - (SFO) - San Francisco International",
       Journey_date: new Date(),
       Return_date: new Date(),
       mode: "date",
@@ -84,11 +84,11 @@ class InternationalFlights extends React.PureComponent {
   };
 
   setModalVisible = (key, visible) => () => {
-    this.setState({[key]: visible});
+    this.setState({ [key]: visible });
   };
 
   setPassengers = () => {
-    this.setState({modalPassengers: true});
+    this.setState({ modalPassengers: true });
   };
 
   _SelectTripType = value => {
@@ -101,15 +101,15 @@ class InternationalFlights extends React.PureComponent {
   };
 
   submit = value => {
-    this.setState({...value, modalPassengers: false});
+    this.setState({ ...value, modalPassengers: false });
   };
 
   showDateTimePicker = key => () => {
-    this.setState({[key]: true});
+    this.setState({ [key]: true });
   };
 
   hideDateTimePicker = key => () => {
-    this.setState({[key]: false});
+    this.setState({ [key]: false });
   };
 
   handleDatePicked = key => date => {
@@ -186,11 +186,6 @@ class InternationalFlights extends React.PureComponent {
       tripTypeColorRound,
       selectRound
     } = this.state;
-
-    let classItems = this.state.className.map((item, i) => {
-      return <Picker.Item key={i} value={item.value} label={item.label} />;
-    });
-
     return (
       <View>
         <View
@@ -208,21 +203,25 @@ class InternationalFlights extends React.PureComponent {
             }}
             source={require("../../assets/imgs/white-arrow-left-side.png")}
           />
-          <Button style={{justifyContent: "center"}} onPress={() => this._SelectTripType("oneway")}>
-            <Text style={{color: tripTypeColorOneway}}>One Way</Text>
+          <Button
+            style={{ justifyContent: "center" }}
+            onPress={() => this._SelectTripType("oneway")}>
+            <Text style={{ color: tripTypeColorOneway }}>One Way</Text>
           </Button>
           <Image
-            style={{width: 25, resizeMode: "contain", marginHorizontal: 5}}
+            style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
             source={require("../../assets/imgs/Round-trip-arrow.png")}
           />
-          <Button style={{justifyContent: "center"}} onPress={() => this._SelectTripType("round")}>
-            <Text style={{color: tripTypeColorRound}}>Round Trip</Text>
+          <Button
+            style={{ justifyContent: "center" }}
+            onPress={() => this._SelectTripType("round")}>
+            <Text style={{ color: tripTypeColorRound }}>Round Trip</Text>
           </Button>
         </View>
 
-        <View style={{margin: 16, flexDirection: "row", alignItems: "center"}}>
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
-            style={{width: 25, resizeMode: "contain"}}
+            style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/flights-1.png")}
           />
           <View
@@ -231,8 +230,8 @@ class InternationalFlights extends React.PureComponent {
               paddingStart: 20,
               position: "relative"
             }}>
-            <Text style={{color: "#5D666D"}}>From:</Text>
-            <Text style={{color: "#5D666D"}} onPress={this.setModalVisible("modalFrom", true)}>
+            <Text style={{ color: "#5D666D" }}>From:</Text>
+            <Text style={{ color: "#5D666D" }} onPress={this.setModalVisible("modalFrom", true)}>
               {from}
             </Text>
           </View>
@@ -241,8 +240,8 @@ class InternationalFlights extends React.PureComponent {
               flex: 1,
               paddingStart: 20
             }}>
-            <Text style={{color: "#5D666D"}}>To:</Text>
-            <Text style={{color: "#5D666D"}} onPress={this.setModalVisible("modalTo", true)}>
+            <Text style={{ color: "#5D666D" }}>To:</Text>
+            <Text style={{ color: "#5D666D" }} onPress={this.setModalVisible("modalTo", true)}>
               {to}
             </Text>
           </View>
@@ -255,9 +254,9 @@ class InternationalFlights extends React.PureComponent {
             marginHorizontal: 20
           }}></View>
 
-        <View style={{margin: 16, flexDirection: "row", alignItems: "center"}}>
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
-            style={{width: 25, resizeMode: "contain"}}
+            style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/cal.png")}
           />
           <View
@@ -265,9 +264,9 @@ class InternationalFlights extends React.PureComponent {
               flex: 1,
               paddingStart: 20
             }}>
-            <Text style={{color: "#5D666D", marginStart: 5}}>Depart</Text>
+            <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
             <Button
-              style={{flex: 1, marginStart: 5}}
+              style={{ flex: 1, marginStart: 5 }}
               onPress={this.showDateTimePicker("fromDTpicker")}>
               <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
             </Button>
@@ -284,9 +283,9 @@ class InternationalFlights extends React.PureComponent {
                 flex: 1,
                 paddingStart: 20
               }}>
-              <Text style={{color: "#5D666D", marginStart: 5}}>Return</Text>
+              <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
               <Button
-                style={{flex: 1, marginStart: 5}}
+                style={{ flex: 1, marginStart: 5 }}
                 onPress={this.showDateTimePicker("toDTpicker")}>
                 <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
               </Button>
@@ -307,9 +306,9 @@ class InternationalFlights extends React.PureComponent {
             marginHorizontal: 20
           }}></View>
 
-        <View style={{margin: 16, flexDirection: "row", alignItems: "center"}}>
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
-            style={{width: 25, resizeMode: "contain"}}
+            style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/person.png")}
           />
           <View
@@ -317,8 +316,8 @@ class InternationalFlights extends React.PureComponent {
               flex: 1,
               paddingStart: 20
             }}>
-            <Text style={{color: "#5D666D", marginStart: 5}}>Passengers:</Text>
-            <View style={{flexDirection: "row", flex: 1, paddingStart: 5}}>
+            <Text style={{ color: "#5D666D", marginStart: 5 }}>Passengers:</Text>
+            <View style={{ flexDirection: "row", flex: 1, paddingStart: 5 }}>
               <Button
                 style={{
                   backgroundColor: "#F68E1F",
@@ -327,7 +326,7 @@ class InternationalFlights extends React.PureComponent {
                   borderRadius: 12
                 }}
                 onPress={this.setPassengers}>
-                <Text style={{color: "#fff", paddingHorizontal: 15}}>ADD</Text>
+                <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
               </Button>
             </View>
           </View>
@@ -336,19 +335,22 @@ class InternationalFlights extends React.PureComponent {
               flex: 1,
               paddingStart: 20
             }}>
-            <Text style={{color: "#5D666D", marginStart: 5}}>Class</Text>
-            <Picker
-              selectedValue={this.state.class}
-              style={{height: 20, width: 110}}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({class: itemValue, index: itemIndex})
-              }>
-              {classItems}
-              {/* <Picker.Item label="Ecomony" value="E" />
-              <Picker.Item label="Premium Economy" value="PE" />
-              <Picker.Item label="Business" value="B" />
-              <Picker.Item label="First Class" value="F" /> */}
-            </Picker>
+            <Text style={{ color: "#5D666D", marginStart: 5 }}>Class</Text>
+            <RNPickerSelect
+              useNativeAndroidPickerStyle={false}
+              placeholder={{}}
+              value={this.state.class}
+              style={{
+                inputAndroidContainer: { height: 35 },
+                inputAndroid: { paddingStart: 0, color: "#000" },
+                iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
+              }}
+              onValueChange={(itemValue, index) =>
+                this.setState({ class: itemValue, index: index })
+              }
+              items={this.state.className}
+              Icon={() => <Icon name="ios-arrow-down" size={20} />}
+            />
           </View>
         </View>
         <Button
@@ -361,7 +363,7 @@ class InternationalFlights extends React.PureComponent {
             marginVertical: 40
           }}
           onPress={this._search}>
-          <Text style={{color: "#fff", alignSelf: "center"}}>Search</Text>
+          <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
         </Button>
         <AddPassengers visible={this.state.modalPassengers} submit={this.submit} />
 
@@ -415,7 +417,7 @@ class AddPassengers extends React.PureComponent {
     return (
       <Modal animationType="slide" transparent={false} visible={this.props.visible}>
         <View>
-          <View style={{flexDirection: "row", alignItems: "center"}}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Button
               onPress={this.props.submit}
               style={{
@@ -426,7 +428,7 @@ class AddPassengers extends React.PureComponent {
               }}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <Text style={{fontSize: 18}}>Choose Passengers</Text>
+            <Text style={{ fontSize: 18 }}>Choose Passengers</Text>
           </View>
           <View
             style={{
@@ -435,7 +437,7 @@ class AddPassengers extends React.PureComponent {
               marginHorizontal: 20,
               marginVertical: 10
             }}>
-            <View style={{alignItems: "center"}}>
+            <View style={{ alignItems: "center" }}>
               <Text>Adults</Text>
               <Picker
                 selectedValue={this.state.adult}
@@ -446,19 +448,19 @@ class AddPassengers extends React.PureComponent {
                   borderRadius: 5,
                   borderColor: "#000"
                 }}
-                onValueChange={(itemValue, itemIndex) => this.setState({adult: itemValue})}>
+                onValueChange={(itemValue, itemIndex) => this.setState({ adult: itemValue })}>
                 <Picker.Item label="1" value="1" />
                 <Picker.Item label="2" value="2" />
                 <Picker.Item label="3" value="3" />
                 <Picker.Item label="4" value="4" />
               </Picker>
             </View>
-            <View style={{alignItems: "center"}}>
+            <View style={{ alignItems: "center" }}>
               <Text>childrens</Text>
               <Picker
                 selectedValue={this.state.children}
-                style={{height: 50, width: 60}}
-                onValueChange={(itemValue, itemIndex) => this.setState({children: itemValue})}>
+                style={{ height: 50, width: 60 }}
+                onValueChange={(itemValue, itemIndex) => this.setState({ children: itemValue })}>
                 <Picker.Item label="0" value="0" />
                 <Picker.Item label="1" value="1" />
                 <Picker.Item label="2" value="2" />
@@ -466,12 +468,12 @@ class AddPassengers extends React.PureComponent {
                 <Picker.Item label="4" value="4" />
               </Picker>
             </View>
-            <View style={{alignItems: "center"}}>
+            <View style={{ alignItems: "center" }}>
               <Text>Infants</Text>
               <Picker
                 selectedValue={this.state.infants}
-                style={{height: 50, width: 60}}
-                onValueChange={(itemValue, itemIndex) => this.setState({infants: itemValue})}>
+                style={{ height: 50, width: 60 }}
+                onValueChange={(itemValue, itemIndex) => this.setState({ infants: itemValue })}>
                 <Picker.Item label="0" value="0" />
                 <Picker.Item label="1" value="1" />
                 <Picker.Item label="2" value="2" />
@@ -490,7 +492,7 @@ class AddPassengers extends React.PureComponent {
               borderRadius: 20
             }}
             onPress={this._submit}>
-            <Text style={{paddingHorizontal: 40, color: "#fff"}}>Submit</Text>
+            <Text style={{ paddingHorizontal: 40, color: "#fff" }}>Submit</Text>
           </Button>
         </View>
       </Modal>

@@ -313,7 +313,9 @@ class DomesticFlights extends React.PureComponent {
                 inputAndroid: { paddingStart: 0, color: "#000" },
                 iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
               }}
-              onValueChange={itemValue => this.setState({ class: itemValue })}
+              onValueChange={(itemValue, index) =>
+                this.setState({ class: itemValue, index: index })
+              }
               items={className}
               Icon={() => <Icon name="ios-arrow-down" size={20} />}
             />

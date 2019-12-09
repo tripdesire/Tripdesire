@@ -4,7 +4,7 @@ import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
-import { etravosApi } from "../service";
+import { etravosApi, domainApi } from "../service";
 import moment from "moment";
 import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
 import { connect } from "react-redux";
@@ -68,8 +68,15 @@ class SignUp extends React.PureComponent {
 
   _googlelogin = () => {
     GoogleSignin.configure();
-    let u = GoogleSignin.signIn();
-    console.log(u);
+    GoogleSignin.signIn().then(user => {
+      console.log(user.user);
+      let data = user.user;
+      data.mode = "google";
+      console.log(data);
+      domainApi.post("/social-login", data).then(res => {
+        console.log(res);
+      });
+    });
     // this.props.Signin(data.details);
   };
 
