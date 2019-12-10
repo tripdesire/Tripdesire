@@ -1,12 +1,9 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, ScrollView, Dimensions, TextInput } from "react-native";
 import Toast from "react-native-simple-toast";
-import Icon from "react-native-vector-icons/Ionicons";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Stars from "react-native-stars";
 import { etravosApi, domainApi } from "../service";
 import moment from "moment";
-import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
+import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
 import { Signup, Signin } from "../store/action";
 import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
