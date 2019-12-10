@@ -34,6 +34,8 @@ import ThankYouBus from "./Bus/ThankYouBus";
 import ThankYouHotel from "./Hotel/ThankYouHotel";
 import Boarding from "./Bus/Boarding";
 import ForgetPassword from "./ForgetPassword";
+import ProfilePage from "./ProfilePage";
+import BillingDetails from "./BillingDetails";
 
 export {
   Home,
@@ -71,5 +73,7 @@ export {
   ThankYouBus,
   ThankYouHotel,
   Boarding,
-  ForgetPassword
+  ForgetPassword,
+  ProfilePage,
+  BillingDetails
 };
