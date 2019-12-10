@@ -1,10 +1,11 @@
 import React, { PureComponent } from "react";
-import { View, Image, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { View, Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { Button, Text, CheckBox } from "../../components";
 import { uniq, intersection, max, min, isEmpty } from "lodash";
 import { Icon } from "../../components";
 import RangeSlider from "rn-range-slider";
 import moment from "moment";
+import RadioButton from "./RadioButton";
 
 class Filter extends React.Component {
   constructor(props) {
@@ -35,7 +36,18 @@ class Filter extends React.Component {
           { value: "Arrival", bool: false }
         ]
       },
-      index: 0
+      index: 0,
+      radioDirect: false,
+      radioButton: [
+        { Name: "Airline Ascending" },
+        { Name: "Airline Descending" },
+        { Name: "Price Low" },
+        { Name: "Price High" },
+        { Name: "Deaprture Ascending" },
+        { Name: "Deaprture Descending" },
+        { Name: "Arrival Ascending" },
+        { Name: "Arrival Descending" }
+      ]
     };
   }
 
@@ -162,8 +174,30 @@ class Filter extends React.Component {
     onChangeFilter && onChangeFilter(newData);
   };
 
+  _radioButton = (index, value) => {
+    let newData = Object.assign([], this.state.radioButton);
+    for (let i = 0; i < newData.length; i++) {
+      if (newData[i].Name == value) {
+        this.setState({ radioDirect: true });
+      }
+    }
+
+    // let newData = Object.assign([], this.state.radioButton);
+    // newData[index][value] = newData[index][value] == true ? false : true;
+    // for (let i = 0; i < newData.length; i++) {
+    //   if (index == i) {
+    //     continue;
+    //   } else {
+    //     newData[i].radioDirect = false;
+    //   }
+    // }
+    // this.setState({
+    //   radioButton: newData
+    // });
+  };
+
   render() {
-    const { filterTabs, index, filters } = this.state;
+    const { filterTabs, index, filters, radioDirect, radioButton } = this.state;
     const { filterValues } = this.props;
 
     return (
@@ -313,14 +347,16 @@ class Filter extends React.Component {
 
               {index == 7 && (
                 <ScrollView>
-                  {filters.sortBy.map((item, index) => (
-                    <CheckBox
-                      label={item.value}
-                      key={"sortBy_" + item + index}
-                      // checked={filterValues.sortBy.includes(item.value)}
-                      onPress={this.updateFilter("sortBy", index)}
-                    />
-                  ))}
+                  {radioButton &&
+                    radioButton.map((item, index) => (
+                      <RadioButton
+                        key={"sap_" + index}
+                        Name={item.Name}
+                        style={index > 0 ? { marginTop: 20 } : null}
+                        onPress={() => this._radioButton(index, item.Name)}
+                        radioButton={this.state.radioDirect}
+                      />
+                    ))}
                 </ScrollView>
               )}
             </View>

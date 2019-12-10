@@ -110,6 +110,7 @@ class Hotel extends React.PureComponent {
     let data = {};
     if (key == "fromDTpicker") {
       data.CheckIn = date;
+      data.CheckOut = date;
     } else {
       data.CheckOut = date;
     }
@@ -276,7 +277,7 @@ class Hotel extends React.PureComponent {
                     isVisible={toDTpicker}
                     onConfirm={this.handleDatePicked("toDTpicker")}
                     onCancel={this.hideDateTimePicker("toDTpicker")}
-                    minimumDate={new Date()}
+                    minimumDate={this.state.CheckIn}
                   />
                 </View>
               </View>
@@ -298,7 +299,8 @@ class Hotel extends React.PureComponent {
                     flex: 1,
                     paddingStart: 20
                   }}>
-                  <Text style={{ color: "#5D666D", marginStart: 5 }}>
+                  <Text>Rooms & Guest</Text>
+                  <Text style={{ color: "#5D666D" }}>
                     {adults_count === "Passengers:" ? adults_count : ""}
                     {adults_count > 0 ? adults_count + " Adults , " : ""}
                     {children_count > 0 ? children_count + " Children , " : ""}

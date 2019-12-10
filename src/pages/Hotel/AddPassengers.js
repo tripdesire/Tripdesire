@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, Modal, TouchableOpacity, Picker } from "react-native";
 import { Button, Text } from "../../components";
- import {etravosApi}  from "../../service";
+import { etravosApi } from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -86,7 +86,7 @@ class AddPassengers extends React.PureComponent {
                 selectedValue={this.state.room}
                 style={{
                   height: 50,
-                  width: 60,
+                  width: 80,
                   borderWidth: 1,
                   borderRadius: 5,
                   borderColor: "#000"
@@ -114,7 +114,7 @@ class AddPassengers extends React.PureComponent {
                   selectedValue={this.state.data[index].adults}
                   style={{
                     height: 50,
-                    width: 60,
+                    width: 80,
                     borderWidth: 1,
                     borderRadius: 5,
                     borderColor: "#000"
@@ -129,7 +129,7 @@ class AddPassengers extends React.PureComponent {
                 <Text>Children</Text>
                 <Picker
                   selectedValue={this.state.data[index].children}
-                  style={{ height: 50, width: 60 }}
+                  style={{ height: 50, width: 80 }}
                   onValueChange={this.onChildrenChange(index)}>
                   <Picker.Item label="0" value={0} />
                   <Picker.Item label="1" value={1} />
@@ -141,7 +141,7 @@ class AddPassengers extends React.PureComponent {
                   <Text>Child{childIndex + 1} age</Text>
                   <Picker
                     selectedValue={this.state.data[index].childAge[childIndex]}
-                    style={{ height: 50, width: 60 }}
+                    style={{ height: 50, width: 80 }}
                     onValueChange={this.onChildAgeChange(index, childIndex)}>
                     <Picker.Item label="--" value={-1} />
                     <Picker.Item label="<1" value={0} />

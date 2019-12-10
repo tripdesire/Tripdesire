@@ -58,6 +58,7 @@ class DomesticFlights extends React.PureComponent {
     let data = {};
     if (key == "fromDTpicker") {
       data.Journey_date = date;
+      data.Return_date = date;
     } else {
       data.Return_date = date;
     }
@@ -257,7 +258,7 @@ class DomesticFlights extends React.PureComponent {
                 isVisible={toDTpicker}
                 onConfirm={this.handleDatePicked("toDTpicker")}
                 onCancel={this.hideDateTimePicker("toDTpicker")}
-                minimumDate={new Date()}
+                minimumDate={this.state.Journey_date}
               />
             </View>
           )}

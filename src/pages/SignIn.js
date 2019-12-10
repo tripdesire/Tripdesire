@@ -140,7 +140,7 @@ class SignIn extends React.PureComponent {
                 <Text style={{ color: "#000" }}>Forget Password ?</Text>
               </Button>
               <Button style={{ marginStart: 5 }} onPress={this.NavigateToScreen("SignUp")}>
-                <Text style={{ color: "#000" }}>Regiter here ?</Text>
+                <Text style={{ color: "#000" }}>Register here ?</Text>
               </Button>
             </View>
             <View

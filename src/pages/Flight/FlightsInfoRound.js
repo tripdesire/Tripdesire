@@ -1,15 +1,15 @@
-import React, {PureComponent} from "react";
-import {Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView} from "react-native";
-import {Button, Text, ActivityIndicator, HeaderFlights, Icon} from "../../components";
+import React, { PureComponent } from "react";
+import { Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
+import { Button, Text, ActivityIndicator, HeaderFlights, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
-import {withNavigation} from "react-navigation";
+import { withNavigation } from "react-navigation";
 import SwiperFlatList from "react-native-swiper-flatlist";
- import {etravosApi}  from "../../service";
+import { etravosApi } from "../../service";
 import moment from "moment";
 import RenderDomesticRound from "./RenderDomesticRound";
 import Filter from "./Filter";
 
-const {width, height} = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 class FlightsInfoRound extends React.PureComponent {
   constructor(props) {
@@ -78,8 +78,9 @@ class FlightsInfoRound extends React.PureComponent {
       sourceAirportName: data.sourceAirportName,
       destinationAirportName: data.destinationAirportName
     });
-    etravosApi.get("/Flights/AvailableFlights", data)
-      .then(({data}) => {
+    etravosApi
+      .get("/Flights/AvailableFlights", data)
+      .then(({ data }) => {
         this.setState({
           onwardFlightsList: data.DomesticOnwardFlights,
           returnFlightsList: data.DomesticReturnFlights,
@@ -100,7 +101,7 @@ class FlightsInfoRound extends React.PureComponent {
       })
       .catch(error => {
         Toast.show(error, Toast.LONG);
-        this.setState({loader: false});
+        this.setState({ loader: false });
       });
   }
 
@@ -120,7 +121,7 @@ class FlightsInfoRound extends React.PureComponent {
 
   _bookNow = () => {
     console.log("hey");
-    const {returnFlights, onwardFlights, selectedOnward, selectedReturn} = this.state;
+    const { returnFlights, onwardFlights, selectedOnward, selectedReturn } = this.state;
     let param = {
       arrivalFlight: returnFlights[selectedReturn],
       departFlight: onwardFlights[selectedOnward],
@@ -151,28 +152,28 @@ class FlightsInfoRound extends React.PureComponent {
 
   _onPress = value => () => {
     if (value == "Depart") {
-      this.scrollRef.scrollToIndex({index: 0});
+      this.scrollRef.scrollToIndex({ index: 0 });
     } else if (value == "Return") {
-      this.scrollRef.scrollToIndex({index: 1});
+      this.scrollRef.scrollToIndex({ index: 1 });
     }
   };
 
-  _onChangeIndex = ({index}) => {
-    this.setState({swiperIndex: index});
+  _onChangeIndex = ({ index }) => {
+    this.setState({ swiperIndex: index });
   };
 
   openFilter = () => {
-    this.setState({showFilter: true});
+    this.setState({ showFilter: true });
   };
   closeFilter = () => {
-    this.setState({showFilter: false});
+    this.setState({ showFilter: false });
   };
   onChangeFilter = filterValues => {
-    this.setState({filterValues});
+    this.setState({ filterValues });
   };
 
   filter = () => {
-    const {filterValues, onwardFlightsList, returnFlightsList, flight_type} = this.state;
+    const { filterValues, onwardFlightsList, returnFlightsList, flight_type } = this.state;
 
     let onwardFlights = onwardFlightsList.filter(
       item =>
@@ -218,7 +219,7 @@ class FlightsInfoRound extends React.PureComponent {
     }
   };
 
-  _renderItemOnward = ({item, index}) => {
+  _renderItemOnward = ({ item, index }) => {
     return (
       <RenderDomesticRound
         item={item}
@@ -241,7 +242,7 @@ class FlightsInfoRound extends React.PureComponent {
     );
   };
 
-  _renderItemReturn = ({item, index}) => {
+  _renderItemReturn = ({ item, index }) => {
     return (
       <RenderDomesticRound
         item={item}
@@ -292,9 +293,9 @@ class FlightsInfoRound extends React.PureComponent {
     } = this.state;
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flex: 1, backgroundColor: "#FFFFFF"}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <HeaderFlights
               from={from}
               to={to}
@@ -304,7 +305,7 @@ class FlightsInfoRound extends React.PureComponent {
               Child={Child}
               Infant={Infant}
               className={className}
-              style={{backgroundColor: "#E5EBF7", paddingBottom: 8}}>
+              style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}>
               <Button
                 style={{
                   flexDirection: "row",
@@ -314,7 +315,7 @@ class FlightsInfoRound extends React.PureComponent {
                 }}
                 onPress={this.openFilter}>
                 <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                <Text style={{fontSize: 12, marginHorizontal: 5, color: "#717984"}}>
+                <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
                   Sort & Filter
                 </Text>
               </Button>
@@ -328,27 +329,27 @@ class FlightsInfoRound extends React.PureComponent {
                 alignItems: "center"
               }}>
               <View>
-                <Text style={{color: "#5F6D78"}}>Departure</Text>
-                <Text style={{color: "#212C4C", fontSize: 18, fontWeight: "700"}}>
+                <Text style={{ color: "#5F6D78" }}>Departure</Text>
+                <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                   $ {onwardFare}
                 </Text>
               </View>
               <View>
-                <Text style={{color: "#5F6D78"}}>Return</Text>
-                <Text style={{color: "#212C4C", fontSize: 18, fontWeight: "700"}}>
+                <Text style={{ color: "#5F6D78" }}>Return</Text>
+                <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                   $ {returnFare}
                 </Text>
               </View>
               <View>
-                <Text style={{color: "#5F6D78"}}>Total</Text>
-                <Text style={{color: "#212C4C", fontSize: 18, fontWeight: "700"}}>
+                <Text style={{ color: "#5F6D78" }}>Total</Text>
+                <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                   $ {onwardFare + returnFare}
                 </Text>
               </View>
               <Button
-                style={{backgroundColor: "#F68E1F", borderRadius: 15}}
+                style={{ backgroundColor: "#F68E1F", borderRadius: 15 }}
                 onPress={this._bookNow}>
-                <Text style={{color: "#fff", paddingHorizontal: 10, paddingVertical: 4}}>
+                <Text style={{ color: "#fff", paddingHorizontal: 10, paddingVertical: 4 }}>
                   Book Now
                 </Text>
               </Button>
@@ -370,16 +371,22 @@ class FlightsInfoRound extends React.PureComponent {
                 marginHorizontal: 16
               }}>
               <Button
-                style={[styles.tabBtn, {backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff"}]}
+                style={[
+                  styles.tabBtn,
+                  { backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff" }
+                ]}
                 onPress={this._onPress("Depart")}>
-                <Text style={{fontSize: 12, color: swiperIndex == 0 ? "#ffffff" : "#000000"}}>
+                <Text style={{ fontSize: 12, color: swiperIndex == 0 ? "#ffffff" : "#000000" }}>
                   Depart
                 </Text>
               </Button>
               <Button
-                style={[styles.tabBtn, {backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff"}]}
+                style={[
+                  styles.tabBtn,
+                  { backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff" }
+                ]}
                 onPress={this._onPress("Return")}>
-                <Text style={{fontSize: 12, color: swiperIndex == 1 ? "#ffffff" : "#000000"}}>
+                <Text style={{ fontSize: 12, color: swiperIndex == 1 ? "#ffffff" : "#000000" }}>
                   Return
                 </Text>
               </Button>
@@ -393,14 +400,14 @@ class FlightsInfoRound extends React.PureComponent {
                 data={onwardFlights}
                 keyExtractor={this._keyExtractorOnward}
                 renderItem={this._renderItemOnward}
-                contentContainerStyle={{width, paddingHorizontal: 8}}
+                contentContainerStyle={{ width, paddingHorizontal: 8 }}
                 extraData={this.state.selectedOnward}
               />
               <FlatList
                 data={returnFlights}
                 keyExtractor={this._keyExtractorReturn}
                 renderItem={this._renderItemReturn}
-                contentContainerStyle={{width, paddingHorizontal: 8}}
+                contentContainerStyle={{ width, paddingHorizontal: 8 }}
                 extraData={this.state.selectedReturn}
               />
             </SwiperFlatList>

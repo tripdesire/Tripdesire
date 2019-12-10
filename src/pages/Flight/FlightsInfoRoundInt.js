@@ -229,7 +229,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
                     }}
                     onPress={this.openFilter}>
                     <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                    <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
                       Sort & Filter
                     </Text>
                   </Button>
