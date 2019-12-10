@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Image,
@@ -10,7 +10,7 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import {Button, Text, AutoCompleteModal, ActivityIndicator, Icon} from "../../components";
+import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -18,12 +18,12 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
- import {etravosApi}  from "../../service";
-import {Header} from "../../components";
+import { etravosApi } from "../../service";
+import { Header } from "../../components";
 import SuggLoc from "./LocationModal";
 import Autocomplete from "react-native-autocomplete-input";
 
-const {height} = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 class Cab extends React.PureComponent {
   constructor(props) {
@@ -74,36 +74,36 @@ class Cab extends React.PureComponent {
       selectedTransfer: 1,
       suggItem: "",
       item: [
-        {label: "3:30pm", value: "3:30pm"},
-        {label: "3:45pm", value: "3:45pm"},
-        {label: "4:00pm", value: "4:00pm"},
-        {label: "4:15pm", value: "4:15pm"},
-        {label: "4:30pm", value: "4:30pm"},
-        {label: "4:45pm", value: "4:45pm"},
-        {label: "5:00pm", value: "5:00pm"},
-        {label: "5:15pm", value: "5:15pm"},
-        {label: "5:30pm", value: "5:30pm"},
-        {label: "5:45pm", value: "5:45pm"},
-        {label: "6:00pm", value: "6:00pm"},
-        {label: "6:15pm", value: "6:15pm"},
-        {label: "6:30pm", value: "6:30pm"},
-        {label: "6:45pm", value: "6:45pm"},
-        {label: "7:00pm", value: "7:00pm"},
-        {label: "7:15pm", value: "7:15pm"},
-        {label: "7:30pm", value: "7:30pm"},
-        {label: "7:45pm", value: "7:45pm"},
-        {label: "8:00pm", value: "8:00pm"},
-        {label: "8:15pm", value: "8:15pm"},
-        {label: "8:30pm", value: "8:30pm"},
-        {label: "8:45pm", value: "8:45pm"},
-        {label: "9:00pm", value: "9:00pm"},
-        {label: "9:15pm", value: "9:15pm"},
-        {label: "9:30pm", value: "9:30pm"},
-        {label: "9:45pm", value: "9:45pm"},
-        {label: "10:00pm", value: "10:00pm"},
-        {label: "10:15pm", value: "10:15pm"},
-        {label: "10:30pm", value: "10:30pm"},
-        {label: "10:45pm", value: "10:45pm"}
+        { label: "3:30pm", value: "3:30pm" },
+        { label: "3:45pm", value: "3:45pm" },
+        { label: "4:00pm", value: "4:00pm" },
+        { label: "4:15pm", value: "4:15pm" },
+        { label: "4:30pm", value: "4:30pm" },
+        { label: "4:45pm", value: "4:45pm" },
+        { label: "5:00pm", value: "5:00pm" },
+        { label: "5:15pm", value: "5:15pm" },
+        { label: "5:30pm", value: "5:30pm" },
+        { label: "5:45pm", value: "5:45pm" },
+        { label: "6:00pm", value: "6:00pm" },
+        { label: "6:15pm", value: "6:15pm" },
+        { label: "6:30pm", value: "6:30pm" },
+        { label: "6:45pm", value: "6:45pm" },
+        { label: "7:00pm", value: "7:00pm" },
+        { label: "7:15pm", value: "7:15pm" },
+        { label: "7:30pm", value: "7:30pm" },
+        { label: "7:45pm", value: "7:45pm" },
+        { label: "8:00pm", value: "8:00pm" },
+        { label: "8:15pm", value: "8:15pm" },
+        { label: "8:30pm", value: "8:30pm" },
+        { label: "8:45pm", value: "8:45pm" },
+        { label: "9:00pm", value: "9:00pm" },
+        { label: "9:15pm", value: "9:15pm" },
+        { label: "9:30pm", value: "9:30pm" },
+        { label: "9:45pm", value: "9:45pm" },
+        { label: "10:00pm", value: "10:00pm" },
+        { label: "10:15pm", value: "10:15pm" },
+        { label: "10:30pm", value: "10:30pm" },
+        { label: "10:45pm", value: "10:45pm" }
       ]
     };
 
@@ -125,17 +125,18 @@ class Cab extends React.PureComponent {
   // }
 
   showDateTimePicker = key => () => {
-    this.setState({[key]: true});
+    this.setState({ [key]: true });
   };
 
   hideDateTimePicker = key => () => {
-    this.setState({[key]: false});
+    this.setState({ [key]: false });
   };
 
   handleDatePicked = key => date => {
     let data = {};
     if (key == "fromDTpicker") {
       data.CheckIn = date;
+      data.CheckOut = date;
     } else {
       data.CheckOut = date;
     }
@@ -175,19 +176,19 @@ class Cab extends React.PureComponent {
 
   handlePickupLocation = item => {
     console.log(item);
-    this.setState({modalPickupLocationSugg: false, pickuplocation: item});
+    this.setState({ modalPickupLocationSugg: false, pickuplocation: item });
   };
 
   handleDropLocation = item => {
-    this.setState({modalDropSugg: false, droplocation: item});
+    this.setState({ modalDropSugg: false, droplocation: item });
   };
 
   itemSingle = item => {
-    this.setState({SuggPickup: item});
+    this.setState({ SuggPickup: item });
   };
 
   setModalVisible = (key, visible) => () => {
-    this.setState({[key]: visible});
+    this.setState({ [key]: visible });
   };
 
   _triptype = value => {
@@ -325,10 +326,10 @@ class Cab extends React.PureComponent {
 
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flexDirection: "column", backgroundColor: "#E4EAF6", height: 100}}>
-            <View style={{backgroundColor: "#E4EAF6", height: 56}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flexDirection: "column", backgroundColor: "#E4EAF6", height: 100 }}>
+            <View style={{ backgroundColor: "#E4EAF6", height: 56 }}>
               <Header
                 firstName="Cab"
                 lastName="Search"
@@ -350,7 +351,7 @@ class Cab extends React.PureComponent {
                 backgroundColor: backgroundColorLocal,
                 elevation: 1,
                 height: 30,
-                shadowOffset: {width: 0, height: 2},
+                shadowOffset: { width: 0, height: 2 },
                 shadowColor: "rgba(0,0,0,0.1)",
                 shadowOpacity: 1,
                 shadowRadius: 4,
@@ -360,13 +361,13 @@ class Cab extends React.PureComponent {
                 borderTopStartRadius: 5
               }}
               onPress={() => this._triptype("oneway")}>
-              <Text style={{color: buttonTextColorLocal, fontSize: 12}}>Local</Text>
+              <Text style={{ color: buttonTextColorLocal, fontSize: 12 }}>Local</Text>
             </Button>
             <Button
               style={{
                 backgroundColor: backgroundColorOutstation,
                 elevation: 1,
-                shadowOffset: {width: 0, height: 2},
+                shadowOffset: { width: 0, height: 2 },
                 shadowColor: "rgba(0,0,0,0.1)",
                 shadowOpacity: 1,
                 shadowRadius: 4,
@@ -387,7 +388,7 @@ class Cab extends React.PureComponent {
               style={{
                 backgroundColor: backgroundColorTransfer,
                 elevation: 1,
-                shadowOffset: {width: 0, height: 2},
+                shadowOffset: { width: 0, height: 2 },
                 shadowColor: "rgba(0,0,0,0.1)",
                 shadowOpacity: 1,
                 shadowRadius: 4,
@@ -408,7 +409,7 @@ class Cab extends React.PureComponent {
             </Button>
           </View>
 
-          <ScrollView contentContainerStyle={{backgroundColor: "#FFFFFF"}}>
+          <ScrollView contentContainerStyle={{ backgroundColor: "#FFFFFF" }}>
             {_select_round && (
               <View
                 style={{
@@ -426,18 +427,18 @@ class Cab extends React.PureComponent {
                   source={require("../../assets/imgs/white-arrow-left-side.png")}
                 />
                 <Button
-                  style={{justifyContent: "center"}}
+                  style={{ justifyContent: "center" }}
                   onPress={() => this._SelectTripType("oneway")}>
-                  <Text style={{color: tripTypeColorLocal}}>One Way</Text>
+                  <Text style={{ color: tripTypeColorLocal }}>One Way</Text>
                 </Button>
                 <Image
-                  style={{width: 25, resizeMode: "contain", marginHorizontal: 5}}
+                  style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
                   source={require("../../assets/imgs/Round-trip-arrow.png")}
                 />
                 <Button
-                  style={{justifyContent: "center"}}
+                  style={{ justifyContent: "center" }}
                   onPress={() => this._SelectTripType("round")}>
-                  <Text style={{color: tripTypeColorOutstation}}>Round Trip</Text>
+                  <Text style={{ color: tripTypeColorOutstation }}>Round Trip</Text>
                 </Button>
               </View>
             )}
@@ -459,27 +460,27 @@ class Cab extends React.PureComponent {
                   source={require("../../assets/imgs/white-arrow-left-side.png")}
                 />
                 <Button
-                  style={{justifyContent: "center"}}
+                  style={{ justifyContent: "center" }}
                   onPress={() => this._SelectTripType("airpot")}>
-                  <Text style={{color: tripTypeColorTransferAirpot}}>Airpot</Text>
+                  <Text style={{ color: tripTypeColorTransferAirpot }}>Airpot</Text>
                 </Button>
                 <Image
-                  style={{width: 25, resizeMode: "contain", marginHorizontal: 5}}
+                  style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
                   source={require("../../assets/imgs/Round-trip-arrow.png")}
                 />
                 <Button
-                  style={{justifyContent: "center"}}
+                  style={{ justifyContent: "center" }}
                   onPress={() => this._SelectTripType("railway")}>
-                  <Text style={{color: tripTypeColorTransferRailway}}>Railway Station</Text>
+                  <Text style={{ color: tripTypeColorTransferRailway }}>Railway Station</Text>
                 </Button>
                 <Image
-                  style={{width: 25, resizeMode: "contain", marginHorizontal: 5}}
+                  style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
                   source={require("../../assets/imgs/Round-trip-arrow.png")}
                 />
                 <Button
-                  style={{justifyContent: "center"}}
+                  style={{ justifyContent: "center" }}
                   onPress={() => this._SelectTripType("hotel")}>
-                  <Text style={{color: tripTypeColorTransferHotel}}>Area/Hotel</Text>
+                  <Text style={{ color: tripTypeColorTransferHotel }}>Area/Hotel</Text>
                 </Button>
               </View>
             )}
@@ -498,9 +499,9 @@ class Cab extends React.PureComponent {
                   justifyContent: "space-between",
                   flex: 1
                 }}>
-                <View style={{flex: 1}}>
-                  <Text style={{color: "#5D666D"}}>From</Text>
-                  <Text style={{fontSize: 18}} onPress={this.setModalVisible("modalFrom", true)}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ color: "#5D666D" }}>From</Text>
+                  <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalFrom", true)}>
                     {from}
                   </Text>
                 </View>
@@ -521,9 +522,9 @@ class Cab extends React.PureComponent {
                     flexDirection: "row"
                   }}>
                   <IconMaterial name="bus" size={40} color="#A5A9AC" />
-                  <View style={{marginStart: 20, flex: 1}}>
-                    <Text style={{color: "#5D666D"}}>To</Text>
-                    <Text style={{fontSize: 18}} onPress={this.setModalVisible("modalTo", true)}>
+                  <View style={{ marginStart: 20, flex: 1 }}>
+                    <Text style={{ color: "#5D666D" }}>To</Text>
+                    <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalTo", true)}>
                       {to}
                     </Text>
                   </View>
@@ -546,10 +547,10 @@ class Cab extends React.PureComponent {
                     flexDirection: "row"
                   }}>
                   <SimpleLineIcons name="location-pin" size={40} color="#A5A9AC" />
-                  <View style={{marginStart: 20, flex: 1}}>
-                    <Text style={{color: "#5D666D"}}>Pickup Location</Text>
+                  <View style={{ marginStart: 20, flex: 1 }}>
+                    <Text style={{ color: "#5D666D" }}>Pickup Location</Text>
                     <Text
-                      style={{fontSize: 18}}
+                      style={{ fontSize: 18 }}
                       onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
                       {pickuplocation != "" ? pickuplocation : "Tap To Enter"}
                     </Text>
@@ -573,10 +574,10 @@ class Cab extends React.PureComponent {
                     flexDirection: "row"
                   }}>
                   <SimpleLineIcons name="location-pin" size={40} color="#A5A9AC" />
-                  <View style={{marginStart: 20, flex: 1}}>
-                    <Text style={{color: "#5D666D"}}>Drop Location</Text>
+                  <View style={{ marginStart: 20, flex: 1 }}>
+                    <Text style={{ color: "#5D666D" }}>Drop Location</Text>
                     <Text
-                      style={{fontSize: 18}}
+                      style={{ fontSize: 18 }}
                       onPress={this.setModalVisible("modalDropSugg", true)}>
                       {droplocation != "" ? droplocation : "Tap To Enter"}
                     </Text>
@@ -585,7 +586,7 @@ class Cab extends React.PureComponent {
               </View>
             )}
 
-            <View style={{height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF"}}></View>
+            <View style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
 
             <View
               style={{
@@ -595,7 +596,7 @@ class Cab extends React.PureComponent {
                 alignItems: "center"
               }}>
               <Image
-                style={{width: 25, resizeMode: "contain", marginStart: 10}}
+                style={{ width: 25, resizeMode: "contain", marginStart: 10 }}
                 source={require("../../assets/imgs/cal.png")}
               />
               <View
@@ -603,10 +604,10 @@ class Cab extends React.PureComponent {
                   flex: 1,
                   paddingStart: 20
                 }}>
-                <Text style={{color: "#5D666D", marginStart: 5}}>Depart</Text>
+                <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
 
                 <Button
-                  style={{flex: 1, marginStart: 5}}
+                  style={{ flex: 1, marginStart: 5 }}
                   onPress={this.showDateTimePicker("fromDTpicker")}>
                   <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
                 </Button>
@@ -623,9 +624,9 @@ class Cab extends React.PureComponent {
                     flex: 1,
                     paddingStart: 20
                   }}>
-                  <Text style={{color: "#5D666D", marginStart: 5}}>Return</Text>
+                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
                   <Button
-                    style={{flex: 1, marginStart: 5}}
+                    style={{ flex: 1, marginStart: 5 }}
                     onPress={this.showDateTimePicker("toDTpicker")}>
                     <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
                   </Button>
@@ -633,7 +634,7 @@ class Cab extends React.PureComponent {
                     isVisible={toDTpicker}
                     onConfirm={this.handleDatePicked("toDTpicker")}
                     onCancel={this.hideDateTimePicker("toDTpicker")}
-                    minimumDate={new Date()}
+                    minimumDate={this.state.CheckIn}
                   />
                 </View>
               )}
@@ -641,7 +642,7 @@ class Cab extends React.PureComponent {
 
             {!_select_round && transfer != 1 && (
               <View>
-                <Text style={{marginHorizontal: 16}}>Pickup Trip</Text>
+                <Text style={{ marginHorizontal: 16 }}>Pickup Trip</Text>
                 <View
                   style={{
                     marginHorizontal: 16,
@@ -655,12 +656,12 @@ class Cab extends React.PureComponent {
                   }}>
                   <RNPickerSelect
                     //  placeholder={placeholderTrip}
-                    onValueChange={value => this.setState({tripType: value})}
+                    onValueChange={value => this.setState({ tripType: value })}
                     items={[
-                      {label: "4 hrs", value: "4"},
-                      {label: "8 hrs", value: "8"},
-                      {label: "12 hrs", value: "12"},
-                      {label: "24 hrs", value: "24"}
+                      { label: "4 hrs", value: "4" },
+                      { label: "8 hrs", value: "8" },
+                      { label: "12 hrs", value: "12" },
+                      { label: "24 hrs", value: "24" }
                     ]}
                     style={{
                       iconContainer: {
@@ -678,7 +679,7 @@ class Cab extends React.PureComponent {
             )}
 
             <View>
-              <Text style={{marginHorizontal: 16}}>Pickup Time</Text>
+              <Text style={{ marginHorizontal: 16 }}>Pickup Time</Text>
               <View
                 style={{
                   marginHorizontal: 16,
@@ -692,7 +693,7 @@ class Cab extends React.PureComponent {
                 }}>
                 <RNPickerSelect
                   // placeholder={placeholder}
-                  onValueChange={value => this.setState({pickuptime: value})}
+                  onValueChange={value => this.setState({ pickuptime: value })}
                   items={this.state.item}
                   style={{
                     iconContainer: {
@@ -718,7 +719,7 @@ class Cab extends React.PureComponent {
                 marginVertical: 40
               }}
               onPress={this._search}>
-              <Text style={{color: "#fff", alignSelf: "center"}}>Search</Text>
+              <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
             </Button>
           </ScrollView>
 

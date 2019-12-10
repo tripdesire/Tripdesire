@@ -12,12 +12,13 @@ import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
- import {etravosApi}  from "../service";
+import { etravosApi, domainApi } from "../service";
 import moment from "moment";
-import { Button, Text, TextInputComponent } from "../components";
+import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
 import { connect } from "react-redux";
-import { Signup } from "../store/action";
-import { Signin } from "../store/action";
+import { Signup, Signin } from "../store/action";
+import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
+import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
 
 class SignIn extends React.PureComponent {
@@ -25,27 +26,70 @@ class SignIn extends React.PureComponent {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      loader: false
     };
   }
 
-  navigateToScreen = (page, params = {}) => () => {
-    axios.post("https://demo66.tutiixx.com/wp-json/wc/v2/login", this.state).then(res => {
-      console.log(res);
-      if (this.state.email != "" && this.state.password != "") {
-        if (res.data.code == 1) {
-          this.props.navigation.navigate(page);
-        } else {
-          Toast.show("Wrong Email And Password.", ToastAndroid.SHORT);
-        }
-      } else {
-        Toast.show("Please enter the email and password.", ToastAndroid.SHORT);
-      }
-    });
+  navigateToScreen = () => {
+    console.log(this.state);
+    if (this.state.email != "" && this.state.password != "") {
+      this.setState({ loader: true });
+      let param = {
+        email: this.state.email,
+        password: this.state.password
+      };
+      domainApi
+        .post("/login", param)
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code == "1") {
+            this.setState({ loader: false });
+            this.props.Signin(data.details);
+            this.props.navigation.navigate("Home");
+            Toast.show("You have successfully login", ToastAndroid.SHORT);
+          } else {
+            this.setState({ loader: false });
+            Toast.show("Wrong Email And Password.", ToastAndroid.SHORT);
+          }
+        })
+        .catch(error => {
+          this.setState({ loader: false });
+          Toast.show(error, ToastAndroid.SHORT);
+        });
+    } else {
+      Toast.show("Please enter the email and password.", ToastAndroid.SHORT);
+    }
   };
 
   NavigateToScreen = page => () => {
     this.props.navigation.navigate(page);
+  };
+
+  _Social_login = social => {
+    if (social == "google") {
+      GoogleSignin.configure();
+      GoogleSignin.signIn().then(user => {
+        let details = user.user;
+        details.mode = "google";
+        this.setState({ loader: true });
+        domainApi.post("/social-login", details).then(({ data }) => {
+          console.log(data);
+          if (data.code == 1) {
+            this.setState({ loader: false });
+            this.props.Signin(data.details);
+            this.props.navigation.navigate("Home");
+            Toast.show("you are login successfully", Toast.LONG);
+          } else {
+            Toast.show("you are not login successfully", Toast.LONG);
+          }
+        });
+      });
+    } else if (social == "facebook") {
+      AccessToken.getCurrentAccessToken().then(data => {
+        console.log(data);
+      });
+    }
   };
 
   render() {
@@ -88,7 +132,7 @@ class SignIn extends React.PureComponent {
               value={this.state.password}
               onChangeText={text => this.setState({ password: text })}
             />
-            <Button style={styles.button} onPress={this.navigateToScreen("Home")}>
+            <Button style={styles.button} onPress={this.navigateToScreen}>
               <Text style={{ color: "#fff" }}>Login</Text>
             </Button>
             <View style={{ flexDirection: "row", justifyContent: "center", marginVertical: 20 }}>
@@ -96,7 +140,7 @@ class SignIn extends React.PureComponent {
                 <Text style={{ color: "#000" }}>Forget Password ?</Text>
               </Button>
               <Button style={{ marginStart: 5 }} onPress={this.NavigateToScreen("SignUp")}>
-                <Text style={{ color: "#000" }}>Regiter here ?</Text>
+                <Text style={{ color: "#000" }}>Register here ?</Text>
               </Button>
             </View>
             <View
@@ -117,11 +161,15 @@ class SignIn extends React.PureComponent {
               }}>
               <Text>Or</Text>
             </View>
-            <Button style={[styles.facebook_google_button, { marginTop: 20 }]}>
+            <Button
+              style={[styles.facebook_google_button, { marginTop: 20 }]}
+              onPress={() => this._Social_login("google")}>
               <Image source={require("../assets/imgs/google.png")} />
               <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
             </Button>
-            <Button style={[styles.facebook_google_button, { marginTop: 10 }]}>
+            <Button
+              style={[styles.facebook_google_button, { marginTop: 10 }]}
+              onPress={() => this._Social_login("facebook")}>
               <Image
                 style={{ width: 40, height: 40 }}
                 resizeMode="contain"
@@ -131,6 +179,7 @@ class SignIn extends React.PureComponent {
             </Button>
           </View>
         </ScrollView>
+        {this.state.loader && <ActivityIndicator />}
       </View>
     );
   }
@@ -141,8 +190,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F68E1F",
     height: 48,
     marginTop: 40,
+    width: 200,
     marginHorizontal: 50,
-    paddingHorizontal: 80,
+    paddingHorizontal: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25
@@ -151,6 +201,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#Fff",
     height: 48,
+    width: 200,
     borderWidth: 1,
     borderColor: "#D2D1D1",
     marginHorizontal: 50,
@@ -161,11 +212,12 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapDispatchToProps = {
+  Signin
+};
+
 const mapStateToProps = state => ({
   signUp: state.signUp
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -7,7 +7,8 @@ import {
   Modal,
   TextInput,
   Dimensions,
-  SafeAreaView
+  SafeAreaView,
+  TouchableOpacity
 } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -59,8 +60,6 @@ class HotelInfo extends React.PureComponent {
           this.props.navigation.goBack(null);
           Toast.show("No Data Found.", Toast.SHORT);
         }
-        //console.log(data.AvailableHotels);
-        //console.log(data.AvailableHotels[0].HotelImages[0].Imagepath);
         this.setState({
           hotels: data.AvailableHotels,
           filteredHotels: data.AvailableHotels,
@@ -134,7 +133,7 @@ class HotelInfo extends React.PureComponent {
     var str = item.HotelImages[0].Imagepath;
     var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
     return (
-      <View
+      <TouchableOpacity
         style={{
           padding: index % 2 == 0 ? 10 : 26,
           marginTop: 16,
@@ -143,7 +142,8 @@ class HotelInfo extends React.PureComponent {
           elevation: index % 2 == 0 ? 1 : null,
           borderRadius: index % 2 == 0 ? 5 : null,
           backgroundColor: index % 2 == 0 ? null : "#E9ECF3"
-        }}>
+        }}
+        onPress={() => this._BookNow(item, index)}>
         <Image
           style={{ width: width / 4, height: height / 6, borderRadius: 5 }}
           resizeMode="cover"
@@ -241,7 +241,7 @@ class HotelInfo extends React.PureComponent {
             </Button>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -357,6 +357,11 @@ class HotelInfo extends React.PureComponent {
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}
               />
+              {filteredHotels.length == 0 && (
+                <View style={{ flex: 5, alignItems: "center", justifyContent: "center" }}>
+                  <Text>Data not found</Text>
+                </View>
+              )}
             </View>
             <Modal
               animationType="slide"

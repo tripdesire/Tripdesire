@@ -5,7 +5,11 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
 import axios from "axios";
+import { isEmpty } from "lodash";
+import { connect } from "react-redux";
+import { etravosApi, domainApi } from "../service";
 import moment from "moment";
+
 class Order extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -21,31 +25,42 @@ class Order extends React.PureComponent {
   };
 
   componentDidMount() {
-    axios
-      .get("http://tripdesire.co/wp-json/wc/v2/nutri-user/7/order-list")
-      .then(res => {
-        console.log(res.data);
-        if (res.data.status == 1) {
-          this.setState({
-            orders: res.data.data,
-            loader: false
-          });
-        } else {
-          Toast.show("Data not found.", Toast.SHORT);
-          this.setState({ loader: false });
-        }
-      })
-      .catch(error => {
-        console.log(error, Toast.LONG);
+    const { signIn } = this.props;
+
+    if (isEmpty(signIn)) {
+      this.setState({
+        loader: false,
+        orders: 0
       });
+      Toast.show("Please login or signup", Toast.LONG);
+    } else {
+      domainApi
+        .get("/nutri-user/" + signIn.id + "/order-list")
+        .then(({ data }) => {
+          console.log(data);
+          if (data.status == 1) {
+            this.setState({
+              orders: data.data,
+              loader: false
+            });
+          } else {
+            Toast.show("Orders are not found", Toast.SHORT);
+            this.setState({ loader: false });
+          }
+        })
+        .catch(error => {
+          console.log(error, Toast.LONG);
+        });
+    }
   }
 
   status = value => {
-    if (value == "completed") return <Text style={{ color: "green" }}>{value}</Text>;
+    if (value == "completed")
+      return <Text style={{ color: "green", lineHeight: 18 }}>{value}</Text>;
   };
 
   _renderItem = ({ item, index }) => {
-    let date = moment(item.date_created).format("MMM DD YYYY");
+    let date = moment(item.order_data.date_created).format("MMM DD YYYY");
     return (
       <TouchableOpacity
         style={{
@@ -62,22 +77,22 @@ class Order extends React.PureComponent {
             justifyContent: "space-between"
           }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.Heading}>Booking Id :</Text>
-            <Text>{item.id}</Text>
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Booking Id : </Text>
+            <Text style={{ lineHeight: 18 }}>{item.order_data.id}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.Heading}>Status :</Text>
-            {this.status(item.status)}
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Status : </Text>
+            {this.status(item.order_data.status)}
           </View>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.Heading}>Date :</Text>
-            <Text>{date}</Text>
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Date : </Text>
+            <Text style={{ lineHeight: 20 }}>{date}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.Heading}>Total :</Text>
-            <Text>{item.total}</Text>
+            <Text style={[styles.Heading, { lineHeight: 20 }]}>Total : </Text>
+            <Text style={{ lineHeight: 20 }}>{item.order_data.total}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -92,7 +107,7 @@ class Order extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View>
+          <View style={{ flex: 1 }}>
             <View
               style={{
                 flexDirection: "row",
@@ -119,8 +134,14 @@ class Order extends React.PureComponent {
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
             />
-            {loader && <ActivityIndicator />}
+
+            {this.state.orders <= 0 && (
+              <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                <Text>Orders are not found</Text>
+              </View>
+            )}
           </View>
+          {loader && <ActivityIndicator />}
         </SafeAreaView>
       </>
     );
@@ -131,4 +152,8 @@ const styles = StyleSheet.create({
   Heading: { fontSize: 16, fontWeight: "700" }
 });
 
-export default Order;
+const mapStateToProps = state => ({
+  signIn: state.signIn
+});
+
+export default connect(mapStateToProps, null)(Order);

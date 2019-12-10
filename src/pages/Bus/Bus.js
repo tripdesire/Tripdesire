@@ -1,12 +1,12 @@
-import React, {PureComponent} from "react";
-import {View, Image, Modal, StyleSheet, SafeAreaView} from "react-native";
-import {Button, Text, AutoCompleteModal} from "../../components";
+import React, { PureComponent } from "react";
+import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
+import { Button, Text, AutoCompleteModal } from "../../components";
 import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
- import {etravosApi}  from "../../service";
-import {Header} from "../../components";
+import { etravosApi } from "../../service";
+import { Header } from "../../components";
 
 class Bus extends React.PureComponent {
   constructor(props) {
@@ -40,17 +40,18 @@ class Bus extends React.PureComponent {
   }
 
   showDateTimePicker = key => () => {
-    this.setState({[key]: true});
+    this.setState({ [key]: true });
   };
 
   hideDateTimePicker = key => () => {
-    this.setState({[key]: false});
+    this.setState({ [key]: false });
   };
 
   handleDatePicked = key => date => {
     let data = {};
     if (key == "fromDTpicker") {
       data.CheckIn = date;
+      data.CheckOut = date;
     } else {
       data.CheckOut = date;
     }
@@ -59,7 +60,7 @@ class Bus extends React.PureComponent {
   };
 
   setModalVisible = (key, visible) => () => {
-    this.setState({[key]: visible});
+    this.setState({ [key]: visible });
   };
 
   setDate = (event, date) => {
@@ -111,7 +112,7 @@ class Bus extends React.PureComponent {
   };
 
   setModalVisible = (key, visible) => () => {
-    this.setState({[key]: visible});
+    this.setState({ [key]: visible });
   };
 
   _exchange = () => {
@@ -166,10 +167,10 @@ class Bus extends React.PureComponent {
     } = this.state;
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: "#E5EBF7"}} />
-        <SafeAreaView style={{flex: 1, backgroundColor: "#ffffff"}}>
-          <View style={{flexDirection: "column", flex: 1}}>
-            <View style={{flex: 1, backgroundColor: "#E4EAF6"}}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flexDirection: "column", flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
               <Header
                 firstName="Bus"
                 lastName="Search"
@@ -177,9 +178,9 @@ class Bus extends React.PureComponent {
               />
             </View>
 
-            <View style={{height: 30, width: "100%"}}>
-              <View style={{flex: 2, backgroundColor: "#E4EAF6"}}></View>
-              <View style={{flex: 1, backgroundColor: "#FFFFFF"}}></View>
+            <View style={{ height: 30, width: "100%" }}>
+              <View style={{ flex: 2, backgroundColor: "#E4EAF6" }}></View>
+              <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
               <View
                 style={{
                   flexDirection: "row",
@@ -197,7 +198,7 @@ class Bus extends React.PureComponent {
                     borderTopStartRadius: 5
                   }}
                   onPress={() => this._triptype("onewway")}>
-                  <Text style={{color: Button_text_color_oneway, fontSize: 12}}>Oneway</Text>
+                  <Text style={{ color: Button_text_color_oneway, fontSize: 12 }}>Oneway</Text>
                 </Button>
                 <Button
                   style={{
@@ -221,7 +222,7 @@ class Bus extends React.PureComponent {
               </View>
             </View>
 
-            <View style={{backgroundColor: "#FFFFFF", flex: 4}}>
+            <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
               <View
                 style={{
                   marginHorizontal: 16,
@@ -236,18 +237,21 @@ class Bus extends React.PureComponent {
                     justifyContent: "space-between",
                     flex: 1
                   }}>
-                  <View style={{flex: 1}}>
-                    <Text style={{color: "#5D666D"}}>From</Text>
-                    <Text style={{fontSize: 18}} onPress={this.setModalVisible("modalFrom", true)}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ color: "#5D666D" }}>From</Text>
+                    <Text
+                      style={{ fontSize: 18 }}
+                      onPress={this.setModalVisible("modalFrom", true)}>
                       {from}
                     </Text>
                   </View>
-                  <Button style={{justifyContent: "center"}} onPress={this._exchange}>
+                  <Button style={{ justifyContent: "center" }} onPress={this._exchange}>
                     <IconMaterial name="swap-vertical" size={40} />
                   </Button>
                 </View>
               </View>
-              <View style={{height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF"}}></View>
+              <View
+                style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
               <View
                 style={{
                   marginHorizontal: 16,
@@ -255,14 +259,15 @@ class Bus extends React.PureComponent {
                   flexDirection: "row"
                 }}>
                 <IconMaterial name="bus" size={40} color="#A5A9AC" />
-                <View style={{marginStart: 20, flex: 1}}>
-                  <Text style={{color: "#5D666D"}}>To</Text>
-                  <Text style={{fontSize: 18}} onPress={this.setModalVisible("modalTo", true)}>
+                <View style={{ marginStart: 20, flex: 1 }}>
+                  <Text style={{ color: "#5D666D" }}>To</Text>
+                  <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalTo", true)}>
                     {to}
                   </Text>
                 </View>
               </View>
-              <View style={{height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF"}}></View>
+              <View
+                style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
 
               <View
                 style={{
@@ -272,7 +277,7 @@ class Bus extends React.PureComponent {
                   alignItems: "center"
                 }}>
                 <Image
-                  style={{width: 25, resizeMode: "contain", marginStart: 10}}
+                  style={{ width: 25, resizeMode: "contain", marginStart: 10 }}
                   source={require("../../assets/imgs/cal.png")}
                 />
                 <View
@@ -280,10 +285,10 @@ class Bus extends React.PureComponent {
                     flex: 1,
                     paddingStart: 20
                   }}>
-                  <Text style={{color: "#5D666D", marginStart: 5}}>Depart</Text>
+                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
 
                   <Button
-                    style={{flex: 1, marginStart: 5}}
+                    style={{ flex: 1, marginStart: 5 }}
                     onPress={this.showDateTimePicker("fromDTpicker")}>
                     <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
                   </Button>
@@ -300,10 +305,10 @@ class Bus extends React.PureComponent {
                       flex: 1,
                       paddingStart: 20
                     }}>
-                    <Text style={{color: "#5D666D", marginStart: 5}}>Return</Text>
+                    <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
 
                     <Button
-                      style={{flex: 1, marginStart: 5}}
+                      style={{ flex: 1, marginStart: 5 }}
                       onPress={this.showDateTimePicker("toDTpicker")}>
                       <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
                     </Button>
@@ -311,7 +316,7 @@ class Bus extends React.PureComponent {
                       isVisible={toDTpicker}
                       onConfirm={this.handleDatePicked("toDTpicker")}
                       onCancel={this.hideDateTimePicker("toDTpicker")}
-                      minimumDate={new Date()}
+                      minimumDate={this.state.CheckIn}
                     />
                   </View>
                 )}
@@ -327,7 +332,7 @@ class Bus extends React.PureComponent {
                   marginVertical: 40
                 }}
                 onPress={this._search}>
-                <Text style={{color: "#fff", alignSelf: "center"}}>Search</Text>
+                <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
               </Button>
             </View>
 

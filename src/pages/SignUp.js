@@ -1,16 +1,13 @@
 import React, { PureComponent } from "react";
 import { View, Image, StyleSheet, ScrollView, Dimensions, TextInput } from "react-native";
 import Toast from "react-native-simple-toast";
-import Icon from "react-native-vector-icons/Ionicons";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Stars from "react-native-stars";
- import {etravosApi}  from "../service";
+import { etravosApi, domainApi } from "../service";
 import moment from "moment";
-import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
+import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
-import { Signup } from "../store/action";
+import { Signup, Signin } from "../store/action";
 import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
-//import { LoginButton, AccessToken } from "react-native-fbsdk";
+import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
 
 class SignUp extends React.PureComponent {
@@ -41,7 +38,7 @@ class SignUp extends React.PureComponent {
     console.log(params);
     if (this.state.firstname != "" && this.state.email != "" && this.state.password != "") {
       if (reg.test(this.state.email) === true) {
-        //  this.setState({ loader: true });
+        this.setState({ loader: true });
         axios({
           method: "post",
           url: "https://demo66.tutiixx.com/wp-json/wc/v2/register",
@@ -51,32 +48,52 @@ class SignUp extends React.PureComponent {
           if (response.data.status == 1) {
             console.log(response);
             this.props.Signup(params);
+            this.setState({ loader: false });
+            Toast.show("You have successfully Signup", Toast.LONG);
             this.props.navigation.navigate(page);
-            // this.setState({ loader: false });
           } else if (response.data.error) {
-            Toast.show(response.data.error, Toast.SHORT);
-            //  this.setState({ loader: false });
+            this.setState({ loader: false });
+            Toast.show(response.data.error, Toast.LONG);
           }
           console.log(response);
         });
       } else {
-        Toast.show("Please enter the valid email.", Toast.SHORT);
+        Toast.show("Please enter the valid email.", Toast.LONG);
       }
     }
   };
 
-  _googlelogin = () => {
-    console.log("hey");
-    GoogleSignin.configure();
-    let u = GoogleSignin.signIn();
-    console.log(u);
+  _Social_login = social => {
+    if (social == "google") {
+      GoogleSignin.configure();
+      GoogleSignin.signIn().then(user => {
+        let details = user.user;
+        details.mode = "google";
+        this.setState({ loader: true });
+        domainApi.post("/social-login", details).then(({ data }) => {
+          console.log(data);
+          if (data.code == 1) {
+            this.setState({ loader: false });
+            this.props.Signin(data.details);
+            this.props.navigation.navigate("Home");
+            Toast.show("you are login successfully", Toast.LONG);
+          } else {
+            Toast.show("you are not login successfully", Toast.LONG);
+          }
+        });
+      });
+    } else if (social == "facebook") {
+      AccessToken.getCurrentAccessToken().then(data => {
+        console.log(data);
+      });
+    }
   };
 
-  _SignOut = () => {
-    console.log("hey");
-    let logout = GoogleSignin.signOut();
-    console.log(logout);
-  };
+  // _SignOut = () => {
+  //   console.log("hey");
+  //   let logout = GoogleSignin.signOut();
+  //   console.log(logout);
+  // };
 
   render() {
     const { loader } = this.state;
@@ -93,7 +110,14 @@ class SignUp extends React.PureComponent {
           <Button onPress={() => this.props.navigation.goBack(null)}>
             <Icon name="md-arrow-back" size={24} />
           </Button>
-          <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "#1E293B",
+              marginStart: 10,
+              fontWeight: "700",
+              lineHeight: 24
+            }}>
             Register
           </Text>
         </View>
@@ -141,10 +165,6 @@ class SignUp extends React.PureComponent {
             <Button style={styles.button} onPress={this.navigateToScreen("SignIn")}>
               <Text style={{ color: "#fff" }}>Sign Up</Text>
             </Button>
-
-            <Button style={styles.button} onPress={this._SignOut}>
-              <Text style={{ color: "#fff" }}>Sign Out</Text>
-            </Button>
             <View
               style={{
                 height: 1.35,
@@ -165,11 +185,13 @@ class SignUp extends React.PureComponent {
             </View>
             <Button
               style={[styles.facebook_google_button, { marginTop: 20 }]}
-              onPress={this._googlelogin}>
+              onPress={() => this._Social_login("google")}>
               <Image source={require("../assets/imgs/google.png")} />
               <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
             </Button>
-            <Button style={[styles.facebook_google_button, { marginTop: 10, marginBottom: 60 }]}>
+            <Button
+              style={[styles.facebook_google_button, { marginTop: 10, marginBottom: 60 }]}
+              onPress={() => this._Social_login("facebook")}>
               <Image
                 style={{ width: 40, height: 40 }}
                 resizeMode="contain"
@@ -195,6 +217,7 @@ class SignUp extends React.PureComponent {
             </View>
           </View>
         </ScrollView>
+        {loader && <ActivityIndicator />}
       </View>
     );
   }
@@ -204,9 +227,10 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#F68E1F",
     height: 48,
+    width: 200,
     marginVertical: 40,
     marginHorizontal: 50,
-    paddingHorizontal: 80,
+    paddingHorizontal: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25
@@ -215,6 +239,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#Fff",
     height: 48,
+    width: 200,
     borderWidth: 1,
     borderColor: "#D2D1D1",
     marginHorizontal: 50,
@@ -237,7 +262,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = {
-  Signup
+  Signup,
+  Signin
 };
 
 export default connect(null, mapDispatchToProps)(SignUp);

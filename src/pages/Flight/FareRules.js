@@ -4,6 +4,7 @@ import { withNavigation } from "react-navigation";
 import { Text, Button } from "../../components";
 import Icon from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import HTML from "react-native-render-html";
 
 class FareDetails extends React.PureComponent {
   constructor(props) {
@@ -31,8 +32,8 @@ class FareDetails extends React.PureComponent {
                 FareRules
               </Text>
             </View>
-            <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
-              <Text>{this.props.data}</Text>
+            <ScrollView contentContainerStyle={{ marginHorizontal: 16, marginVertical: 10 }}>
+              <HTML html={this.props.data} />
             </ScrollView>
           </View>
         </SafeAreaView>

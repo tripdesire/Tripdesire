@@ -245,7 +245,6 @@ class FareDetails extends React.PureComponent {
           Toll(both-ways), State Tax, Parking & Airport Entry (not included in bill) to be paid
           wherever applicable
         </Text>
-        {loading && <ActivityIndicator />}
       </View>
     );
   }
