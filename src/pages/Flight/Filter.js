@@ -6,6 +6,7 @@ import { Icon } from "../../components";
 import RangeSlider from "rn-range-slider";
 import moment from "moment";
 import RadioButton from "./RadioButton";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 class Filter extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Filter extends React.Component {
         "Airlines",
         "Connecting Locations",
         "Price",
-        "Depature",
+        "departure",
         "Arrival",
         "Sort By"
       ],
@@ -27,7 +28,7 @@ class Filter extends React.Component {
         airlines: [],
         connectingLocations: [],
         price: {},
-        depature: [],
+        departure: [],
         arrival: [],
         sortBy: [
           { value: "Airline", bool: false },
@@ -47,7 +48,9 @@ class Filter extends React.Component {
         { Name: "Deaprture Descending" },
         { Name: "Arrival Ascending" },
         { Name: "Arrival Descending" }
-      ]
+      ],
+      timeStops: this.getTimeStops(),
+      widthSeekBar: 100
     };
   }
 
@@ -141,7 +144,9 @@ class Filter extends React.Component {
         fareType,
         airlines,
         connectingLocations,
-        price
+        price,
+        departure: [0, this.state.timeStops.length - 1],
+        arrival: [0, this.state.timeStops.length - 1]
       }
     });
     console.log(this.state);
@@ -173,6 +178,17 @@ class Filter extends React.Component {
     newData.price = { min: low, max: high };
     onChangeFilter && onChangeFilter(newData);
   };
+  onSliderUpdate = key => value => {
+    //console.log(value);
+    const { filterValues, onChangeFilter } = this.props;
+    let newData = Object.assign({}, filterValues);
+    this.setState({
+      filters: { ...this.state.filters, [key]: value }
+    });
+    newData[key] = [this.state.timeStops[value[0]], this.state.timeStops[value[1]]];
+    //console.log(newData);
+    onChangeFilter && onChangeFilter(newData);
+  };
 
   _radioButton = (index, value) => {
     let newData = Object.assign([], this.state.radioButton);
@@ -181,23 +197,28 @@ class Filter extends React.Component {
         this.setState({ radioDirect: true });
       }
     }
-
-    // let newData = Object.assign([], this.state.radioButton);
-    // newData[index][value] = newData[index][value] == true ? false : true;
-    // for (let i = 0; i < newData.length; i++) {
-    //   if (index == i) {
-    //     continue;
-    //   } else {
-    //     newData[i].radioDirect = false;
-    //   }
-    // }
-    // this.setState({
-    //   radioButton: newData
-    // });
   };
 
+  getSizeSeekBar(event) {
+    this.setState({ widthSeekBar: event.nativeEvent.layout.width });
+  }
+
+  getTimeStops() {
+    var startTime = moment("00:00", "HH:mm");
+    var endTime = moment("23:59", "HH:mm");
+    if (endTime.isBefore(startTime)) {
+      endTime.add(1, "day");
+    }
+    var timeStops = [];
+    while (startTime <= endTime) {
+      timeStops.push(new moment(startTime).format("hh:mm A"));
+      startTime.add(15, "minutes");
+    }
+    return timeStops;
+  }
+
   render() {
-    const { filterTabs, index, filters, radioDirect, radioButton } = this.state;
+    const { filterTabs, index, filters, timeStops, radioButton } = this.state;
     const { filterValues } = this.props;
 
     return (
@@ -221,7 +242,9 @@ class Filter extends React.Component {
                 </Button>
               ))}
             </View>
-            <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}>
+            <View
+              style={{ flex: 3, backgroundColor: "#FFFFFF" }}
+              onLayout={e => this.getSizeSeekBar(e)}>
               {index == 0 && (
                 <ScrollView>
                   {filters.stops.map((item, index) => (
@@ -274,12 +297,12 @@ class Filter extends React.Component {
                 <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
                   <RangeSlider
                     style={{
-                      //flex: 1,
                       width: "100%",
                       height: 80
                     }}
                     isMarkersSeparated={true}
                     gravity={"center"}
+                    labelStyle="none"
                     min={filters.price.min}
                     max={filters.price.max}
                     initialLowValue={
@@ -289,10 +312,6 @@ class Filter extends React.Component {
                       filterValues.price.max ? filterValues.price.max : filters.price.max
                     }
                     selectionColor="#F68E1F"
-                    blankColor="#757575"
-                    labelBackgroundColor="#E8EEF6"
-                    labelBorderColor="#E8EEF6"
-                    labelTextColor="#000"
                     onValueChanged={this.priceUpdate}
                   />
                   <View
@@ -301,49 +320,67 @@ class Filter extends React.Component {
                       justifyContent: "space-between",
                       flexDirection: "row"
                     }}>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.min}</Text>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.max}</Text>
+                    <Text style={{ fontWeight: "700" }}>
+                      {filterValues.price.min ? filterValues.price.min : filters.price.min}
+                    </Text>
+                    <Text style={{ fontWeight: "700" }}>
+                      {filterValues.price.max ? filterValues.price.max : filters.price.max}
+                    </Text>
                   </View>
                 </View>
               )}
 
-              {/*index == 6 && !isEmpty(filters.price) && (
+              {index == 5 && (
                 <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
-                  <RangeSlider
-                    style={{
-                      //flex: 1,
-                      width: "100%",
-                      height: 80
-                    }}
-                    isMarkersSeparated={true}
-                    gravity={"center"}
-                    min={moment()
-                      .startOf("day")
-                      .format("HH:MM")}
-                    // max={moment()
-                    //   .endOf("day")
-                    //   .toDate()}
-                    //initialLowValue={new Date()}
-                    //initialHighValue={new Date()}
-                    time
-                    selectionColor="#F68E1F"
-                    blankColor="#757575"
-                    labelBackgroundColor="#E8EEF6"
-                    labelBorderColor="#E8EEF6"
-                    labelTextColor="#000"
-                    //onValueChanged={this.priceUpdate}
+                  <MultiSlider
+                    trackStyle={{ height: 4 }}
+                    selectedStyle={{ backgroundColor: "#F68E1F" }}
+                    markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
+                    sliderLength={this.state.widthSeekBar - 32}
+                    min={0}
+                    max={timeStops.length - 1}
+                    values={filters.departure}
+                    enabledTwo
+                    onValuesChangeFinish={this.onSliderUpdate("departure")}
                   />
+
                   <View
                     style={{
                       width: "100%",
                       justifyContent: "space-between",
                       flexDirection: "row"
                     }}>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.min}</Text>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.max}</Text>
+                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.departure[0]]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.departure[1]]}</Text>
                   </View>
                 </View>
-              )*/}
+              )}
+
+              {index == 6 && (
+                <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
+                  <MultiSlider
+                    trackStyle={{ height: 4 }}
+                    selectedStyle={{ backgroundColor: "#F68E1F" }}
+                    markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
+                    sliderLength={this.state.widthSeekBar - 32}
+                    min={0}
+                    max={timeStops.length - 1}
+                    values={filters.arrival}
+                    enabledTwo
+                    onValuesChangeFinish={this.onSliderUpdate("arrival")}
+                  />
+
+                  <View
+                    style={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      flexDirection: "row"
+                    }}>
+                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.arrival[0]]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.arrival[1]]}</Text>
+                  </View>
+                </View>
+              )}
 
               {index == 7 && (
                 <ScrollView>
