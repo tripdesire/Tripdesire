@@ -30,6 +30,7 @@ class BusInfo extends React.PureComponent {
       day: moment(params.journeyDate, "DD-MM-YYYY").format("dddd"),
       loader: true,
       buses: [],
+      busesReturn: [],
       filteredBuses: [],
       nofound: 1,
       CancellationPolicy: false,
@@ -51,7 +52,7 @@ class BusInfo extends React.PureComponent {
       .then(({ data }) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {
-          this.setState({ nofound: data.AvailableTrips.length });
+          this.setState({ nofound: data.AvailableTrips.length, loader: false });
           Toast.show("Data not found.", Toast.LONG);
         }
         this.setState({

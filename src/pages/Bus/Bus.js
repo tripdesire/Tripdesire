@@ -35,7 +35,8 @@ class Bus extends React.PureComponent {
       isselect: true,
       _select_round: false,
       fromDTpicker: false,
-      toDTpicker: false
+      toDTpicker: false,
+      TripType: 1
     };
   }
 
@@ -133,7 +134,8 @@ class Bus extends React.PureComponent {
       Button_text_color_oneway: value == "onewway" ? "#ffffff" : "#000000",
       Button_text_color_round: value == "onewway" ? "#000000" : "#ffffff",
       _select_round: value == "round" ? true : false,
-      tripType: value == "round" ? 2 : 1
+      tripType: value == "round" ? 1 : 1,
+      TripType: value == "round" ? 2 : 1
     });
   };
 
@@ -144,13 +146,17 @@ class Bus extends React.PureComponent {
       sourceId: this.state.sourceId,
       destinationId: this.state.destinationId,
       journeyDate: moment(this.state.CheckIn).format("DD-MM-YYYY"),
-      returnDate: this.state.tripType == 2 ? moment(this.state.CheckOut).format("DD-MM-YYYY") : "",
+      returnDate: this.state.tripType == 1 ? moment(this.state.CheckOut).format("DD-MM-YYYY") : "",
       tripType: this.state.tripType,
       userType: 5,
       user: ""
     };
     console.log(params);
-    this.props.navigation.navigate("BusInfo", params);
+    if (this.state.TripType == 1) {
+      this.props.navigation.navigate("BusInfo", params);
+    } else {
+      this.props.navigation.navigate("BusRound", params);
+    }
   };
 
   render() {

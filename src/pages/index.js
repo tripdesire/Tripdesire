@@ -36,6 +36,7 @@ import Boarding from "./Bus/Boarding";
 import ForgetPassword from "./ForgetPassword";
 import ProfilePage from "./ProfilePage";
 import BillingDetails from "./BillingDetails";
+import BusRound from "./Bus/BusRound";
 
 export {
   Home,
@@ -75,5 +76,6 @@ export {
   Boarding,
   ForgetPassword,
   ProfilePage,
-  BillingDetails
+  BillingDetails,
+  BusRound
 };

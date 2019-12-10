@@ -45,7 +45,8 @@ import {
   Boarding,
   ForgetPassword,
   ProfilePage,
-  BillingDetails
+  BillingDetails,
+  BusRound
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -100,7 +101,8 @@ const HomeStack = createStackNavigator(
     Boarding,
     ForgetPassword,
     ProfilePage,
-    BillingDetails
+    BillingDetails,
+    BusRound
   },
   {
     headerMode: "none",
