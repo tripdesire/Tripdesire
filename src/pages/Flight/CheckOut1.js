@@ -14,6 +14,7 @@ import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
 import { connect } from "react-redux";
 class CheckOut1 extends React.PureComponent {
@@ -527,7 +528,9 @@ class CheckOut1 extends React.PureComponent {
       if (this.validate()) {
         Toast.show("Please enter all the fields.", Toast.SHORT);
       } else {
-        if (this.props.signIn == {}) {
+        if (isEmpty(this.props.signIn)) {
+          Toast.show("Please login or signup", Toast.SHORT);
+        } else {
           console.log(book, this.state);
           const { params, data } = this.props.navigation.state.params;
           console.log(params, data, param);
@@ -627,8 +630,6 @@ class CheckOut1 extends React.PureComponent {
               Toast.show(error, Toast.LONG);
               this.setState({ loading: false });
             });
-        } else {
-          Toast.show("Please login or signup", Toast.SHORT);
         }
       }
     } catch (e) {

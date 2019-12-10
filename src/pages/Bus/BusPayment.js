@@ -17,6 +17,7 @@ import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
 import { Signin } from "../../store/action";
@@ -48,6 +49,13 @@ class BusPayment extends React.PureComponent {
       BookingReferenceNo
     } = this.props.navigation.state.params;
 
+    validate = () => {
+      let needToValidateAdults = false;
+      needToValidateAdults = adults.every(
+        item => item.den == "" || item.name == "" || item.age == ""
+      );
+    };
+
     let adult_details = adults.map(item => ({
       "ad-den": item.den,
       "ad-fname": item.name,
@@ -63,66 +71,72 @@ class BusPayment extends React.PureComponent {
       infant_details: []
     };
 
-    if (this.props.signIn == {}) {
-      const { signIn } = this.props;
-      domainApi.post("/checkout/new-order?user_id=" + signIn.id, param).then(({ data: order }) => {
-        console.log(order);
+    if (this.validate()) {
+      Toast.show("Please enter all the fields.", Toast.SHORT);
+    } else {
+      if (isEmpty(this.props.signIn)) {
+        Toast.show("Please login or signup", Toast.LONG);
+      } else {
+        const { signIn } = this.props;
+        domainApi
+          .post("/checkout/new-order?user_id=" + signIn.id, param)
+          .then(({ data: order }) => {
+            console.log(order);
 
-        var options = {
-          description: "Credits towards consultation",
-          image: "https://i.imgur.com/3g7nmJC.png",
-          currency: "INR",
-          key: "rzp_test_a3aQYPLYowGvWJ",
-          amount: parseInt(order.total) * 100,
-          name: "TripDesire",
-          prefill: {
-            email: "void@razorpay.com",
-            contact: "9191919191",
-            name: "Razorpay Software"
-          },
-          theme: { color: "#E5EBF7" }
-        };
+            var options = {
+              description: "Credits towards consultation",
+              image: "https://i.imgur.com/3g7nmJC.png",
+              currency: "INR",
+              key: "rzp_test_a3aQYPLYowGvWJ",
+              amount: parseInt(order.total) * 100,
+              name: "TripDesire",
+              prefill: {
+                email: "void@razorpay.com",
+                contact: "9191919191",
+                name: "Razorpay Software"
+              },
+              theme: { color: "#E5EBF7" }
+            };
 
-        RazorpayCheckout.open(options)
-          .then(razorpayRes => {
-            etravosApi
-              .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
-              .then(({ data: Response }) => {
-                console.log(Response);
-                if (Response.BookingStatus == 3) {
-                  this.props.navigation.navigate("ThankYouBus", {
-                    order,
-                    razorpayRes,
-                    Response,
-                    ...this.props.navigation.state.params
+            RazorpayCheckout.open(options)
+              .then(razorpayRes => {
+                etravosApi
+                  .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
+                  .then(({ data: Response }) => {
+                    console.log(Response);
+                    if (Response.BookingStatus == 3) {
+                      this.props.navigation.navigate("ThankYouBus", {
+                        order,
+                        razorpayRes,
+                        Response,
+                        ...this.props.navigation.state.params
+                      });
+                      Toast.show(Response.Message, Toast.LONG);
+                      let paymentData = {
+                        order_id: order.id,
+                        status: "completed",
+                        transaction_id: razorpayRes.razorpay_payment_id,
+                        reference_no: Response
+                      };
+                      console.log(paymentData);
+
+                      domainApi.post("/checkout/update-order", paymentData).then(res => {
+                        console.log(res);
+                      });
+                    } else {
+                      Toast.show("Your ticket is not booked succesfully.", Toast.LONG);
+                    }
+                  })
+                  .catch(error => {
+                    // handle failure
+                    alert(`Error: ${error.code} | ${error.description}`);
                   });
-                  Toast.show(Response.Message, Toast.LONG);
-                  let paymentData = {
-                    order_id: order.id,
-                    status: "completed",
-                    transaction_id: razorpayRes.razorpay_payment_id,
-                    reference_no: Response
-                  };
-                  console.log(paymentData);
-
-                  domainApi.post("/checkout/update-order", paymentData).then(res => {
-                    console.log(res);
-                  });
-                } else {
-                  Toast.show("Your ticket is not booked succesfully.", Toast.LONG);
-                }
               })
               .catch(error => {
-                // handle failure
-                alert(`Error: ${error.code} | ${error.description}`);
+                console.log(error);
               });
-          })
-          .catch(error => {
-            console.log(error);
           });
-      });
-    } else {
-      Toast.show("Please login or signup", Toast.LONG);
+      }
     }
   };
 

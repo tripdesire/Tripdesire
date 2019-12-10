@@ -16,6 +16,7 @@ import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
 import { connect } from "react-redux";
+import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
 import HTML from "react-native-render-html";
 
@@ -138,7 +139,7 @@ class CheckoutCab extends React.PureComponent {
     console.log(param);
 
     if (this.state.firstname != "" && this.state.last_name != "") {
-      if (this.props.signIn == {}) {
+      if (isEmpty(this.props.signIn)) {
         Toast.show("Please login or signup", Toast.LONG);
       } else {
         this.setState({ loader: true });

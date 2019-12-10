@@ -17,6 +17,8 @@ import moment from "moment";
 import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
 import { connect } from "react-redux";
 import { Signup, Signin } from "../store/action";
+import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
+import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
 
 class SignIn extends React.PureComponent {
@@ -47,6 +49,7 @@ class SignIn extends React.PureComponent {
             this.props.navigation.navigate("Home");
             Toast.show("You have successfully login", ToastAndroid.SHORT);
           } else {
+            this.setState({ loader: false });
             Toast.show("Wrong Email And Password.", ToastAndroid.SHORT);
           }
         })
@@ -61,6 +64,32 @@ class SignIn extends React.PureComponent {
 
   NavigateToScreen = page => () => {
     this.props.navigation.navigate(page);
+  };
+
+  _Social_login = social => {
+    if (social == "google") {
+      GoogleSignin.configure();
+      GoogleSignin.signIn().then(user => {
+        let details = user.user;
+        details.mode = "google";
+        this.setState({ loader: true });
+        domainApi.post("/social-login", details).then(({ data }) => {
+          console.log(data);
+          if (data.code == 1) {
+            this.setState({ loader: false });
+            this.props.Signin(data.details);
+            this.props.navigation.navigate("Home");
+            Toast.show("you are login successfully", Toast.LONG);
+          } else {
+            Toast.show("you are not login successfully", Toast.LONG);
+          }
+        });
+      });
+    } else if (social == "facebook") {
+      AccessToken.getCurrentAccessToken().then(data => {
+        console.log(data);
+      });
+    }
   };
 
   render() {
@@ -132,11 +161,15 @@ class SignIn extends React.PureComponent {
               }}>
               <Text>Or</Text>
             </View>
-            <Button style={[styles.facebook_google_button, { marginTop: 20 }]}>
+            <Button
+              style={[styles.facebook_google_button, { marginTop: 20 }]}
+              onPress={() => this._Social_login("google")}>
               <Image source={require("../assets/imgs/google.png")} />
               <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
             </Button>
-            <Button style={[styles.facebook_google_button, { marginTop: 10 }]}>
+            <Button
+              style={[styles.facebook_google_button, { marginTop: 10 }]}
+              onPress={() => this._Social_login("facebook")}>
               <Image
                 style={{ width: 40, height: 40 }}
                 resizeMode="contain"
