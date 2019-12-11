@@ -204,6 +204,10 @@ class CheckOut extends React.PureComponent {
           ? params.departFlight.FareDetails.TotalFare
           : params.flightType == 1 && params.tripType == 2
           ? params.departFlight.FareDetails.TotalFare + params.arrivalFlight.FareDetails.TotalFare
+          : params.flightType == 1 && params.tripType == 1
+          ? params.departFlight.FareDetails.TotalFare
+          : params.flightType == 2 && params.tripType == 1
+          ? params.departFlight.FareDetails.TotalFare
           : "",
       fl_adults: params.adult,
       fl_children: params.child,

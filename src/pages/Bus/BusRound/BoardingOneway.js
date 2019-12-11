@@ -9,16 +9,16 @@ import {
   Picker,
   ScrollView
 } from "react-native";
-import { Button, Text, ActivityIndicator, Header } from "../../components";
+import { Button, Text, ActivityIndicator, Header } from "../../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
-import { etravosApi, domainApi } from "../../service";
+import { etravosApi, domainApi } from "../../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RNPickerSelect from "react-native-picker-select";
 
-class Boarding extends React.PureComponent {
+class BoardingOneway extends React.PureComponent {
   constructor(props) {
     super(props);
     console.log(props.navigation.state.params);
@@ -60,61 +60,59 @@ class Boarding extends React.PureComponent {
     } = this.props.navigation.state.params;
     console.log(params, selectedSheets);
 
-    let Seats = [...selectedSheets.map(item => item.Number)].join("~");
-    let param = {
-      id: 273,
-      quantity: 1,
-      bus_item_result_data: params,
-      display_name: params.DisplayName,
-      bus_type: params.BusType,
-      departure_time: params.DepartureTime,
-      arrival_time: params.ArrivalTime,
-      source_city: sourceName,
-      source_id: params.SourceId,
-      destination_city: destinationName,
-      destination_id: params.DestinationId,
-      boarding_point: params.SourceId + ";" + sourceName,
-      dropping_point: params.DestinationId + ";" + destinationName,
-      time_duration: params.Duration,
-      select_seat: selectedSheets.length,
-      select_seat_number: Seats,
-      base_fare: params.Fares,
-      service_charge: params.etravosApiTax,
-      service_tax: 0,
-      ConvenienceFee: params.ConvenienceFee,
-      trip_type: tripType,
-      journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
-    };
+    this.props.navigation.navigate("BusRoundReturn", { ...this.props.navigation.state.params });
 
-    console.log(param);
+    // let Seats = [...selectedSheets.map(item => item.Number)].join("~");
+    // let param = {
+    //   id: 273,
+    //   quantity: 1,
+    //   bus_item_result_data: params,
+    //   display_name: params.DisplayName,
+    //   bus_type: params.BusType,
+    //   departure_time: params.DepartureTime,
+    //   arrival_time: params.ArrivalTime,
+    //   source_city: sourceName,
+    //   source_id: params.SourceId,
+    //   destination_city: destinationName,
+    //   destination_id: params.DestinationId,
+    //   boarding_point: params.SourceId + ";" + sourceName,
+    //   dropping_point: params.DestinationId + ";" + destinationName,
+    //   time_duration: params.Duration,
+    //   select_seat: selectedSheets.length,
+    //   select_seat_number: Seats,
+    //   base_fare: params.Fares,
+    //   service_charge: params.etravosApiTax,
+    //   service_tax: 0,
+    //   ConvenienceFee: params.ConvenienceFee,
+    //   trip_type: tripType,
+    //   journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
+    // };
 
-    if (TripType == 1) {
-      domainApi
-        .post("/cart/add", param)
-        .then(({ data }) => {
-          console.log(data);
-          if (data.code == "1") {
-            Toast.show(data.message, Toast.LONG);
-            domainApi.get("/cart").then(({ data }) => {
-              console.log(data);
-              const { bp, dp } = this.state;
-              this.props.navigation.navigate("CheckoutBus", {
-                cartData: data,
-                ...this.props.navigation.state.params,
-                BoardingPoint: bp,
-                DroppingPoint: dp
-              });
-            });
-          } else {
-            Toast.show(res.data.message, Toast.LONG);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      this.props.navigation.navigate("BusRound");
-    }
+    // console.log(param);
+
+    // domainApi
+    //   .post("/cart/add", param)
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //     if (data.code == "1") {
+    //       Toast.show(data.message, Toast.LONG);
+    //       domainApi.get("/cart").then(({ data }) => {
+    //         console.log(data);
+    //         const { bp, dp } = this.state;
+    //         this.props.navigation.navigate("CheckoutBus", {
+    //           cartData: data,
+    //           ...this.props.navigation.state.params,
+    //           BoardingPoint: bp,
+    //           DroppingPoint: dp
+    //         });
+    //       });
+    //     } else {
+    //       Toast.show(res.data.message, Toast.LONG);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   };
 
   render() {
@@ -173,4 +171,4 @@ class Boarding extends React.PureComponent {
   }
 }
 
-export default Boarding;
+export default BoardingOneway;

@@ -36,7 +36,12 @@ import Boarding from "./Bus/Boarding";
 import ForgetPassword from "./ForgetPassword";
 import ProfilePage from "./ProfilePage";
 import BillingDetails from "./BillingDetails";
-import BusRound from "./Bus/BusRound";
+import BusRound from "./Bus/BusRound/BusRound"; ///////Bus Round
+import SeatOneway from "./Bus/BusRound/SeatOneway";
+import SeatRound from "./Bus/BusRound/SeatRound";
+import BoardingOneway from "./Bus/BusRound/BoardingOneway";
+import BoardingRound from "./Bus/BusRound/BoardingRound";
+import BusRoundReturn from "./Bus/BusRound/BusRoundReturn";
 
 export {
   Home,
@@ -77,5 +82,10 @@ export {
   ForgetPassword,
   ProfilePage,
   BillingDetails,
-  BusRound
+  BusRound,
+  SeatOneway,
+  SeatRound,
+  BoardingOneway,
+  BoardingRound,
+  BusRoundReturn
 };

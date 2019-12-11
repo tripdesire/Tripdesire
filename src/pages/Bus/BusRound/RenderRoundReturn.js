@@ -8,14 +8,14 @@ import {
   TouchableOpacity,
   Modal
 } from "react-native";
-import { Button, Text, ActivityIndicator, DomesticFlights, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, DomesticFlights, Icon } from "../../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
-import { etravosApi } from "../../service";
+import { etravosApi } from "../../../service";
 import moment from "moment";
 import { withNavigation } from "react-navigation";
 import Toast from "react-native-simple-toast";
-class RenderRound extends React.PureComponent {
+class RenderRoundReturn extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -25,12 +25,9 @@ class RenderRound extends React.PureComponent {
     console.log("render....");
     const { tripType, sourceName, destinationName, TripType } = this.props;
     this.props.getBus(item, index);
-    this.props.navigation.navigate("Seats", {
-      params: item,
-      tripType,
-      sourceName,
-      destinationName,
-      TripType
+    this.props.navigation.navigate("SeatRound", {
+      paramsRound: item,
+      ...this.props.navigation.state.params
     });
   };
 
@@ -101,4 +98,4 @@ class RenderRound extends React.PureComponent {
   }
 }
 
-export default withNavigation(RenderRound);
+export default withNavigation(RenderRoundReturn);
