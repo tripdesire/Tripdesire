@@ -40,8 +40,8 @@ class FlightsInfoOneway extends React.PureComponent {
         airlines: [],
         connectingLocations: [],
         price: {},
-        depature: [],
-        arrival: []
+        departure: ["00:00 AM", "11:45 PM"],
+        arrival: ["00:00 AM", "11:45 PM"]
       },
       filterFlights: [],
       propsName: props.navigation.state.params
@@ -124,11 +124,12 @@ class FlightsInfoOneway extends React.PureComponent {
   filter = () => {
     const { filterValues, flights, flight_type } = this.state;
     let filterFlights = [];
+    console.log(filterValues);
 
     switch (flight_type) {
       case 1:
-        filterFlights = flights.filter(
-          item =>
+        filterFlights = flights.filter(item => {
+          return (
             (filterValues.stops.length == 0 ||
               filterValues.stops.includes(item.FlightSegments.length - 1)) &&
             (filterValues.fareType.length == 0 ||
@@ -140,8 +141,31 @@ class FlightsInfoOneway extends React.PureComponent {
                 filterValues.connectingLocations.includes(value.IntDepartureAirportName)
               )) &&
             (!filterValues.price.min || filterValues.price.min <= item.FareDetails.TotalFare) &&
-            (!filterValues.price.max || filterValues.price.max >= item.FareDetails.TotalFare)
-        );
+            (!filterValues.price.max || filterValues.price.max >= item.FareDetails.TotalFare) &&
+            (filterValues.departure.length == 0 ||
+              (moment(filterValues.departure[0], "hh:mm A").isSameOrBefore(
+                moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss")
+              ) &&
+                moment(filterValues.departure[1], "hh:mm A").isSameOrAfter(
+                  moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss")
+                ))) &&
+            (filterValues.arrival.length == 0 ||
+              (moment(filterValues.arrival[0], "hh:mm A").isSameOrBefore(
+                moment(
+                  item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split("T")[1],
+                  "HH:mm:ss"
+                )
+              ) &&
+                moment(filterValues.arrival[1], "hh:mm A").isSameOrAfter(
+                  moment(
+                    item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split(
+                      "T"
+                    )[1],
+                    "HH:mm:ss"
+                  )
+                )))
+          );
+        });
         break;
       case 2:
         filterFlights = flights.filter(
@@ -161,7 +185,34 @@ class FlightsInfoOneway extends React.PureComponent {
             (!filterValues.price.min ||
               filterValues.price.min <= item.IntOnward.FareDetails.TotalFare) &&
             (!filterValues.price.max ||
-              filterValues.price.max >= item.IntOnward.FareDetails.TotalFare)
+              filterValues.price.max >= item.IntOnward.FareDetails.TotalFare) &&
+            (filterValues.departure.length == 0 ||
+              (moment(filterValues.departure[0], "hh:mm A").isSameOrBefore(
+                moment(item.IntOnward.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss")
+              ) &&
+                moment(filterValues.departure[1], "hh:mm A").isSameOrAfter(
+                  moment(
+                    item.IntOnward.FlightSegments[0].DepartureDateTime.split("T")[1],
+                    "HH:mm:ss"
+                  )
+                ))) &&
+            (filterValues.arrival.length == 0 ||
+              (moment(filterValues.arrival[0], "hh:mm A").isSameOrBefore(
+                moment(
+                  item.IntOnward.FlightSegments[
+                    item.IntOnward.FlightSegments.length - 1
+                  ].ArrivalDateTime.split("T")[1],
+                  "HH:mm:ss"
+                )
+              ) &&
+                moment(filterValues.arrival[1], "hh:mm A").isSameOrAfter(
+                  moment(
+                    item.IntOnward.FlightSegments[
+                      item.IntOnward.FlightSegments.length - 1
+                    ].ArrivalDateTime.split("T")[1],
+                    "HH:mm:ss"
+                  )
+                )))
         );
         break;
     }

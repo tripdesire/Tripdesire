@@ -179,14 +179,9 @@ class Filter extends React.Component {
     onChangeFilter && onChangeFilter(newData);
   };
   onSliderUpdate = key => value => {
-    //console.log(value);
     const { filterValues, onChangeFilter } = this.props;
     let newData = Object.assign({}, filterValues);
-    this.setState({
-      filters: { ...this.state.filters, [key]: value }
-    });
     newData[key] = [this.state.timeStops[value[0]], this.state.timeStops[value[1]]];
-    //console.log(newData);
     onChangeFilter && onChangeFilter(newData);
   };
 
@@ -339,7 +334,10 @@ class Filter extends React.Component {
                     sliderLength={this.state.widthSeekBar - 32}
                     min={0}
                     max={timeStops.length - 1}
-                    values={filters.departure}
+                    values={[
+                      timeStops.findIndex(e => e == filterValues.departure[0]),
+                      timeStops.findIndex(e => e == filterValues.departure[1])
+                    ]}
                     enabledTwo
                     onValuesChangeFinish={this.onSliderUpdate("departure")}
                   />
@@ -350,8 +348,8 @@ class Filter extends React.Component {
                       justifyContent: "space-between",
                       flexDirection: "row"
                     }}>
-                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.departure[0]]}</Text>
-                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.departure[1]]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.departure[0]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.departure[1]}</Text>
                   </View>
                 </View>
               )}
@@ -365,7 +363,10 @@ class Filter extends React.Component {
                     sliderLength={this.state.widthSeekBar - 32}
                     min={0}
                     max={timeStops.length - 1}
-                    values={filters.arrival}
+                    values={[
+                      timeStops.findIndex(e => e == filterValues.arrival[0]),
+                      timeStops.findIndex(e => e == filterValues.arrival[1])
+                    ]}
                     enabledTwo
                     onValuesChangeFinish={this.onSliderUpdate("arrival")}
                   />
@@ -376,8 +377,8 @@ class Filter extends React.Component {
                       justifyContent: "space-between",
                       flexDirection: "row"
                     }}>
-                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.arrival[0]]}</Text>
-                    <Text style={{ fontWeight: "700" }}>{timeStops[filters.arrival[1]]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.arrival[0]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.arrival[1]}</Text>
                   </View>
                 </View>
               )}
