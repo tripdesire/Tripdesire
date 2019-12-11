@@ -122,12 +122,13 @@ class BusInfo extends React.PureComponent {
   };
 
   _BookNow = item => () => {
-    const { tripType, sourceName, destinationName } = this.props.navigation.state.params;
+    const { tripType, sourceName, destinationName, TripType } = this.props.navigation.state.params;
     this.props.navigation.navigate("Seats", {
       params: item,
       tripType,
       sourceName,
-      destinationName
+      destinationName,
+      TripType
     });
   };
 

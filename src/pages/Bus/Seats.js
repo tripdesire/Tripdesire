@@ -109,13 +109,20 @@ class Seats extends React.PureComponent {
   }
 
   _bookNow = () => {
-    const { tripType, params } = this.props.navigation.state.params;
+    const { tripType, params, TripType } = this.props.navigation.state.params;
     const { selectedSheets } = this.state;
     if (this.state.selectedSheets.length > 0) {
-      this.props.navigation.navigate("Boarding", {
-        ...this.props.navigation.state.params,
-        selectedSheets: selectedSheets
-      });
+      if (TripType == 1) {
+        this.props.navigation.navigate("Boarding", {
+          ...this.props.navigation.state.params,
+          selectedSheets: selectedSheets
+        });
+      } else {
+        this.props.navigation.navigate("Boarding", {
+          ...this.props.navigation.state.params,
+          selectedSheets: selectedSheets
+        });
+      }
     } else {
       Toast.show("Please Select the Seat");
     }

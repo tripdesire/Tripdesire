@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
   Modal
 } from "react-native";
-import { Button, Text, ActivityIndicator, DomesticFlights } from "../../components";
-import Icon from "react-native-vector-icons/AntDesign";
+import { Button, Text, ActivityIndicator, DomesticFlights, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
 import { etravosApi } from "../../service";
 import moment from "moment";
+import { withNavigation } from "react-navigation";
 import Toast from "react-native-simple-toast";
 class RenderRound extends React.PureComponent {
   constructor(props) {
@@ -21,7 +21,18 @@ class RenderRound extends React.PureComponent {
     this.state = {};
   }
 
-  _BookNow = item => () => {};
+  _SelectedSeat = (item, index) => () => {
+    console.log("render....");
+    const { tripType, sourceName, destinationName, TripType } = this.props;
+    this.props.getBus(item, index);
+    this.props.navigation.navigate("Seats", {
+      params: item,
+      tripType,
+      sourceName,
+      destinationName,
+      TripType
+    });
+  };
 
   _onCanPolicy = () => {};
 
@@ -32,7 +43,8 @@ class RenderRound extends React.PureComponent {
         style={{
           paddingVertical: index % 2 == 0 ? 40 : 20,
           backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#E5EBF7"
-        }}>
+        }}
+        onPress={this._SelectedSeat(item, index)}>
         <View
           style={{
             flexDirection: "row",
@@ -48,7 +60,7 @@ class RenderRound extends React.PureComponent {
               paddingHorizontal: 10,
               paddingVertical: 5
             }}
-            onPress={this._BookNow(item)}>
+            onPress={this._SelectedSeat(item)}>
             <Text style={{ color: "#fff", fontWeight: "600" }}>Select Seats</Text>
           </Button>
         </View>
@@ -78,7 +90,7 @@ class RenderRound extends React.PureComponent {
           <Button
             style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
             onPress={this._onCanPolicy}>
-            <IconFontAwsm name="mobile-phone" size={24} color="#6287F9" />
+            <Icon type="FontAwesome" name="mobile-phone" size={24} color="#6287F9" />
             <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9" }}>
               Cancellation Policy
             </Text>
@@ -89,4 +101,4 @@ class RenderRound extends React.PureComponent {
   }
 }
 
-export default RenderRound;
+export default withNavigation(RenderRound);
