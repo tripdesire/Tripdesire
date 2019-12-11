@@ -39,7 +39,7 @@ class FlightsInfoOneway extends React.PureComponent {
         fareType: [],
         airlines: [],
         connectingLocations: [],
-        price: {},
+        price: [],
         departure: ["00:00 AM", "11:45 PM"],
         arrival: ["00:00 AM", "11:45 PM"]
       },
@@ -140,30 +140,26 @@ class FlightsInfoOneway extends React.PureComponent {
               item.FlightSegments.some(value =>
                 filterValues.connectingLocations.includes(value.IntDepartureAirportName)
               )) &&
-            (!filterValues.price.min || filterValues.price.min <= item.FareDetails.TotalFare) &&
-            (!filterValues.price.max || filterValues.price.max >= item.FareDetails.TotalFare) &&
+            (filterValues.price.length == 0 ||
+              (filterValues.price[0] <= item.FareDetails.TotalFare &&
+                filterValues.price[1] >= item.FareDetails.TotalFare)) &&
             (filterValues.departure.length == 0 ||
-              (moment(filterValues.departure[0], "hh:mm A").isSameOrBefore(
-                moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss")
-              ) &&
-                moment(filterValues.departure[1], "hh:mm A").isSameOrAfter(
-                  moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss")
-                ))) &&
+              moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss").isBetween(
+                moment(filterValues.departure[0], "hh:mm A"),
+                moment(filterValues.departure[1], "hh:mm A"),
+                null,
+                "[]"
+              )) &&
             (filterValues.arrival.length == 0 ||
-              (moment(filterValues.arrival[0], "hh:mm A").isSameOrBefore(
-                moment(
-                  item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split("T")[1],
-                  "HH:mm:ss"
-                )
-              ) &&
-                moment(filterValues.arrival[1], "hh:mm A").isSameOrAfter(
-                  moment(
-                    item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split(
-                      "T"
-                    )[1],
-                    "HH:mm:ss"
-                  )
-                )))
+              moment(
+                item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split("T")[1],
+                "HH:mm:ss"
+              ).isBetween(
+                moment(filterValues.arrival[0], "hh:mm A"),
+                moment(filterValues.arrival[1], "hh:mm A"),
+                null,
+                "[]"
+              ))
           );
         });
         break;
@@ -182,37 +178,31 @@ class FlightsInfoOneway extends React.PureComponent {
               item.IntOnward.FlightSegments.some(value =>
                 filterValues.connectingLocations.includes(value.IntDepartureAirportName)
               )) &&
-            (!filterValues.price.min ||
-              filterValues.price.min <= item.IntOnward.FareDetails.TotalFare) &&
-            (!filterValues.price.max ||
-              filterValues.price.max >= item.IntOnward.FareDetails.TotalFare) &&
+            (filterValues.price.length == 0 ||
+              (filterValues.price[0] <= item.FareDetails.TotalFare &&
+                filterValues.price[1] >= item.FareDetails.TotalFare)) &&
             (filterValues.departure.length == 0 ||
-              (moment(filterValues.departure[0], "hh:mm A").isSameOrBefore(
-                moment(item.IntOnward.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss")
-              ) &&
-                moment(filterValues.departure[1], "hh:mm A").isSameOrAfter(
-                  moment(
-                    item.IntOnward.FlightSegments[0].DepartureDateTime.split("T")[1],
-                    "HH:mm:ss"
-                  )
-                ))) &&
+              moment(
+                item.IntOnward.FlightSegments[0].DepartureDateTime.split("T")[1],
+                "HH:mm:ss"
+              ).isBetween(
+                moment(filterValues.departure[0], "hh:mm A"),
+                moment(filterValues.departure[1], "hh:mm A"),
+                null,
+                "[]"
+              )) &&
             (filterValues.arrival.length == 0 ||
-              (moment(filterValues.arrival[0], "hh:mm A").isSameOrBefore(
-                moment(
-                  item.IntOnward.FlightSegments[
-                    item.IntOnward.FlightSegments.length - 1
-                  ].ArrivalDateTime.split("T")[1],
-                  "HH:mm:ss"
-                )
-              ) &&
-                moment(filterValues.arrival[1], "hh:mm A").isSameOrAfter(
-                  moment(
-                    item.IntOnward.FlightSegments[
-                      item.IntOnward.FlightSegments.length - 1
-                    ].ArrivalDateTime.split("T")[1],
-                    "HH:mm:ss"
-                  )
-                )))
+              moment(
+                item.IntOnward.FlightSegments[
+                  item.IntOnward.FlightSegments.length - 1
+                ].ArrivalDateTime.split("T")[1],
+                "HH:mm:ss"
+              ).isBetween(
+                moment(filterValues.arrival[0], "hh:mm A"),
+                moment(filterValues.arrival[1], "hh:mm A"),
+                null,
+                "[]"
+              ))
         );
         break;
     }

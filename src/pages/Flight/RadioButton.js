@@ -1,10 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { Button, Text, CheckBox } from "../../components";
-import { uniq, intersection, max, min, isEmpty } from "lodash";
-import { Icon } from "../../components";
-import RangeSlider from "rn-range-slider";
-import moment from "moment";
 
 class RadioButton extends React.PureComponent {
   render() {

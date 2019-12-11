@@ -1,6 +1,6 @@
 import React from "react";
 import { Dimensions, View, FlatList, SafeAreaView, Modal } from "react-native";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, HeaderFlights } from "../../components";
 import RenderInternationRound from "./RenderInternationRound";
 import Filter from "./Filter";
 import { etravosApi } from "../../service";
@@ -38,8 +38,8 @@ class FlightsInfoRoundInt extends React.PureComponent {
         airlines: [],
         connectingLocations: [],
         price: [],
-        depature: [],
-        arrival: []
+        departure: ["00:00 AM", "11:45 PM"],
+        arrival: ["00:00 AM", "11:45 PM"]
       }
     };
   }
@@ -122,12 +122,51 @@ class FlightsInfoRoundInt extends React.PureComponent {
           item.IntReturn.FlightSegments.some(value =>
             filterValues.connectingLocations.includes(value.IntDepartureAirportName)
           )) &&
-        (!filterValues.price.min ||
-          filterValues.price.min <= item.IntOnward.FareDetails.TotalFare) &&
-        (!filterValues.price.max ||
-          filterValues.price.max >= item.IntOnward.FareDetails.TotalFare) &&
-        (!filterValues.price.min || filterValues.price.min <= item.IntOnward.IntReturn.TotalFare) &&
-        (!filterValues.price.max || filterValues.price.max >= item.IntOnward.IntReturn.TotalFare)
+        (filterValues.price.length == 0 ||
+          (filterValues.price[0] <= item.FareDetails.TotalFare &&
+            filterValues.price[1] >= item.FareDetails.TotalFare)) &&
+        (filterValues.departure.length == 0 ||
+          moment(
+            item.IntOnward.FlightSegments[0].DepartureDateTime.split("T")[1],
+            "HH:mm:ss"
+          ).isBetween(
+            moment(filterValues.departure[0], "hh:mm A"),
+            moment(filterValues.departure[1], "hh:mm A"),
+            null,
+            "[]"
+          ) ||
+          moment(
+            item.IntReturn.FlightSegments[0].DepartureDateTime.split("T")[1],
+            "HH:mm:ss"
+          ).isBetween(
+            moment(filterValues.departure[0], "hh:mm A"),
+            moment(filterValues.departure[1], "hh:mm A"),
+            null,
+            "[]"
+          )) &&
+        (filterValues.arrival.length == 0 ||
+          moment(
+            item.IntOnward.FlightSegments[
+              item.IntOnward.FlightSegments.length - 1
+            ].ArrivalDateTime.split("T")[1],
+            "HH:mm:ss"
+          ).isBetween(
+            moment(filterValues.arrival[0], "hh:mm A"),
+            moment(filterValues.arrival[1], "hh:mm A"),
+            null,
+            "[]"
+          ) ||
+          moment(
+            item.IntReturn.FlightSegments[
+              item.IntReturn.FlightSegments.length - 1
+            ].ArrivalDateTime.split("T")[1],
+            "HH:mm:ss"
+          ).isBetween(
+            moment(filterValues.arrival[0], "hh:mm A"),
+            moment(filterValues.arrival[1], "hh:mm A"),
+            null,
+            "[]"
+          ))
     );
 
     console.log(filterFlights);
@@ -185,56 +224,31 @@ class FlightsInfoRoundInt extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>
-            <View style={{ backgroundColor: "#E5EBF7", height: 56 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 16,
-                  marginTop: 10
-                }}>
-                <Button onPress={() => this.props.navigation.goBack(null)}>
-                  <Icon name="md-arrow-back" size={24} />
-                </Button>
-                <View
+            <View style={{ backgroundColor: "#E5EBF7" }}>
+              <HeaderFlights
+                from={from}
+                to={to}
+                journey_date={journey_date}
+                return_date={return_date}
+                Adult={Adult}
+                Child={Child}
+                Infant={Infant}
+                className={className}
+                style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}>
+                <Button
                   style={{
-                    justifyContent: "space-between",
                     flexDirection: "row",
-                    flex: 1
-                  }}>
-                  <View>
-                    <Text
-                      style={{
-                        fontWeight: "700",
-                        fontSize: 16,
-                        marginHorizontal: 5
-                      }}>
-                      {from} To {to}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        marginHorizontal: 5,
-                        color: "#717984"
-                      }}>
-                      {journey_date + " - " + return_date} | {Adult > 0 ? Adult + " Adult" : ""}
-                      {Child > 0 ? "," + Child + " Child" : ""}{" "}
-                      {Infant > 0 ? "," + Infant + " Infant" : ""} | {className}
-                    </Text>
-                  </View>
-                  <Button
-                    style={{
-                      flexDirection: "row",
-                      marginStart: "auto",
-                      paddingEnd: 8
-                    }}
-                    onPress={this.openFilter}>
-                    <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                    <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
-                      Sort & Filter
-                    </Text>
-                  </Button>
-                </View>
-              </View>
+                    marginStart: "auto",
+                    paddingEnd: 8,
+                    paddingVertical: 16
+                  }}
+                  onPress={this.openFilter}>
+                  <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                  <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
+                    Sort & Filter
+                  </Text>
+                </Button>
+              </HeaderFlights>
             </View>
             <FlatList
               data={filterFlights}

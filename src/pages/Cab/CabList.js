@@ -18,7 +18,7 @@ class CabList extends React.PureComponent {
       filterValues: {
         cars: [],
         seatingCapacity: [],
-        price: {}
+        price: []
       }
     };
   }
@@ -38,8 +38,8 @@ class CabList extends React.PureComponent {
         (filterValues.cars.length == 0 || filterValues.cars.includes(item.Name)) &&
         (filterValues.seatingCapacity.length == 0 ||
           filterValues.seatingCapacity.includes(item.SeatingCapacity)) &&
-        (!filterValues.price.min || filterValues.price.min <= item.TotalAmount) &&
-        (!filterValues.price.max || filterValues.price.max >= item.TotalAmount)
+        (filterValues.price.length == 0 ||
+          (filterValues.price[0] <= item.TotalAmount && filterValues.price[1] >= item.TotalAmount))
     );
     this.setState({
       filteredcabs,
