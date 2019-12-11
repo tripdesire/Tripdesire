@@ -49,8 +49,8 @@ class FlightsInfoRound extends React.PureComponent {
         airlines: [],
         connectingLocations: [],
         price: [],
-        depature: [],
-        arrival: []
+        departure: ["00:00 AM", "11:45 PM"],
+        arrival: ["00:00 AM", "11:45 PM"]
       }
     };
   }
@@ -186,6 +186,23 @@ class FlightsInfoRound extends React.PureComponent {
         (filterValues.connectingLocations.length == 0 ||
           item.FlightSegments.some(value =>
             filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+          )) &&
+        (filterValues.departure.length == 0 ||
+          moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss").isBetween(
+            moment(filterValues.departure[0], "hh:mm A"),
+            moment(filterValues.departure[1], "hh:mm A"),
+            null,
+            "[]"
+          )) &&
+        (filterValues.arrival.length == 0 ||
+          moment(
+            item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split("T")[1],
+            "HH:mm:ss"
+          ).isBetween(
+            moment(filterValues.arrival[0], "hh:mm A"),
+            moment(filterValues.arrival[1], "hh:mm A"),
+            null,
+            "[]"
           ))
     );
 
@@ -200,6 +217,23 @@ class FlightsInfoRound extends React.PureComponent {
         (filterValues.connectingLocations.length == 0 ||
           item.FlightSegments.some(value =>
             filterValues.connectingLocations.includes(value.IntDepartureAirportName)
+          )) &&
+        (filterValues.departure.length == 0 ||
+          moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss").isBetween(
+            moment(filterValues.departure[0], "hh:mm A"),
+            moment(filterValues.departure[1], "hh:mm A"),
+            null,
+            "[]"
+          )) &&
+        (filterValues.arrival.length == 0 ||
+          moment(
+            item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split("T")[1],
+            "HH:mm:ss"
+          ).isBetween(
+            moment(filterValues.arrival[0], "hh:mm A"),
+            moment(filterValues.arrival[1], "hh:mm A"),
+            null,
+            "[]"
           ))
     );
     if (onwardFlights.length == 0) {

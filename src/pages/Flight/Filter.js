@@ -1,5 +1,5 @@
-import React, { PureComponent } from "react";
-import { View, Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { Button, Text, CheckBox } from "../../components";
 import { uniq, intersection, max, min, isEmpty } from "lodash";
 import { Icon } from "../../components";
@@ -27,7 +27,7 @@ class Filter extends React.Component {
         fareType: [],
         airlines: [],
         connectingLocations: [],
-        price: {},
+        price: [],
         departure: [],
         arrival: [],
         sortBy: [
@@ -106,7 +106,7 @@ class Filter extends React.Component {
           airlines = uniq(airlines);
           connectingLocations = uniq(connectingLocations);
         }
-        price = { min: Math.floor(min(price)), max: Math.ceil(max(price)) };
+        price = [Math.floor(min(price)), Math.ceil(max(price))];
         break;
       case 2:
         for (let value of data) {
@@ -116,8 +116,7 @@ class Filter extends React.Component {
           for (let j = 1; j < value.IntOnward.FlightSegments.length; j++) {
             connectingLocations.push(value.IntOnward.FlightSegments[j].IntDepartureAirportName);
           }
-          price.push(value.IntOnward.FareDetails.TotalFare);
-
+          price.push(value.FareDetails.TotalFare);
           if (value.IntReturn.length > 0) {
             stops.push(value.IntReturn.FlightSegments.length - 1);
             fareType.push(value.IntReturn.FlightSegments[0].BookingClassFare.Rule);
@@ -125,15 +124,13 @@ class Filter extends React.Component {
             for (let j = 1; j < value.IntReturn.FlightSegments.length; j++) {
               connectingLocations.push(value.IntReturn.FlightSegments[j].IntDepartureAirportName);
             }
-            price.push(value.IntReturn.FareDetails.TotalFare);
           }
         }
-
         stops = uniq(stops).sort();
         fareType = uniq(fareType).sort();
         airlines = uniq(airlines).sort();
         connectingLocations = uniq(connectingLocations).sort();
-        price = { min: Math.floor(min(price)), max: Math.ceil(max(price)) };
+        price = [Math.floor(min(price)), Math.ceil(max(price))];
         break;
     }
 
@@ -168,20 +165,19 @@ class Filter extends React.Component {
     } else {
       newData[key].push(filters[key][index]);
     }
-    console.log(newData);
     this.props.onChangeFilter && this.props.onChangeFilter(newData);
   };
 
-  priceUpdate = (low, high) => {
-    const { filterValues, onChangeFilter } = this.props;
-    let newData = Object.assign({}, filterValues);
-    newData.price = { min: low, max: high };
-    onChangeFilter && onChangeFilter(newData);
-  };
   onSliderUpdate = key => value => {
     const { filterValues, onChangeFilter } = this.props;
+    const { filters, timeStops } = this.state;
     let newData = Object.assign({}, filterValues);
-    newData[key] = [this.state.timeStops[value[0]], this.state.timeStops[value[1]]];
+    if (key == "price") {
+      newData[key] = [value[0], value[1] || filters[key][1]];
+    } else {
+      newData[key] = [timeStops[value[0]], timeStops[value[1]]];
+    }
+    console.log(newData);
     onChangeFilter && onChangeFilter(newData);
   };
 
@@ -288,26 +284,21 @@ class Filter extends React.Component {
                   ))}
                 </ScrollView>
               )}
-              {index == 4 && !isEmpty(filters.price) && (
+              {index == 4 && (
                 <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
-                  <RangeSlider
-                    style={{
-                      width: "100%",
-                      height: 80
-                    }}
-                    isMarkersSeparated={true}
-                    gravity={"center"}
-                    labelStyle="none"
-                    min={filters.price.min}
-                    max={filters.price.max}
-                    initialLowValue={
-                      filterValues.price.min ? filterValues.price.min : filters.price.min
+                  <MultiSlider
+                    trackStyle={{ height: 4 }}
+                    selectedStyle={{ backgroundColor: "#F68E1F" }}
+                    markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
+                    sliderLength={this.state.widthSeekBar - 32}
+                    min={filters.price[0]}
+                    max={filters.price[1]}
+                    values={
+                      [filterValues.price[0] || filters.price[0], filterValues.price[1]] ||
+                      filters.price[1]
                     }
-                    initialHighValue={
-                      filterValues.price.max ? filterValues.price.max : filters.price.max
-                    }
-                    selectionColor="#F68E1F"
-                    onValueChanged={this.priceUpdate}
+                    enabledTwo
+                    onValuesChangeFinish={this.onSliderUpdate("price")}
                   />
                   <View
                     style={{
@@ -316,10 +307,10 @@ class Filter extends React.Component {
                       flexDirection: "row"
                     }}>
                     <Text style={{ fontWeight: "700" }}>
-                      {filterValues.price.min ? filterValues.price.min : filters.price.min}
+                      {filterValues.price[0] || filters.price[0]}
                     </Text>
                     <Text style={{ fontWeight: "700" }}>
-                      {filterValues.price.max ? filterValues.price.max : filters.price.max}
+                      {filterValues.price[1] || filters.price[1]}
                     </Text>
                   </View>
                 </View>
