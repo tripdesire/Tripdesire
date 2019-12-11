@@ -33,7 +33,8 @@ class BusRoundReturn extends React.PureComponent {
       destinationId,
       journeyDate,
       tripType,
-      TripType
+      TripType,
+      returnDate
     } = this.props.navigation.state.params;
 
     let param = {

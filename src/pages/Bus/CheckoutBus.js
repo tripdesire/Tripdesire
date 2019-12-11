@@ -59,12 +59,18 @@ class CheckoutBus extends React.PureComponent {
 
     const {
       params,
+      paramsRound,
       BoardingPoint,
+      BoardingPointReturn,
       DroppingPoint,
+      DroppingPointReturn,
       cartData,
       destinationName,
       selectedSheets,
+      selectedSheetsRound,
       sourceName,
+      journeyDate,
+      returnDate,
       tripType
     } = this.props.navigation.state.params;
 
@@ -83,6 +89,16 @@ class CheckoutBus extends React.PureComponent {
     let ServiceCharge = [...selectedSheets.map(item => item.OperatorServiceCharge)].join("~");
 
     let ServiceTax = [...selectedSheets.map(item => item.Servicetax)].join("~");
+
+    let SeatNosRound = [...selectedSheetsRound.map(item => item.Number)].join("~");
+
+    let FaresRound = [...selectedSheetsRound.map(item => item.Fare)].join("~");
+
+    let ServiceChargeRound = [...selectedSheetsRound.map(item => item.OperatorServiceCharge)].join(
+      "~"
+    );
+
+    let ServiceTaxRound = [...selectedSheetsRound.map(item => item.Servicetax)].join("~");
 
     console.log(name, age, gender, den, Fares, SeatNos);
 
@@ -108,7 +124,7 @@ class CheckoutBus extends React.PureComponent {
       IdCardNo: IdNumber,
       IdCardType: IdCardType,
       IdCardIssuedBy: IssuedBy,
-      JourneyDate: moment(new Date()).format("DD-MM-YYYY"),
+      JourneyDate: journeyDate,
       MobileNo: 9999999999,
       Names: name,
       NoofSeats: selectedSheets.length,
@@ -130,18 +146,68 @@ class CheckoutBus extends React.PureComponent {
       UserType: 5
     };
 
+    let paramRound = {
+      Address: "South X",
+      Ages: age,
+      BoardingId: BoardingPointReturn.PointId,
+      BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
+      BusTypeName: paramsRound.BusType,
+      CancellationPolicy: paramsRound.CancellationPolicy,
+      City: "Hyderabad",
+      ConvenienceFee: paramsRound.ConvenienceFee,
+      DepartureTime: paramsRound.DepartureTime,
+      DestinationId: paramsRound.DestinationId,
+      DestinationName: sourceName,
+      DisplayName: paramsRound.DisplayName,
+      DroppingId: DroppingPointReturn.PointId,
+      DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
+      EmailId: "nadeem@webiixx.com",
+      EmergencyMobileNo: null,
+      Fares: FaresRound,
+      Genders: gender,
+      IdCardNo: IdNumber,
+      IdCardType: IdCardType,
+      IdCardIssuedBy: IssuedBy,
+      JourneyDate: returnDate,
+      MobileNo: 9999999999,
+      Names: name,
+      NoofSeats: selectedSheetsRound.length,
+      Operator: "GDS Demo Test", //////not showing
+      PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
+      PostalCode: "500035", /////
+      Provider: paramsRound.Provider,
+      ReturnDate: null,
+      State: "Telangana",
+      Seatcodes: null,
+      SeatNos: SeatNosRound,
+      Servicetax: ServiceTaxRound,
+      ServiceCharge: ServiceChargeRound,
+      SourceId: paramsRound.SourceId,
+      SourceName: destinationName,
+      Titles: den,
+      TripId: paramsRound.Id,
+      TripType: 1,
+      UserType: 5
+    };
+
+    console.log(paramRound);
+    console.log(JSON.stringify(paramRound));
     console.log(param);
     console.log(JSON.stringify(param));
-    // return;
+    //return;
 
     if (this.state.IdNumber && this.state.IssuedBy) {
       this.setState({ loader: true });
       etravosApi
         .post("/Buses/BlockBusTicket", param)
-
         .then(({ data }) => {
           console.log(data);
           this.setState({ loader: false });
+
+          etravosApi.post("/Buses/BlockBusTicket", paramRound).then(({ data }) => {
+            console.log(data);
+          });
+          return;
           if (data.BookingStatus == 1) {
             this.props.navigation.navigate("BusPayment", {
               BlockingReferenceNo: data.BlockingReferenceNo,
@@ -487,7 +553,7 @@ class CheckoutBus extends React.PureComponent {
                 <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>
                   Total Payable
                 </Text>
-                <HTML html={cartData.total} />
+                {/* <HTML html={cartData.total} /> */}
               </View>
             </View>
 

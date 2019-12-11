@@ -52,14 +52,17 @@ class BoardingRound extends React.PureComponent {
   _bookNow = () => {
     const {
       params,
+      paramsRound,
       sourceName,
       destinationName,
       tripType,
-      selectedSheets
+      selectedSheets,
+      selectedSheetsRound
     } = this.props.navigation.state.params;
-    console.log(params, selectedSheets);
+    console.log(params, selectedSheets, selectedSheetsRound);
 
     let Seats = [...selectedSheets.map(item => item.Number)].join("~");
+    let SeatsRound = [...selectedSheetsRound.map(item => item.Number)].join("~");
     let param = {
       id: 273,
       quantity: 1,
@@ -86,30 +89,37 @@ class BoardingRound extends React.PureComponent {
     };
 
     console.log(param);
+    this.props.navigation.navigate("CheckoutBus", {
+      // cartData: data,
+      ...this.props.navigation.state.params,
+      BoardingPointReturn: this.state.bp,
+      DroppingPointReturn: this.state.dp
+    });
+    return;
 
-    domainApi
-      .post("/cart/add", param)
-      .then(({ data }) => {
-        console.log(data);
-        if (data.code == "1") {
-          Toast.show(data.message, Toast.LONG);
-          domainApi.get("/cart").then(({ data }) => {
-            console.log(data);
-            const { bp, dp } = this.state;
-            this.props.navigation.navigate("CheckoutBus", {
-              cartData: data,
-              ...this.props.navigation.state.params,
-              BoardingPoint: bp,
-              DroppingPoint: dp
-            });
-          });
-        } else {
-          Toast.show(res.data.message, Toast.LONG);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // domainApi
+    //   .post("/cart/add", param)
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //     if (data.code == "1") {
+    //       Toast.show(data.message, Toast.LONG);
+    //       domainApi.get("/cart").then(({ data }) => {
+    //         console.log(data);
+    //         const { bp, dp } = this.state;
+    //         this.props.navigation.navigate("CheckoutBus", {
+    //           cartData: data,
+    //           ...this.props.navigation.state.params,
+    //           BoardingPointReturn: bp,
+    //           DroppingPointReturn: dp
+    //         });
+    //       });
+    //     } else {
+    //       Toast.show(res.data.message, Toast.LONG);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   };
 
   render() {

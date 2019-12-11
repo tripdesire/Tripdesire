@@ -60,7 +60,13 @@ class BoardingOneway extends React.PureComponent {
     } = this.props.navigation.state.params;
     console.log(params, selectedSheets);
 
-    this.props.navigation.navigate("BusRoundReturn", { ...this.props.navigation.state.params });
+    const { bp, dp } = this.state;
+
+    this.props.navigation.navigate("BusRoundReturn", {
+      ...this.props.navigation.state.params,
+      BoardingPoint: bp,
+      DroppingPoint: dp
+    });
 
     // let Seats = [...selectedSheets.map(item => item.Number)].join("~");
     // let param = {
