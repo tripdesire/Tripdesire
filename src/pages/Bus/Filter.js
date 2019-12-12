@@ -19,7 +19,7 @@ class Filter extends React.Component {
           "Travels Asc",
           "Travels Desc",
           "Departure Asc",
-          "Departure Dsc",
+          "Departure Desc",
           "Arrival Asc",
           "Arrival Desc"
         ]

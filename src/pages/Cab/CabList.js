@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { View, FlatList, Modal } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
+import { orderBy } from "lodash";
 import moment from "moment";
 import { etravosApi } from "../../service";
 import RenderItems from "./RenderItems";
@@ -18,7 +19,8 @@ class CabList extends React.PureComponent {
       filterValues: {
         cars: [],
         seatingCapacity: [],
-        price: []
+        price: [],
+        sortBy: "Fare low to high"
       }
     };
   }
@@ -41,6 +43,27 @@ class CabList extends React.PureComponent {
         (filterValues.price.length == 0 ||
           (filterValues.price[0] <= item.TotalAmount && filterValues.price[1] >= item.TotalAmount))
     );
+
+    switch (filterValues.sortBy) {
+      case "Name Asc":
+        filteredcabs = orderBy(filteredcabs, "Name", "asc");
+        break;
+      case "Name Desc":
+        filteredcabs = orderBy(filteredcabs, "Name", "desc");
+        break;
+      case "Fare low to high":
+        filteredcabs = orderBy(filteredcabs, "TotalAmount", "asc");
+        break;
+      case "Fare high to low":
+        filteredcabs = orderBy(filteredcabs, "TotalAmount", "desc");
+        break;
+      case "Seat Asc":
+        filteredcabs = orderBy(filteredcabs, "SeatingCapacity", "asc");
+        break;
+      case "Seat Desc":
+        filteredcabs = orderBy(filteredcabs, "SeatingCapacity", "desc");
+        break;
+    }
     this.setState({
       filteredcabs,
       filterModalVisible: false
