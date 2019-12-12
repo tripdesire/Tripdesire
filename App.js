@@ -3,9 +3,10 @@ import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { Provider } from "react-redux";
 import { store, persistor } from "./src/store";
+import { TouchableOpacity } from "react-native";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import { CustomDrawer } from "./src/components";
+import { CustomDrawer, Icon } from "./src/components";
 import {
   Home,
   FlightSearch,
@@ -42,7 +43,15 @@ import {
   ThankYouBus,
   ThankYouHotel,
   Boarding,
-  ForgetPassword
+  ForgetPassword,
+  ProfilePage,
+  BillingDetails,
+  BusRound,
+  SeatOneway,
+  SeatRound,
+  BoardingOneway,
+  BoardingRound,
+  BusRoundReturn
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -95,7 +104,15 @@ const HomeStack = createStackNavigator(
     ThankYouBus,
     ThankYouHotel,
     Boarding,
-    ForgetPassword
+    ForgetPassword,
+    ProfilePage,
+    BillingDetails,
+    BusRound,
+    SeatOneway,
+    SeatRound,
+    BoardingOneway,
+    BoardingRound,
+    BusRoundReturn
   },
   {
     headerMode: "none",
@@ -119,23 +136,23 @@ const DrawerNavigator = createDrawerNavigator(
     HomeStack: {
       screen: HomeStack,
       navigationOptions: {
-        title: "Home"
-        // drawerIcon: () => (
-        //   <TouchableOpacity>
-        //     <Icon name="md-clipboard" />
-        //   </TouchableOpacity>
-        // )
+        title: "Home",
+        drawerIcon: () => (
+          <TouchableOpacity>
+            <Icon name="md-home" size={24} />
+          </TouchableOpacity>
+        )
       }
     },
     OrderStack: {
       screen: OrderStack,
       navigationOptions: {
-        title: "Orders"
-        // drawerIcon: () => (
-        //   <TouchableOpacity>
-        //     <Icon name="md-clipboard" />
-        //   </TouchableOpacity>
-        // )
+        title: "Orders",
+        drawerIcon: () => (
+          <TouchableOpacity>
+            <Icon type="FontAwesome5" name="clipboard-list" size={24} />
+          </TouchableOpacity>
+        )
       }
     }
   },

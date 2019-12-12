@@ -1,54 +1,48 @@
-import React, { PureComponent } from "react";
-import { View, Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import { Button, Text, CheckBox } from "../../components";
-import { uniq, intersection, max, min, isEmpty } from "lodash";
+import React from "react";
+import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { Button, Text, CheckBox, RadioButton } from "../../components";
+import { uniq, intersection, max, min } from "lodash";
 import { Icon } from "../../components";
-import RangeSlider from "rn-range-slider";
 import moment from "moment";
-import RadioButton from "./RadioButton";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 class Filter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterTabs: [
-        "Stops",
-        "Fare Type",
-        "Airlines",
-        "Connecting Locations",
-        "Price",
-        "Depature",
-        "Arrival",
-        "Sort By"
-      ],
       filters: {
         stops: [],
         fareType: [],
         airlines: [],
         connectingLocations: [],
-        price: {},
-        depature: [],
+        price: [],
+        departure: [],
         arrival: [],
         sortBy: [
-          { value: "Airline", bool: false },
-          { value: "Price", bool: false },
-          { value: "Departure", bool: false },
-          { value: "Arrival", bool: false }
+          "Fare low to high",
+          "Fare high to low",
+          "Airline Asc",
+          "Airline Desc",
+          "Departure Asc",
+          "Departure Dsc",
+          "Arrival Asc",
+          "Arrival Desc"
         ]
       },
       index: 0,
-      radioDirect: false,
-      radioButton: [
-        { Name: "Airline Ascending" },
-        { Name: "Airline Descending" },
-        { Name: "Price Low" },
-        { Name: "Price High" },
-        { Name: "Deaprture Ascending" },
-        { Name: "Deaprture Descending" },
-        { Name: "Arrival Ascending" },
-        { Name: "Arrival Descending" }
-      ]
+      timeStops: this.getTimeStops(),
+      widthSeekBar: 100
     };
+    this.filterTabs = [
+      "Stops",
+      "Fare Type",
+      "Airlines",
+      "Connecting Locations",
+      "Price",
+      "departure",
+      "Arrival",
+      "Sort by"
+    ];
   }
 
   /*static getDerivedStateFromProps(nextProps, prevState) {
@@ -61,7 +55,6 @@ class Filter extends React.Component {
 
   componentDidMount() {
     const { data, flight_type, returnFlights } = this.props;
-    //console.log(data);
     let stops = [];
     let fareType = [];
     let airlines = [];
@@ -103,7 +96,7 @@ class Filter extends React.Component {
           airlines = uniq(airlines);
           connectingLocations = uniq(connectingLocations);
         }
-        price = { min: Math.floor(min(price)), max: Math.ceil(max(price)) };
+        price = [Math.floor(min(price)), Math.ceil(max(price))];
         break;
       case 2:
         for (let value of data) {
@@ -113,8 +106,7 @@ class Filter extends React.Component {
           for (let j = 1; j < value.IntOnward.FlightSegments.length; j++) {
             connectingLocations.push(value.IntOnward.FlightSegments[j].IntDepartureAirportName);
           }
-          price.push(value.IntOnward.FareDetails.TotalFare);
-
+          price.push(value.FareDetails.TotalFare);
           if (value.IntReturn.length > 0) {
             stops.push(value.IntReturn.FlightSegments.length - 1);
             fareType.push(value.IntReturn.FlightSegments[0].BookingClassFare.Rule);
@@ -122,15 +114,13 @@ class Filter extends React.Component {
             for (let j = 1; j < value.IntReturn.FlightSegments.length; j++) {
               connectingLocations.push(value.IntReturn.FlightSegments[j].IntDepartureAirportName);
             }
-            price.push(value.IntReturn.FareDetails.TotalFare);
           }
         }
-
         stops = uniq(stops).sort();
         fareType = uniq(fareType).sort();
         airlines = uniq(airlines).sort();
         connectingLocations = uniq(connectingLocations).sort();
-        price = { min: Math.floor(min(price)), max: Math.ceil(max(price)) };
+        price = [Math.floor(min(price)), Math.ceil(max(price))];
         break;
     }
 
@@ -141,7 +131,9 @@ class Filter extends React.Component {
         fareType,
         airlines,
         connectingLocations,
-        price
+        price,
+        departure: [0, this.state.timeStops.length - 1],
+        arrival: [0, this.state.timeStops.length - 1]
       }
     });
     console.log(this.state);
@@ -163,41 +155,50 @@ class Filter extends React.Component {
     } else {
       newData[key].push(filters[key][index]);
     }
-    console.log(newData);
     this.props.onChangeFilter && this.props.onChangeFilter(newData);
   };
 
-  priceUpdate = (low, high) => {
+  onSliderUpdate = key => value => {
     const { filterValues, onChangeFilter } = this.props;
+    const { filters, timeStops } = this.state;
     let newData = Object.assign({}, filterValues);
-    newData.price = { min: low, max: high };
+    if (key == "price") {
+      newData[key] = [value[0], value[1] || filters[key][1]];
+    } else {
+      newData[key] = [timeStops[value[0]], timeStops[value[1]]];
+    }
+    //console.log(newData);
     onChangeFilter && onChangeFilter(newData);
   };
 
-  _radioButton = (index, value) => {
-    let newData = Object.assign([], this.state.radioButton);
-    for (let i = 0; i < newData.length; i++) {
-      if (newData[i].Name == value) {
-        this.setState({ radioDirect: true });
-      }
-    }
-
-    // let newData = Object.assign([], this.state.radioButton);
-    // newData[index][value] = newData[index][value] == true ? false : true;
-    // for (let i = 0; i < newData.length; i++) {
-    //   if (index == i) {
-    //     continue;
-    //   } else {
-    //     newData[i].radioDirect = false;
-    //   }
-    // }
-    // this.setState({
-    //   radioButton: newData
-    // });
+  onRadioUpdate = (key, value) => () => {
+    const { filterValues, onChangeFilter } = this.props;
+    let newData = Object.assign({}, filterValues);
+    newData[key] = value;
+    console.log(newData);
+    onChangeFilter && onChangeFilter(newData);
   };
 
+  getSizeSeekBar(event) {
+    this.setState({ widthSeekBar: event.nativeEvent.layout.width });
+  }
+
+  getTimeStops() {
+    var startTime = moment("00:00", "HH:mm");
+    var endTime = moment("23:59", "HH:mm");
+    if (endTime.isBefore(startTime)) {
+      endTime.add(1, "day");
+    }
+    var timeStops = [];
+    while (startTime <= endTime) {
+      timeStops.push(new moment(startTime).format("hh:mm A"));
+      startTime.add(15, "minutes");
+    }
+    return timeStops;
+  }
+
   render() {
-    const { filterTabs, index, filters, radioDirect, radioButton } = this.state;
+    const { index, filters, timeStops, radioButton } = this.state;
     const { filterValues } = this.props;
 
     return (
@@ -212,7 +213,7 @@ class Filter extends React.Component {
           </View>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: 2, backgroundColor: "#E8EEF6" }}>
-              {filterTabs.map((item, i) => (
+              {this.filterTabs.map((item, i) => (
                 <Button
                   style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
                   key={"filter_" + item + index}
@@ -221,7 +222,9 @@ class Filter extends React.Component {
                 </Button>
               ))}
             </View>
-            <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}>
+            <View
+              style={{ flex: 3, backgroundColor: "#FFFFFF" }}
+              onLayout={e => this.getSizeSeekBar(e)}>
               {index == 0 && (
                 <ScrollView>
                   {filters.stops.map((item, index) => (
@@ -270,30 +273,21 @@ class Filter extends React.Component {
                   ))}
                 </ScrollView>
               )}
-              {index == 4 && !isEmpty(filters.price) && (
+              {index == 4 && (
                 <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
-                  <RangeSlider
-                    style={{
-                      //flex: 1,
-                      width: "100%",
-                      height: 80
-                    }}
-                    isMarkersSeparated={true}
-                    gravity={"center"}
-                    min={filters.price.min}
-                    max={filters.price.max}
-                    initialLowValue={
-                      filterValues.price.min ? filterValues.price.min : filters.price.min
+                  <MultiSlider
+                    trackStyle={{ height: 4 }}
+                    selectedStyle={{ backgroundColor: "#F68E1F" }}
+                    markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
+                    sliderLength={this.state.widthSeekBar - 32}
+                    min={filters.price[0]}
+                    max={filters.price[1]}
+                    values={
+                      [filterValues.price[0] || filters.price[0], filterValues.price[1]] ||
+                      filters.price[1]
                     }
-                    initialHighValue={
-                      filterValues.price.max ? filterValues.price.max : filters.price.max
-                    }
-                    selectionColor="#F68E1F"
-                    blankColor="#757575"
-                    labelBackgroundColor="#E8EEF6"
-                    labelBorderColor="#E8EEF6"
-                    labelTextColor="#000"
-                    onValueChanged={this.priceUpdate}
+                    enabledTwo
+                    onValuesChangeFinish={this.onSliderUpdate("price")}
                   />
                   <View
                     style={{
@@ -301,64 +295,83 @@ class Filter extends React.Component {
                       justifyContent: "space-between",
                       flexDirection: "row"
                     }}>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.min}</Text>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.max}</Text>
+                    <Text style={{ fontWeight: "700" }}>
+                      {filterValues.price[0] || filters.price[0]}
+                    </Text>
+                    <Text style={{ fontWeight: "700" }}>
+                      {filterValues.price[1] || filters.price[1]}
+                    </Text>
                   </View>
                 </View>
               )}
 
-              {/*index == 6 && !isEmpty(filters.price) && (
+              {index == 5 && (
                 <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
-                  <RangeSlider
-                    style={{
-                      //flex: 1,
-                      width: "100%",
-                      height: 80
-                    }}
-                    isMarkersSeparated={true}
-                    gravity={"center"}
-                    min={moment()
-                      .startOf("day")
-                      .format("HH:MM")}
-                    // max={moment()
-                    //   .endOf("day")
-                    //   .toDate()}
-                    //initialLowValue={new Date()}
-                    //initialHighValue={new Date()}
-                    time
-                    selectionColor="#F68E1F"
-                    blankColor="#757575"
-                    labelBackgroundColor="#E8EEF6"
-                    labelBorderColor="#E8EEF6"
-                    labelTextColor="#000"
-                    //onValueChanged={this.priceUpdate}
+                  <MultiSlider
+                    trackStyle={{ height: 4 }}
+                    selectedStyle={{ backgroundColor: "#F68E1F" }}
+                    markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
+                    sliderLength={this.state.widthSeekBar - 32}
+                    min={0}
+                    max={timeStops.length - 1}
+                    values={[
+                      timeStops.findIndex(e => e == filterValues.departure[0]),
+                      timeStops.findIndex(e => e == filterValues.departure[1])
+                    ]}
+                    enabledTwo
+                    onValuesChangeFinish={this.onSliderUpdate("departure")}
                   />
+
                   <View
                     style={{
                       width: "100%",
                       justifyContent: "space-between",
                       flexDirection: "row"
                     }}>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.min}</Text>
-                    <Text style={{ fontWeight: "700" }}>{filters.price.max}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.departure[0]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.departure[1]}</Text>
                   </View>
                 </View>
-              )*/}
-
-              {index == 7 && (
-                <ScrollView>
-                  {radioButton &&
-                    radioButton.map((item, index) => (
-                      <RadioButton
-                        key={"sap_" + index}
-                        Name={item.Name}
-                        style={index > 0 ? { marginTop: 20 } : null}
-                        onPress={() => this._radioButton(index, item.Name)}
-                        radioButton={this.state.radioDirect}
-                      />
-                    ))}
-                </ScrollView>
               )}
+
+              {index == 6 && (
+                <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
+                  <MultiSlider
+                    trackStyle={{ height: 4 }}
+                    selectedStyle={{ backgroundColor: "#F68E1F" }}
+                    markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
+                    sliderLength={this.state.widthSeekBar - 32}
+                    min={0}
+                    max={timeStops.length - 1}
+                    values={[
+                      timeStops.findIndex(e => e == filterValues.arrival[0]),
+                      timeStops.findIndex(e => e == filterValues.arrival[1])
+                    ]}
+                    enabledTwo
+                    onValuesChangeFinish={this.onSliderUpdate("arrival")}
+                  />
+
+                  <View
+                    style={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      flexDirection: "row"
+                    }}>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.arrival[0]}</Text>
+                    <Text style={{ fontWeight: "700" }}>{filterValues.arrival[1]}</Text>
+                  </View>
+                </View>
+              )}
+
+              {index == 7 &&
+                filters.sortBy.map((item, index) => (
+                  <RadioButton
+                    key={"sort_" + item + index}
+                    label={item}
+                    onPress={this.onRadioUpdate("sortBy", item)}
+                    selected={item === filterValues.sortBy}
+                  />
+                ))}
             </View>
           </View>
           <View style={styles.footer}>

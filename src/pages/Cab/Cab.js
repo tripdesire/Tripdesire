@@ -307,7 +307,6 @@ class Cab extends React.PureComponent {
       transfer,
       fromDTpicker,
       toDTpicker,
-      modalPickupLocationSugg,
       pickuplocation,
       droplocation
     } = this.state;
@@ -343,8 +342,7 @@ class Cab extends React.PureComponent {
               flexDirection: "row",
               marginHorizontal: 16,
               marginTop: -15,
-              justifyContent: "center",
-              backgroundColor: "#E4EAF6"
+              justifyContent: "center"
             }}>
             <Button
               style={{

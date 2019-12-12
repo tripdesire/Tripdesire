@@ -4,5 +4,6 @@ export const DOMESTIC_HOTEL_SUGGESTION = "DOMESTIC_HOTEL_SUGGESTION";
 export const SIGN_UP = "SIGN_UP";
 export const SIGN_IN = "SIGN_IN";
 export const LOGOUT = "LOGOUT";
+export const BILLING = "BILLING";
 export const BUS_SUGGESTION = "BUS_SUGGESTION";
 export const CAB_SUGGESTION = "CAB_SUGGESTION";

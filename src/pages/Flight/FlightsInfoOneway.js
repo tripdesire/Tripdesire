@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image, FlatList, Modal, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, Icon, HeaderFlights } from "../../components";
 import Toast from "react-native-simple-toast";
+import { orderBy } from "lodash";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
 import { etravosApi } from "../../service";
@@ -39,9 +40,10 @@ class FlightsInfoOneway extends React.PureComponent {
         fareType: [],
         airlines: [],
         connectingLocations: [],
-        price: {},
-        depature: [],
-        arrival: []
+        price: [],
+        departure: ["00:00 AM", "11:45 PM"],
+        arrival: ["00:00 AM", "11:45 PM"],
+        sortBy: "Fare low to high"
       },
       filterFlights: [],
       propsName: props.navigation.state.params
@@ -124,11 +126,12 @@ class FlightsInfoOneway extends React.PureComponent {
   filter = () => {
     const { filterValues, flights, flight_type } = this.state;
     let filterFlights = [];
+    console.log(filterValues);
 
     switch (flight_type) {
       case 1:
-        filterFlights = flights.filter(
-          item =>
+        filterFlights = flights.filter(item => {
+          return (
             (filterValues.stops.length == 0 ||
               filterValues.stops.includes(item.FlightSegments.length - 1)) &&
             (filterValues.fareType.length == 0 ||
@@ -139,9 +142,29 @@ class FlightsInfoOneway extends React.PureComponent {
               item.FlightSegments.some(value =>
                 filterValues.connectingLocations.includes(value.IntDepartureAirportName)
               )) &&
-            (!filterValues.price.min || filterValues.price.min <= item.FareDetails.TotalFare) &&
-            (!filterValues.price.max || filterValues.price.max >= item.FareDetails.TotalFare)
-        );
+            (filterValues.price.length == 0 ||
+              (filterValues.price[0] <= item.FareDetails.TotalFare &&
+                filterValues.price[1] >= item.FareDetails.TotalFare)) &&
+            (filterValues.departure.length == 0 ||
+              moment(item.FlightSegments[0].DepartureDateTime.split("T")[1], "HH:mm:ss").isBetween(
+                moment(filterValues.departure[0], "hh:mm A"),
+                moment(filterValues.departure[1], "hh:mm A"),
+                null,
+                "[]"
+              )) &&
+            (filterValues.arrival.length == 0 ||
+              moment(
+                item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime.split("T")[1],
+                "HH:mm:ss"
+              ).isBetween(
+                moment(filterValues.arrival[0], "hh:mm A"),
+                moment(filterValues.arrival[1], "hh:mm A"),
+                null,
+                "[]"
+              ))
+          );
+        });
+
         break;
       case 2:
         filterFlights = flights.filter(
@@ -158,14 +181,93 @@ class FlightsInfoOneway extends React.PureComponent {
               item.IntOnward.FlightSegments.some(value =>
                 filterValues.connectingLocations.includes(value.IntDepartureAirportName)
               )) &&
-            (!filterValues.price.min ||
-              filterValues.price.min <= item.IntOnward.FareDetails.TotalFare) &&
-            (!filterValues.price.max ||
-              filterValues.price.max >= item.IntOnward.FareDetails.TotalFare)
+            (filterValues.price.length == 0 ||
+              (filterValues.price[0] <= item.FareDetails.TotalFare &&
+                filterValues.price[1] >= item.FareDetails.TotalFare)) &&
+            (filterValues.departure.length == 0 ||
+              moment(
+                item.IntOnward.FlightSegments[0].DepartureDateTime.split("T")[1],
+                "HH:mm:ss"
+              ).isBetween(
+                moment(filterValues.departure[0], "hh:mm A"),
+                moment(filterValues.departure[1], "hh:mm A"),
+                null,
+                "[]"
+              )) &&
+            (filterValues.arrival.length == 0 ||
+              moment(
+                item.IntOnward.FlightSegments[
+                  item.IntOnward.FlightSegments.length - 1
+                ].ArrivalDateTime.split("T")[1],
+                "HH:mm:ss"
+              ).isBetween(
+                moment(filterValues.arrival[0], "hh:mm A"),
+                moment(filterValues.arrival[1], "hh:mm A"),
+                null,
+                "[]"
+              ))
         );
+        switch (filterValues.sortBy) {
+          case "Airline Ascending":
+            filterFlights = orderBy(
+              filterFlights,
+              "IntOnward.FlightSegments[0].AirLineName",
+              "asc"
+            );
+            break;
+          case "Airline Descending":
+            filterFlights = orderBy(
+              filterFlights,
+              "IntOnward.FlightSegments[0].AirLineName",
+              "desc"
+            );
+            break;
+          case "Price Low to High":
+            filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "asc");
+            break;
+          case "Price High to Low":
+            filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "desc");
+            break;
+          case "Departure Ascending":
+            filterFlights = orderBy(
+              filterFlights,
+              new Date(item.IntOnward.FlightSegments[0].DepartureDateTime),
+              "asc"
+            );
+            break;
+          case "Departure Descending":
+            filterFlights = orderBy(
+              filterFlights,
+              item => new Date(item.IntOnward.FlightSegments[0].DepartureDateTime),
+              "desc"
+            );
+            break;
+          case "Arrival Ascending":
+            filterFlights = orderBy(
+              filterFlights,
+              item =>
+                new Date(
+                  item.IntOnward.FlightSegments[
+                    item.IntOnward.FlightSegments.length - 1
+                  ].ArrivalDateTime
+                ),
+              "asc"
+            );
+            break;
+          case "Arrival Descending":
+            filterFlights = orderBy(
+              filterFlights,
+              item =>
+                new Date(
+                  item.IntOnward.FlightSegments[
+                    item.IntOnward.FlightSegments.length - 1
+                  ].ArrivalDateTime
+                ),
+              "desc"
+            );
+        }
         break;
     }
-
     console.log(filterFlights);
     this.setState({ filterFlights, showFilter: false });
   };

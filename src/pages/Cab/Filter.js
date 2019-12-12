@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Button, Icon, Text, CheckBox } from "../../components";
-import { uniq, max, min, isEmpty } from "lodash";
-import RangeSlider from "rn-range-slider";
+import { uniq, max, min } from "lodash";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
   const [index, setIndex] = useState(0);
-  const [filterTabs, setFilterTab] = useState(["Cars", "Seating Capacity", "Price"]);
-  const [filters, setFilters] = useState({ cars: [], seatingCapacity: [], price: {} });
+  const filterTabs = ["Cars", "Seating Capacity", "Price"];
+  const [filters, setFilters] = useState({ cars: [], seatingCapacity: [], price: [] });
+  const [widthSeekBar, setWidthSeekBar] = useState(100);
 
   useEffect(() => {
     console.log(data);
@@ -22,7 +23,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
     }
     cars = uniq(cars).sort();
     seatingCapacity = uniq(seatingCapacity).sort();
-    price = { min: min(price), max: max(price) };
+    price = [min(price), max(price)];
 
     setFilters({
       ...filters,
@@ -47,11 +48,14 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
     onChangeFilter && onChangeFilter(newData);
   };
 
-  const priceUpdate = (low, high) => {
+  const onSliderUpdate = key => value => {
     let newData = Object.assign({}, filterValues);
+    newData[key] = [value[0], value[1] || filters[key][1]];
     console.log(newData);
-    newData.price = { min: low, max: high };
     onChangeFilter && onChangeFilter(newData);
+  };
+  const getSizeSeekBar = event => {
+    setWidthSeekBar(event.nativeEvent.layout.width);
   };
 
   return (
@@ -75,7 +79,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
               </Button>
             ))}
           </View>
-          <View style={{ flex: 3, backgroundColor: "#FFFFFF" }}>
+          <View style={{ flex: 3, backgroundColor: "#FFFFFF" }} onLayout={e => getSizeSeekBar(e)}>
             {index == 0 && (
               <ScrollView>
                 {filters.cars.map((item, index) => (
@@ -100,30 +104,21 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                 ))}
               </ScrollView>
             )}
-            {index == 2 && isEmpty(filters.price) && (
+            {index == 2 && (
               <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
-                <RangeSlider
-                  style={{
-                    //flex: 1,
-                    width: "100%",
-                    height: 80
-                  }}
-                  isMarkersSeparated={true}
-                  gravity={"center"}
-                  min={filters.price.min}
-                  max={filters.price.max}
-                  initialLowValue={
-                    filterValues.price.min ? filterValues.price.min : filters.price.min
+                <MultiSlider
+                  trackStyle={{ height: 4 }}
+                  selectedStyle={{ backgroundColor: "#F68E1F" }}
+                  markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
+                  sliderLength={widthSeekBar - 32}
+                  min={filters.price[0]}
+                  max={filters.price[1]}
+                  values={
+                    [filterValues.price[0] || filters.price[0], filterValues.price[1]] ||
+                    filters.price[1]
                   }
-                  initialHighValue={
-                    filterValues.price.max ? filterValues.price.max : filters.price.max
-                  }
-                  selectionColor="#F68E1F"
-                  blankColor="#757575"
-                  labelBackgroundColor="#E8EEF6"
-                  labelBorderColor="#E8EEF6"
-                  labelTextColor="#000"
-                  onValueChanged={priceUpdate}
+                  enabledTwo
+                  onValuesChangeFinish={onSliderUpdate("price")}
                 />
                 <View
                   style={{
@@ -131,8 +126,12 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                     justifyContent: "space-between",
                     flexDirection: "row"
                   }}>
-                  <Text style={{ fontWeight: "700" }}>{filters.price.min}</Text>
-                  <Text style={{ fontWeight: "700" }}>{filters.price.max}</Text>
+                  <Text style={{ fontWeight: "700" }}>
+                    {filterValues.price[0] || filters.price[0]}
+                  </Text>
+                  <Text style={{ fontWeight: "700" }}>
+                    {filterValues.price[1] || filters.price[1]}
+                  </Text>
                 </View>
               </View>
             )}

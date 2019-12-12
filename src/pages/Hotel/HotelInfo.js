@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   View,
   Image,
@@ -43,7 +43,7 @@ class HotelInfo extends React.PureComponent {
       filteredHotels: [],
       filterModalVisible: false,
       filterValues: {
-        price: {},
+        price: [],
         rating: [],
         amenities: []
       }
@@ -98,10 +98,9 @@ class HotelInfo extends React.PureComponent {
         (filterValues.rating.length == 0 || filterValues.rating.includes(item.StarRating)) &&
         (filterValues.amenities.length == 0 ||
           filterValues.amenities.some(value => item.Facilities.includes(value))) &&
-        (!filterValues.price.min ||
-          item.RoomDetails.some(value => filterValues.price.min <= value.RoomTotal)) &&
-        (!filterValues.price.max ||
-          item.RoomDetails.some(value => filterValues.price.max >= value.RoomTotal))
+        (filterValues.rating.length == 0 ||
+          (item.RoomDetails.some(value => filterValues.price.min <= value.RoomTotal) &&
+            item.RoomDetails.some(value => filterValues.price.max >= value.RoomTotal)))
     );
     this.setState({
       filteredHotels,
