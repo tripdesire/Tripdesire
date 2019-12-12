@@ -209,40 +209,40 @@ class FlightsInfoRound extends React.PureComponent {
     );
 
     switch (filterValues.sortBy) {
-      case "Airline Ascending":
+      case "Airline Asc":
         onwardFlights = orderBy(onwardFlights, "FlightSegments[0].AirLineName", "asc");
         break;
-      case "Airline Descending":
+      case "Airline Desc":
         onwardFlights = orderBy(onwardFlights, "FlightSegments[0].AirLineName", "desc");
         break;
-      case "Price Low to High":
+      case "Fare low to high":
         onwardFlights = orderBy(onwardFlights, "FareDetails.TotalFare", "asc");
         break;
-      case "Price High to Low":
+      case "Fare high to low":
         onwardFlights = orderBy(onwardFlights, "FareDetails.TotalFare", "desc");
         break;
-      case "Departure Ascending":
+      case "Departure Asc":
         onwardFlights = orderBy(
           onwardFlights,
           new Date(item.FlightSegments[0].DepartureDateTime),
           "asc"
         );
         break;
-      case "Departure Descending":
+      case "Departure Desc":
         onwardFlights = orderBy(
           onwardFlights,
           item => new Date(item.FlightSegments[0].DepartureDateTime),
           "desc"
         );
         break;
-      case "Arrival Ascending":
+      case "Arrival Asc":
         onwardFlights = orderBy(
           onwardFlights,
           item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
           "asc"
         );
         break;
-      case "Arrival Descending":
+      case "Arrival Desc":
         onwardFlights = orderBy(
           onwardFlights,
           item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
@@ -282,40 +282,40 @@ class FlightsInfoRound extends React.PureComponent {
           ))
     );
     switch (filterValues.sortBy) {
-      case "Airline Ascending":
+      case "Airline Asc":
         returnFlights = orderBy(returnFlights, "FlightSegments[0].AirLineName", "asc");
         break;
-      case "Airline Descending":
+      case "Airline Desc":
         returnFlights = orderBy(returnFlights, "FlightSegments[0].AirLineName", "desc");
         break;
-      case "Price Low to High":
+      case "Fare low to high":
         returnFlights = orderBy(returnFlights, "FareDetails.TotalFare", "asc");
         break;
-      case "Price High to Low":
+      case "Fare high to low":
         returnFlights = orderBy(returnFlights, "FareDetails.TotalFare", "desc");
         break;
-      case "Departure Ascending":
+      case "Departure Asc":
         returnFlights = orderBy(
           returnFlights,
           new Date(item.FlightSegments[0].DepartureDateTime),
           "asc"
         );
         break;
-      case "Departure Descending":
+      case "Departure Desc":
         returnFlights = orderBy(
           returnFlights,
           item => new Date(item.FlightSegments[0].DepartureDateTime),
           "desc"
         );
         break;
-      case "Arrival Ascending":
+      case "Arrival Asc":
         returnFlights = orderBy(
           returnFlights,
           item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
           "asc"
         );
         break;
-      case "Arrival Descending":
+      case "Arrival Desc":
         returnFlights = orderBy(
           returnFlights,
           item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),

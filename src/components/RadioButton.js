@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Text from "./TextComponent";
 import Icon from "./IconNB";
 import PropTypes from "prop-types";
@@ -18,10 +18,9 @@ function RadioButton({ style, selected, onPress, label }) {
       <Icon
         type="MaterialCommunityIcons"
         color={selected ? "#337ab7" : "#00000099"}
-        size={30}
+        size={24}
         name={selected ? "radiobox-marked" : "radiobox-blank"}
       />
-
       <Text style={{ marginStart: 16, flex: 1 }}>{label}</Text>
     </TouchableOpacity>
   );
