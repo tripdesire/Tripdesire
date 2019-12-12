@@ -1,22 +1,11 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Picker,
-  ScrollView
-} from "react-native";
+import { View, Image, TextInput, Picker, ScrollView } from "react-native";
 import { Button, Text, ActivityIndicator } from "../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
 import { etravosApi } from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
-import HTML from "react-native-render-html";
+import axios from "axios";
 class CheckoutBus extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -109,7 +98,7 @@ class CheckoutBus extends React.PureComponent {
       BoardingPointDetails: BoardingPoint.Location + "" + BoardingPoint.Landmark,
       BusTypeName: params.BusType,
       CancellationPolicy: params.CancellationPolicy,
-      City: "Hyderabad",
+      City: sourceName,
       ConvenienceFee: params.ConvenienceFee,
       DepartureTime: params.DepartureTime,
       DestinationId: params.DestinationId,
@@ -153,7 +142,7 @@ class CheckoutBus extends React.PureComponent {
       BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
       BusTypeName: paramsRound.BusType,
       CancellationPolicy: paramsRound.CancellationPolicy,
-      City: "Hyderabad",
+      City: destinationName,
       ConvenienceFee: paramsRound.ConvenienceFee,
       DepartureTime: paramsRound.DepartureTime,
       DestinationId: paramsRound.DestinationId,
@@ -204,20 +193,21 @@ class CheckoutBus extends React.PureComponent {
           console.log(data);
           this.setState({ loader: false });
 
-          etravosApi.post("/Buses/BlockBusTicket", paramRound).then(({ data }) => {
-            console.log(data);
+          etravosApi.post("/Buses/BlockBusTicket", paramRound).then(({ data: BlockRound }) => {
+            console.log(BlockRound);
+            if (data.BookingStatus == 1 && BlockRound.BookingStatus == 1) {
+              this.props.navigation.navigate("BusPayment", {
+                BlockingReferenceNo: data.BlockingReferenceNo,
+                BookingReferenceNo: data.BookingReferenceNo,
+                BlockingReferenceNoRound: BlockRound.BlockingReferenceNo,
+                BookingReferenceNoRound: BlockRound.BookingReferenceNo,
+                ...this.props.navigation.state.params,
+                adults: adults
+              });
+            } else {
+              Toast.show(data.Message, Toast.LONG);
+            }
           });
-          return;
-          if (data.BookingStatus == 1) {
-            this.props.navigation.navigate("BusPayment", {
-              BlockingReferenceNo: data.BlockingReferenceNo,
-              BookingReferenceNo: data.BookingReferenceNo,
-              ...this.props.navigation.state.params,
-              adults: adults
-            });
-          } else {
-            Toast.show(data.Message, Toast.LONG);
-          }
         })
         .catch(error => {
           console.log(error);

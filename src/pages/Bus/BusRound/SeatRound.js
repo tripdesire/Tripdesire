@@ -23,7 +23,7 @@ class SeatRound extends React.PureComponent {
     console.log(this.props.navigation.state.params);
     const {
       tripType,
-      params: { Id, SourceId, DestinationId, Journeydate, Provider, Travels }
+      paramsRound: { Id, SourceId, DestinationId, Journeydate, Provider, Travels }
     } = this.props.navigation.state.params;
     const queryParams = {
       tripId: Id,

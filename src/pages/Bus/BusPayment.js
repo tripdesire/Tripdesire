@@ -41,35 +41,40 @@ class BusPayment extends React.PureComponent {
     this.setState({ ffn: true });
   };
 
-  _PlaceOrder = () => {
+  validate = () => {
+    let needToValidateAdults = false;
+    const { adults } = this.props.navigation.state.params;
+    needToValidateAdults = adults.every(
+      item => item.den == "" || item.name == "" || item.age == ""
+    );
+    return needToValidateAdults;
+  };
+
+  _PlaceOrder = async () => {
     const {
       params,
+      paramsRound,
       adults,
       BlockingReferenceNo,
-      BookingReferenceNo
+      BookingReferenceNo,
+      BlockingReferenceNoRound,
+      BookingReferenceNoRound
     } = this.props.navigation.state.params;
 
-    validate = () => {
-      let needToValidateAdults = false;
-      needToValidateAdults = adults.every(
-        item => item.den == "" || item.name == "" || item.age == ""
-      );
-    };
+    // let adult_details = adults.map(item => ({
+    //   "ad-den": item.den,
+    //   "ad-fname": item.name,
+    //   "ad-gender": item.gender,
+    //   "ad-age": item.age
+    // }));
 
-    let adult_details = adults.map(item => ({
-      "ad-den": item.den,
-      "ad-fname": item.name,
-      "ad-gender": item.gender,
-      "ad-age": item.age
-    }));
-
-    let param = {
-      user_id: "7",
-      payment_method: "razopay",
-      adult_details: adult_details,
-      child_details: [],
-      infant_details: []
-    };
+    // let param = {
+    //   user_id: "7",
+    //   payment_method: "razopay",
+    //   adult_details: adult_details,
+    //   child_details: [],
+    //   infant_details: []
+    // };
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
@@ -77,6 +82,16 @@ class BusPayment extends React.PureComponent {
       if (isEmpty(this.props.signIn)) {
         Toast.show("Please login or signup", Toast.LONG);
       } else {
+        try {
+          const [BookingOneway, BookingRound] = await axios.all([
+            etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
+            etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
+          ]);
+          console.log(BookingOneway, BookingRound);
+        } catch (e) {
+          console.log(e);
+        }
+        return;
         const { signIn } = this.props;
         domainApi
           .post("/checkout/new-order?user_id=" + signIn.id, param)
@@ -124,7 +139,7 @@ class BusPayment extends React.PureComponent {
                         console.log(res);
                       });
                     } else {
-                      Toast.show("Your ticket is not booked succesfully.", Toast.LONG);
+                      Toast.show(Response.Message, Toast.LONG);
                     }
                   })
                   .catch(error => {
@@ -142,13 +157,11 @@ class BusPayment extends React.PureComponent {
 
   _radioButton = value => {
     this.setState({
-      radioDirect: value == "D" ? true : false,
-      radioCheck: value == "CP" ? true : false,
-      radioCOD: value == "C" ? true : false
+      radioDirect: value == "D" ? true : false
     });
   };
   render() {
-    const { ffn, radioDirect, radioCheck, radioCOD } = this.state;
+    const { radioDirect } = this.state;
     const { cartData, params } = this.props.navigation.state.params;
     return (
       <View style={{ flexDirection: "column", flex: 1 }}>
@@ -240,7 +253,7 @@ class BusPayment extends React.PureComponent {
                     marginBottom: 10
                   }}>
                   <Text style={{ fontSize: 16 }}>TOTAL PAYABLE</Text>
-                  <Text style={{ fontSize: 16, fontWeight: "700" }}>{cartData.total_price}</Text>
+                  {/* <Text style={{ fontSize: 16, fontWeight: "700" }}>{cartData.total_price}</Text> */}
                 </View>
               </View>
             </View>

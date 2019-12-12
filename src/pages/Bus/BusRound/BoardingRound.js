@@ -1,32 +1,19 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Picker,
-  ScrollView
-} from "react-native";
-import { Button, Text, ActivityIndicator, Header } from "../../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import IconSimple from "react-native-vector-icons/SimpleLineIcons";
+import { View } from "react-native";
+import { Button, Text, Header } from "../../../components";
 import Icon from "react-native-vector-icons/Ionicons";
-import { etravosApi, domainApi } from "../../../service";
 import moment from "moment";
-import Toast from "react-native-simple-toast";
 import RNPickerSelect from "react-native-picker-select";
 
 class BoardingRound extends React.PureComponent {
   constructor(props) {
     super(props);
     console.log(props.navigation.state.params);
-    const { params } = props.navigation.state.params;
+    const { paramsRound } = props.navigation.state.params;
     this.state = {
-      bp: params.BoardingTimes[0],
-      dp: params.DroppingTimes[0],
-      boardingpoints: params.BoardingTimes.map(item => {
+      bp: paramsRound.BoardingTimes[0],
+      dp: paramsRound.DroppingTimes[0],
+      boardingpoints: paramsRound.BoardingTimes.map(item => {
         let time = moment()
           .startOf("day")
           .add(item.Time, "minutes")
@@ -36,7 +23,7 @@ class BoardingRound extends React.PureComponent {
           label: item.Location + " (" + item.Landmark + ") " + time //rhours + ":" + rminutes
         };
       }),
-      droppingpoints: params.DroppingTimes.map(item => {
+      droppingpoints: paramsRound.DroppingTimes.map(item => {
         let time = moment()
           .startOf("day")
           .add(item.Time, "minutes")
@@ -135,7 +122,7 @@ class BoardingRound extends React.PureComponent {
               placeholder={{}}
               value={bp}
               style={{
-                inputAndroidContainer: { height: 35 },
+                inputAndroidContainer: { height: 40 },
                 inputAndroid: { paddingStart: 0, color: "#000" },
                 iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
               }}
@@ -151,7 +138,7 @@ class BoardingRound extends React.PureComponent {
               placeholder={{}}
               value={dp}
               style={{
-                inputAndroidContainer: { height: 35 },
+                inputAndroidContainer: { height: 40 },
                 inputAndroid: { paddingStart: 0, color: "#000" },
                 iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
               }}

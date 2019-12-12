@@ -134,7 +134,7 @@ class BoardingOneway extends React.PureComponent {
               placeholder={{}}
               value={bp}
               style={{
-                inputAndroidContainer: { height: 35 },
+                inputAndroidContainer: { height: 40 },
                 inputAndroid: { paddingStart: 0, color: "#000" },
                 iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
               }}
@@ -150,7 +150,7 @@ class BoardingOneway extends React.PureComponent {
               placeholder={{}}
               value={dp}
               style={{
-                inputAndroidContainer: { height: 35 },
+                inputAndroidContainer: { height: 40 },
                 inputAndroid: { paddingStart: 0, color: "#000" },
                 iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
               }}
