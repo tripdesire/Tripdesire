@@ -1,10 +1,9 @@
 import React from "react";
 import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
-import { Button, Text, CheckBox } from "../../components";
+import { Button, Text, CheckBox, RadioButton } from "../../components";
 import { uniq, intersection, max, min } from "lodash";
 import { Icon } from "../../components";
 import moment from "moment";
-import RadioButton from "./RadioButton";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 class Filter extends React.Component {
@@ -19,7 +18,7 @@ class Filter extends React.Component {
         "Price",
         "departure",
         "Arrival",
-        "Sort By"
+        "Sort by"
       ],
       filters: {
         stops: [],
@@ -30,24 +29,17 @@ class Filter extends React.Component {
         departure: [],
         arrival: [],
         sortBy: [
-          { value: "Airline", bool: false },
-          { value: "Price", bool: false },
-          { value: "Departure", bool: false },
-          { value: "Arrival", bool: false }
+          "Airline ascending",
+          "Airline descending",
+          "Price low to high",
+          "Price high to low",
+          "Departure ascending",
+          "Departure descending",
+          "Arrival ascending",
+          "Arrival descending"
         ]
       },
       index: 0,
-      radioDirect: false,
-      radioButton: [
-        { Name: "Airline Ascending" },
-        { Name: "Airline Descending" },
-        { Name: "Price Low" },
-        { Name: "Price High" },
-        { Name: "Deaprture Ascending" },
-        { Name: "Deaprture Descending" },
-        { Name: "Arrival Ascending" },
-        { Name: "Arrival Descending" }
-      ],
       timeStops: this.getTimeStops(),
       widthSeekBar: 100
     };
@@ -176,6 +168,14 @@ class Filter extends React.Component {
     } else {
       newData[key] = [timeStops[value[0]], timeStops[value[1]]];
     }
+    //console.log(newData);
+    onChangeFilter && onChangeFilter(newData);
+  };
+
+  onRadioUpdate = (key, value) => () => {
+    const { filterValues, onChangeFilter } = this.props;
+    let newData = Object.assign({}, filterValues);
+    newData[key] = value;
     console.log(newData);
     onChangeFilter && onChangeFilter(newData);
   };
@@ -373,20 +373,15 @@ class Filter extends React.Component {
                 </View>
               )}
 
-              {index == 7 && (
-                <ScrollView>
-                  {radioButton &&
-                    radioButton.map((item, index) => (
-                      <RadioButton
-                        key={"sap_" + index}
-                        Name={item.Name}
-                        style={index > 0 ? { marginTop: 20 } : null}
-                        onPress={() => this._radioButton(index, item.Name)}
-                        radioButton={this.state.radioDirect}
-                      />
-                    ))}
-                </ScrollView>
-              )}
+              {index == 7 &&
+                filters.sortBy.map((item, index) => (
+                  <RadioButton
+                    key={"sort_" + item + index}
+                    label={item}
+                    onPress={this.onRadioUpdate("sortBy", item)}
+                    selected={item === filterValues.sortBy}
+                  />
+                ))}
             </View>
           </View>
           <View style={styles.footer}>

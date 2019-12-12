@@ -9,6 +9,7 @@ import CustomDrawer from "./CustomDrawer";
 import AutoCompleteModal from "./AutoCompleteModal";
 import Icon from "./IconNB";
 import CheckBox from "./CheckBox";
+import RadioButton from "./RadioButton";
 
 export {
   Button,
@@ -21,5 +22,6 @@ export {
   CustomDrawer,
   AutoCompleteModal,
   Icon,
-  CheckBox
+  CheckBox,
+  RadioButton
 };

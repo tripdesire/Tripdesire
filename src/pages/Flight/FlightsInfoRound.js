@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, HeaderFlights, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
+import { orderBy } from "lodash";
 import { withNavigation } from "react-navigation";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import { etravosApi } from "../../service";
@@ -50,7 +51,8 @@ class FlightsInfoRound extends React.PureComponent {
         connectingLocations: [],
         price: [],
         departure: ["00:00 AM", "11:45 PM"],
-        arrival: ["00:00 AM", "11:45 PM"]
+        arrival: ["00:00 AM", "11:45 PM"],
+        sortBy: "Price low to high"
       }
     };
   }
@@ -206,6 +208,49 @@ class FlightsInfoRound extends React.PureComponent {
           ))
     );
 
+    switch (filterValues.sortBy) {
+      case "Airline Ascending":
+        onwardFlights = orderBy(onwardFlights, "FlightSegments[0].AirLineName", "asc");
+        break;
+      case "Airline Descending":
+        onwardFlights = orderBy(onwardFlights, "FlightSegments[0].AirLineName", "desc");
+        break;
+      case "Price Low to High":
+        onwardFlights = orderBy(onwardFlights, "FareDetails.TotalFare", "asc");
+        break;
+      case "Price High to Low":
+        onwardFlights = orderBy(onwardFlights, "FareDetails.TotalFare", "desc");
+        break;
+      case "Departure Ascending":
+        onwardFlights = orderBy(
+          onwardFlights,
+          new Date(item.FlightSegments[0].DepartureDateTime),
+          "asc"
+        );
+        break;
+      case "Departure Descending":
+        onwardFlights = orderBy(
+          onwardFlights,
+          item => new Date(item.FlightSegments[0].DepartureDateTime),
+          "desc"
+        );
+        break;
+      case "Arrival Ascending":
+        onwardFlights = orderBy(
+          onwardFlights,
+          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          "asc"
+        );
+        break;
+      case "Arrival Descending":
+        onwardFlights = orderBy(
+          onwardFlights,
+          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          "desc"
+        );
+        break;
+    }
+
     let returnFlights = returnFlightsList.filter(
       item =>
         (filterValues.stops.length == 0 ||
@@ -236,6 +281,49 @@ class FlightsInfoRound extends React.PureComponent {
             "[]"
           ))
     );
+    switch (filterValues.sortBy) {
+      case "Airline Ascending":
+        returnFlights = orderBy(returnFlights, "FlightSegments[0].AirLineName", "asc");
+        break;
+      case "Airline Descending":
+        returnFlights = orderBy(returnFlights, "FlightSegments[0].AirLineName", "desc");
+        break;
+      case "Price Low to High":
+        returnFlights = orderBy(returnFlights, "FareDetails.TotalFare", "asc");
+        break;
+      case "Price High to Low":
+        returnFlights = orderBy(returnFlights, "FareDetails.TotalFare", "desc");
+        break;
+      case "Departure Ascending":
+        returnFlights = orderBy(
+          returnFlights,
+          new Date(item.FlightSegments[0].DepartureDateTime),
+          "asc"
+        );
+        break;
+      case "Departure Descending":
+        returnFlights = orderBy(
+          returnFlights,
+          item => new Date(item.FlightSegments[0].DepartureDateTime),
+          "desc"
+        );
+        break;
+      case "Arrival Ascending":
+        returnFlights = orderBy(
+          returnFlights,
+          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          "asc"
+        );
+        break;
+      case "Arrival Descending":
+        returnFlights = orderBy(
+          returnFlights,
+          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          "desc"
+        );
+        break;
+    }
+
     if (onwardFlights.length == 0) {
       Toast.show("No any onward flights available for selected filter", Toast.LONG);
     } else if (returnFlights.length == 0) {
