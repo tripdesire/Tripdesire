@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
-import { Button, Text, AutoCompleteModal } from "../../components";
-import Taost from "react-native-simple-toast";
+import { Button, Text, AutoCompleteModal, Icon } from "../../components";
+import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { Header } from "../../components";
@@ -57,7 +57,7 @@ class Hotel extends React.PureComponent {
     this.setState({ _country: true });
   };
   modalOpen = () => {
-    if (this.state.country === "Select Country") {
+    if (this.state.country === "Select Country" && this.state.hoteltype == 2) {
       Toast.show("Select Country first", Toast.LONG);
     } else {
       this.setState({ _place: true });
@@ -172,7 +172,6 @@ class Hotel extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
           <View style={{ flexDirection: "column", height: 140, backgroundColor: "#E5EBF7" }}>
-            {/* <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}> */}
             <Header firstName="Hotel" lastName="Search" onPress={this.goBack} />
           </View>
           <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
@@ -217,84 +216,22 @@ class Hotel extends React.PureComponent {
               </Button>
             </View>
 
-            <View
-              style={{
-                paddingHorizontal: 16,
-                width: "100%",
-                flexDirection: "row",
-                alignItems: "center"
-              }}>
-              {hoteltype == 2 && (
-                <Text
-                  style={{
-                    color: "#1F273E",
-                    fontSize: 18,
-                    flex: 1,
-                    marginTop: 15,
-                    paddingBottom: 15,
-                    textAlign: "center"
-                  }}
-                  onPress={this.countryOpen}>
-                  {country}
-                </Text>
-              )}
-              <Text
-                style={{
-                  color: "#1F273E",
-                  fontSize: 18,
-                  flex: 1,
-                  marginTop: 15,
-                  paddingBottom: 15,
-                  textAlign: "center"
-                }}
-                onPress={this.modalOpen}>
-                {place}
-              </Text>
-            </View>
-
-            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{ width: 25, resizeMode: "contain" }}
-                source={require("../../assets/imgs/cal.png")}
+            <View style={{ margin: 16, marginTop: 54, flexDirection: "row", alignItems: "center" }}>
+              <Icon
+                name="location"
+                type="Entypo"
+                style={{ color: "#858585", fontSize: 24, marginTop: 5 }}
               />
-              <View
-                style={{
-                  flex: 1,
-                  paddingStart: 20
-                }}>
-                <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-in</Text>
-                <Button
-                  style={{ flex: 1, marginStart: 5 }}
-                  onPress={this.showDateTimePicker("fromDTpicker")}>
-                  <Text>{moment(CheckIn).format("DD-MMM-YYYY")}</Text>
+              {hoteltype == 2 && (
+                <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.countryOpen}>
+                  <Text style={{ color: "#5D666D" }}>Country</Text>
+                  <Text style={{}}>{country}</Text>
                 </Button>
-
-                <DateTimePicker
-                  isVisible={fromDTpicker}
-                  onConfirm={this.handleDatePicked("fromDTpicker")}
-                  onCancel={this.hideDateTimePicker("fromDTpicker")}
-                  minimumDate={new Date()}
-                />
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  paddingStart: 20
-                }}>
-                <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-out</Text>
-                <Button
-                  style={{ flex: 1, marginStart: 5 }}
-                  onPress={this.showDateTimePicker("toDTpicker")}>
-                  <Text>{moment(CheckOut).format("DD-MMM-YYYY")}</Text>
-                </Button>
-
-                <DateTimePicker
-                  isVisible={toDTpicker}
-                  onConfirm={this.handleDatePicked("toDTpicker")}
-                  onCancel={this.hideDateTimePicker("toDTpicker")}
-                  minimumDate={this.state.CheckIn}
-                />
-              </View>
+              )}
+              <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.modalOpen}>
+                <Text style={{ color: "#5D666D" }}>City</Text>
+                <Text style={{}}>{place}</Text>
+              </Button>
             </View>
 
             <View
@@ -302,18 +239,54 @@ class Hotel extends React.PureComponent {
                 height: 1,
                 backgroundColor: "#DDDDDD",
                 marginHorizontal: 20
-              }}></View>
+              }}
+            />
+
+            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={{ width: 25, resizeMode: "contain" }}
+                source={require("../../assets/imgs/cal.png")}
+              />
+              <Button
+                style={{ flex: 1, paddingStart: 20 }}
+                onPress={this.showDateTimePicker("fromDTpicker")}>
+                <Text style={{ color: "#5D666D" }}>Check-in</Text>
+                <Text style={{}}>{moment(CheckIn).format("DD-MMM-YYYY")}</Text>
+                <DateTimePicker
+                  isVisible={fromDTpicker}
+                  onConfirm={this.handleDatePicked("fromDTpicker")}
+                  onCancel={this.hideDateTimePicker("fromDTpicker")}
+                  minimumDate={new Date()}
+                />
+              </Button>
+              <Button
+                style={{ flex: 1, paddingStart: 20 }}
+                onPress={this.showDateTimePicker("toDTpicker")}>
+                <Text style={{ color: "#5D666D" }}>Check-out</Text>
+                <Text style={{}}>{moment(CheckOut).format("DD-MMM-YYYY")}</Text>
+                <DateTimePicker
+                  isVisible={toDTpicker}
+                  onConfirm={this.handleDatePicked("toDTpicker")}
+                  onCancel={this.hideDateTimePicker("toDTpicker")}
+                  minimumDate={this.state.CheckIn}
+                />
+              </Button>
+            </View>
+
+            <View
+              style={{
+                height: 1,
+                backgroundColor: "#DDDDDD",
+                marginHorizontal: 20
+              }}
+            />
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={{ width: 25, resizeMode: "contain" }}
                 source={require("../../assets/imgs/person.png")}
               />
-              <View
-                style={{
-                  flex: 1,
-                  paddingStart: 20
-                }}>
+              <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
                 <Text>Rooms & Guest</Text>
                 <Text style={{ color: "#5D666D" }}>
                   {adults_count === "Passengers:" ? adults_count : ""}
@@ -321,19 +294,17 @@ class Hotel extends React.PureComponent {
                   {children_count > 0 ? children_count + " Children , " : ""}
                   {adults_count > 0 ? room + " Room" : ""}
                 </Text>
-                <View style={{ flexDirection: "row", flex: 1, paddingStart: 5 }}>
-                  <Button
-                    style={{
-                      backgroundColor: "#F68E1F",
-                      height: 25,
-                      justifyContent: "center",
-                      borderRadius: 15
-                    }}
-                    onPress={this.setPassengers}>
-                    <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
-                  </Button>
+                <View
+                  style={{
+                    backgroundColor: "#F68E1F",
+                    height: 25,
+                    justifyContent: "center",
+                    borderRadius: 15,
+                    alignSelf: "flex-start"
+                  }}>
+                  <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
                 </View>
-              </View>
+              </Button>
             </View>
             <Button
               style={{
