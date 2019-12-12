@@ -43,7 +43,7 @@ class FlightsInfoOneway extends React.PureComponent {
         price: [],
         departure: ["00:00 AM", "11:45 PM"],
         arrival: ["00:00 AM", "11:45 PM"],
-        sortBy: "Price low to high"
+        sortBy: "Fare low to high"
       },
       filterFlights: [],
       propsName: props.navigation.state.params
@@ -164,48 +164,7 @@ class FlightsInfoOneway extends React.PureComponent {
               ))
           );
         });
-        switch (filterValues.sortBy) {
-          case "Airline Ascending":
-            filterFlights = orderBy(filterFlights, "FlightSegments[0].AirLineName", "asc");
-            break;
-          case "Airline Descending":
-            filterFlights = orderBy(filterFlights, "FlightSegments[0].AirLineName", "desc");
-            break;
-          case "Price Low to High":
-            filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "asc");
-            break;
-          case "Price High to Low":
-            filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "desc");
-            break;
-          case "Departure Ascending":
-            filterFlights = orderBy(
-              filterFlights,
-              new Date(item.FlightSegments[0].DepartureDateTime),
-              "asc"
-            );
-            break;
-          case "Departure Descending":
-            filterFlights = orderBy(
-              filterFlights,
-              item => new Date(item.FlightSegments[0].DepartureDateTime),
-              "desc"
-            );
-            break;
-          case "Arrival Ascending":
-            filterFlights = orderBy(
-              filterFlights,
-              item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
-              "asc"
-            );
-            break;
-          case "Arrival Descending":
-            filterFlights = orderBy(
-              filterFlights,
-              item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
-              "desc"
-            );
-            break;
-        }
+
         break;
       case 2:
         filterFlights = flights.filter(

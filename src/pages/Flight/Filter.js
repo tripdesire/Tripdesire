@@ -10,16 +10,6 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterTabs: [
-        "Stops",
-        "Fare Type",
-        "Airlines",
-        "Connecting Locations",
-        "Price",
-        "departure",
-        "Arrival",
-        "Sort by"
-      ],
       filters: {
         stops: [],
         fareType: [],
@@ -29,20 +19,30 @@ class Filter extends React.Component {
         departure: [],
         arrival: [],
         sortBy: [
-          "Airline ascending",
-          "Airline descending",
-          "Price low to high",
-          "Price high to low",
-          "Departure ascending",
-          "Departure descending",
-          "Arrival ascending",
-          "Arrival descending"
+          "Fare low to high",
+          "Fare high to low",
+          "Airline Asc",
+          "Airline Desc",
+          "Departure Asc",
+          "Departure Dsc",
+          "Arrival Asc",
+          "Arrival Desc"
         ]
       },
       index: 0,
       timeStops: this.getTimeStops(),
       widthSeekBar: 100
     };
+    this.filterTabs = [
+      "Stops",
+      "Fare Type",
+      "Airlines",
+      "Connecting Locations",
+      "Price",
+      "departure",
+      "Arrival",
+      "Sort by"
+    ];
   }
 
   /*static getDerivedStateFromProps(nextProps, prevState) {
@@ -55,7 +55,6 @@ class Filter extends React.Component {
 
   componentDidMount() {
     const { data, flight_type, returnFlights } = this.props;
-    //console.log(data);
     let stops = [];
     let fareType = [];
     let airlines = [];
@@ -180,15 +179,6 @@ class Filter extends React.Component {
     onChangeFilter && onChangeFilter(newData);
   };
 
-  _radioButton = (index, value) => {
-    let newData = Object.assign([], this.state.radioButton);
-    for (let i = 0; i < newData.length; i++) {
-      if (newData[i].Name == value) {
-        this.setState({ radioDirect: true });
-      }
-    }
-  };
-
   getSizeSeekBar(event) {
     this.setState({ widthSeekBar: event.nativeEvent.layout.width });
   }
@@ -208,7 +198,7 @@ class Filter extends React.Component {
   }
 
   render() {
-    const { filterTabs, index, filters, timeStops, radioButton } = this.state;
+    const { index, filters, timeStops, radioButton } = this.state;
     const { filterValues } = this.props;
 
     return (
@@ -223,7 +213,7 @@ class Filter extends React.Component {
           </View>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: 2, backgroundColor: "#E8EEF6" }}>
-              {filterTabs.map((item, i) => (
+              {this.filterTabs.map((item, i) => (
                 <Button
                   style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
                   key={"filter_" + item + index}

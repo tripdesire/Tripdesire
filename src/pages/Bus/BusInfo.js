@@ -1,23 +1,11 @@
-import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  FlatList,
-  Dimensions,
-  SafeAreaView,
-  TouchableOpacity
-} from "react-native";
+import React from "react";
+import { View, Modal, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import IconFontAwsm from "react-native-vector-icons/FontAwesome";
+import { orderBy } from "lodash";
 import Toast from "react-native-simple-toast";
 import moment from "moment";
 import { etravosApi } from "../../service";
 import Filter from "./Filter";
-
-const { height, width } = Dimensions.get("window");
 
 class BusInfo extends React.PureComponent {
   constructor(props) {
@@ -40,7 +28,8 @@ class BusInfo extends React.PureComponent {
         busType: [],
         travels: [],
         boardingPoints: [],
-        droppingPoints: []
+        droppingPoints: [],
+        sortBy: "Fare low to high"
       }
     };
   }
@@ -115,6 +104,50 @@ class BusInfo extends React.PureComponent {
         (filterValues.droppingPoints.length == 0 ||
           item.DroppingTimes.some(value => filterValues.droppingPoints.includes(value.Location)))
     );
+
+    switch (filterValues.sortBy) {
+      case "Travels Ascending":
+        filteredBuses = orderBy(filteredBuses, "FlightSegments[0].AirLineName", "asc");
+        break;
+      case "Travels Descending":
+        filteredBuses = orderBy(filteredBuses, "FlightSegments[0].AirLineName", "desc");
+        break;
+      case "Price Low to High":
+        filteredBuses = orderBy(filteredBuses, "FareDetails.TotalFare", "asc");
+        break;
+      case "Price High to Low":
+        filteredBuses = orderBy(filteredBuses, "FareDetails.TotalFare", "desc");
+        break;
+      case "Departure Ascending":
+        filteredBuses = orderBy(
+          filteredBuses,
+          new Date(item.FlightSegments[0].DepartureDateTime),
+          "asc"
+        );
+        break;
+      case "Departure Descending":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => new Date(item.FlightSegments[0].DepartureDateTime),
+          "desc"
+        );
+        break;
+      case "Arrival Ascending":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          "asc"
+        );
+        break;
+      case "Arrival Descending":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          "desc"
+        );
+        break;
+    }
+
     this.setState({
       filteredBuses,
       filterModalVisible: false
@@ -134,7 +167,7 @@ class BusInfo extends React.PureComponent {
 
   _renderItemList = ({ item, index }) => {
     return (
-      <TouchableOpacity
+      <Button
         style={{
           paddingVertical: index % 2 == 0 ? 40 : 20,
           backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#E5EBF7"
@@ -165,7 +198,7 @@ class BusInfo extends React.PureComponent {
             alignItems: "center",
             marginVertical: 10
           }}>
-          <IconMaterial name="bus" size={50} color="#6287F9" />
+          <Icon name="bus" size={50} color="#6287F9" type="MaterialCommunityIcons" />
           <View>
             <Text style={{ fontSize: 18, lineHeight: 20 }}>{item.DisplayName}</Text>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -184,13 +217,13 @@ class BusInfo extends React.PureComponent {
           <Button
             style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
             onPress={this._onCanPolicy}>
-            <IconFontAwsm name="mobile-phone" size={24} color="#6287F9" />
+            <Icon name="mobile-phone" size={24} color="#6287F9" type="FontAwesome" />
             <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9" }}>
               Cancellation Policy
             </Text>
           </Button>
         </View>
-      </TouchableOpacity>
+      </Button>
     );
   };
 

@@ -41,7 +41,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
         price: [],
         departure: ["00:00 AM", "11:45 PM"],
         arrival: ["00:00 AM", "11:45 PM"],
-        sortBy: "Price low to high"
+        sortBy: "Fare low to high"
       }
     };
   }

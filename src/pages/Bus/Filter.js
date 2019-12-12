@@ -11,16 +11,33 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterTabs: ["Bus Timings", "Bus Type", "Travels", "Boarding Points", "Dropping Points"],
       filters: {
         busTimings: ["6.00 AM to 6.00 PM", "6.00 PM to 6.00 AM"],
         busType: ["AC", "Non AC", "Sleeper", "Seater"],
         travels: [],
         boardingPoints: [],
-        droppingPoints: []
+        droppingPoints: [],
+        sortBy: [
+          "Fare low to high",
+          "Fare high to low",
+          "Travels Asc",
+          "Travels Desc",
+          "Departure Asc",
+          "Departure Dsc",
+          "Arrival Asc",
+          "Arrival Desc"
+        ]
       },
       index: 0
     };
+    this.filterTabs = [
+      "Bus Timings",
+      "Bus Type",
+      "Travels",
+      "Boarding Points",
+      "Dropping Points",
+      "Sort by"
+    ];
   }
 
   componentDidMount() {
@@ -73,7 +90,7 @@ class Filter extends React.Component {
   reset = () => {};
 
   render() {
-    const { filterTabs, index, filters } = this.state;
+    const { index, filters } = this.state;
     const { filterValues } = this.props;
 
     return (
@@ -88,7 +105,7 @@ class Filter extends React.Component {
           </View>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: 2, backgroundColor: "#E8EEF6" }}>
-              {filterTabs.map((item, i) => (
+              {this.filterTabs.map((item, i) => (
                 <Button
                   style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
                   key={"filter_" + item + index}
@@ -158,6 +175,15 @@ class Filter extends React.Component {
                   ))}
                 </ScrollView>
               )}
+              {index == 5 &&
+                filters.sortBy.map((item, index) => (
+                  <RadioButton
+                    key={"sort_" + item + index}
+                    label={item}
+                    onPress={this.onRadioUpdate("sortBy", item)}
+                    selected={item === filterValues.sortBy}
+                  />
+                ))}
             </View>
           </View>
           <View style={styles.footer}>
