@@ -1,37 +1,58 @@
 import React, { PureComponent } from "react";
 import { Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator, HeaderFlights, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, HeaderFlights, Icon } from "../../../components";
 import Toast from "react-native-simple-toast";
 import { withNavigation } from "react-navigation";
 import SwiperFlatList from "react-native-swiper-flatlist";
-import { etravosApi } from "../../service";
+import { etravosApi } from "../../../service";
 import moment from "moment";
-import RenderRound from "./RenderRound";
-import Filter from "./Filter";
+import RenderRoundReturn from "./RenderRoundReturn";
+import Filter from "../Filter";
 
 const { width, height } = Dimensions.get("window");
-class BusRound extends React.PureComponent {
+class BusRoundReturn extends React.PureComponent {
   constructor(props) {
     super(props);
+    console.log(this.props.navigation.state.params);
     console.log("Round");
     this.state = {
       loader: false,
-      onwardBus: [],
       returnBus: [],
-      selectedOnward: 0,
       selectedReturn: 0,
       index: 0,
       swiperIndex: 0,
-      onwardFare: "",
       returnFare: ""
     };
   }
 
   componentDidMount() {
-    const { params } = this.props.navigation.state;
+    const {
+      sourceName,
+      sourceId,
+      destinationName,
+      destinationId,
+      journeyDate,
+      tripType,
+      TripType,
+      returnDate
+    } = this.props.navigation.state.params;
+
+    let param = {
+      sourceName: destinationName,
+      destinationName: sourceName,
+      sourceId: destinationId,
+      destinationId: sourceId,
+      journeyDate: returnDate,
+      returnDate: "",
+      tripType: tripType,
+      TripType: TripType,
+      userType: 5,
+      user: ""
+    };
+
     this.setState({ loader: true });
     etravosApi
-      .get("/Buses/AvailableBuses", params)
+      .get("/Buses/AvailableBuses", param)
       .then(({ data }) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {
@@ -39,56 +60,41 @@ class BusRound extends React.PureComponent {
           Toast.show("Data not found.", Toast.LONG);
         }
         this.setState({
-          onwardBus: data.AvailableTrips,
-          onwardFare: data.AvailableTrips.length > 0 ? data.AvailableTrips[0].Fares : 0,
-          filteredBuses: data.AvailableTrips,
+          returnBus: data.AvailableTrips,
+          returnFare: data.AvailableTrips.length > 0 ? data.AvailableTrips[0].Fares : 0,
+          //   filteredBuses: data.AvailableTrips,
           loader: false
         });
       })
       .catch(() => {
         this.setState({ loader: false });
       });
-
-    // let newData = Object.assign({}, params);
-    // newData.sourceName = params.destinationName;
-    // newData.destinationName = params.sourceName;
-    // newData.sourceId = params.destinationId;
-    // newData.destinationId = params.sourceId;
-    // newData.journeyDate = params.returnDate;
-    // newData.returnDate = "";
-    // console.log(newData);
-
-    // this.setState({ loader: true });
-    // etravosApi
-    //   .get("/Buses/AvailableBuses", newData)
-    //   .then(({ data }) => {
-    //     console.log(data.AvailableTrips);
-    //     if (data.AvailableTrips.length == 0) {
-    //       this.setState({ nofound: data.AvailableTrips.length, loader: false });
-    //       Toast.show("Data not found.", Toast.LONG);
-    //     }
-    //     this.setState({
-    //       returnBus: data.AvailableTrips,
-    //       returnFare: data.AvailableTrips.length > 0 ? data.AvailableTrips[0].Fares : 0,
-    //       //   filteredBuses: data.AvailableTrips,
-    //       loader: false
-    //     });
-    //   })
-    //   .catch(() => {
-    //     this.setState({ loader: false });
-    //   });
   }
 
-  _renderItemOnward = ({ item, index }) => {
-    const { tripType, sourceName, destinationName } = this.props.navigation.state.params;
+  _renderItemReturn = ({ item, index }) => {
+    const {
+      tripType,
+      sourceName,
+      destinationName,
+      TripType,
+      sourceId,
+      destinationId,
+      journeyDate,
+      returnDate
+    } = this.props.navigation.state.params;
     return (
-      <RenderRound
+      <RenderRoundReturn
         item={item}
         index={index}
-        getBus={this._getBusOnward}
+        getBus={this._getBusReturn}
         tripType={tripType}
         sourceName={sourceName}
+        sourceId={sourceId}
+        TripType={TripType}
         destinationName={destinationName}
+        destinationId={destinationId}
+        journeyDate={journeyDate}
+        returnDate={returnDate}
       />
     );
   };
@@ -97,18 +103,18 @@ class BusRound extends React.PureComponent {
     this.setState({ swiperIndex: index });
   };
 
-  _getBusOnward = (value, index) => {
+  _getBusReturn = (value, index) => {
     console.log("hey");
     this.setState({
-      onwardFare: value.Fares,
-      selectedOnward: index
+      returnFare: value.Fares,
+      selectedReturn: index
     });
   };
 
-  _keyExtractorOnward = (item, index) => "OnwardBus_" + index;
+  _keyExtractorReturn = (item, index) => "ReturnBus_" + index;
 
   render() {
-    const { onwardBus, returnBus, loader, index, swiperIndex, onwardFare, returnFare } = this.state;
+    const { returnBus, loader, index, swiperIndex, onwardFare, returnFare } = this.state;
     const {
       tripType,
       sourceName,
@@ -133,10 +139,10 @@ class BusRound extends React.PureComponent {
                 <View style={{ flex: 1, paddingTop: 16, paddingBottom: 8 }}>
                   <View>
                     <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                      {sourceName} to {destinationName}
+                      {destinationName} to {sourceName}
                     </Text>
                     <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                      {journeyDate} {" - " + returnDate}
+                      {returnDate}
                     </Text>
                   </View>
                 </View>
@@ -157,11 +163,11 @@ class BusRound extends React.PureComponent {
 
             <View style={{ flex: 4 }}>
               <FlatList
-                data={onwardBus}
-                keyExtractor={this._keyExtractorOnward}
-                renderItem={this._renderItemOnward}
+                data={returnBus}
+                keyExtractor={this._keyExtractorReturn}
+                renderItem={this._renderItemReturn}
                 contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                extraData={this.state.selectedOnward}
+                extraData={this.state.selectedReturn}
               />
               {loader && <ActivityIndicator />}
             </View>
@@ -184,4 +190,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default BusRound;
+export default BusRoundReturn;

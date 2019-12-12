@@ -9,16 +9,16 @@ import {
   Picker,
   ScrollView
 } from "react-native";
-import { Button, Text, ActivityIndicator, Header } from "../../components";
+import { Button, Text, ActivityIndicator, Header } from "../../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
-import { etravosApi, domainApi } from "../../service";
+import { etravosApi, domainApi } from "../../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RNPickerSelect from "react-native-picker-select";
 
-class Boarding extends React.PureComponent {
+class BoardingRound extends React.PureComponent {
   constructor(props) {
     super(props);
     console.log(props.navigation.state.params);
@@ -52,15 +52,17 @@ class Boarding extends React.PureComponent {
   _bookNow = () => {
     const {
       params,
+      paramsRound,
       sourceName,
       destinationName,
       tripType,
-      TripType,
-      selectedSheets
+      selectedSheets,
+      selectedSheetsRound
     } = this.props.navigation.state.params;
-    console.log(params, selectedSheets);
+    console.log(params, selectedSheets, selectedSheetsRound);
 
     let Seats = [...selectedSheets.map(item => item.Number)].join("~");
+    let SeatsRound = [...selectedSheetsRound.map(item => item.Number)].join("~");
     let param = {
       id: 273,
       quantity: 1,
@@ -87,34 +89,37 @@ class Boarding extends React.PureComponent {
     };
 
     console.log(param);
+    this.props.navigation.navigate("CheckoutBus", {
+      // cartData: data,
+      ...this.props.navigation.state.params,
+      BoardingPointReturn: this.state.bp,
+      DroppingPointReturn: this.state.dp
+    });
+    return;
 
-    if (TripType == 1) {
-      domainApi
-        .post("/cart/add", param)
-        .then(({ data }) => {
-          console.log(data);
-          if (data.code == "1") {
-            Toast.show(data.message, Toast.LONG);
-            domainApi.get("/cart").then(({ data }) => {
-              console.log(data);
-              const { bp, dp } = this.state;
-              this.props.navigation.navigate("CheckoutBus", {
-                cartData: data,
-                ...this.props.navigation.state.params,
-                BoardingPoint: bp,
-                DroppingPoint: dp
-              });
-            });
-          } else {
-            Toast.show(res.data.message, Toast.LONG);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      this.props.navigation.navigate("BusRound");
-    }
+    // domainApi
+    //   .post("/cart/add", param)
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //     if (data.code == "1") {
+    //       Toast.show(data.message, Toast.LONG);
+    //       domainApi.get("/cart").then(({ data }) => {
+    //         console.log(data);
+    //         const { bp, dp } = this.state;
+    //         this.props.navigation.navigate("CheckoutBus", {
+    //           cartData: data,
+    //           ...this.props.navigation.state.params,
+    //           BoardingPointReturn: bp,
+    //           DroppingPointReturn: dp
+    //         });
+    //       });
+    //     } else {
+    //       Toast.show(res.data.message, Toast.LONG);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   };
 
   render() {
@@ -173,4 +178,4 @@ class Boarding extends React.PureComponent {
   }
 }
 
-export default Boarding;
+export default BoardingRound;

@@ -46,7 +46,12 @@ import {
   ForgetPassword,
   ProfilePage,
   BillingDetails,
-  BusRound
+  BusRound,
+  SeatOneway,
+  SeatRound,
+  BoardingOneway,
+  BoardingRound,
+  BusRoundReturn
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -102,7 +107,12 @@ const HomeStack = createStackNavigator(
     ForgetPassword,
     ProfilePage,
     BillingDetails,
-    BusRound
+    BusRound,
+    SeatOneway,
+    SeatRound,
+    BoardingOneway,
+    BoardingRound,
+    BusRoundReturn
   },
   {
     headerMode: "none",

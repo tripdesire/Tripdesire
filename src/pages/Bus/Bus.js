@@ -148,6 +148,7 @@ class Bus extends React.PureComponent {
       journeyDate: moment(this.state.CheckIn).format("DD-MM-YYYY"),
       returnDate: this.state.tripType == 1 ? moment(this.state.CheckOut).format("DD-MM-YYYY") : "",
       tripType: this.state.tripType,
+      TripType: this.state.TripType,
       userType: 5,
       user: ""
     };

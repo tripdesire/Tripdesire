@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
-import { Button, Text, Header } from "../../components";
+import { Button, Text, Header } from "../../../components";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
-import { etravosApi, domainApi } from "../../service";
-import data1 from "./data";
+import { etravosApi, domainApi } from "../../../service";
+//import data1 from "../../Bus";
 //console.log(data1);
 
-class Seats extends React.PureComponent {
+class SeatRound extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +15,7 @@ class Seats extends React.PureComponent {
       seats: { upper: [], lower: [] },
       data: [],
       selectedTab: "lower",
-      selectedSheets: []
+      selectedSheetsRound: []
     };
   }
 
@@ -109,11 +109,11 @@ class Seats extends React.PureComponent {
 
   _bookNow = () => {
     const { tripType, params, TripType } = this.props.navigation.state.params;
-    const { selectedSheets } = this.state;
-    if (this.state.selectedSheets.length > 0) {
-      this.props.navigation.navigate("Boarding", {
+    const { selectedSheetsRound } = this.state;
+    if (this.state.selectedSheetsRound.length > 0) {
+      this.props.navigation.navigate("BoardingRound", {
         ...this.props.navigation.state.params,
-        selectedSheets: selectedSheets
+        selectedSheetsRound: selectedSheetsRound
       });
     } else {
       Toast.show("Please Select the Seat");
@@ -121,20 +121,20 @@ class Seats extends React.PureComponent {
   };
 
   updateSheets = item => () => {
-    let selectedSheets = [...this.state.selectedSheets];
-    let index = selectedSheets.findIndex(val => val.Number == item.Number);
+    let selectedSheetsRound = [...this.state.selectedSheetsRound];
+    let index = selectedSheetsRound.findIndex(val => val.Number == item.Number);
     if (index != -1) {
-      selectedSheets.splice(index, 1);
+      selectedSheetsRound.splice(index, 1);
     } else {
-      selectedSheets.push(item);
+      selectedSheetsRound.push(item);
     }
-    this.setState({ selectedSheets });
-    console.log(selectedSheets);
+    this.setState({ selectedSheetsRound });
+    console.log(selectedSheetsRound);
   };
 
   renderSeat = item => {
-    const { lowerRows, selectedSheets } = this.state;
-    const backgroundColor = selectedSheets.some(val => item.Number == val.Number)
+    const { lowerRows, selectedSheetsRound } = this.state;
+    const backgroundColor = selectedSheetsRound.some(val => item.Number == val.Number)
       ? "#BBBBBB"
       : "#FFF";
     const seatColor = item.IsLadiesSeat == "True" ? "pink" : "#757575";
@@ -390,4 +390,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Seats;
+export default SeatRound;

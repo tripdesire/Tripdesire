@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
-import { Button, Text, Header } from "../../components";
+import { Button, Text, Header } from "../../../components";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
-import { etravosApi, domainApi } from "../../service";
-import data1 from "./data";
+import { etravosApi, domainApi } from "../../../service";
+//import data1 from "../../Bus";
 //console.log(data1);
 
-class Seats extends React.PureComponent {
+class SeatOneway extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,7 +111,7 @@ class Seats extends React.PureComponent {
     const { tripType, params, TripType } = this.props.navigation.state.params;
     const { selectedSheets } = this.state;
     if (this.state.selectedSheets.length > 0) {
-      this.props.navigation.navigate("Boarding", {
+      this.props.navigation.navigate("BoardingOneway", {
         ...this.props.navigation.state.params,
         selectedSheets: selectedSheets
       });
@@ -390,4 +390,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Seats;
+export default SeatOneway;
