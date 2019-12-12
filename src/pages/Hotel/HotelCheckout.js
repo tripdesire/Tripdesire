@@ -236,7 +236,7 @@ class HotelCheckout extends React.Component {
                               height: width / 5,
                               borderRadius: 5
                             }}
-                            source={{ uri: res }}
+                            source={{ uri: res || "https://via.placeholder.com/150" }}
                           />
 
                           <View

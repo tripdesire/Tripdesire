@@ -400,7 +400,7 @@ class CheckOut extends React.PureComponent {
                       </Text>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 10 }}>
-                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
+                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img || "https://via.placeholder.com/150" }} />
                       <View style={{ marginStart: 10, flex: 1 }}>
                         <Text>
                           {params.departFlight.FlightSegments[0].AirLineName} |{" "}
@@ -483,7 +483,7 @@ class CheckOut extends React.PureComponent {
                         /> */}
                         <Image
                           style={{ width: 35, resizeMode: "contain" }}
-                          source={{ uri: imgRet }}
+                          source={{ uri: imgRet || "https://via.placeholder.com/150" }}
                         />
                         <View style={{ flex: 1, marginStart: 10 }}>
                           <Text>
@@ -774,7 +774,7 @@ class CheckOut extends React.PureComponent {
                       </Text>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 10 }}>
-                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} />
+                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img|| "https://via.placeholder.com/150" }} />
                       <View style={{ marginStart: 10, flex: 1 }}>
                         <Text>
                           {params.departFlight.IntOnward.FlightSegments[0].AirLineName} |{" "}
@@ -851,7 +851,7 @@ class CheckOut extends React.PureComponent {
                       </View>
                       <View style={{ flexDirection: "row", marginTop: 10 }}>
                         <Image
-                          source={{ uri: imgIntRet }}
+                          source={{ uri: imgIntRet || "https://via.placeholder.com/150"}}
                           resizeMode="contain"
                           style={{ width: 40 }}
                         />

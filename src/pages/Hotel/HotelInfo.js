@@ -170,7 +170,7 @@ class HotelInfo extends React.PureComponent {
         <Image
           style={{ width: width / 4, height: height / 6, borderRadius: 5 }}
           resizeMode="cover"
-          source={{ uri: res }}
+          source={{ uri: res || "https://via.placeholder.com/150" }}
         />
         <View
           style={{

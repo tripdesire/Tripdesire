@@ -431,19 +431,17 @@ class Payment extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text>Adult {index + 1}</Text>
+                            <Text style={{ flexBasis: "20%" }}>Adult {index + 1}</Text>
                             <View
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
-                                marginStart: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
+                                justifyContent: "center"
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].den}
-                                style={{ height: 50, width: 60 }}
+                                style={{ height: 40, width: 100 }}
                                 onValueChange={this.onAdultChange(index, "den")}>
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
@@ -478,54 +476,39 @@ class Payment extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <View
+                            <Text style={{ color: "#5D666D", flexBasis: "20%" }}>DOB</Text>
+                            <Button
                               style={{
-                                flex: 2,
-                                flexDirection: "row",
-                                justifyContent: "space-between",
+                                flex: 1,
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                justifyContent: "center",
                                 alignItems: "center"
-                              }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
-                              <Button
-                                style={{
-                                  flex: 1,
-                                  marginStart: 5,
-                                  borderWidth: 1,
-                                  borderColor: "#F2F2F2",
-                                  height: 40,
-                                  justifyContent: "center",
-                                  alignItems: "center"
-                                }}
-                                onPress={this.show("adults", index, true)}
-                                placeholder="DOB">
-                                <Text>
-                                  {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
-                                </Text>
-                              </Button>
-                              <DateTimePicker
-                                date={this.state.adults[index].dob}
-                                isVisible={this.state.adults[index].show}
-                                onConfirm={this.onAdultChange(index, "dob")}
-                                onCancel={this.show("adults", index, false)}
-                                maximumDate={moment()
-                                  .subtract(18, "years")
-                                  .toDate()}
-                              />
-                            </View>
+                              }}
+                              onPress={this.show("adults", index, true)}
+                              placeholder="DOB">
+                              <Text>
+                                {moment(this.state.adults[index].dob).format("DD-MMM-YYYY")}
+                              </Text>
+                            </Button>
+                            <DateTimePicker
+                              date={this.state.adults[index].dob}
+                              isVisible={this.state.adults[index].show}
+                              onConfirm={this.onAdultChange(index, "dob")}
+                              onCancel={this.show("adults", index, false)}
+                              maximumDate={new Date(moment().subtract(18, "years"))}
+                            />
                             <View
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
-                                flex: 1,
-                                paddingHorizontal: 2,
-                                marginHorizontal: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
+                                justifyContent: "center"
                               }}>
                               <Picker
                                 selectedValue={this.state.adults[index].gender}
-                                style={{ height: 50, width: 80 }}
+                                style={{ height: 50, width: 120 }}
                                 onValueChange={this.onAdultChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
