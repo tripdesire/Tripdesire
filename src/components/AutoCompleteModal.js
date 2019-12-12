@@ -3,11 +3,19 @@ import { View, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from "re
 import Button from "./Button";
 import Text from "./TextComponent";
 import ActivityIndicator from "./ActivityIndicator";
- import {etravosApi}  from "../service";
+import { etravosApi, domainApi } from "../service";
 import Autocomplete from "react-native-autocomplete-input";
 import Toast from "react-native-simple-toast";
 import Icon from "./IconNB";
-import { DomSugg, IntSugg, DomHotelSugg, BusSugg, CabSugg } from "../store/action";
+import {
+  DomSugg,
+  IntSugg,
+  DomHotelSugg,
+  intHotelSugg,
+  BusSugg,
+  CabSugg,
+  hotelCountrySugg
+} from "../store/action";
 import { connect } from "react-redux";
 
 const { height } = Dimensions.get("window");
@@ -26,6 +34,13 @@ class AutoCompleteModal extends React.PureComponent {
       case "domesticHotel":
         data = { filteredList: this.props.domesticHotelSuggestion };
         break;
+      case "intHotel":
+        data = { filteredList: this.props.intHotelSuggestion };
+        break;
+      case "hotelCountry":
+        data = { filteredList: this.props.hotelCountries };
+        break;
+
       case "bus":
         data = { filteredList: this.props.busSuggestion };
         break;
@@ -43,18 +58,24 @@ class AutoCompleteModal extends React.PureComponent {
   componentDidMount() {
     const {
       type,
+      country,
       domesticSuggestion,
       internationalSuggestion,
       domesticHotelSuggestion,
+      hotelCountries,
+      intHotelSuggestion,
       busSuggestion,
       cabSuggestion
     } = this.props;
 
     switch (type) {
       case "domesticFlight":
+        console.log("domestic");
+
         if (domesticSuggestion.length == 0) {
           this.setState({ loader: true });
-          etravosApi.get("/Flights/Airports?flightType=1")
+          etravosApi
+            .get("/Flights/Airports?flightType=1")
             .then(({ data }) => {
               this.props.DomSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -69,9 +90,10 @@ class AutoCompleteModal extends React.PureComponent {
       case "internationalFlight":
         if (internationalSuggestion.length == 0) {
           this.setState({ loader: true });
-          etravosApi.get("/Flights/Airports?flightType=2")
+          etravosApi
+            .get("/Flights/Airports?flightType=2")
             .then(({ data }) => {
-              this.props.IntSugg(data);
+              this.props.intHotelSuggestion(data);
               this.setState({ loader: false, filteredList: data });
             })
             .catch(err => {
@@ -83,7 +105,8 @@ class AutoCompleteModal extends React.PureComponent {
       case "domesticHotel":
         if (domesticHotelSuggestion.length == 0) {
           this.setState({ loader: true });
-          etravosApi.get("Hotels/Cities?hoteltype=1")
+          etravosApi
+            .get("Hotels/Cities?hoteltype=1")
             .then(({ data }) => {
               this.props.DomHotelSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -94,11 +117,43 @@ class AutoCompleteModal extends React.PureComponent {
             });
         }
         break;
-
+      case "hotelCountry":
+        console.log("here");
+        if (hotelCountries.length == 0) {
+          this.setState({ loader: true });
+          domainApi
+            .get("/country/contry-list")
+            .then(({ data }) => {
+              this.props.hotelCountrySugg(data);
+              this.setState({ loader: false, filteredList: data });
+            })
+            .catch(err => {
+              Toast.show(err, Toast.LONG);
+              this.setState({ loader: false });
+            });
+        }
+        break;
+      case "intHotel":
+        //if (intHotelSuggestion.length == 0) {
+        this.setState({ loader: true });
+        domainApi
+          .post("/country/contry-list", { country: country })
+          .then(({ data }) => {
+            data = data.map(item => ({ CityId: item.city_id, CityName: item.city_name }));
+            this.props.intHotelSugg(data);
+            this.setState({ loader: false, filteredList: data });
+          })
+          .catch(err => {
+            Toast.show(err, Toast.LONG);
+            this.setState({ loader: false });
+          });
+        //}
+        break;
       case "bus":
         if (busSuggestion.length == 0) {
           this.setState({ loader: true });
-          etravosApi.get("/Buses/Sources")
+          etravosApi
+            .get("/Buses/Sources")
             .then(({ data }) => {
               this.props.BusSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -113,7 +168,8 @@ class AutoCompleteModal extends React.PureComponent {
       case "cab":
         if (cabSuggestion.length == 0) {
           this.setState({ loader: true });
-          etravosApi.get("/Cabs/Cities")
+          etravosApi
+            .get("/Cabs/Cities")
             .then(({ data }) => {
               this.props.CabSugg(data);
               this.setState({ loader: false, filteredList: data });
@@ -133,6 +189,8 @@ class AutoCompleteModal extends React.PureComponent {
       domesticSuggestion,
       internationalSuggestion,
       domesticHotelSuggestion,
+      intHotelSuggestion,
+      hotelCountries,
       busSuggestion,
       cabSuggestion
     } = this.props;
@@ -155,6 +213,16 @@ class AutoCompleteModal extends React.PureComponent {
       case "domesticHotel":
         filteredList = domesticHotelSuggestion.filter(item =>
           item.CityName.toLowerCase().includes(text.toLowerCase())
+        );
+        break;
+      case "intHotel":
+        filteredList = intHotelSuggestion.filter(item =>
+          item.CityName.toLowerCase().includes(text.toLowerCase())
+        );
+        break;
+      case "hotelCountry":
+        filteredList = hotelCountries.filter(item =>
+          item.toLowerCase().includes(text.toLowerCase())
         );
         break;
       case "bus":
@@ -185,6 +253,12 @@ class AutoCompleteModal extends React.PureComponent {
       case "domesticHotel":
         text = item.CityName + ", " + item.CityId + " - (India)";
         break;
+      case "intHotel":
+        text = item.CityName + ", " + item.CityId;
+        break;
+      case "hotelCountry":
+        text = item;
+        break;
       case "bus":
         text = item.Name + ", " + item.Id + " - (India)";
         break;
@@ -213,9 +287,12 @@ class AutoCompleteModal extends React.PureComponent {
       case "domesticFlight":
       case "internationalFlight":
         return "flight_" + item.AirportCode + index;
-        break;
       case "domesticHotel":
         return "hotel_" + item.CityName + item.CityId;
+      case "intHotel":
+        return "hotel_" + item.CityName + item.CityId;
+      case "hotelCountry":
+        return "hotel_" + item;
       case "bus":
         return "bus_" + item.Name + item.Id;
       case "cab":
@@ -286,15 +363,19 @@ const mapStateToProps = state => ({
   internationalSuggestion: state.internationalSuggestion,
   domesticHotelSuggestion: state.domesticHotelSuggestion,
   busSuggestion: state.busSuggestion,
-  cabSuggestion: state.cabSuggestion
+  cabSuggestion: state.cabSuggestion,
+  intHotelSuggestion: state.intHotelSuggestion,
+  hotelCountries: state.hotelCountries
 });
 
 const mapDispatchToProps = {
   DomSugg,
   IntSugg,
   DomHotelSugg,
+  intHotelSugg,
   BusSugg,
-  CabSugg
+  CabSugg,
+  hotelCountrySugg
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoCompleteModal);

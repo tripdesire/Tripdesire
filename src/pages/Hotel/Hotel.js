@@ -1,10 +1,9 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal } from "../../components";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import Taost from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
-import { connect } from "react-redux";
 import { Header } from "../../components";
 import AddPassengers from "./AddPassengers";
 
@@ -17,6 +16,8 @@ class Hotel extends React.PureComponent {
       city: "Noida",
       place: "Noida, 269 - (India)",
       suggestions: [],
+      country: "Select Country",
+      _country: false,
       _place: false,
       CheckIn: new Date(),
       CheckOut: new Date(),
@@ -31,63 +32,40 @@ class Hotel extends React.PureComponent {
       modalPassengers: false,
       room: 1,
       fromDTpicker: false,
-      toDTpicker: false
+      toDTpicker: false,
+      hoteltype: 1
     };
   }
-
-  // componentDidMount() {
-  //   this.setState({ suggestions: this.props.domesticHotelSuggestionReducer });
-  // }
 
   goBack = () => {
     this.props.navigation.goBack(null);
   };
 
-  setDate = (event, date) => {
-    date = date || this.state.CheckIn;
-    this.setState({
-      show_CheckIn: Platform.OS === "ios" ? true : false,
-      CheckIn: date
-    });
-  };
-
-  setDate_CheckOut = (event, date) => {
-    date = date || this.state.CheckOut;
-    this.setState({
-      show_CheckOut: Platform.OS === "ios" ? true : false,
-      CheckOut: date
-    });
-  };
-
-  show = mode => () => {
-    this.setState({
-      show_CheckIn: true,
-      mode
-    });
-  };
-
-  showTo = mode => () => {
-    this.setState({
-      show_CheckOut: true,
-      mode
-    });
-  };
-
   _handle = async item => {
     await this.setState({
-      place: item.CityName + ", " + item.CityId + " - (India)",
+      place: item.CityName + ", " + item.CityId + (this.state.hoteltype == 1 ? " - (India)" : ""),
       cityId: item.CityId,
       city: item.CityName,
       _place: false
     });
   };
+  _handleCountry = item => {
+    this.setState({ country: item, _country: false });
+  };
 
+  countryOpen = () => {
+    this.setState({ _country: true });
+  };
   modalOpen = () => {
-    this.setState({ _place: true });
+    if (this.state.country === "Select Country") {
+      Toast.show("Select Country first", Toast.LONG);
+    } else {
+      this.setState({ _place: true });
+    }
   };
 
   modalBackPress = () => {
-    this.setState({ _place: false });
+    this.setState({ _place: false, _country: false });
   };
 
   setPassengers = () => {
@@ -151,7 +129,6 @@ class Hotel extends React.PureComponent {
   _search = () => {
     let Difference_In_Time = this.state.CheckOut - this.state.CheckIn;
     let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24), 1);
-
     let params = {
       city: this.state.city,
       destinationId: this.state.cityId,
@@ -163,7 +140,7 @@ class Hotel extends React.PureComponent {
       childrenAges: this.state.childrenAges,
       NoOfDays: Difference_In_Days,
       userType: 5,
-      hoteltype: 1,
+      hoteltype: this.state.hoteltype,
       adults_count: this.state.adults_count,
       children_count: this.state.children_count,
       user: "",
@@ -172,195 +149,244 @@ class Hotel extends React.PureComponent {
     this.props.navigation.navigate("HotelInfo", params);
   };
 
+  updateHotelType = val => () => {
+    this.setState({ hoteltype: val });
+  };
+
   render() {
     const {
       place,
       CheckIn,
       CheckOut,
-      mode,
-      show_CheckIn,
-      show_CheckOut,
       adults_count,
       children_count,
       room,
       fromDTpicker,
-      toDTpicker
+      toDTpicker,
+      hoteltype,
+      _country,
+      country
     } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
-          <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}>
-              <Header firstName="Hotel" lastName="Search" onPress={this.goBack} />
-            </View>
-
-            <View style={{ height: 30, width: "100%" }}>
-              <View style={{ flex: 2, backgroundColor: "#E5EBF7" }}></View>
-              <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginHorizontal: 20,
-                  ...StyleSheet.absoluteFill
-                }}>
-                <Button
-                  style={{
-                    backgroundColor: "#5B89F9",
-                    elevation: 1,
-                    height: 30,
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 5
-                  }}>
-                  <Text style={{ color: "#fff", fontSize: 12 }}>Domestic</Text>
-                </Button>
-              </View>
-            </View>
+          <View style={{ flexDirection: "column", height: 140, backgroundColor: "#E5EBF7" }}>
+            {/* <View style={{ backgroundColor: "#E5EBF7", flex: 1 }}> */}
+            <Header firstName="Hotel" lastName="Search" onPress={this.goBack} />
+          </View>
+          <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
             <View
               style={{
-                elevation: 1,
-                backgroundColor: "#FFFFFF",
-                flex: 4
+                marginHorizontal: 20,
+                flexDirection: "row",
+                height: 30,
+                marginTop: -10
               }}>
+              <Button
+                onPress={this.updateHotelType(1)}
+                style={{
+                  backgroundColor: hoteltype == 1 ? "#5B89F9" : "#FFF",
+                  elevation: 2,
+                  zIndex: 2,
+                  height: 30,
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 5
+                }}>
+                <Text style={{ color: hoteltype == 1 ? "#FFF" : "#000", fontSize: 12 }}>
+                  Domestic
+                </Text>
+              </Button>
+              <Button
+                onPress={this.updateHotelType(2)}
+                style={{
+                  backgroundColor: hoteltype == 2 ? "#5B89F9" : "#FFF",
+                  elevation: 2,
+                  zIndex: 2,
+                  height: 30,
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 5
+                }}>
+                <Text style={{ color: hoteltype == 2 ? "#FFF" : "#000", fontSize: 12 }}>
+                  International
+                </Text>
+              </Button>
+            </View>
+
+            <View
+              style={{
+                paddingHorizontal: 16,
+                width: "100%",
+                flexDirection: "row",
+                alignItems: "center"
+              }}>
+              {hoteltype == 2 && (
+                <Text
+                  style={{
+                    color: "#1F273E",
+                    fontSize: 18,
+                    flex: 1,
+                    marginTop: 15,
+                    paddingBottom: 15,
+                    textAlign: "center"
+                  }}
+                  onPress={this.countryOpen}>
+                  {country}
+                </Text>
+              )}
               <Text
                 style={{
                   color: "#1F273E",
                   fontSize: 18,
-                  marginVertical: 30,
-                  marginHorizontal: 16,
-                  alignSelf: "center"
+                  flex: 1,
+                  marginTop: 15,
+                  paddingBottom: 15,
+                  textAlign: "center"
                 }}
                 onPress={this.modalOpen}>
                 {place}
               </Text>
-
-              <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={{ width: 25, resizeMode: "contain" }}
-                  source={require("../../assets/imgs/cal.png")}
-                />
-                <View
-                  style={{
-                    flex: 1,
-                    paddingStart: 20
-                  }}>
-                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-in</Text>
-                  <Button
-                    style={{ flex: 1, marginStart: 5 }}
-                    onPress={this.showDateTimePicker("fromDTpicker")}>
-                    <Text>{moment(CheckIn).format("DD-MMM-YYYY")}</Text>
-                  </Button>
-
-                  <DateTimePicker
-                    isVisible={fromDTpicker}
-                    onConfirm={this.handleDatePicked("fromDTpicker")}
-                    onCancel={this.hideDateTimePicker("fromDTpicker")}
-                    minimumDate={new Date()}
-                  />
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    paddingStart: 20
-                  }}>
-                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-out</Text>
-                  <Button
-                    style={{ flex: 1, marginStart: 5 }}
-                    onPress={this.showDateTimePicker("toDTpicker")}>
-                    <Text>{moment(CheckOut).format("DD-MMM-YYYY")}</Text>
-                  </Button>
-
-                  <DateTimePicker
-                    isVisible={toDTpicker}
-                    onConfirm={this.handleDatePicked("toDTpicker")}
-                    onCancel={this.hideDateTimePicker("toDTpicker")}
-                    minimumDate={this.state.CheckIn}
-                  />
-                </View>
-              </View>
-
-              <View
-                style={{
-                  height: 1,
-                  backgroundColor: "#DDDDDD",
-                  marginHorizontal: 20
-                }}></View>
-
-              <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={{ width: 25, resizeMode: "contain" }}
-                  source={require("../../assets/imgs/person.png")}
-                />
-                <View
-                  style={{
-                    flex: 1,
-                    paddingStart: 20
-                  }}>
-                  <Text>Rooms & Guest</Text>
-                  <Text style={{ color: "#5D666D" }}>
-                    {adults_count === "Passengers:" ? adults_count : ""}
-                    {adults_count > 0 ? adults_count + " Adults , " : ""}
-                    {children_count > 0 ? children_count + " Children , " : ""}
-                    {adults_count > 0 ? room + " Room" : ""}
-                  </Text>
-                  <View style={{ flexDirection: "row", flex: 1, paddingStart: 5 }}>
-                    <Button
-                      style={{
-                        backgroundColor: "#F68E1F",
-                        height: 25,
-                        justifyContent: "center",
-                        borderRadius: 15
-                      }}
-                      onPress={this.setPassengers}>
-                      <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <Button
-                style={{
-                  backgroundColor: "#F68E1F",
-                  marginHorizontal: 100,
-                  height: 40,
-                  justifyContent: "center",
-                  borderRadius: 20,
-                  marginVertical: 40
-                }}
-                onPress={this._search}>
-                <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
-              </Button>
             </View>
 
-            <AddPassengers
-              visible={this.state.modalPassengers}
-              submit={this.submit}
-              modalClose={this.modalClose}
-            />
+            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={{ width: 25, resizeMode: "contain" }}
+                source={require("../../assets/imgs/cal.png")}
+              />
+              <View
+                style={{
+                  flex: 1,
+                  paddingStart: 20
+                }}>
+                <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-in</Text>
+                <Button
+                  style={{ flex: 1, marginStart: 5 }}
+                  onPress={this.showDateTimePicker("fromDTpicker")}>
+                  <Text>{moment(CheckIn).format("DD-MMM-YYYY")}</Text>
+                </Button>
 
+                <DateTimePicker
+                  isVisible={fromDTpicker}
+                  onConfirm={this.handleDatePicked("fromDTpicker")}
+                  onCancel={this.hideDateTimePicker("fromDTpicker")}
+                  minimumDate={new Date()}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  paddingStart: 20
+                }}>
+                <Text style={{ color: "#5D666D", marginStart: 5 }}>Check-out</Text>
+                <Button
+                  style={{ flex: 1, marginStart: 5 }}
+                  onPress={this.showDateTimePicker("toDTpicker")}>
+                  <Text>{moment(CheckOut).format("DD-MMM-YYYY")}</Text>
+                </Button>
+
+                <DateTimePicker
+                  isVisible={toDTpicker}
+                  onConfirm={this.handleDatePicked("toDTpicker")}
+                  onCancel={this.hideDateTimePicker("toDTpicker")}
+                  minimumDate={this.state.CheckIn}
+                />
+              </View>
+            </View>
+
+            <View
+              style={{
+                height: 1,
+                backgroundColor: "#DDDDDD",
+                marginHorizontal: 20
+              }}></View>
+
+            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={{ width: 25, resizeMode: "contain" }}
+                source={require("../../assets/imgs/person.png")}
+              />
+              <View
+                style={{
+                  flex: 1,
+                  paddingStart: 20
+                }}>
+                <Text>Rooms & Guest</Text>
+                <Text style={{ color: "#5D666D" }}>
+                  {adults_count === "Passengers:" ? adults_count : ""}
+                  {adults_count > 0 ? adults_count + " Adults , " : ""}
+                  {children_count > 0 ? children_count + " Children , " : ""}
+                  {adults_count > 0 ? room + " Room" : ""}
+                </Text>
+                <View style={{ flexDirection: "row", flex: 1, paddingStart: 5 }}>
+                  <Button
+                    style={{
+                      backgroundColor: "#F68E1F",
+                      height: 25,
+                      justifyContent: "center",
+                      borderRadius: 15
+                    }}
+                    onPress={this.setPassengers}>
+                    <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
+                  </Button>
+                </View>
+              </View>
+            </View>
+            <Button
+              style={{
+                backgroundColor: "#F68E1F",
+                marginHorizontal: 100,
+                height: 40,
+                justifyContent: "center",
+                borderRadius: 20,
+                marginVertical: 40
+              }}
+              onPress={this._search}>
+              <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
+            </Button>
+          </View>
+
+          <AddPassengers
+            visible={this.state.modalPassengers}
+            submit={this.submit}
+            modalClose={this.modalClose}
+          />
+
+          {hoteltype == 2 && (
             <Modal
               animationType="slide"
               transparent={false}
-              visible={this.state._place}
+              visible={_country}
               onRequestClose={this.modalBackPress}>
               <AutoCompleteModal
-                placeholder="Enter Source"
-                type="domesticHotel"
-                onChange={this._handle}
+                placeholder="Country"
+                type="hotelCountry"
+                onChange={this._handleCountry}
                 onModalBackPress={this.modalBackPress}
               />
             </Modal>
-          </View>
+          )}
+
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state._place}
+            onRequestClose={this.modalBackPress}>
+            <AutoCompleteModal
+              placeholder="Enter Source"
+              type={hoteltype == 1 ? "domesticHotel" : "intHotel"}
+              onChange={this._handle}
+              country={country === "Select Country" ? "" : country}
+              onModalBackPress={this.modalBackPress}
+            />
+          </Modal>
         </SafeAreaView>
       </>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  domesticHotelSuggestionReducer: state.domesticHotelSuggestionReducer
-});
-
-export default connect(mapStateToProps, null)(Hotel);
+export default Hotel;

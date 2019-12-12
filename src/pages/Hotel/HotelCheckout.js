@@ -52,12 +52,7 @@ class HotelCheckout extends React.Component {
   };
 
   _Next = () => {
-    const { params } = this.props.navigation.state;
-
-    Object.assign(params, {
-      selectedRoom: this.state.selectedRoom
-    });
-
+    const params = { ...this.props.navigation.state.params, selectedRoom: this.state.selectedRoom };
     this.props.navigation.navigate("HotelPayment", params);
   };
 

@@ -791,7 +791,7 @@ class CheckOut1 extends React.PureComponent {
                                     : "-- Enter Dob --"}
                                 </Text>
                               </Button>
-                              <DateTimePicker
+                              <DateTimePicker 
                                 date={this.state.adults[index].dob}
                                 isVisible={this.state.adults[index].show}
                                 onConfirm={this.onAdultChange(index, "dob")}
@@ -944,7 +944,7 @@ class CheckOut1 extends React.PureComponent {
                                   {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
-                              <DateTimePicker
+                              <DateTimePicker 
                                 date={this.state.childs[index].dob}
                                 isVisible={this.state.childs[index].show}
                                 onConfirm={this.onChildsChange(index, "dob")}
@@ -1072,7 +1072,7 @@ class CheckOut1 extends React.PureComponent {
                                   {moment(this.state.infants[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
-                              <DateTimePicker
+                              <DateTimePicker 
                                 date={this.state.infants[index].dob}
                                 isVisible={this.state.infants[index].show}
                                 onConfirm={this.onInfantChange(index, "dob")}

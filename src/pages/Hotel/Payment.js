@@ -243,7 +243,7 @@ class Payment extends React.PureComponent {
       HotelId: params.HotelId,
       HotelImages: params.HotelImages,
       HotelPolicy: params.HotelPolicy,
-      HotelType: 1,
+      HotelType: params.hoteltype,
       IsOfflineBooking: false,
       MobileNo: "9999999999",
       Names: name,
@@ -260,6 +260,7 @@ class Payment extends React.PureComponent {
       UserType: 5,
       WebsiteUrl: ""
     };
+    console.log("BlockingData", data);
     console.log(this.state);
 
     if (this.validate()) {

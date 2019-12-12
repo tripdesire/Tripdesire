@@ -239,7 +239,7 @@ class DomesticFlights extends React.PureComponent {
               onPress={this.showDateTimePicker("fromDTpicker")}>
               <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
             </Button>
-            <DateTimePicker
+            <DateTimePicker 
               isVisible={fromDTpicker}
               onConfirm={this.handleDatePicked("fromDTpicker")}
               onCancel={this.hideDateTimePicker("fromDTpicker")}
@@ -254,7 +254,7 @@ class DomesticFlights extends React.PureComponent {
                 onPress={this.showDateTimePicker("toDTpicker")}>
                 <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
               </Button>
-              <DateTimePicker
+              <DateTimePicker 
                 isVisible={toDTpicker}
                 onConfirm={this.handleDatePicked("toDTpicker")}
                 onCancel={this.hideDateTimePicker("toDTpicker")}

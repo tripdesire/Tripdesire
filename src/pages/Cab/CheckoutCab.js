@@ -433,7 +433,7 @@ class CheckoutCab extends React.PureComponent {
                           placeholder="DOB">
                           <Text>{moment(this.state.dob).format("DD-MMM-YYYY")}</Text>
                         </Button>
-                        <DateTimePicker
+                        <DateTimePicker 
                           date={this.state.dob}
                           isVisible={this.state.dobShow}
                           onConfirm={this.onAdultChange("dob")}

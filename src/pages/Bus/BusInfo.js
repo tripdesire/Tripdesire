@@ -18,7 +18,6 @@ class BusInfo extends React.PureComponent {
       day: moment(params.journeyDate, "DD-MM-YYYY").format("dddd"),
       loader: true,
       buses: [],
-      busesReturn: [],
       filteredBuses: [],
       nofound: 1,
       CancellationPolicy: false,
