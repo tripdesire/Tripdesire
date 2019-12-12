@@ -24,7 +24,7 @@ class Filter extends React.Component {
           "Airline Asc",
           "Airline Desc",
           "Departure Asc",
-          "Departure Dsc",
+          "Departure Desc",
           "Arrival Asc",
           "Arrival Desc"
         ]

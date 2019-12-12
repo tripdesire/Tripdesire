@@ -106,43 +106,43 @@ class BusInfo extends React.PureComponent {
     );
 
     switch (filterValues.sortBy) {
-      case "Travels Ascending":
-        filteredBuses = orderBy(filteredBuses, "FlightSegments[0].AirLineName", "asc");
+      case "Travels Asc":
+        filteredBuses = orderBy(filteredBuses, "DisplayName", "asc");
         break;
-      case "Travels Descending":
-        filteredBuses = orderBy(filteredBuses, "FlightSegments[0].AirLineName", "desc");
+      case "Travels Desc":
+        filteredBuses = orderBy(filteredBuses, "DisplayName", "desc");
         break;
-      case "Price Low to High":
-        filteredBuses = orderBy(filteredBuses, "FareDetails.TotalFare", "asc");
+      case "Fare low to high":
+        filteredBuses = orderBy(filteredBuses, "Fares", "asc");
         break;
-      case "Price High to Low":
-        filteredBuses = orderBy(filteredBuses, "FareDetails.TotalFare", "desc");
+      case "Fare high to low":
+        filteredBuses = orderBy(filteredBuses, "Fares", "desc");
         break;
-      case "Departure Ascending":
+      case "Departure Asc":
         filteredBuses = orderBy(
           filteredBuses,
-          new Date(item.FlightSegments[0].DepartureDateTime),
+          item => moment(item.DepartureTime, "hh:mm A").toDate(),
           "asc"
         );
         break;
-      case "Departure Descending":
+      case "Departure Desc":
         filteredBuses = orderBy(
           filteredBuses,
-          item => new Date(item.FlightSegments[0].DepartureDateTime),
+          item => moment(item.DepartureTime, "hh:mm A").toDate(),
           "desc"
         );
         break;
-      case "Arrival Ascending":
+      case "Arrival Asc":
         filteredBuses = orderBy(
           filteredBuses,
-          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          item => moment(item.ArrivalTime, "hh:mm A").toDate(),
           "asc"
         );
         break;
-      case "Arrival Descending":
+      case "Arrival Desc":
         filteredBuses = orderBy(
           filteredBuses,
-          item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+          item => moment(item.ArrivalTime, "hh:mm A").toDate(),
           "desc"
         );
         break;

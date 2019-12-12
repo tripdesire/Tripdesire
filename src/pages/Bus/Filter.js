@@ -1,11 +1,7 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
-import { Button, Text, CheckBox } from "../../components";
-import { _ } from "lodash";
-import moment from "moment";
-import { connect } from "react-redux";
-import { Header, Icon } from "../../components";
-import {} from "react-native-gesture-handler";
+import { Button, Text, CheckBox, RadioButton, Header, Icon } from "../../components";
+import { uniq } from "lodash";
 
 class Filter extends React.Component {
   constructor(props) {
@@ -52,9 +48,9 @@ class Filter extends React.Component {
       boardingPoints.push(...value.BoardingTimes.map(item => item.Location));
       droppingPoints.push(...value.DroppingTimes.map(item => item.Location));
     }
-    travels = _.uniq(travels).sort();
-    boardingPoints = _.uniq(boardingPoints).sort();
-    droppingPoints = _.uniq(droppingPoints).sort();
+    travels = uniq(travels).sort();
+    boardingPoints = uniq(boardingPoints).sort();
+    droppingPoints = uniq(droppingPoints).sort();
 
     this.setState({
       filters: {
@@ -83,11 +79,16 @@ class Filter extends React.Component {
     } else {
       newData[key].push(filters[key][index]);
     }
-    //console.log(newData);
     this.props.onChangeFilter && this.props.onChangeFilter(newData);
   };
 
-  reset = () => {};
+  onRadioUpdate = (key, value) => () => {
+    const { filterValues, onChangeFilter } = this.props;
+    let newData = Object.assign({}, filterValues);
+    newData[key] = value;
+    console.log(newData);
+    onChangeFilter && onChangeFilter(newData);
+  };
 
   render() {
     const { index, filters } = this.state;

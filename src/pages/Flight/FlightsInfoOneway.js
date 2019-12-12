@@ -164,6 +164,48 @@ class FlightsInfoOneway extends React.PureComponent {
               ))
           );
         });
+        switch (filterValues.sortBy) {
+          case "Airline Asc":
+            filterFlights = orderBy(filterFlights, "FlightSegments[0].AirLineName", "asc");
+            break;
+          case "Airline Desc":
+            filterFlights = orderBy(filterFlights, "FlightSegments[0].AirLineName", "desc");
+            break;
+          case "Fare low to high":
+            filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "asc");
+            break;
+          case "Fare high to low":
+            filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "desc");
+            break;
+          case "Departure Asc":
+            filterFlights = orderBy(
+              filterFlights,
+              item => new Date(item.FlightSegments[0].DepartureDateTime),
+              "asc"
+            );
+            break;
+          case "Departure Desc":
+            filterFlights = orderBy(
+              filterFlights,
+              item => new Date(item.FlightSegments[0].DepartureDateTime),
+              "desc"
+            );
+            break;
+          case "Arrival Asc":
+            filterFlights = orderBy(
+              filterFlights,
+              item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+              "asc"
+            );
+            break;
+          case "Arrival Desc":
+            filterFlights = orderBy(
+              filterFlights,
+              item => new Date(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime),
+              "desc"
+            );
+            break;
+        }
 
         break;
       case 2:
@@ -208,41 +250,41 @@ class FlightsInfoOneway extends React.PureComponent {
               ))
         );
         switch (filterValues.sortBy) {
-          case "Airline Ascending":
+          case "Airline Asc":
             filterFlights = orderBy(
               filterFlights,
               "IntOnward.FlightSegments[0].AirLineName",
               "asc"
             );
             break;
-          case "Airline Descending":
+          case "Airline Desc":
             filterFlights = orderBy(
               filterFlights,
               "IntOnward.FlightSegments[0].AirLineName",
               "desc"
             );
             break;
-          case "Price Low to High":
+          case "Fare low to high":
             filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "asc");
             break;
-          case "Price High to Low":
+          case "Fare high to low":
             filterFlights = orderBy(filterFlights, "FareDetails.TotalFare", "desc");
             break;
-          case "Departure Ascending":
+          case "Departure Asc":
             filterFlights = orderBy(
               filterFlights,
-              new Date(item.IntOnward.FlightSegments[0].DepartureDateTime),
+              item => new Date(item.IntOnward.FlightSegments[0].DepartureDateTime),
               "asc"
             );
             break;
-          case "Departure Descending":
+          case "Departure Desc":
             filterFlights = orderBy(
               filterFlights,
               item => new Date(item.IntOnward.FlightSegments[0].DepartureDateTime),
               "desc"
             );
             break;
-          case "Arrival Ascending":
+          case "Arrival Asc":
             filterFlights = orderBy(
               filterFlights,
               item =>
@@ -254,7 +296,7 @@ class FlightsInfoOneway extends React.PureComponent {
               "asc"
             );
             break;
-          case "Arrival Descending":
+          case "Arrival Desc":
             filterFlights = orderBy(
               filterFlights,
               item =>
@@ -265,6 +307,7 @@ class FlightsInfoOneway extends React.PureComponent {
                 ),
               "desc"
             );
+            break;
         }
         break;
     }
