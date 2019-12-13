@@ -9,7 +9,8 @@ import {
   BUS_SUGGESTION,
   CAB_SUGGESTION,
   LOGOUT,
-  BILLING
+  BILLING,
+  UPDATE_PROFILE
 } from "./actionTypes";
 
 export const DomSugg = data => {
@@ -83,6 +84,13 @@ export const Logout = data => {
 export const Billing = data => {
   return {
     type: BILLING,
+    payload: data
+  };
+};
+
+export const UpdateProfile = data => {
+  return {
+    type: UPDATE_PROFILE,
     payload: data
   };
 };

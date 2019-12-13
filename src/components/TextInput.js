@@ -15,7 +15,7 @@ class TextInputComponent extends React.PureComponent {
         {this.props.imgpath && (
           <Image style={{ width: 18, resizeMode: "contain" }} source={this.props.imgpath} />
         )}
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={styles.text}>{this.props.label}</Text>
           <TextInput
             {...this.props}
