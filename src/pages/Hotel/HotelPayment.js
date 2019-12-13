@@ -120,7 +120,7 @@ class HotelPayment extends React.PureComponent {
                     paddingBottom: 16,
                     paddingHorizontal: 16
                   }}>
-                  $ {params.selectedRoom.RoomTotal}
+                  ₹ {params.selectedRoom.RoomTotal}
                 </Text>
                 <View style={style._textDetailsStyle}>
                   <Text style={style._textHeading}>City</Text>

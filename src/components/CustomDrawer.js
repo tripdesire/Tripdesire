@@ -1,6 +1,6 @@
 import { DrawerItems } from "react-navigation-drawer";
 import React, { PureComponent } from "react";
-import { SafeAreaView, View, TouchableOpacity, Image } from "react-native";
+import { SafeAreaView, View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Text from "./TextComponent";
 import Icon from "./IconNB";
 import { isEmpty } from "lodash";
@@ -14,26 +14,19 @@ class CustomDrawer extends React.PureComponent {
     super(props);
   }
 
-  _NavigateToScreen = () => {
+  signIn = () => {
     if (isEmpty(this.props.signIn)) {
       this.props.navigation.navigate("SignIn");
-    } else {
-      Toast.show("You have already Login", Toast.LONG);
     }
   };
 
-  _navigateToScreen = text => () => {
-    if (text == "Logout") {
-      this.props.Logout(null);
-      let logout = GoogleSignin.signOut();
-      console.log(logout);
-    } else if (text == "MyProfile") {
-      this.props.navigation.navigate("ProfilePage");
-    } else if (text == "Billing") {
-      this.props.navigation.navigate("BillingDetails");
-    } else if (text == "Share") {
-      //this.props.navigation.navigate("ProfilePage");
-    }
+  _navigateToScreen = route => () => {
+    this.props.navigation.navigate(route);
+  };
+
+  logout = () => {
+    this.props.Logout(null);
+    let logout = GoogleSignin.signOut();
   };
 
   render() {
@@ -43,17 +36,7 @@ class CustomDrawer extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#5789FF" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>
-            <TouchableOpacity
-              style={{
-                color: "#5F6D78",
-                padding: 20,
-                height: 100,
-                alignItems: "center",
-                backgroundColor: "#5789FF",
-                justifyContent: "space-between",
-                flexDirection: "row"
-              }}
-              onPress={this._NavigateToScreen}>
+            <Button style={styles.menuHeader} onPress={this.signIn}>
               <Image
                 style={{ width: 50, height: 50, borderRadius: 25 }}
                 source={{
@@ -76,33 +59,26 @@ class CustomDrawer extends React.PureComponent {
                   <Text style={{ lineHeight: 18, color: "#fff" }}>{signIn.email}</Text>
                 </View>
               )}
-            </TouchableOpacity>
-            <DrawerItems
-              {...this.props}
-              labelStyle={{ fontSize: 16, fontWeight: "200" }}
-              style={{ backgroundColor: "#FFFFFF" }}
-            />
-            <Button
-              onPress={this._navigateToScreen("MyProfile")}
-              style={{ flexDirection: "row", marginHorizontal: 16, height: 48 }}>
+            </Button>
+
+            <Button onPress={this._navigateToScreen("HomeStack")} style={styles.menuButton}>
+              <Icon name="md-home" size={24} />
+              <Text style={{ marginHorizontal: 33 }}>Home</Text>
+            </Button>
+            <Button onPress={this._navigateToScreen("OrderStack")} style={styles.menuButton}>
+              <Icon type="FontAwesome5" name="clipboard-list" size={24} />
+              <Text style={{ marginHorizontal: 33 }}>My Trips</Text>
+            </Button>
+
+            <Button onPress={this._navigateToScreen("ProfilePage")} style={styles.menuButton}>
               <Icon type="MaterialCommunityIcons" name="face-profile" size={24} />
               <Text style={{ marginHorizontal: 33 }}>My Profile</Text>
             </Button>
-            <Button
-              onPress={this._navigateToScreen("Billing")}
-              style={{ flexDirection: "row", marginHorizontal: 16, height: 48 }}>
+            <Button onPress={this._navigateToScreen("BillingDetails")} style={styles.menuButton}>
               <Icon type="MaterialCommunityIcons" name="face-profile" size={24} />
-              <Text style={{ marginHorizontal: 33 }}>Billing Address</Text>
+              <Text style={{ marginHorizontal: 33 }}>Address</Text>
             </Button>
-            <Button
-              onPress={this._navigateToScreen("Share")}
-              style={{ flexDirection: "row", marginHorizontal: 16, height: 48 }}>
-              <Icon name="md-share" size={24} />
-              <Text style={{ marginHorizontal: 33 }}>Share this app</Text>
-            </Button>
-            <Button
-              onPress={this._navigateToScreen("Logout")}
-              style={{ flexDirection: "row", marginHorizontal: 16, height: 48 }}>
+            <Button onPress={this.logout} style={styles.menuButton}>
               <Icon type="AntDesign" name="logout" size={24} />
               <Text style={{ marginHorizontal: 33 }}>Logout</Text>
             </Button>
@@ -113,6 +89,23 @@ class CustomDrawer extends React.PureComponent {
   }
 }
 
+const styles = StyleSheet.create({
+  menuHeader: {
+    color: "#5F6D78",
+    padding: 20,
+    height: 100,
+    alignItems: "center",
+    backgroundColor: "#5789FF",
+    justifyContent: "space-between",
+    flexDirection: "row"
+  },
+  menuButton: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    height: 48,
+    alignItems: "center"
+  }
+});
 const mapStateToProps = state => ({
   signIn: state.signIn
 });

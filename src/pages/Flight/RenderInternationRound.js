@@ -159,7 +159,7 @@ class RenderInternationRound extends React.PureComponent {
                   fontSize: 18,
                   fontWeight: "700"
                 }}>
-                $ {this.props.item.FareDetails.TotalFare}
+                ₹ {this.props.item.FareDetails.TotalFare}
               </Text>
               <Button
                 style={{

@@ -453,19 +453,19 @@ class FlightsInfoRound extends React.PureComponent {
               <View>
                 <Text style={{ color: "#5F6D78" }}>Departure</Text>
                 <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                  $ {onwardFare}
+                  ₹ {onwardFare}
                 </Text>
               </View>
               <View>
                 <Text style={{ color: "#5F6D78" }}>Return</Text>
                 <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                  $ {returnFare}
+                  ₹ {returnFare}
                 </Text>
               </View>
               <View>
                 <Text style={{ color: "#5F6D78" }}>Total</Text>
                 <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                  $ {onwardFare + returnFare}
+                  ₹ {onwardFare + returnFare}
                 </Text>
               </View>
               <Button

@@ -133,28 +133,8 @@ const OrderStack = createStackNavigator(
 
 const DrawerNavigator = createDrawerNavigator(
   {
-    HomeStack: {
-      screen: HomeStack,
-      navigationOptions: {
-        title: "Home",
-        drawerIcon: () => (
-          <TouchableOpacity>
-            <Icon name="md-home" size={24} />
-          </TouchableOpacity>
-        )
-      }
-    },
-    OrderStack: {
-      screen: OrderStack,
-      navigationOptions: {
-        title: "Orders",
-        drawerIcon: () => (
-          <TouchableOpacity>
-            <Icon type="FontAwesome5" name="clipboard-list" size={24} />
-          </TouchableOpacity>
-        )
-      }
-    }
+    HomeStack,
+    OrderStack
   },
   {
     contentComponent: CustomDrawer

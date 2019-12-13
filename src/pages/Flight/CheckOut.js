@@ -649,7 +649,7 @@ class CheckOut extends React.PureComponent {
                       Total Payable
                     </Text>
                     <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                      $ {params.departFlight.FareDetails.TotalFare}
+                      ₹ {params.departFlight.FareDetails.TotalFare}
                     </Text>
                   </View>
                 </View>
@@ -1020,7 +1020,7 @@ class CheckOut extends React.PureComponent {
                       Total Payable
                     </Text>
                     <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                      $ {params.departFlight.FareDetails.TotalFare}
+                      ₹ {params.departFlight.FareDetails.TotalFare}
                     </Text>
                   </View>
                 </View>
