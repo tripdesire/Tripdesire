@@ -229,107 +229,73 @@ class InternationalFlights extends React.PureComponent {
             <Text style={{ color: tripTypeColorRound }}>Round Trip</Text>
           </Button>
         </View>
-
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
             style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/flights-1.png")}
           />
-          <View
-            style={{
-              flex: 1,
-              paddingStart: 20,
-              position: "relative"
-            }}>
-            <Text style={{ color: "#5D666D" }}>From:</Text>
-            <Text style={{ color: "#5D666D" }} onPress={this.setModalVisible("modalFrom", true)}>
-              {from}
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              paddingStart: 20
-            }}>
+          <Button
+            style={{ flex: 1, paddingStart: 20 }}
+            onPress={this.setModalVisible("modalFrom", true)}>
+            <Text style={{ color: "#5D666D" }}>From: </Text>
+            <Text style={{ color: "#5D666D" }}>{from}</Text>
+          </Button>
+          <Button
+            style={{ flex: 1, paddingStart: 20 }}
+            onPress={this.setModalVisible("modalTo", true)}>
             <Text style={{ color: "#5D666D" }}>To:</Text>
-            <Text style={{ color: "#5D666D" }} onPress={this.setModalVisible("modalTo", true)}>
-              {to}
-            </Text>
-          </View>
+            <Text style={{ color: "#5D666D" }}>{to}</Text>
+          </Button>
         </View>
 
-        <View
-          style={{
-            height: 1,
-            backgroundColor: "#DDDDDD",
-            marginHorizontal: 20
-          }}></View>
+        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
 
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
             style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/cal.png")}
           />
-          <View
-            style={{
-              flex: 1,
-              paddingStart: 20
-            }}>
-            <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
-            <Button
-              style={{ flex: 1, marginStart: 5 }}
-              onPress={this.showDateTimePicker("fromDTpicker")}>
-              <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
-            </Button>
+          <Button
+            style={{ flex: 1, paddingStart: 20 }}
+            onPress={this.showDateTimePicker("fromDTpicker")}>
+            <Text style={{ color: "#5D666D" }}>Depart </Text>
+            <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
             <DateTimePicker
               isVisible={fromDTpicker}
+              date={Journey_date}
               onConfirm={this.handleDatePicked("fromDTpicker")}
               onCancel={this.hideDateTimePicker("fromDTpicker")}
               minimumDate={new Date()}
             />
-          </View>
+          </Button>
           {selectRound && (
-            <View
-              style={{
-                flex: 1,
-                paddingStart: 20
-              }}>
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-              <Button
-                style={{ flex: 1, marginStart: 5 }}
-                onPress={this.showDateTimePicker("toDTpicker")}>
-                <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
-              </Button>
+            <Button
+              style={{ flex: 1, paddingStart: 20 }}
+              onPress={this.showDateTimePicker("toDTpicker")}>
+              <Text style={{ color: "#5D666D" }}>Return</Text>
+              <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
               <DateTimePicker
                 isVisible={toDTpicker}
+                date={Return_date}
                 onConfirm={this.handleDatePicked("toDTpicker")}
                 onCancel={this.hideDateTimePicker("toDTpicker")}
                 minimumDate={this.state.Journey_date}
               />
-            </View>
+            </Button>
           )}
         </View>
 
-        <View
-          style={{
-            height: 1,
-            backgroundColor: "#DDDDDD",
-            marginHorizontal: 20
-          }}></View>
+        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
 
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
             style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/person.png")}
           />
-          <View
-            style={{
-              flex: 1,
-              paddingStart: 20
-            }}>
-            <Text style={{ color: "#5D666D", marginStart: 5 }}>Passengers:</Text>
-            <View style={{ flex: 1, paddingStart: 5 }}>
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>
+          <View style={{ flex: 1, paddingStart: 20 }}>
+            <Text style={{ color: "#5D666D" }}>Passengers:</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: "#5D666D" }}>
                 {adult > 0 ? adult + " Adults" : ""}
                 {children > 0 ? ", " + children + " Children" : ""}
                 {infants > 0 ? ", " + infants + " Infants" : ""}
@@ -348,20 +314,14 @@ class InternationalFlights extends React.PureComponent {
               </Button>
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              paddingStart: 20
-            }}>
-            <Text style={{ color: "#5D666D", marginStart: 5 }}>Class</Text>
+          <View style={{ flex: 1, paddingStart: 20 }}>
+            <Text style={{ color: "#5D666D" }}>Class</Text>
             <RNPickerSelect
               useNativeAndroidPickerStyle={false}
               placeholder={{}}
               value={this.state.class}
               style={{
-                inputAndroidContainer: { height: 35 },
-                inputAndroid: { paddingStart: 0, color: "#000" },
-                iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
+                inputAndroid: { color: "#000", padding: 0, height: 20 }
               }}
               onValueChange={(itemValue, index) =>
                 this.setState({ class: itemValue, index: index })

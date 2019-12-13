@@ -140,7 +140,8 @@ class CheckoutCab extends React.PureComponent {
 
     if (this.state.firstname != "" && this.state.last_name != "") {
       if (isEmpty(this.props.signIn)) {
-        Toast.show("Please login or signup", Toast.LONG);
+        //Toast.show("Please login or signup", Toast.LONG);
+        this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
         this.setState({ loader: true });
         etravosApi
@@ -433,7 +434,7 @@ class CheckoutCab extends React.PureComponent {
                           placeholder="DOB">
                           <Text>{moment(this.state.dob).format("DD-MMM-YYYY")}</Text>
                         </Button>
-                        <DateTimePicker 
+                        <DateTimePicker
                           date={this.state.dob}
                           isVisible={this.state.dobShow}
                           onConfirm={this.onAdultChange("dob")}

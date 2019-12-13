@@ -6,13 +6,13 @@ import {
   TextInput,
   Picker,
   ScrollView,
-  SafeAreaView,
-  Modal
+  SafeAreaView
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
+import RNPickerSelect from "react-native-picker-select";
 import RazorpayCheckout from "react-native-razorpay";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
@@ -91,8 +91,11 @@ class Payment extends React.PureComponent {
     let newData = Object.assign([], this.state.adults);
     newData[index][key] = text;
     newData[index].show = false;
-    if ((key = "dob")) {
+    if (key == "dob") {
       newData[index].age = moment().diff(moment(text), "years");
+    }
+    if (key == "gender") {
+      newData[index].den = text == "M" ? "Mr" : "Mrs";
     }
     this.setState({
       adults: newData
@@ -103,8 +106,11 @@ class Payment extends React.PureComponent {
     let newData = Object.assign([], this.state.childs);
     newData[index][key] = text;
     newData[index].show = false;
-    if ((key = "dob")) {
+    if (key == "dob") {
       newData[index].age = moment().diff(moment(text), "years");
+    }
+    if (key == "gender") {
+      newData[index].den = text == "M" ? "Mr" : "Mrs";
     }
     this.setState({
       childs: newData
@@ -419,6 +425,7 @@ class Payment extends React.PureComponent {
                         Passengers Details
                       </Text>
                     </View>
+
                     {parseInt(params.adult) &&
                       [...Array(parseInt(params.adult))].map((e, index) => (
                         <View key={"adult_" + index}>
@@ -430,28 +437,13 @@ class Payment extends React.PureComponent {
                               alignItems: "center"
                             }}>
                             <Text style={{ flexBasis: "20%" }}>Adult {index + 1}</Text>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                justifyContent: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.adults[index].den}
-                                style={{ height: 40, width: 100 }}
-                                onValueChange={this.onAdultChange(index, "den")}>
-                                <Picker.Item label="Mr." value="Mr" />
-                                <Picker.Item label="Mrs." value="Mrs" />
-                              </Picker>
-                            </View>
+
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
-                                flex: 1,
-                                marginHorizontal: 2
+                                flex: 1
                               }}
                               onChangeText={this.onAdultChange(index, "firstname")}
                               placeholder="First Name"
@@ -482,7 +474,7 @@ class Payment extends React.PureComponent {
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 justifyContent: "center",
-                                alignItems: "center"
+                                paddingStart: 2
                               }}
                               onPress={this.show("adults", index, true)}
                               placeholder="DOB">
@@ -499,62 +491,38 @@ class Payment extends React.PureComponent {
                             />
                             <View
                               style={{
+                                flex: 1,
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 justifyContent: "center"
                               }}>
-                              <Picker
+                              <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                placeholder={{}}
                                 selectedValue={this.state.adults[index].gender}
-                                style={{ height: 50, width: 120 }}
-                                onValueChange={this.onAdultChange(index, "gender")}>
-                                <Picker.Item label="Male" value="M" />
-                                <Picker.Item label="Female" value="F" />
-                              </Picker>
+                                style={{
+                                  inputAndroid: {
+                                    color: "#000",
+                                    padding: 0,
+                                    height: 20,
+                                    paddingStart: 3
+                                  },
+                                  inputIOS: { paddingStart: 3, color: "#000" },
+                                  iconContainer: { marginEnd: 8 }
+                                }}
+                                onValueChange={this.onAdultChange(index, "gender")}
+                                items={[
+                                  { label: "Male", value: "M" },
+                                  { label: "Female", value: "F" }
+                                ]}
+                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                              />
                             </View>
                           </View>
-                          <Button style={{ marginTop: 10 }} onPress={this._FFN}>
-                            <Text style={{ color: "#5B89F9" }}>
-                              Optional (Frequent flyer Number)
-                            </Text>
-                          </Button>
-                          {ffn && (
-                            <View>
-                              <Text>Frequent Flyer Details</Text>
-                              <Text>
-                                Please verify the credit of your frequent flyer miles at the airport
-                                checkin counter.
-                              </Text>
-                              <View style={{ flexDirection: "row" }}>
-                                <TextInput
-                                  style={{
-                                    borderWidth: 1,
-                                    borderColor: "#F2F2F2",
-                                    backgroundColor: "#F2F2F2",
-                                    height: 40,
-                                    paddingHorizontal: 10,
-                                    marginEnd: 1,
-                                    flex: 1
-                                  }}
-                                  placeholder="Indigo-5031"
-                                />
-                                <TextInput
-                                  style={{
-                                    borderWidth: 1,
-                                    borderColor: "#F2F2F2",
-                                    height: 40,
-                                    paddingHorizontal: 10,
-                                    flex: 1,
-                                    marginStart: 1
-                                  }}
-                                  placeholder="Enter FNN"
-                                />
-                              </View>
-                            </View>
-                          )}
                         </View>
                       ))}
-
+                    <View style={{ height: 1, backgroundColor: "#DDD", width: "100%" }} />
                     {parseInt(params.child) > 0 &&
                       [...Array(parseInt(params.child))].map((e, index) => (
                         <View key={"child_" + index}>
@@ -565,31 +533,14 @@ class Payment extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text>Child {index + 1}</Text>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                marginStart: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.childs[index].den}
-                                style={{ height: 50, width: 60 }}
-                                onValueChange={this.onChildsChange(index, "den")}>
-                                <Picker.Item label="Mr." value="Mr" />
-                                <Picker.Item label="Mrs." value="Mrs" />
-                              </Picker>
-                            </View>
+                            <Text style={{ flexBasis: "20%" }}>Child {index + 1}</Text>
+
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
-                                flex: 1,
-                                marginHorizontal: 2
+                                flex: 1
                               }}
                               placeholder="First Name"
                               onChangeText={this.onChildsChange(index, "firstname")}
@@ -612,73 +563,65 @@ class Payment extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
+                            <Text style={{ flexBasis: "20%" }}>DOB</Text>
+                            <Button
+                              style={{
+                                flex: 1,
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                justifyContent: "center",
+                                paddingStart: 2
+                              }}
+                              onPress={this.show("childs", index, true)}
+                              placeholder="DOB">
+                              <Text>
+                                {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
+                              </Text>
+                            </Button>
+                            <DateTimePicker
+                              date={this.state.childs[index].dob}
+                              isVisible={this.state.childs[index].show}
+                              onConfirm={this.onChildsChange(index, "dob")}
+                              onCancel={this.show("childs", index, false)}
+                              minimumDate={moment()
+                                .subtract(12, "years")
+                                .toDate()}
+                              maximumDate={moment()
+                                .subtract(2, "years")
+                                .toDate()}
+                            />
+
                             <View
                               style={{
-                                flex: 2,
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center"
+                                flex: 1,
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                justifyContent: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
-                              <Button
+                              <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                placeholder={{}}
+                                selectedValue={this.state.childs[index].gender}
                                 style={{
-                                  flex: 1,
-                                  marginStart: 5,
-                                  borderWidth: 1,
-                                  borderColor: "#F2F2F2",
-                                  height: 40,
-                                  justifyContent: "center",
-                                  alignItems: "center"
+                                  inputAndroid: {
+                                    color: "#000",
+                                    padding: 0,
+                                    height: 20,
+                                    paddingStart: 3
+                                  },
+                                  inputIOS: { paddingStart: 3, color: "#000" },
+                                  iconContainer: { marginEnd: 8 }
                                 }}
-                                onPress={this.show("childs", index, true)}
-                                placeholder="DOB">
-                                <Text>
-                                  {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
-                                </Text>
-                              </Button>
-                              <DateTimePicker
-                                date={this.state.childs[index].dob}
-                                isVisible={this.state.childs[index].show}
-                                onConfirm={this.onChildsChange(index, "dob")}
-                                onCancel={this.show("childs", index, false)}
-                                minimumDate={moment()
-                                  .subtract(12, "years")
-                                  .toDate()}
-                                maximumDate={moment()
-                                  .subtract(2, "years")
-                                  .toDate()}
+                                onValueChange={this.onChildsChange(index, "gender")}
+                                items={[
+                                  { label: "Male", value: "M" },
+                                  { label: "Female", value: "F" }
+                                ]}
+                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
                               />
                             </View>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1,
-                                paddingHorizontal: 2,
-                                marginHorizontal: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.childs[index].gender}
-                                style={{ height: 50, width: 80 }}
-                                onValueChange={this.onChildsChange(index, "gender")}>
-                                <Picker.Item label="Male" value="M" />
-                                <Picker.Item label="Female" value="F" />
-                              </Picker>
-                            </View>
-                            <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1
-                              }}
-                              placeholder="Age"
-                              keyboardType="numeric"
-                              onChangeText={this.onChildsChange(index, "age")}
-                            />
                           </View>
                         </View>
                       ))}

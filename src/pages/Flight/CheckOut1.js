@@ -529,7 +529,8 @@ class CheckOut1 extends React.PureComponent {
         Toast.show("Please enter all the fields.", Toast.SHORT);
       } else {
         if (isEmpty(this.props.signIn)) {
-          Toast.show("Please login or signup", Toast.SHORT);
+          //Toast.show("Please login or signup", Toast.SHORT);
+          this.props.navigation.navigate("SignIn", { isCheckout: true });
         } else {
           console.log(book, this.state);
           const { params, data } = this.props.navigation.state.params;
@@ -791,7 +792,7 @@ class CheckOut1 extends React.PureComponent {
                                     : "-- Enter Dob --"}
                                 </Text>
                               </Button>
-                              <DateTimePicker 
+                              <DateTimePicker
                                 date={this.state.adults[index].dob}
                                 isVisible={this.state.adults[index].show}
                                 onConfirm={this.onAdultChange(index, "dob")}
@@ -944,7 +945,7 @@ class CheckOut1 extends React.PureComponent {
                                   {moment(this.state.childs[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
-                              <DateTimePicker 
+                              <DateTimePicker
                                 date={this.state.childs[index].dob}
                                 isVisible={this.state.childs[index].show}
                                 onConfirm={this.onChildsChange(index, "dob")}
@@ -1072,7 +1073,7 @@ class CheckOut1 extends React.PureComponent {
                                   {moment(this.state.infants[index].dob).format("DD-MMM-YYYY")}
                                 </Text>
                               </Button>
-                              <DateTimePicker 
+                              <DateTimePicker
                                 date={this.state.infants[index].dob}
                                 isVisible={this.state.infants[index].show}
                                 onConfirm={this.onInfantChange(index, "dob")}
