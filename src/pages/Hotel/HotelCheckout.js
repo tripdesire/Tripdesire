@@ -320,15 +320,19 @@ class HotelCheckout extends React.Component {
                       </Text>
                       <HTML html={params.Description} />
                     </View>
-                    <View>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Room</Text>
-                      <Text style={{ color: "#717A81", flex: 4 }}>{params.RoomChain}</Text>
-                    </View>
-                    <View>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Amenities</Text>
-                      <Text style={{ color: "#717A81", flex: 4 }}>{params.Facilities}</Text>
-                    </View>
-                    <View>
+                    {params.RoomChain != null && (
+                      <View style={{ marginTop: 10 }}>
+                        <Text style={{ flex: 3, fontSize: 16 }}>Room</Text>
+                        <Text style={{ color: "#717A81", flex: 4 }}>{params.RoomChain}</Text>
+                      </View>
+                    )}
+                    {params.Facilities != null && (
+                      <View style={{ marginTop: 10 }}>
+                        <Text style={{ flex: 3, fontSize: 16 }}>Amenities</Text>
+                        <Text style={{ color: "#717A81", flex: 4 }}>{params.Facilities}</Text>
+                      </View>
+                    )}
+                    {/* <View>
                       <Text style={{ flex: 3, fontSize: 16 }}>Dining</Text>
                       <Text style={{ color: "#717A81", flex: 4 }}>
                         Property Location Located in Bangalore
@@ -345,7 +349,7 @@ class HotelCheckout extends React.Component {
                       <Text style={{ color: "#717A81", flex: 4 }}>
                         Property Location Located in Bangalore
                       </Text>
-                    </View>
+                    </View> */}
                   </View>
 
                   <Button
