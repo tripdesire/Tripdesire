@@ -14,7 +14,7 @@ class Header extends React.PureComponent {
   render() {
     return (
       <View style={{ flexDirection: "row", alignItems: "center", marginEnd: 16 }}>
-        <Button onPress={this.goBack}>
+        <Button onPress={this.goBack} style={{ padding: 16 }}>
           <Icon name="md-arrow-back" size={24} />
         </Button>
         <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
