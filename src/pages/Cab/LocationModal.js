@@ -1,25 +1,8 @@
-import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
+import React from "react";
+import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import moment from "moment";
-import RNPickerSelect from "react-native-picker-select";
- import {etravosApi}  from "../../service";
-import { Header } from "../../components";
+import { etravosApi } from "../../service";
 import Autocomplete from "react-native-autocomplete-input";
 import { CabSugg } from "../../store/action";
 import { connect } from "react-redux";
@@ -44,7 +27,8 @@ class SuggLoc extends React.PureComponent {
 
     if (cabSuggestion.length == 0) {
       this.setState({ loader: true });
-      etravosApi.get("/Cabs/Cities")
+      etravosApi
+        .get("/Cabs/Cities")
         .then(res => {
           this.props.CabSugg(res.data);
           this.setState({ loader: false });

@@ -274,13 +274,7 @@ class Hotel extends React.PureComponent {
               </Button>
             </View>
 
-            <View
-              style={{
-                height: 1,
-                backgroundColor: "#DDDDDD",
-                marginHorizontal: 20
-              }}
-            />
+            <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image

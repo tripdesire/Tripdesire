@@ -7,9 +7,7 @@ class TextComponent extends React.PureComponent {
 
   render() {
     return (
-      <Text
-        style={[{ fontFamily: "Poppins-Regular" }, this.props.style]}
-        onPress={this.props.onPress}>
+      <Text {...this.props} style={[{ fontFamily: "Poppins-Regular" }, this.props.style]}>
         {this.props.children}
       </Text>
     );
