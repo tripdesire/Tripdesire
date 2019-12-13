@@ -9,15 +9,11 @@ import {
   ScrollView
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import Stars from "react-native-stars";
 import { etravosApi, domainApi } from "../service";
 import moment from "moment";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
 import { Signup, Signin, Billing } from "../store/action";
-import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
-import { LoginButton, AccessToken } from "react-native-fbsdk";
-import axios from "axios";
 
 class BillingDetails extends React.PureComponent {
   constructor(props) {

@@ -10,18 +10,18 @@ import {
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import Stars from "react-native-stars";
-import { etravosApi, domainApi } from "../service";
 import moment from "moment";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
 import { Signup, Signin } from "../store/action";
-import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
+import { etravosApi, domainApi } from "../service";
 import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
 
 class ProfilePage extends React.PureComponent {
   constructor(props) {
     super(props);
+    const { signIn } = this.props;
     this.state = {
       firstname: "",
       lastname: "",
@@ -33,7 +33,47 @@ class ProfilePage extends React.PureComponent {
     };
   }
 
+  _Submit = () => {
+    const {
+      firstname,
+      lastname,
+      displayname,
+      email,
+      currentPassword,
+      newPassword,
+      confirmPassword
+    } = this.state;
+    let param = {
+      user_id: this.props.signIn.id,
+      first_name: firstname,
+      last_name: lastname,
+      user_email: email,
+      display_name: displayname,
+      nickname: "",
+      current_pass: currentPassword,
+      new_pass: newPassword,
+      confirm_pass: confirmPassword
+    };
+    domainApi.post("/login/update-user", param).then(({ data }) => {
+      console.log(data);
+      if (data.status == 1) {
+        this.props.Signin(param);
+      } else {
+        Toast.show("You didn't update your billing address", Toast.LONG);
+      }
+    });
+  };
+
   render() {
+    const {
+      firstname,
+      lastname,
+      displayname,
+      email,
+      currentPassword,
+      newPassword,
+      confirmPassword
+    } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -104,7 +144,7 @@ class ProfilePage extends React.PureComponent {
             onChangeText={text => this.setState({ confirmPassword: text })}
           />
           <View style={{ alignItems: "center" }}>
-            <Button style={styles.button}>
+            <Button style={styles.button} onPress={this._Submit}>
               <Text style={{ color: "#fff" }}>Sign Up</Text>
             </Button>
           </View>
@@ -126,4 +166,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProfilePage;
+const mapDispatchToProps = {
+  Signin,
+  Billing
+};
+
+const mapStateToProps = state => ({
+  signIn: state.signIn
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

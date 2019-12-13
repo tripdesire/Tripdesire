@@ -1,13 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-  ToastAndroid,
-  ScrollView
-} from "react-native";
+import { View, Image, StyleSheet, SafeAreaView, ToastAndroid, ScrollView } from "react-native";
 import Toast from "react-native-simple-toast";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -94,93 +86,101 @@ class SignIn extends React.PureComponent {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            height: 56,
-            alignItems: "center",
-            paddingHorizontal: 16,
-            backgroundColor: "#E4EAF6"
-          }}>
-          <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
-            Login
-          </Text>
-        </View>
-
-        <ScrollView style={{ flex: 4 }}>
-          <View style={{ marginTop: 20, marginHorizontal: 20 }}>
-            <Text style={{ fontSize: 20, fontWeight: "600" }}>Welcome To</Text>
-            <Text style={{ fontSize: 20, fontWeight: "600" }}>TripDesire</Text>
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 20,
-              marginHorizontal: 20
-            }}>
-            <TextInputComponent
-              label="Email*"
-              placeholder="Enter the email"
-              value={this.state.email}
-              onChangeText={text => this.setState({ email: text })}
-            />
-            <TextInputComponent
-              label="Password*"
-              placeholder="Enter the password"
-              value={this.state.password}
-              onChangeText={text => this.setState({ password: text })}
-            />
-            <Button style={styles.button} onPress={this.navigateToScreen}>
-              <Text style={{ color: "#fff" }}>Login</Text>
-            </Button>
-            <View style={{ flexDirection: "row", justifyContent: "center", marginVertical: 20 }}>
-              <Button style={{ marginEnd: 5 }} onPress={this.NavigateToScreen("ForgetPassword")}>
-                <Text style={{ color: "#000" }}>Forget Password ?</Text>
-              </Button>
-              <Button style={{ marginStart: 5 }} onPress={this.NavigateToScreen("SignUp")}>
-                <Text style={{ color: "#000" }}>Register here ?</Text>
-              </Button>
-            </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
             <View
               style={{
-                height: 1.35,
-                backgroundColor: "#D2D1D1",
-                width: "30%"
-              }}></View>
-            <View
-              style={{
-                backgroundColor: "#E6E6E6",
-                height: 30,
-                width: 30,
-                marginTop: -21,
-                borderRadius: 15,
+                flexDirection: "row",
+                height: 56,
                 alignItems: "center",
-                justifyContent: "center"
+                paddingHorizontal: 16,
+                backgroundColor: "#E4EAF6"
               }}>
-              <Text>Or</Text>
+              <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
+                Login
+              </Text>
             </View>
-            <Button
-              style={[styles.facebook_google_button, { marginTop: 20 }]}
-              onPress={() => this._Social_login("google")}>
-              <Image source={require("../assets/imgs/google.png")} />
-              <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
-            </Button>
-            <Button
-              style={[styles.facebook_google_button, { marginTop: 10 }]}
-              onPress={() => this._Social_login("facebook")}>
-              <Image
-                style={{ width: 40, height: 40 }}
-                resizeMode="contain"
-                source={require("../assets/imgs/facebook.png")}
-              />
-              <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Sign Up by Facebook</Text>
-            </Button>
+
+            <ScrollView style={{ flex: 4 }}>
+              <View style={{ marginTop: 20, marginHorizontal: 20 }}>
+                <Text style={{ fontSize: 20, fontWeight: "600" }}>Welcome To</Text>
+                <Text style={{ fontSize: 20, fontWeight: "600" }}>TripDesire</Text>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginVertical: 20,
+                  marginHorizontal: 20
+                }}>
+                <TextInputComponent
+                  label="Email*"
+                  placeholder="Enter the email"
+                  value={this.state.email}
+                  onChangeText={text => this.setState({ email: text })}
+                />
+                <TextInputComponent
+                  label="Password*"
+                  placeholder="Enter the password"
+                  value={this.state.password}
+                  onChangeText={text => this.setState({ password: text })}
+                />
+                <Button style={styles.button} onPress={this.navigateToScreen}>
+                  <Text style={{ color: "#fff" }}>Login</Text>
+                </Button>
+                <View
+                  style={{ flexDirection: "row", justifyContent: "center", marginVertical: 20 }}>
+                  <Button
+                    style={{ marginEnd: 5 }}
+                    onPress={this.NavigateToScreen("ForgetPassword")}>
+                    <Text style={{ color: "#000" }}>Forget Password ?</Text>
+                  </Button>
+                  <Button style={{ marginStart: 5 }} onPress={this.NavigateToScreen("SignUp")}>
+                    <Text style={{ color: "#000" }}>Register here ?</Text>
+                  </Button>
+                </View>
+                <View
+                  style={{
+                    height: 1.35,
+                    backgroundColor: "#D2D1D1",
+                    width: "30%"
+                  }}></View>
+                <View
+                  style={{
+                    backgroundColor: "#E6E6E6",
+                    height: 30,
+                    width: 30,
+                    marginTop: -21,
+                    borderRadius: 15,
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                  <Text>Or</Text>
+                </View>
+                <Button
+                  style={[styles.facebook_google_button, { marginTop: 20 }]}
+                  onPress={() => this._Social_login("google")}>
+                  <Image source={require("../assets/imgs/google.png")} />
+                  <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
+                </Button>
+                <Button
+                  style={[styles.facebook_google_button, { marginTop: 10 }]}
+                  onPress={() => this._Social_login("facebook")}>
+                  <Image
+                    style={{ width: 40, height: 40 }}
+                    resizeMode="contain"
+                    source={require("../assets/imgs/facebook.png")}
+                  />
+                  <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Sign Up by Facebook</Text>
+                </Button>
+              </View>
+            </ScrollView>
+            {this.state.loader && <ActivityIndicator />}
           </View>
-        </ScrollView>
-        {this.state.loader && <ActivityIndicator />}
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }
