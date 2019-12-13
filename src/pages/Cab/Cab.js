@@ -73,44 +73,28 @@ class Cab extends React.PureComponent {
       SuggDrop: "",
       selectedTransfer: 1,
       suggItem: "",
-      item: [
-        { label: "3:30pm", value: "3:30pm" },
-        { label: "3:45pm", value: "3:45pm" },
-        { label: "4:00pm", value: "4:00pm" },
-        { label: "4:15pm", value: "4:15pm" },
-        { label: "4:30pm", value: "4:30pm" },
-        { label: "4:45pm", value: "4:45pm" },
-        { label: "5:00pm", value: "5:00pm" },
-        { label: "5:15pm", value: "5:15pm" },
-        { label: "5:30pm", value: "5:30pm" },
-        { label: "5:45pm", value: "5:45pm" },
-        { label: "6:00pm", value: "6:00pm" },
-        { label: "6:15pm", value: "6:15pm" },
-        { label: "6:30pm", value: "6:30pm" },
-        { label: "6:45pm", value: "6:45pm" },
-        { label: "7:00pm", value: "7:00pm" },
-        { label: "7:15pm", value: "7:15pm" },
-        { label: "7:30pm", value: "7:30pm" },
-        { label: "7:45pm", value: "7:45pm" },
-        { label: "8:00pm", value: "8:00pm" },
-        { label: "8:15pm", value: "8:15pm" },
-        { label: "8:30pm", value: "8:30pm" },
-        { label: "8:45pm", value: "8:45pm" },
-        { label: "9:00pm", value: "9:00pm" },
-        { label: "9:15pm", value: "9:15pm" },
-        { label: "9:30pm", value: "9:30pm" },
-        { label: "9:45pm", value: "9:45pm" },
-        { label: "10:00pm", value: "10:00pm" },
-        { label: "10:15pm", value: "10:15pm" },
-        { label: "10:30pm", value: "10:30pm" },
-        { label: "10:45pm", value: "10:45pm" }
-      ]
+      item: this.getTimeStops()
     };
 
     this.inputRefs = {
       pickuptime: null,
       text: null
     };
+  }
+
+  getTimeStops() {
+    var startTime = moment("00:00", "HH:mm");
+    var endTime = moment("23:59", "HH:mm");
+    if (endTime.isBefore(startTime)) {
+      endTime.add(1, "day");
+    }
+    var timeStops = [];
+    while (startTime <= endTime) {
+      let newSlot = new moment(startTime).format("h:mma");
+      timeStops.push({ label: newSlot, value: newSlot });
+      startTime.add(15, "minutes");
+    }
+    return timeStops;
   }
 
   // componentDidMount() {
@@ -310,18 +294,6 @@ class Cab extends React.PureComponent {
       pickuplocation,
       droplocation
     } = this.state;
-
-    const placeholder = {
-      label: "Select Pickup Time",
-      value: null,
-      color: "#000000"
-    };
-
-    const placeholderTrip = {
-      label: "Select Trip",
-      value: null,
-      color: "#000000"
-    };
 
     return (
       <>
@@ -653,7 +625,7 @@ class Cab extends React.PureComponent {
                     color: "black"
                   }}>
                   <RNPickerSelect
-                    //  placeholder={placeholderTrip}
+                    placeholder={{}}
                     onValueChange={value => this.setState({ tripType: value })}
                     items={[
                       { label: "4 hrs", value: "4" },
@@ -690,7 +662,7 @@ class Cab extends React.PureComponent {
                   color: "black"
                 }}>
                 <RNPickerSelect
-                  // placeholder={placeholder}
+                  placeholder={{}}
                   onValueChange={value => this.setState({ pickuptime: value })}
                   items={this.state.item}
                   style={{

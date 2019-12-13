@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
-import { Button, Icon, Text, CheckBox } from "../../components";
-import { uniq, max, min, isEmpty } from "lodash";
+import { Button, Icon, Text, CheckBox, RadioButton } from "../../components";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import { uniq, max, min } from "lodash";
 
 function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
   const [index, setIndex] = useState(0);
-  const filterTabs = ["Price", "Rating", "Amenities"];
+  const filterTabs = ["Price", "Rating", "Amenities", "Sort By"];
   const [filters, setFilters] = useState({
     price: [],
     rating: ["5", "4", "3", "2", "1"],
-    amenities: []
+    amenities: [],
+    sortBy: [
+      "Price low to high",
+      "Price high to low",
+      "Hotel Name Asc",
+      "Hotel Name Desc",
+      "Rating Asc",
+      "Rating Desc"
+    ]
   });
+  const [widthSeekBar, setWidthSeekBar] = useState(100);
 
   useEffect(() => {
     //console.log(data);
@@ -51,6 +61,12 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
     console.log(newData);
     onChangeFilter && onChangeFilter(newData);
   };
+  const onRadioUpdate = (key, value) => () => {
+    let newData = Object.assign({}, filterValues);
+    newData[key] = value;
+    console.log(newData);
+    onChangeFilter && onChangeFilter(newData);
+  };
   const getSizeSeekBar = event => {
     setWidthSeekBar(event.nativeEvent.layout.width);
   };
@@ -77,7 +93,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
             ))}
           </View>
           <View style={{ flex: 3, backgroundColor: "#FFFFFF" }} onLayout={e => getSizeSeekBar(e)}>
-            {index == 0 && !isEmpty(filters.price) && (
+            {index == 0 && (
               <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
                 <MultiSlider
                   trackStyle={{ height: 4 }}
@@ -132,6 +148,15 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                 ))}
               </ScrollView>
             )}
+            {index == 3 &&
+              filters.sortBy.map((item, index) => (
+                <RadioButton
+                  key={"sort_" + item + index}
+                  label={item}
+                  onPress={onRadioUpdate("sortBy", item)}
+                  selected={item === filterValues.sortBy}
+                />
+              ))}
           </View>
         </View>
         <View style={styles.footer}>

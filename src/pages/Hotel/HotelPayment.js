@@ -14,11 +14,7 @@ class HotelPayment extends React.PureComponent {
   }
 
   _payment = () => {
-    const { params } = this.props.navigation.state;
-
-    Object.assign(params, {
-      itemId: 222
-    });
+    const params = { ...this.props.navigation.state.params, itemId: 222 };
 
     let param = {
       id: 222,

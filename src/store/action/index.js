@@ -2,6 +2,8 @@ import {
   DOMESTIC_SUGGESTION,
   INTERNATIONAL_SUGGESTION,
   DOMESTIC_HOTEL_SUGGESTION,
+  INTERNATIONAL_HOTEL_SUGGESTION,
+  HOTEL_COUNTRY_SUGGESTION,
   SIGN_IN,
   SIGN_UP,
   BUS_SUGGESTION,
@@ -27,6 +29,18 @@ export const IntSugg = data => {
 export const DomHotelSugg = data => {
   return {
     type: DOMESTIC_HOTEL_SUGGESTION,
+    payload: data
+  };
+};
+export const hotelCountrySugg = data => {
+  return {
+    type: HOTEL_COUNTRY_SUGGESTION,
+    payload: data
+  };
+};
+export const intHotelSugg = data => {
+  return {
+    type: INTERNATIONAL_HOTEL_SUGGESTION,
     payload: data
   };
 };

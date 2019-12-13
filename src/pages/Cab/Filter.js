@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
-import { Button, Icon, Text, CheckBox } from "../../components";
+import { Button, Icon, Text, CheckBox, RadioButton } from "../../components";
 import { uniq, max, min } from "lodash";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
   const [index, setIndex] = useState(0);
-  const filterTabs = ["Cars", "Seating Capacity", "Price"];
-  const [filters, setFilters] = useState({ cars: [], seatingCapacity: [], price: [] });
+  const filterTabs = ["Cars", "Seating Capacity", "Price", "Sort By "];
+  const [filters, setFilters] = useState({
+    cars: [],
+    seatingCapacity: [],
+    price: [],
+    sortBy: [
+      "Fare low to high",
+      "Fare high to low",
+      "Name Asc",
+      "Name Desc",
+      "Seat Asc",
+      "Seat Desc"
+    ]
+  });
   const [widthSeekBar, setWidthSeekBar] = useState(100);
 
   useEffect(() => {
@@ -56,6 +68,12 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
   };
   const getSizeSeekBar = event => {
     setWidthSeekBar(event.nativeEvent.layout.width);
+  };
+  const onRadioUpdate = (key, value) => () => {
+    let newData = Object.assign({}, filterValues);
+    newData[key] = value;
+    console.log(newData);
+    onChangeFilter && onChangeFilter(newData);
   };
 
   return (
@@ -135,6 +153,15 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                 </View>
               </View>
             )}
+            {index == 3 &&
+              filters.sortBy.map((item, index) => (
+                <RadioButton
+                  key={"sort_" + item + index}
+                  label={item}
+                  onPress={onRadioUpdate("sortBy", item)}
+                  selected={item === filterValues.sortBy}
+                />
+              ))}
           </View>
         </View>
         <View style={styles.footer}>

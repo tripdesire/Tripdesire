@@ -127,7 +127,7 @@ class FlightListRender extends React.PureComponent {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               style={{ width: 40, height: 40, marginEnd: 4 }}
-              source={{ uri: img }}
+              source={{ uri: img || "https://via.placeholder.com/150"}}
               resizeMode="cover"
             />
             <View>

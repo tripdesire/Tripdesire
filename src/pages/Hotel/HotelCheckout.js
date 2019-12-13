@@ -52,12 +52,7 @@ class HotelCheckout extends React.Component {
   };
 
   _Next = () => {
-    const { params } = this.props.navigation.state;
-
-    Object.assign(params, {
-      selectedRoom: this.state.selectedRoom
-    });
-
+    const params = { ...this.props.navigation.state.params, selectedRoom: this.state.selectedRoom };
     this.props.navigation.navigate("HotelPayment", params);
   };
 
@@ -241,7 +236,7 @@ class HotelCheckout extends React.Component {
                               height: width / 5,
                               borderRadius: 5
                             }}
-                            source={{ uri: res }}
+                            source={{ uri: res || "https://via.placeholder.com/150" }}
                           />
 
                           <View

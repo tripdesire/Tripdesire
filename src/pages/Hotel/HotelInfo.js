@@ -13,6 +13,7 @@ import {
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
+import { orderBy } from "lodash";
 import { etravosApi } from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
@@ -36,6 +37,7 @@ class HotelInfo extends React.PureComponent {
       cityid: params.destinationId,
       adult: params.adults_count,
       children: params.children_count,
+      hoteltype: params.hoteltype,
       infant: 0,
       checkInDate: params.arrivalDate,
       checkOutDate: params.departureDate,
@@ -45,7 +47,8 @@ class HotelInfo extends React.PureComponent {
       filterValues: {
         price: [],
         rating: [],
-        amenities: []
+        amenities: [],
+        sortBy: "Price low to high"
       }
     };
   }
@@ -98,10 +101,30 @@ class HotelInfo extends React.PureComponent {
         (filterValues.rating.length == 0 || filterValues.rating.includes(item.StarRating)) &&
         (filterValues.amenities.length == 0 ||
           filterValues.amenities.some(value => item.Facilities.includes(value))) &&
-        (filterValues.rating.length == 0 ||
-          (item.RoomDetails.some(value => filterValues.price.min <= value.RoomTotal) &&
-            item.RoomDetails.some(value => filterValues.price.max >= value.RoomTotal)))
+        (filterValues.price.length == 0 ||
+          (item.RoomDetails.some(value => filterValues.price[0] <= value.RoomTotal) &&
+            item.RoomDetails.some(value => filterValues.price[1] >= value.RoomTotal)))
     );
+    switch (filterValues.sortBy) {
+      case "Price low to high":
+        filteredHotels = orderBy(filteredHotels, "RoomDetails[0].RoomTotal", "asc");
+        break;
+      case "Price high to low":
+        filteredHotels = orderBy(filteredHotels, "RoomDetails[0].RoomTotal", "desc");
+        break;
+      case "Hotel Name Asc":
+        filteredHotels = orderBy(filteredHotels, "HotelName", "asc");
+        break;
+      case "Hotel Name Desc":
+        filteredHotels = orderBy(filteredHotels, "HotelName", "desc");
+        break;
+      case "Rating Asc":
+        filteredHotels = orderBy(filteredHotels, "Rating", "asc");
+        break;
+      case "Rating Desc":
+        filteredHotels = orderBy(filteredHotels, "Rating", "desc");
+        break;
+    }
     this.setState({
       filteredHotels,
       filterModalVisible: false
@@ -117,6 +140,7 @@ class HotelInfo extends React.PureComponent {
       adult: this.state.adult,
       child: this.state.children,
       infant: this.state.infant,
+      hoteltype: this.state.hoteltype,
       adultDetail: this.state.adultDetail,
       childDetail: this.state.childDetail,
       cityid: this.state.cityid,
@@ -146,7 +170,7 @@ class HotelInfo extends React.PureComponent {
         <Image
           style={{ width: width / 4, height: height / 6, borderRadius: 5 }}
           resizeMode="cover"
-          source={{ uri: res }}
+          source={{ uri: res || "https://via.placeholder.com/150" }}
         />
         <View
           style={{
