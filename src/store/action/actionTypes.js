@@ -9,3 +9,4 @@ export const LOGOUT = "LOGOUT";
 export const BILLING = "BILLING";
 export const BUS_SUGGESTION = "BUS_SUGGESTION";
 export const CAB_SUGGESTION = "CAB_SUGGESTION";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";

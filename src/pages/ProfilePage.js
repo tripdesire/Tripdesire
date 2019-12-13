@@ -1,22 +1,11 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-  ToastAndroid,
-  ScrollView
-} from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import Toast from "react-native-simple-toast";
-import Stars from "react-native-stars";
-import moment from "moment";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
-import { Signup, Signin, Billing } from "../store/action";
-import { etravosApi, domainApi } from "../service";
+import { UpdateProfile } from "../store/action";
+import { domainApi } from "../service";
 import { LoginButton, AccessToken } from "react-native-fbsdk";
-import axios from "axios";
 
 class ProfilePage extends React.PureComponent {
   constructor(props) {
@@ -49,19 +38,41 @@ class ProfilePage extends React.PureComponent {
       last_name: lastname,
       user_email: email,
       display_name: displayname,
-      nickname: "",
-      current_pass: currentPassword,
-      new_pass: newPassword,
-      confirm_pass: confirmPassword
+      nickname: ""
     };
-    domainApi.post("/login/update-user", param).then(({ data }) => {
-      console.log(data);
-      if (data.status == 1) {
-        this.props.Signin(param);
-      } else {
-        Toast.show("You didn't update your billing address", Toast.LONG);
-      }
-    });
+    let redux = {
+      first_name: firstname,
+      last_name: lastname,
+      email: email
+    };
+    if (currentPassword != "" && newPassword != "" && confirmPassword != "") {
+      param.current_pass = currentPassword;
+      param.new_pass = newPassword;
+      param.confirm_pass = confirmPassword;
+    }
+
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!reg.test(this.state.email)) {
+      Toast.show("Your email address should not correctly", Toast.LONG);
+    } else if (
+      !(newPassword === "" && confirmPassword === "" && currentPassword === "") &&
+      (newPassword === "" || confirmPassword === "" || currentPassword === "")
+    ) {
+      Toast.show("Enter Passwords", Toast.LONG);
+    } else if (confirmPassword !== newPassword) {
+      Toast.show("New password and confirm password can't different.", Toast.LONG);
+    } else {
+      domainApi.post("/login/update-user", param).then(({ data }) => {
+        console.log(param);
+        console.log(data);
+        if (data.status == 1) {
+          this.props.UpdateProfile(redux);
+        } else {
+          Toast.show("You didn't update your profile deatils", Toast.LONG);
+        }
+      });
+    }
   };
 
   render() {
@@ -75,81 +86,86 @@ class ProfilePage extends React.PureComponent {
       confirmPassword
     } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            height: 56,
-            alignItems: "center",
-            paddingHorizontal: 16,
-            backgroundColor: "#E4EAF6"
-          }}>
-          <Button onPress={() => this.props.navigation.goBack(null)}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <Text
-            style={{
-              fontSize: 18,
-              color: "#1E293B",
-              marginStart: 10,
-              fontWeight: "700",
-              lineHeight: 24
-            }}>
-            My Account
-          </Text>
-        </View>
-        <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
-          <TextInputComponent
-            label="First Name"
-            placeholder="Enter the first name"
-            value={this.state.firstname}
-            onChangeText={text => this.setState({ firstname: text })}
-          />
-          <TextInputComponent
-            label="Last Name"
-            placeholder="Enter the last name"
-            value={this.state.lastname}
-            onChangeText={text => this.setState({ lastname: text })}
-          />
-          <TextInputComponent
-            label="Display Name"
-            placeholder="Enter the display name"
-            value={this.state.displayname}
-            onChangeText={text => this.setState({ displayname: text })}
-          />
-          <TextInputComponent
-            label="Email"
-            placeholder="Enter the email"
-            value={this.state.email}
-            onChangeText={text => this.setState({ email: text })}
-          />
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                height: 56,
+                alignItems: "center",
+                paddingHorizontal: 16,
+                backgroundColor: "#E4EAF6"
+              }}>
+              <Button onPress={() => this.props.navigation.goBack(null)}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 10,
+                  fontWeight: "700",
+                  lineHeight: 24
+                }}>
+                My Account
+              </Text>
+            </View>
+            <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
+              <TextInputComponent
+                label="First Name"
+                placeholder="Enter the first name"
+                value={firstname}
+                onChangeText={text => this.setState({ firstname: text })}
+              />
+              <TextInputComponent
+                label="Last Name"
+                placeholder="Enter the last name"
+                value={lastname}
+                onChangeText={text => this.setState({ lastname: text })}
+              />
+              <TextInputComponent
+                label="Display Name"
+                placeholder="Enter the display name"
+                value={displayname}
+                onChangeText={text => this.setState({ displayname: text })}
+              />
+              <TextInputComponent
+                label="Email"
+                placeholder="Enter the email"
+                value={email}
+                onChangeText={text => this.setState({ email: text })}
+              />
 
-          <Text style={{ marginTop: 20 }}>Password Change</Text>
-          <TextInputComponent
-            label="Current Password"
-            placeholder="Enter the currrent password"
-            value={this.state.currentPassword}
-            onChangeText={text => this.setState({ currentPassword: text })}
-          />
-          <TextInputComponent
-            label="New Password"
-            placeholder="Enter the new password"
-            value={this.state.newPassword}
-            onChangeText={text => this.setState({ newPassword: text })}
-          />
-          <TextInputComponent
-            label="Confirm Password"
-            placeholder="Enter the confirm password"
-            value={this.state.confirmPassword}
-            onChangeText={text => this.setState({ confirmPassword: text })}
-          />
-          <View style={{ alignItems: "center" }}>
-            <Button style={styles.button} onPress={this._Submit}>
-              <Text style={{ color: "#fff" }}>Sign Up</Text>
-            </Button>
+              <Text style={{ marginTop: 20 }}>Password Change</Text>
+              <TextInputComponent
+                label="Current Password"
+                placeholder="Enter the currrent password"
+                value={currentPassword}
+                onChangeText={text => this.setState({ currentPassword: text })}
+              />
+              <TextInputComponent
+                label="New Password"
+                placeholder="Enter the new password"
+                value={newPassword}
+                onChangeText={text => this.setState({ newPassword: text })}
+              />
+              <TextInputComponent
+                label="Confirm Password"
+                placeholder="Enter the confirm password"
+                value={confirmPassword}
+                onChangeText={text => this.setState({ confirmPassword: text })}
+              />
+              <View style={{ alignItems: "center" }}>
+                <Button style={styles.button} onPress={this._Submit}>
+                  <Text style={{ color: "#fff" }}>Sign Up</Text>
+                </Button>
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }
@@ -167,8 +183,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = {
-  Signin,
-  Billing
+  UpdateProfile
 };
 
 const mapStateToProps = state => ({

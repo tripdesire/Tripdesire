@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, FlatList, Modal } from "react-native";
+import { View, FlatList, Modal, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
@@ -108,65 +108,70 @@ class CabList extends React.PureComponent {
     let journeyDate = moment(params.journeyDate, "DD-MM-YYYY").format("DD MMM");
     let returnDate = moment(params.returnDate, "DD-MM-YYYY").format("DD MMM");
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ backgroundColor: "#E5EBF7", flexDirection: "row", width: "100%" }}>
-          <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <View style={{ flex: 1, paddingTop: 16, paddingBottom: 8 }}>
-            <View>
-              <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                {params.sourceName}{" "}
-                {params.destinationName != "" ? "to " + params.destinationName : ""}
-              </Text>
-              <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                {journeyDate}{" "}
-                {params.returnDate && params.returnDate != "" ? "- " + returnDate : ""}
-                {loader ? "" : ", " + filteredcabs.length + " Cabs Found"}
-              </Text>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
+            <View style={{ backgroundColor: "#E5EBF7", flexDirection: "row", width: "100%" }}>
+              <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <View style={{ flex: 1, paddingTop: 16, paddingBottom: 8 }}>
+                <View>
+                  <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+                    {params.sourceName}{" "}
+                    {params.destinationName != "" ? "to " + params.destinationName : ""}
+                  </Text>
+                  <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                    {journeyDate}{" "}
+                    {params.returnDate && params.returnDate != "" ? "- " + returnDate : ""}
+                    {loader ? "" : ", " + filteredcabs.length + " Cabs Found"}
+                  </Text>
+                </View>
+              </View>
+              <Button
+                style={{
+                  flexDirection: "row",
+                  marginStart: "auto",
+                  paddingEnd: 8,
+                  paddingVertical: 16
+                }}
+                onPress={this.openFilter}>
+                <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
+                  Sort & Filter
+                </Text>
+              </Button>
+            </View>
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+              <FlatList
+                data={filteredcabs}
+                keyExtractor={this._keyExtractoritems}
+                renderItem={this._renderItemList}
+              />
+              {filteredcabs.length == 0 && (
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
+                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+                </View>
+              )}
+              <Modal
+                animationType="slide"
+                transparent={false}
+                visible={filterModalVisible}
+                onRequestClose={this.closeFilter}>
+                <Filter
+                  data={cabs}
+                  onBackPress={this.closeFilter}
+                  filterValues={this.state.filterValues}
+                  onChangeFilter={this.onChangeFilter}
+                  filter={this.filter}
+                />
+              </Modal>
+              {loader && <ActivityIndicator />}
             </View>
           </View>
-          <Button
-            style={{
-              flexDirection: "row",
-              marginStart: "auto",
-              paddingEnd: 8,
-              paddingVertical: 16
-            }}
-            onPress={this.openFilter}>
-            <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-            <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
-              Sort & Filter
-            </Text>
-          </Button>
-        </View>
-        <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
-          <FlatList
-            data={filteredcabs}
-            keyExtractor={this._keyExtractoritems}
-            renderItem={this._renderItemList}
-          />
-          {filteredcabs.length == 0 && (
-            <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
-              <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
-            </View>
-          )}
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={filterModalVisible}
-            onRequestClose={this.closeFilter}>
-            <Filter
-              data={cabs}
-              onBackPress={this.closeFilter}
-              filterValues={this.state.filterValues}
-              onChangeFilter={this.onChangeFilter}
-              filter={this.filter}
-            />
-          </Modal>
-          {loader && <ActivityIndicator />}
-        </View>
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

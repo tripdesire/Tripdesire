@@ -1,13 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-  ToastAndroid,
-  ScrollView
-} from "react-native";
+import { View, Image, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../service";
 import moment from "moment";
@@ -108,104 +100,109 @@ class BillingDetails extends React.PureComponent {
       country
     } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            height: 56,
-            alignItems: "center",
-            paddingHorizontal: 16,
-            backgroundColor: "#E4EAF6"
-          }}>
-          <Button onPress={() => this.props.navigation.goBack(null)}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <Text
-            style={{
-              fontSize: 18,
-              color: "#1E293B",
-              marginStart: 10,
-              fontWeight: "700",
-              lineHeight: 24
-            }}>
-            Billing Address
-          </Text>
-        </View>
-        <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
-          <TextInputComponent
-            label="First Name"
-            placeholder="Enter the first name"
-            value={firstname}
-            onChangeText={text => this.setState({ firstname: text })}
-          />
-          <TextInputComponent
-            label="Last Name"
-            placeholder="Enter the last name"
-            value={lastname}
-            onChangeText={text => this.setState({ lastname: text })}
-          />
-          <TextInputComponent
-            label="Email"
-            placeholder="Enter the email"
-            value={email}
-            onChangeText={text => this.setState({ email: text })}
-          />
-          <TextInputComponent
-            keyboardType="numeric"
-            label="Phone"
-            placeholder="Enter the phone number"
-            value={phone}
-            onChangeText={text => this.setState({ phone: text })}
-          />
-          <TextInputComponent
-            label="Address Line 1"
-            placeholder="Enter the address line 1"
-            value={streetAddress}
-            onChangeText={text => this.setState({ streetAddress: text })}
-          />
-          <TextInputComponent
-            label="Address Line 2"
-            placeholder="Enter the address line 2"
-            value={streetAddress1}
-            onChangeText={text => this.setState({ streetAddress1: text })}
-          />
-          <TextInputComponent
-            label="PostCode"
-            placeholder="Enter the post code"
-            value={postcode}
-            onChangeText={text => this.setState({ postcode: text })}
-          />
-          <TextInputComponent
-            label="City/Town"
-            placeholder="Enter the city"
-            value={city}
-            onChangeText={text => this.setState({ city: text })}
-          />
-          <TextInputComponent
-            label="Company"
-            placeholder="Enter the company"
-            value={company}
-            onChangeText={text => this.setState({ company: text })}
-          />
-          <TextInputComponent
-            label="State"
-            placeholder="Enter the State"
-            value={state}
-            onChangeText={text => this.setState({ state: text })}
-          />
-          <TextInputComponent
-            label="Country"
-            placeholder="Enter the country"
-            value={country}
-            onChangeText={text => this.setState({ country: text })}
-          />
-          <View style={{ alignItems: "center" }}>
-            <Button style={styles.button} onPress={this._Submit}>
-              <Text style={{ color: "#fff" }}>Submit</Text>
-            </Button>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                height: 56,
+                alignItems: "center",
+                paddingHorizontal: 16,
+                backgroundColor: "#E4EAF6"
+              }}>
+              <Button onPress={() => this.props.navigation.goBack(null)}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 10,
+                  fontWeight: "700",
+                  lineHeight: 24
+                }}>
+                Billing Address
+              </Text>
+            </View>
+            <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
+              <TextInputComponent
+                label="First Name"
+                placeholder="Enter the first name"
+                value={firstname}
+                onChangeText={text => this.setState({ firstname: text })}
+              />
+              <TextInputComponent
+                label="Last Name"
+                placeholder="Enter the last name"
+                value={lastname}
+                onChangeText={text => this.setState({ lastname: text })}
+              />
+              <TextInputComponent
+                label="Email"
+                placeholder="Enter the email"
+                value={email}
+                onChangeText={text => this.setState({ email: text })}
+              />
+              <TextInputComponent
+                keyboardType="numeric"
+                label="Phone"
+                placeholder="Enter the phone number"
+                value={phone}
+                onChangeText={text => this.setState({ phone: text })}
+              />
+              <TextInputComponent
+                label="Address Line 1"
+                placeholder="Enter the address line 1"
+                value={streetAddress}
+                onChangeText={text => this.setState({ streetAddress: text })}
+              />
+              <TextInputComponent
+                label="Address Line 2"
+                placeholder="Enter the address line 2"
+                value={streetAddress1}
+                onChangeText={text => this.setState({ streetAddress1: text })}
+              />
+              <TextInputComponent
+                label="PostCode"
+                placeholder="Enter the post code"
+                value={postcode}
+                onChangeText={text => this.setState({ postcode: text })}
+              />
+              <TextInputComponent
+                label="City/Town"
+                placeholder="Enter the city"
+                value={city}
+                onChangeText={text => this.setState({ city: text })}
+              />
+              <TextInputComponent
+                label="Company"
+                placeholder="Enter the company"
+                value={company}
+                onChangeText={text => this.setState({ company: text })}
+              />
+              <TextInputComponent
+                label="State"
+                placeholder="Enter the State"
+                value={state}
+                onChangeText={text => this.setState({ state: text })}
+              />
+              <TextInputComponent
+                label="Country"
+                placeholder="Enter the country"
+                value={country}
+                onChangeText={text => this.setState({ country: text })}
+              />
+              <View style={{ alignItems: "center" }}>
+                <Button style={styles.button} onPress={this._Submit}>
+                  <Text style={{ color: "#fff" }}>Submit</Text>
+                </Button>
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
-      </View>
+        </SafeAreaView>
+      </>
     );
   }
 }
