@@ -170,10 +170,10 @@ class RenderItems extends React.PureComponent {
             </View>
             <View style={{ alignItems: "flex-end" }}>
               <Text style={{ fontSize: 16, fontWeight: "600", lineHeight: 20 }}>
-                $ {this.props.item.PerKm}/km
+                ₹ {this.props.item.PerKm}/km
               </Text>
               <Text style={{ fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
-                $ {this.props.item.TotalNetAmount}
+                ₹ {this.props.item.TotalNetAmount}
               </Text>
             </View>
           </View>

@@ -294,7 +294,7 @@ class HotelCheckout extends React.Component {
                                   fontSize: 18,
                                   fontWeight: "700"
                                 }}>
-                                $ {item.RoomTotal}
+                                ₹ {item.RoomTotal}
                               </Text>
                               <Text style={{ color: "#717A81" }}>
                                 {params.room}:Room(s),{params.Night}:night

@@ -7,6 +7,8 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-simple-toast";
+import AddPassengers from "./AddPassengers";
+
 class InternationalFlights extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -279,7 +281,7 @@ class InternationalFlights extends React.PureComponent {
               onPress={this.showDateTimePicker("fromDTpicker")}>
               <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
             </Button>
-            <DateTimePicker 
+            <DateTimePicker
               isVisible={fromDTpicker}
               onConfirm={this.handleDatePicked("fromDTpicker")}
               onCancel={this.hideDateTimePicker("fromDTpicker")}
@@ -298,7 +300,7 @@ class InternationalFlights extends React.PureComponent {
                 onPress={this.showDateTimePicker("toDTpicker")}>
                 <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
               </Button>
-              <DateTimePicker 
+              <DateTimePicker
                 isVisible={toDTpicker}
                 onConfirm={this.handleDatePicked("toDTpicker")}
                 onCancel={this.hideDateTimePicker("toDTpicker")}
@@ -381,7 +383,17 @@ class InternationalFlights extends React.PureComponent {
           onPress={this._search}>
           <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
         </Button>
-        <AddPassengers visible={this.state.modalPassengers} submit={this.submit} />
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalPassengers}
+          onRequestClose={this.setModalVisible("modalPassengers", false)}>
+          <AddPassengers
+            submit={this.submit}
+            onModalBackPress={this.setModalVisible("modalPassengers", false)}
+          />
+        </Modal>
 
         <Modal
           animationType="slide"
@@ -411,130 +423,6 @@ class InternationalFlights extends React.PureComponent {
           />
         </Modal>
       </View>
-    );
-  }
-}
-
-class AddPassengers extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      adult: "1",
-      children: "0",
-      infants: "0"
-    };
-  }
-
-  _submit = () => {
-    this.props.submit && this.props.submit(this.state);
-  };
-
-  render() {
-    return (
-      <Modal animationType="slide" transparent={false} visible={this.props.visible}>
-        <View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Button
-              onPress={this.props.submit}
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: 48,
-                width: 48
-              }}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <Text style={{ fontSize: 18 }}>Choose Passengers</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 20,
-              marginVertical: 10
-            }}>
-            <View style={{ alignItems: "center" }}>
-              <Text>Adults</Text>
-
-              <RNPickerSelect
-                useNativeAndroidPickerStyle={false}
-                placeholder={{}}
-                value={this.state.adult}
-                style={{
-                  inputAndroidContainer: { height: 40 },
-                  inputAndroid: { paddingStart: 0, color: "#000" },
-                  iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
-                }}
-                onValueChange={itemValue => this.setState({ adult: itemValue })}
-                items={[
-                  { value: "1", label: "1" },
-                  { value: "2", label: "2" },
-                  { value: "3", label: "3" },
-                  { value: "4", label: "4" }
-                ]}
-                Icon={() => <Icon name="ios-arrow-down" size={20} />}
-              />
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text>childrens</Text>
-              <RNPickerSelect
-                useNativeAndroidPickerStyle={false}
-                placeholder={{}}
-                value={this.state.children}
-                style={{
-                  inputAndroidContainer: { height: 40 },
-                  inputAndroid: { paddingStart: 0, color: "#000" },
-                  iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
-                }}
-                onValueChange={itemValue => this.setState({ children: itemValue })}
-                items={[
-                  { value: "0", label: "0" },
-                  { value: "1", label: "1" },
-                  { value: "2", label: "2" },
-                  { value: "3", label: "3" },
-                  { value: "4", label: "4" }
-                ]}
-                Icon={() => <Icon name="ios-arrow-down" size={20} />}
-              />
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text>Infants</Text>
-
-              <RNPickerSelect
-                useNativeAndroidPickerStyle={false}
-                placeholder={{}}
-                value={this.state.infants}
-                style={{
-                  inputAndroidContainer: { height: 40 },
-                  inputAndroid: { paddingStart: 0, color: "#000" },
-                  iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
-                }}
-                onValueChange={itemValue => this.setState({ infants: itemValue })}
-                items={[
-                  { value: "0", label: "0" },
-                  { value: "1", label: "1" },
-                  { value: "2", label: "2" },
-                  { value: "3", label: "3" },
-                  { value: "4", label: "4" }
-                ]}
-                Icon={() => <Icon name="ios-arrow-down" size={20} />}
-              />
-            </View>
-          </View>
-          <Button
-            style={{
-              height: 40,
-              backgroundColor: "#F68E1F",
-              justifyContent: "center",
-              alignItems: "center",
-              marginHorizontal: 20,
-              borderRadius: 20
-            }}
-            onPress={this._submit}>
-            <Text style={{ paddingHorizontal: 40, color: "#fff" }}>Submit</Text>
-          </Button>
-        </View>
-      </Modal>
     );
   }
 }
