@@ -50,8 +50,9 @@ class BusPayment extends React.PureComponent {
     return needToValidateAdults;
   };
 
-  _PlaceOrder = async () => {
+  _PlaceOrder = () => {
     const {
+      TripType,
       params,
       paramsRound,
       adults,
@@ -61,20 +62,20 @@ class BusPayment extends React.PureComponent {
       BookingReferenceNoRound
     } = this.props.navigation.state.params;
 
-    // let adult_details = adults.map(item => ({
-    //   "ad-den": item.den,
-    //   "ad-fname": item.name,
-    //   "ad-gender": item.gender,
-    //   "ad-age": item.age
-    // }));
+    let adult_details = adults.map(item => ({
+      "ad-den": item.den,
+      "ad-fname": item.name,
+      "ad-gender": item.gender,
+      "ad-age": item.age
+    }));
 
-    // let param = {
-    //   user_id: "7",
-    //   payment_method: "razopay",
-    //   adult_details: adult_details,
-    //   child_details: [],
-    //   infant_details: []
-    // };
+    let param = {
+      user_id: "7",
+      payment_method: "razopay",
+      adult_details: adult_details,
+      child_details: [],
+      infant_details: []
+    };
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
@@ -82,16 +83,19 @@ class BusPayment extends React.PureComponent {
       if (isEmpty(this.props.signIn)) {
         Toast.show("Please login or signup", Toast.LONG);
       } else {
-        try {
-          const [BookingOneway, BookingRound] = await axios.all([
-            etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
-            etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
-          ]);
-          console.log(BookingOneway, BookingRound);
-        } catch (e) {
-          console.log(e);
-        }
-        return;
+        // try {
+        //   const [BookingOneway, BookingRound] = await axios.all([
+        //     etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
+        //     etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
+        //   ]);
+        //   console.log(BookingOneway, BookingRound);
+        //   this.props.navigation.navigate("ThankYouBus", {
+        //     ...this.props.navigation.state.params
+        //   });
+        // } catch (e) {
+        //   console.log(e);
+        // }
+        //  return;
         const { signIn } = this.props;
         domainApi
           .post("/checkout/new-order?user_id=" + signIn.id, param)
@@ -115,18 +119,55 @@ class BusPayment extends React.PureComponent {
 
             RazorpayCheckout.open(options)
               .then(razorpayRes => {
-                etravosApi
-                  .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
-                  .then(({ data: Response }) => {
-                    console.log(Response);
-                    if (Response.BookingStatus == 3) {
+                if (TripType == 1) {
+                  etravosApi
+                    .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
+                    .then(({ data: Response }) => {
+                      console.log(Response);
+                      if (Response.BookingStatus == 3) {
+                        this.props.navigation.navigate("ThankYouBus", {
+                          order,
+                          razorpayRes,
+                          Response,
+                          ...this.props.navigation.state.params
+                        });
+                        Toast.show(Response.Message, Toast.LONG);
+                        let paymentData = {
+                          order_id: order.id,
+                          status: "completed",
+                          transaction_id: razorpayRes.razorpay_payment_id,
+                          reference_no: Response
+                        };
+                        console.log(paymentData);
+
+                        domainApi.post("/checkout/update-order", paymentData).then(res => {
+                          console.log(res);
+                        });
+                      } else {
+                        Toast.show(Response.Message, Toast.LONG);
+                      }
+                    })
+                    .catch(error => {
+                      // handle failure
+                      alert(`Error: ${error.code} | ${error.description}`);
+                    });
+                } else {
+                  try {
+                    const [BookingOneway, BookingRound] = axios.all([
+                      etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
+                      etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
+                    ]);
+                    console.log(BookingOneway, BookingRound);
+                    if (BookingOneway.BookingStatus == 3 && BookingRound.BookingStatus == 3) {
                       this.props.navigation.navigate("ThankYouBus", {
-                        order,
+                        ...this.props.navigation.state.params,
                         razorpayRes,
-                        Response,
-                        ...this.props.navigation.state.params
+                        BookingOneway,
+                        BookingRound,
+                        order
                       });
-                      Toast.show(Response.Message, Toast.LONG);
+
+                      Toast.show(BookingOneway.Message, Toast.LONG);
                       let paymentData = {
                         order_id: order.id,
                         status: "completed",
@@ -138,14 +179,11 @@ class BusPayment extends React.PureComponent {
                       domainApi.post("/checkout/update-order", paymentData).then(res => {
                         console.log(res);
                       });
-                    } else {
-                      Toast.show(Response.Message, Toast.LONG);
                     }
-                  })
-                  .catch(error => {
-                    // handle failure
-                    alert(`Error: ${error.code} | ${error.description}`);
-                  });
+                  } catch (e) {
+                    console.log(e);
+                  }
+                }
               })
               .catch(error => {
                 console.log(error);
@@ -253,7 +291,7 @@ class BusPayment extends React.PureComponent {
                     marginBottom: 10
                   }}>
                   <Text style={{ fontSize: 16 }}>TOTAL PAYABLE</Text>
-                  {/* <Text style={{ fontSize: 16, fontWeight: "700" }}>{cartData.total_price}</Text> */}
+                  <Text style={{ fontSize: 16, fontWeight: "700" }}>{cartData.total_price}</Text>
                 </View>
               </View>
             </View>

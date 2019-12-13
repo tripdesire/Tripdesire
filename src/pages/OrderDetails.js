@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
-import { Text, Button } from "../components";
-import { View, StyleSheet, SafeAreaView, Dimensions, Image } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { Text, Button, Icon } from "../components";
+import { View, StyleSheet, SafeAreaView, Dimensions, Image, ScrollView } from "react-native";
 import moment from "moment";
 
 const { width, height } = Dimensions.get("window");
@@ -1066,15 +1065,402 @@ class OrderDetails extends React.PureComponent {
       );
     } else if (Car) {
       return (
-        <View>
-          <Text>Car</Text>
-        </View>
+        <>
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 16,
+                height: 56,
+                alignItems: "center"
+              }}>
+              <Button onPress={this._goBack}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 5,
+                  fontWeight: "700"
+                }}>
+                #{order_data.id}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                marginHorizontal: 8,
+                marginVertical: 10,
+                backgroundColor: "#EEF1F8",
+                borderRadius: 8,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                padding: 10
+              }}>
+              <View style={{ flexDirection: "row", flex: 1 }}>
+                <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
+                <View style={{ marginStart: 10, flex: 1 }}>
+                  <Text style={{ fontSize: 16, fontWeight: "700", lineHeight: 20 }}>
+                    {dataArray["Car Name"]}
+                  </Text>
+                  <Text style={{ lineHeight: 16 }}>{dataArray["Travel Type"]}</Text>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ fontSize: 16, fontWeight: "700", lineHeight: 20 }}>
+                        Pick-up
+                      </Text>
+                      <Text style={{ lineHeight: 16 }}>
+                        {dataArray["Journey Date"]}({dataArray["Pickup Time"]})
+                      </Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ fontSize: 16, fontWeight: "700", lineHeight: 20 }}>Drop</Text>
+                      <Text style={{ lineHeight: 16 }}>{dataArray["Journey Date"]}</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View
+              style={{
+                marginHorizontal: 8,
+                elevation: 1,
+                borderRadius: 5,
+                marginTop: 10
+              }}>
+              <Text
+                style={{
+                  fontWeight: "700",
+                  fontSize: 18,
+                  paddingVertical: 10,
+                  backgroundColor: "#EEF1F8",
+                  paddingHorizontal: 10,
+                  borderTopLeftRadius: 5,
+                  borderTopRightRadius: 5
+                }}>
+                Passenger Details
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 10
+                }}>
+                <View>
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16
+                    }}>
+                    Passenger
+                  </Text>
+                  <Text>Kamal Gangwar</Text>
+                </View>
+                <View>
+                  <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
+                  <Text>22</Text>
+                </View>
+                <View>
+                  <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
+                  <Text>Male</Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                marginHorizontal: 8,
+                elevation: 1,
+                borderRadius: 5,
+                marginTop: 10
+              }}>
+              <Text
+                style={{
+                  fontWeight: "700",
+                  fontSize: 18,
+                  borderTopLeftRadius: 5,
+                  borderTopRightRadius: 5,
+                  backgroundColor: "#EEF1F8",
+                  paddingHorizontal: 10,
+                  paddingVertical: 10
+                }}>
+                Fare Summary
+              </Text>
+              <View style={styles.summaryView}>
+                <Text>Convenience Fee</Text>
+                <Text></Text>
+              </View>
+              <View style={styles.summaryView}>
+                <Text>Flight Scharge</Text>
+                <Text></Text>
+              </View>
+              <View style={styles.summaryView}>
+                <Text>Base Fare</Text>
+                <Text></Text>
+              </View>
+              <View style={styles.summaryView}>
+                <Text>Flight Gst</Text>
+                <Text></Text>
+              </View>
+              <View style={styles.summaryView}>
+                <Text>Flight Tax</Text>
+                <Text></Text>
+              </View>
+              <View style={styles.summaryView}>
+                <Text style={{ fontWeight: "700", fontSize: 18 }}>Total Price</Text>
+                <Text style={{ fontWeight: "700", fontSize: 18 }}>
+                  {order_data.currency_symbol}
+                  {order_data.total}
+                </Text>
+              </View>
+              <View style={styles.summaryView}>
+                <Text style={{ flex: 1 }}>Payment Method</Text>
+                <Text style={{ flex: 1, marginStart: 10 }}>{order_data.payment_method}</Text>
+              </View>
+            </View>
+          </SafeAreaView>
+        </>
       );
     } else if (Bus) {
       return (
-        <View>
-          <Text>Bus</Text>
-        </View>
+        <>
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginHorizontal: 16,
+                  height: 56,
+                  alignItems: "center"
+                }}>
+                <Button onPress={this._goBack}>
+                  <Icon name="md-arrow-back" size={24} />
+                </Button>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: "#1E293B",
+                    marginStart: 5,
+                    fontWeight: "700"
+                  }}>
+                  #{order_data.id}
+                </Text>
+              </View>
+
+              <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+                <View>
+                  <Text style={{ fontSize: 18, fontWeight: "700", marginHorizontal: 8 }}>
+                    Depart
+                  </Text>
+                  <View
+                    style={{
+                      marginHorizontal: 8,
+                      marginVertical: 10,
+                      backgroundColor: "#EEF1F8",
+                      borderRadius: 8,
+                      justifyContent: "space-between",
+                      padding: 10
+                    }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                      <Text style={{ fontWeight: "700", flex: 2 }}>
+                        {dataArray["Bus Item Result Data"].BusType}
+                      </Text>
+                      <View style={{ flexDirection: "row", marginStart: 10, flex: 1 }}>
+                        <Text style={{ fontWeight: "700" }}>Seat(s) : </Text>
+                        <Text>{dataArray["Select Seat Number"]}</Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginVertical: 10
+                      }}>
+                      <Icon type="MaterialCommunityIcons" name="bus" size={50} color="#6287F9" />
+                      <View>
+                        <Text style={{ fontSize: 18, lineHeight: 20 }}>
+                          {dataArray["Bus Item Result Data"].DisplayName}
+                        </Text>
+                        <Text style={{ fontSize: 16, lineHeight: 18 }}>
+                          {moment(
+                            dataArray["Bus Item Result Data"].Journeydate,
+                            "YYYY-MM-DD"
+                          ).format("DD-MM-YYYY")}
+                        </Text>
+                        <Text style={{ fontSize: 16, lineHeight: 18 }}>
+                          {dataArray["Source City"] + " to " + dataArray["Destination City"]}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontWeight: "700", fontSize: 16 }}>Boarding Point : </Text>
+                      <Text style={{ flex: 1 }}>{dataArray["Boarding Point"]}</Text>
+                    </View>
+                  </View>
+                </View>
+
+                {dataArray["Return Bus Item Result Data"] &&
+                  dataArray["Return Bus Item Result Data"] != "" && (
+                    <View>
+                      <Text style={{ fontSize: 18, fontWeight: "700", marginHorizontal: 8 }}>
+                        Arrival
+                      </Text>
+                      <View
+                        style={{
+                          marginHorizontal: 8,
+                          marginVertical: 10,
+                          backgroundColor: "#EEF1F8",
+                          borderRadius: 8,
+                          justifyContent: "space-between",
+                          padding: 10
+                        }}>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                          <Text style={{ fontWeight: "700", flex: 2 }}>
+                            {dataArray["Return Bus Item Result Data"].BusType}
+                          </Text>
+                          <View style={{ flexDirection: "row", marginStart: 10, flex: 1 }}>
+                            <Text style={{ fontWeight: "700" }}>Seat(s) : </Text>
+                            <Text>{dataArray["Return Select Seat Number"]}</Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            marginVertical: 10
+                          }}>
+                          <Icon
+                            type="MaterialCommunityIcons"
+                            name="bus"
+                            size={50}
+                            color="#6287F9"
+                          />
+                          <View>
+                            <Text style={{ fontSize: 18, lineHeight: 20 }}>
+                              {dataArray["Return Bus Item Result Data"].DisplayName}
+                            </Text>
+                            <Text style={{ fontSize: 16, lineHeight: 18 }}>
+                              {moment(
+                                dataArray["Return Bus Item Result Data"].Journeydate,
+                                "YYYY-MM-DD"
+                              ).format("DD-MM-YYYY")}
+                            </Text>
+                            <Text style={{ fontSize: 16, lineHeight: 18 }}>
+                              {dataArray["Destination City"] + " to " + dataArray["Source City"]}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                          <Text style={{ fontWeight: "700", fontSize: 16 }}>Boarding Point : </Text>
+                          <Text style={{ flex: 1 }}>{dataArray["Return Boarding Point"]}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  )}
+
+                <View
+                  style={{
+                    marginHorizontal: 8,
+                    elevation: 1,
+                    borderRadius: 5,
+                    marginTop: 10
+                  }}>
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 18,
+                      paddingVertical: 10,
+                      backgroundColor: "#EEF1F8",
+                      paddingHorizontal: 10,
+                      borderTopLeftRadius: 5,
+                      borderTopRightRadius: 5
+                    }}>
+                    Passenger Details
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      paddingHorizontal: 10
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          fontWeight: "700",
+                          fontSize: 16
+                        }}>
+                        Passenger
+                      </Text>
+                      <Text>Kamal Gangwar</Text>
+                    </View>
+                    <View>
+                      <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
+                      <Text>22</Text>
+                    </View>
+                    <View>
+                      <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
+                      <Text>Male</Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    marginHorizontal: 8,
+                    elevation: 1,
+                    borderRadius: 5,
+                    marginTop: 10
+                  }}>
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 18,
+                      borderTopLeftRadius: 5,
+                      borderTopRightRadius: 5,
+                      backgroundColor: "#EEF1F8",
+                      paddingHorizontal: 10,
+                      paddingVertical: 10
+                    }}>
+                    Fare Summary
+                  </Text>
+                  <View style={styles.summaryView}>
+                    <Text>Convenience Fee</Text>
+                    <Text></Text>
+                  </View>
+                  <View style={styles.summaryView}>
+                    <Text>Flight Scharge</Text>
+                    <Text></Text>
+                  </View>
+                  <View style={styles.summaryView}>
+                    <Text>Base Fare</Text>
+                    <Text></Text>
+                  </View>
+                  <View style={styles.summaryView}>
+                    <Text>Flight Gst</Text>
+                    <Text></Text>
+                  </View>
+                  <View style={styles.summaryView}>
+                    <Text>Flight Tax</Text>
+                    <Text></Text>
+                  </View>
+                  <View style={styles.summaryView}>
+                    <Text style={{ fontWeight: "700", fontSize: 18 }}>Total Price</Text>
+                    <Text style={{ fontWeight: "700", fontSize: 18 }}>
+                      {order_data.currency_symbol}
+                      {order_data.total}
+                    </Text>
+                  </View>
+                  <View style={styles.summaryView}>
+                    <Text style={{ flex: 1 }}>Payment Method</Text>
+                    <Text style={{ flex: 1, marginStart: 10 }}>{order_data.payment_method}</Text>
+                  </View>
+                </View>
+              </ScrollView>
+            </View>
+          </SafeAreaView>
+        </>
       );
     } else {
       return (

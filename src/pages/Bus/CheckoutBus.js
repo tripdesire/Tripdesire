@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { etravosApi } from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
-import axios from "axios";
+import HTML from "react-native-render-html";
 class CheckoutBus extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -60,7 +60,8 @@ class CheckoutBus extends React.PureComponent {
       sourceName,
       journeyDate,
       returnDate,
-      tripType
+      tripType,
+      TripType
     } = this.props.navigation.state.params;
 
     let name = [...this.state.adults.map(item => item.name)].join("~");
@@ -79,15 +80,21 @@ class CheckoutBus extends React.PureComponent {
 
     let ServiceTax = [...selectedSheets.map(item => item.Servicetax)].join("~");
 
-    let SeatNosRound = [...selectedSheetsRound.map(item => item.Number)].join("~");
+    let SeatNosRound = selectedSheetsRound
+      ? [...selectedSheetsRound.map(item => item.Number)].join("~")
+      : "";
 
-    let FaresRound = [...selectedSheetsRound.map(item => item.Fare)].join("~");
+    let FaresRound = selectedSheetsRound
+      ? [...selectedSheetsRound.map(item => item.Fare)].join("~")
+      : "";
 
-    let ServiceChargeRound = [...selectedSheetsRound.map(item => item.OperatorServiceCharge)].join(
-      "~"
-    );
+    let ServiceChargeRound = selectedSheetsRound
+      ? [...selectedSheetsRound.map(item => item.OperatorServiceCharge)].join("~")
+      : "";
 
-    let ServiceTaxRound = [...selectedSheetsRound.map(item => item.Servicetax)].join("~");
+    let ServiceTaxRound = selectedSheetsRound
+      ? [...selectedSheetsRound.map(item => item.Servicetax)].join("~")
+      : "";
 
     console.log(name, age, gender, den, Fares, SeatNos);
 
@@ -121,7 +128,7 @@ class CheckoutBus extends React.PureComponent {
       PartialCancellationAllowed: params.PartialCancellationAllowed,
       PostalCode: "500035", /////
       Provider: params.Provider,
-      ReturnDate: "",
+      ReturnDate: null,
       State: "Telangana",
       Seatcodes: null,
       SeatNos: SeatNos,
@@ -135,83 +142,110 @@ class CheckoutBus extends React.PureComponent {
       UserType: 5
     };
 
-    let paramRound = {
-      Address: "South X",
-      Ages: age,
-      BoardingId: BoardingPointReturn.PointId,
-      BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
-      BusTypeName: paramsRound.BusType,
-      CancellationPolicy: paramsRound.CancellationPolicy,
-      City: destinationName,
-      ConvenienceFee: paramsRound.ConvenienceFee,
-      DepartureTime: paramsRound.DepartureTime,
-      DestinationId: paramsRound.DestinationId,
-      DestinationName: sourceName,
-      DisplayName: paramsRound.DisplayName,
-      DroppingId: DroppingPointReturn.PointId,
-      DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
-      EmailId: "nadeem@webiixx.com",
-      EmergencyMobileNo: null,
-      Fares: FaresRound,
-      Genders: gender,
-      IdCardNo: IdNumber,
-      IdCardType: IdCardType,
-      IdCardIssuedBy: IssuedBy,
-      JourneyDate: returnDate,
-      MobileNo: 9999999999,
-      Names: name,
-      NoofSeats: selectedSheetsRound.length,
-      Operator: "GDS Demo Test", //////not showing
-      PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
-      PostalCode: "500035", /////
-      Provider: paramsRound.Provider,
-      ReturnDate: null,
-      State: "Telangana",
-      Seatcodes: null,
-      SeatNos: SeatNosRound,
-      Servicetax: ServiceTaxRound,
-      ServiceCharge: ServiceChargeRound,
-      SourceId: paramsRound.SourceId,
-      SourceName: destinationName,
-      Titles: den,
-      TripId: paramsRound.Id,
-      TripType: 1,
-      UserType: 5
-    };
-
-    console.log(paramRound);
-    console.log(JSON.stringify(paramRound));
+    if (TripType == 2) {
+      let paramRound = {
+        Address: "South X",
+        Ages: age,
+        BoardingId: BoardingPointReturn.PointId,
+        BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
+        BusTypeName: paramsRound.BusType,
+        CancellationPolicy: paramsRound.CancellationPolicy,
+        City: destinationName,
+        ConvenienceFee: paramsRound.ConvenienceFee,
+        DepartureTime: paramsRound.DepartureTime,
+        DestinationId: paramsRound.DestinationId,
+        DestinationName: sourceName,
+        DisplayName: paramsRound.DisplayName,
+        DroppingId: DroppingPointReturn.PointId,
+        DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
+        EmailId: "nadeem@webiixx.com",
+        EmergencyMobileNo: null,
+        Fares: FaresRound,
+        Genders: gender,
+        IdCardNo: IdNumber,
+        IdCardType: IdCardType,
+        IdCardIssuedBy: IssuedBy,
+        JourneyDate: returnDate,
+        MobileNo: 9999999999,
+        Names: name,
+        NoofSeats: selectedSheetsRound.length,
+        Operator: "GDS Demo Test", //////not showing
+        PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
+        PostalCode: "500035", /////
+        Provider: paramsRound.Provider,
+        ReturnDate: null,
+        State: "Telangana",
+        Seatcodes: null,
+        SeatNos: SeatNosRound,
+        Servicetax: ServiceTaxRound,
+        ServiceCharge: ServiceChargeRound,
+        SourceId: paramsRound.SourceId,
+        SourceName: destinationName,
+        Titles: den,
+        TripId: paramsRound.Id,
+        TripType: 1,
+        UserType: 5
+      };
+      console.log(paramRound);
+      console.log(JSON.stringify(paramRound));
+    }
     console.log(param);
     console.log(JSON.stringify(param));
     //return;
 
     if (this.state.IdNumber && this.state.IssuedBy) {
-      this.setState({ loader: true });
-      etravosApi
-        .post("/Buses/BlockBusTicket", param)
-        .then(({ data }) => {
-          console.log(data);
-          this.setState({ loader: false });
-
-          etravosApi.post("/Buses/BlockBusTicket", paramRound).then(({ data: BlockRound }) => {
-            console.log(BlockRound);
-            if (data.BookingStatus == 1 && BlockRound.BookingStatus == 1) {
+      if (TripType == 1) {
+        this.setState({ loader: true });
+        etravosApi
+          .post("/Buses/BlockBusTicket", param)
+          .then(({ data }) => {
+            console.log(data);
+            this.setState({ loader: false });
+            if (data.BookingStatus == 1) {
               this.props.navigation.navigate("BusPayment", {
                 BlockingReferenceNo: data.BlockingReferenceNo,
                 BookingReferenceNo: data.BookingReferenceNo,
-                BlockingReferenceNoRound: BlockRound.BlockingReferenceNo,
-                BookingReferenceNoRound: BlockRound.BookingReferenceNo,
                 ...this.props.navigation.state.params,
                 adults: adults
               });
             } else {
               Toast.show(data.Message, Toast.LONG);
             }
+          })
+          .catch(error => {});
+      } else if (TripType == 2) {
+        this.setState({ loader: true });
+        etravosApi
+          .post("/Buses/BlockBusTicket", param)
+          .then(({ data }) => {
+            console.log(data);
+            this.setState({ loader: false });
+
+            etravosApi
+              .post("/Buses/BlockBusTicket", paramRound)
+              .then(({ data: BlockRound }) => {
+                console.log(BlockRound);
+                if (data.BookingStatus == 1 && BlockRound.BookingStatus == 1) {
+                  this.props.navigation.navigate("BusPayment", {
+                    BlockingReferenceNo: data.BlockingReferenceNo,
+                    BookingReferenceNo: data.BookingReferenceNo,
+                    BlockingReferenceNoRound: BlockRound.BlockingReferenceNo,
+                    BookingReferenceNoRound: BlockRound.BookingReferenceNo,
+                    ...this.props.navigation.state.params,
+                    adults: adults
+                  });
+                } else {
+                  Toast.show(data.Message, Toast.LONG);
+                }
+              })
+              .catch(error => {
+                Toast.show(BlockRound.Message, Toast.LONG);
+              });
+          })
+          .catch(error => {
+            Toast.show(data.Message, Toast.LONG);
           });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      }
     } else {
       Toast.show("Please fill all the Details", Toast.LONG);
     }
@@ -219,12 +253,16 @@ class CheckoutBus extends React.PureComponent {
   render() {
     const {
       params,
+      paramsRound,
       cartData,
       destinationName,
       sourceName,
       BoardingPoint,
+      BoardingPointReturn,
       DroppingPoint,
-      selectedSheets
+      selectedSheets,
+      TripType,
+      selectedSheetsRound
     } = this.props.navigation.state.params;
     const { loader } = this.state;
     return (
@@ -301,7 +339,7 @@ class CheckoutBus extends React.PureComponent {
                     justifyContent: "space-between"
                   }}>
                   <Text style={{ flex: 3 }}>{BoardingPoint.Location}</Text>
-                  {selectedSheets &&
+                  {Array.isArray(selectedSheets) &&
                     selectedSheets.map((item, index) => {
                       return (
                         <Text style={{ flex: 1, marginHorizontal: 5 }} key={"Sap" + index}>
@@ -313,6 +351,75 @@ class CheckoutBus extends React.PureComponent {
                 </View>
               </View>
             </View>
+
+            {TripType == 2 && (
+              <View
+                style={{
+                  elevation: 2,
+                  borderRadius: 8,
+                  backgroundColor: "#ffffff",
+                  marginHorizontal: 16,
+                  marginTop: 20
+                }}>
+                <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+                  <Text style={{ fontWeight: "300", fontSize: 16 }}>Arrival</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginTop: 10,
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ flex: 1, color: "#5B6974" }}>Name</Text>
+                    <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
+                      Journey Date
+                    </Text>
+                    <Text style={{ flex: 1, color: "#5B6974" }}>Route</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ flex: 1 }}>{paramsRound.DisplayName}</Text>
+                    <Text style={{ flex: 1, marginHorizontal: 5 }}>
+                      {moment(paramsRound.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")}
+                    </Text>
+                    <Text style={{ flex: 1 }}>
+                      {destinationName} To {sourceName}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginTop: 10,
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ flex: 1, color: "#5B6974" }}>Boarding Point</Text>
+                    <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
+                      Seats No.
+                    </Text>
+                    <Text style={{ flex: 1, color: "#5B6974" }}>Bus Type</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ flex: 3 }}>{BoardingPointReturn.Location}</Text>
+                    {Array.isArray(selectedSheetsRound) &&
+                      selectedSheetsRound.map((item, index) => {
+                        return (
+                          <Text style={{ flex: 1, marginHorizontal: 5 }} key={"Sap" + index}>
+                            {item.Number + "\n"}
+                          </Text>
+                        );
+                      })}
+                    <Text style={{ flex: 3 }}>{paramsRound.BusType}</Text>
+                  </View>
+                </View>
+              </View>
+            )}
+
             <View
               style={{
                 elevation: 2,
@@ -543,7 +650,7 @@ class CheckoutBus extends React.PureComponent {
                 <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>
                   Total Payable
                 </Text>
-                {/* <HTML html={cartData.total} /> */}
+                <HTML html={cartData.total_price} />
               </View>
             </View>
 

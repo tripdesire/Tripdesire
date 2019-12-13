@@ -13,18 +13,12 @@ import moment from "moment";
 class Order extends React.PureComponent {
   constructor(props) {
     super(props);
+
     this.state = {
       loader: true,
       orders: []
     };
-  }
 
-  _OrderDetails = value => () => {
-    console.log("Hye");
-    this.props.navigation.navigate("OrderDetails", value);
-  };
-
-  componentDidMount() {
     const { signIn } = this.props;
 
     if (isEmpty(signIn)) {
@@ -54,9 +48,44 @@ class Order extends React.PureComponent {
     }
   }
 
+  _OrderDetails = value => () => {
+    console.log("Hye");
+    this.props.navigation.navigate("OrderDetails", value);
+  };
+
+  // componentDidMount() {
+  //   const { signIn } = this.props;
+
+  //   if (isEmpty(signIn)) {
+  //     this.setState({
+  //       loader: false,
+  //       orders: 0
+  //     });
+  //     Toast.show("Please login or signup", Toast.LONG);
+  //   } else {
+  //     domainApi
+  //       .get("/nutri-user/" + signIn.id + "/order-list")
+  //       .then(({ data }) => {
+  //         console.log(data);
+  //         if (data.status == 1) {
+  //           this.setState({
+  //             orders: data.data,
+  //             loader: false
+  //           });
+  //         } else {
+  //           Toast.show("Orders are not found", Toast.SHORT);
+  //           this.setState({ loader: false });
+  //         }
+  //       })
+  //       .catch(error => {
+  //         console.log(error, Toast.LONG);
+  //       });
+  //   }
+  // }
+
   status = value => {
     if (value == "completed")
-      return <Text style={{ color: "green", lineHeight: 18 }}>{value}</Text>;
+      return <Text style={{ color: "green", lineHeight: 18, fontWeight: "700" }}>{value}</Text>;
   };
 
   _renderItem = ({ item, index }) => {

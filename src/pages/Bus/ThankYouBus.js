@@ -1,18 +1,7 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { Button, Text } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import IconFontAwsm from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 
 class ThankYouBus extends React.PureComponent {
@@ -117,10 +106,10 @@ class ThankYouBus extends React.PureComponent {
               <IconMaterial name="bus" size={50} color="#6287F9" />
               <View>
                 <Text style={{ fontSize: 18, lineHeight: 20 }}>{params.DisplayName}</Text>
-                <Text style={{ fontSize: 16, lineHeight: 16 }}>
+                <Text style={{ fontSize: 16, lineHeight: 18 }}>
                   {moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")}
                 </Text>
-                <Text style={{ fontSize: 16, lineHeight: 16 }}>
+                <Text style={{ fontSize: 16, lineHeight: 18 }}>
                   {sourceName + " to " + destinationName}
                 </Text>
               </View>

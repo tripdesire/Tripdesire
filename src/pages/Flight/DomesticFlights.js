@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Image, StyleSheet, Picker, Modal } from "react-native";
+import { View, Image, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import moment from "moment";
+import Toast from "react-native-simple-toast";
 
 class DomesticFlights extends React.PureComponent {
   constructor(props) {
@@ -130,10 +131,14 @@ class DomesticFlights extends React.PureComponent {
       userType: 5
     };
     console.log(params);
-    if (this.state.tripType == 1) {
-      this.props.navigation.navigate("FlightsInfoOneway", params);
-    } else if (this.state.tripType == 2) {
-      this.props.navigation.navigate("FlightsInfoRound", params);
+    if (this.state.adult >= this.state.infants) {
+      if (this.state.tripType == 1) {
+        this.props.navigation.navigate("FlightsInfoOneway", params);
+      } else if (this.state.tripType == 2) {
+        this.props.navigation.navigate("FlightsInfoRound", params);
+      }
+    } else {
+      Toast.show("Infants should be less than adult", Toast.SHORT);
     }
   };
 
@@ -417,47 +422,68 @@ class AddPassengers extends React.PureComponent {
           }}>
           <View style={{ alignItems: "center" }}>
             <Text>Adults</Text>
-            <Picker
-              selectedValue={this.state.adult}
+            <RNPickerSelect
+              useNativeAndroidPickerStyle={false}
+              placeholder={{}}
+              value={this.state.adult}
               style={{
-                height: 50,
-                width: 80,
-                borderWidth: 1,
-                borderRadius: 5,
-                borderColor: "#000"
+                inputAndroidContainer: { height: 40 },
+                inputAndroid: { paddingStart: 0, color: "#000" },
+                iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
               }}
-              onValueChange={itemValue => this.setState({ adult: itemValue })}>
-              <Picker.Item label="1" value="1" />
-              <Picker.Item label="2" value="2" />
-              <Picker.Item label="3" value="3" />
-              <Picker.Item label="4" value="4" />
-            </Picker>
+              onValueChange={itemValue => this.setState({ adult: itemValue })}
+              items={[
+                { value: "1", label: "1" },
+                { value: "2", label: "2" },
+                { value: "3", label: "3" },
+                { value: "4", label: "4" }
+              ]}
+              Icon={() => <Icon name="ios-arrow-down" size={20} />}
+            />
           </View>
           <View style={{ alignItems: "center" }}>
             <Text>childrens</Text>
-            <Picker
-              selectedValue={this.state.children}
-              style={{ height: 50, width: 80 }}
-              onValueChange={itemValue => this.setState({ children: itemValue })}>
-              <Picker.Item label="0" value="0" />
-              <Picker.Item label="1" value="1" />
-              <Picker.Item label="2" value="2" />
-              <Picker.Item label="3" value="3" />
-              <Picker.Item label="4" value="4" />
-            </Picker>
+            <RNPickerSelect
+              useNativeAndroidPickerStyle={false}
+              placeholder={{}}
+              value={this.state.children}
+              style={{
+                inputAndroidContainer: { height: 40 },
+                inputAndroid: { paddingStart: 0, color: "#000" },
+                iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
+              }}
+              onValueChange={itemValue => this.setState({ children: itemValue })}
+              items={[
+                { value: "0", label: "0" },
+                { value: "1", label: "1" },
+                { value: "2", label: "2" },
+                { value: "3", label: "3" },
+                { value: "4", label: "4" }
+              ]}
+              Icon={() => <Icon name="ios-arrow-down" size={20} />}
+            />
           </View>
           <View style={{ alignItems: "center" }}>
             <Text>Infants</Text>
-            <Picker
-              selectedValue={this.state.infants}
-              style={{ height: 50, width: 80 }}
-              onValueChange={itemValue => this.setState({ infants: itemValue })}>
-              <Picker.Item label="0" value="0" />
-              <Picker.Item label="1" value="1" />
-              <Picker.Item label="2" value="2" />
-              <Picker.Item label="3" value="3" />
-              <Picker.Item label="4" value="4" />
-            </Picker>
+            <RNPickerSelect
+              useNativeAndroidPickerStyle={false}
+              placeholder={{}}
+              value={this.state.infants}
+              style={{
+                inputAndroidContainer: { height: 40 },
+                inputAndroid: { paddingStart: 0, color: "#000" },
+                iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
+              }}
+              onValueChange={itemValue => this.setState({ infants: itemValue })}
+              items={[
+                { value: "0", label: "0" },
+                { value: "1", label: "1" },
+                { value: "2", label: "2" },
+                { value: "3", label: "3" },
+                { value: "4", label: "4" }
+              ]}
+              Icon={() => <Icon name="ios-arrow-down" size={20} />}
+            />
           </View>
         </View>
         <Button

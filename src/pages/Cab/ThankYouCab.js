@@ -24,7 +24,7 @@ class ThankYouCab extends React.PureComponent {
   };
 
   render() {
-    const { order, item, params, razorpayRes } = this.props.navigation.state.params;
+    const { order, item, params } = this.props.navigation.state.params;
     return (
       <ScrollView>
         <View>
@@ -48,9 +48,7 @@ class ThankYouCab extends React.PureComponent {
               }}>
               <View>
                 <Text style={{ lineHeight: 22 }}>Booking Id : </Text>
-                <Text style={([styles.Heading], { lineHeight: 16 })}>
-                  {razorpayRes.razorpay_payment_id}
-                </Text>
+                <Text style={([styles.Heading], { lineHeight: 16 })}>{order.id}</Text>
               </View>
               <View>
                 <Text style={{ lineHeight: 22 }}>Date : </Text>
