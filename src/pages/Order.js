@@ -140,11 +140,11 @@ class Order extends React.PureComponent {
             <View
               style={{
                 flexDirection: "row",
-                marginHorizontal: 16,
+                marginEnd: 16,
                 height: 56,
                 alignItems: "center"
               }}>
-              <Button onPress={this.props.navigation.openDrawer}>
+              <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
               <Text

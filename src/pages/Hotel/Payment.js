@@ -70,7 +70,8 @@ class Payment extends React.PureComponent {
       radioDirect: true,
       orderId: "",
       transactionId: "",
-      status: ""
+      status: "",
+      openLoginPage: false
     };
   }
 
@@ -363,7 +364,7 @@ class Payment extends React.PureComponent {
   };
   render() {
     const { params } = this.props.navigation.state.params;
-    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults, loading } = this.state;
+    const { ffn, radioDirect, openLoginPage, DOB, loading } = this.state;
 
     return (
       <>
@@ -807,6 +808,9 @@ class Payment extends React.PureComponent {
             </View>
             {loading && <ActivityIndicator />}
           </View>
+          <Modal isVisible={openLoginPage}>
+            <SignIn openInModal={true} />
+          </Modal>
         </SafeAreaView>
       </>
     );
