@@ -13,7 +13,7 @@ import Stars from "react-native-stars";
 import moment from "moment";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
-import { Signup, Signin } from "../store/action";
+import { Signup, Signin, Billing } from "../store/action";
 import { etravosApi, domainApi } from "../service";
 import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
@@ -23,10 +23,10 @@ class ProfilePage extends React.PureComponent {
     super(props);
     const { signIn } = this.props;
     this.state = {
-      firstname: "",
-      lastname: "",
-      displayname: "",
-      email: "",
+      firstname: signIn.first_name,
+      lastname: signIn.last_name,
+      displayname: signIn.username,
+      email: signIn.email,
       currentPassword: "",
       newPassword: "",
       confirmPassword: ""
