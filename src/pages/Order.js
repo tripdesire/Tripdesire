@@ -26,7 +26,8 @@ class Order extends React.PureComponent {
         loader: false,
         orders: 0
       });
-      Toast.show("Please login or signup", Toast.LONG);
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { isCheckout: true });
     } else {
       domainApi
         .get("/nutri-user/" + signIn.id + "/order-list")

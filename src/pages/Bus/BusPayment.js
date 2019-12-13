@@ -72,7 +72,8 @@ class BusPayment extends React.PureComponent {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
       if (isEmpty(this.props.signIn)) {
-        Toast.show("Please login or signup", Toast.LONG);
+        //Toast.show("Please login or signup", Toast.LONG);
+        this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
         // try {
         //   const [BookingOneway, BookingRound] = await axios.all([
