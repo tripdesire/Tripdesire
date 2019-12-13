@@ -237,15 +237,6 @@ class Cab extends React.PureComponent {
       });
     }
 
-    // console.log(params);
-    // etravosApi.get("/Cabs/AvailableCabs", params)
-    //   .then(({ data }) => {
-    //     console.log(data);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     Toast.show(error, Toast.LONG);
-    //   });
     if (this.state.sourceName != this.state.destinationName) {
       if (this.state.travelType == 3 && this.state.pickuplocation == this.state.droplocation) {
         Toast.show("Pickup and Drop Location can't Same or empty.", Toast.LONG);
