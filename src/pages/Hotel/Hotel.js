@@ -128,7 +128,7 @@ class Hotel extends React.PureComponent {
 
   _search = () => {
     let Difference_In_Time = this.state.CheckOut - this.state.CheckIn;
-    let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24), 1);
+    let Difference_In_Days = 1; //Math.round(Difference_In_Time / (1000 * 3600 * 24), 1); // moment.duration(moment.diff(this.state.CheckOut, this.state.CheckIn)).asDays();
     let params = {
       city: this.state.city,
       destinationId: this.state.cityId,
@@ -173,7 +173,7 @@ class Hotel extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
           <View style={{ flexDirection: "column", height: 140, backgroundColor: "#E5EBF7" }}>
-            <Header firstName="Hotel" lastName="Search" onPress={this.goBack} />
+            <Header firstName="Hotels" lastName="Search" onPress={this.goBack} />
           </View>
           <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
             <View

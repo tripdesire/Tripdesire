@@ -245,6 +245,8 @@ class Cab extends React.PureComponent {
             <Button
               style={{
                 backgroundColor: travelType == 2 ? "#5B89F9" : "#FFFFFF",
+                borderTopStartRadius: 6,
+                borderBottomStartRadius: 6,
                 ...styles.tabButtons
               }}
               onPress={() => this._triptype("oneway")}>
@@ -265,6 +267,8 @@ class Cab extends React.PureComponent {
             <Button
               style={{
                 backgroundColor: travelType == 3 ? "#5B89F9" : "#FFFFFF",
+                borderTopEndRadius: 6,
+                borderBottomEndRadius: 6,
                 ...styles.tabButtons
               }}
               onPress={() => this._triptype("transfer")}>
@@ -287,18 +291,14 @@ class Cab extends React.PureComponent {
                   style={{ width: 20, marginHorizontal: 5, resizeMode: "contain" }}
                   source={require("../../assets/imgs/white-arrow-left-side.png")}
                 />
-                <Button
-                  style={{ justifyContent: "center" }}
-                  onPress={() => this._SelectTripType("oneway")}>
+                <Button onPress={() => this._SelectTripType("oneway")}>
                   <Text style={{ color: tripType == 1 ? "#000000" : "#BDC4CA" }}>One Way</Text>
                 </Button>
                 <Image
                   style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
                   source={require("../../assets/imgs/Round-trip-arrow.png")}
                 />
-                <Button
-                  style={{ justifyContent: "center" }}
-                  onPress={() => this._SelectTripType("round")}>
+                <Button onPress={() => this._SelectTripType("round")}>
                   <Text style={{ color: tripType == 2 ? "#000000" : "#BDC4CA" }}>Round Trip</Text>
                 </Button>
               </View>
@@ -551,11 +551,12 @@ const styles = StyleSheet.create({
     zIndex: 2,
     height: 30,
     shadowOffset: { width: 0, height: 2 },
-    shadowColor: "rgba(0,0,0,0.1)",
+    shadowColor: "#757575",
     shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowRadius: 2,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    flex: 1
   }
 });
 

@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Stars from "react-native-stars";
 //import MapView from "react-native-maps";
 import moment from "moment";
+import HTML from "react-native-render-html";
 import RoomDetails from "./RoomDetails";
 
 class HotelCheckout extends React.Component {
@@ -313,39 +314,35 @@ class HotelCheckout extends React.Component {
 
                   <View style={{ marginTop: 20 }}>
                     <Text style={{ fontWeight: "700", fontSize: 18 }}>Description</Text>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Property Location</Text>
-                      <Text style={{ color: "#717A81", flex: 4, paddingHorizontal: 10 }}>
-                        {params.Description}
+                    <View>
+                      <Text style={{ flex: 3, fontSize: 16, marginTop: 20 }}>
+                        Property Location
                       </Text>
+                      <HTML html={params.Description} />
                     </View>
-                    <View style={{ flexDirection: "row" }}>
+                    <View>
                       <Text style={{ flex: 3, fontSize: 16 }}>Room</Text>
-                      <Text style={{ color: "#717A81", flex: 4, paddingHorizontal: 10 }}>
-                        {params.RoomChain}
-                      </Text>
+                      <Text style={{ color: "#717A81", flex: 4 }}>{params.RoomChain}</Text>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
+                    <View>
                       <Text style={{ flex: 3, fontSize: 16 }}>Amenities</Text>
-                      <Text style={{ color: "#717A81", flex: 4, paddingHorizontal: 10 }}>
-                        {params.Facilities}
-                      </Text>
+                      <Text style={{ color: "#717A81", flex: 4 }}>{params.Facilities}</Text>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
+                    <View>
                       <Text style={{ flex: 3, fontSize: 16 }}>Dining</Text>
-                      <Text style={{ color: "#717A81", flex: 4, paddingHorizontal: 10 }}>
+                      <Text style={{ color: "#717A81", flex: 4 }}>
                         Property Location Located in Bangalore
                       </Text>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
+                    <View>
                       <Text style={{ flex: 3, fontSize: 16 }}>Business</Text>
-                      <Text style={{ color: "#717A81", flex: 4, paddingHorizontal: 10 }}>
+                      <Text style={{ color: "#717A81", flex: 4 }}>
                         Property Location Located in Bangalore
                       </Text>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
+                    <View>
                       <Text style={{ flex: 3, fontSize: 16 }}>Other Amenities</Text>
-                      <Text style={{ color: "#717A81", flex: 4, paddingHorizontal: 10 }}>
+                      <Text style={{ color: "#717A81", flex: 4 }}>
                         Property Location Located in Bangalore
                       </Text>
                     </View>
