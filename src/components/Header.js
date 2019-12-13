@@ -17,10 +17,17 @@ class Header extends React.PureComponent {
         <Button onPress={this.goBack} style={{ padding: 16 }}>
           <Icon name="md-arrow-back" size={24} />
         </Button>
-        <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "100" }}>
+        <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, lineHeight: 24 }}>
           {this.props.firstName}
         </Text>
-        <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 5, fontWeight: "700" }}>
+        <Text
+          style={{
+            fontSize: 18,
+            color: "#1E293B",
+            marginStart: 5,
+            fontWeight: "700",
+            lineHeight: 24
+          }}>
           {this.props.lastName}
         </Text>
       </View>

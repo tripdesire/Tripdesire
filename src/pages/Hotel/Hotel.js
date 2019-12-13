@@ -157,11 +157,11 @@ class Hotel extends React.PureComponent {
   render() {
     const {
       place,
-      CheckIn,
-      CheckOut,
       adults_count,
       children_count,
       room,
+      CheckIn,
+      CheckOut,
       fromDTpicker,
       toDTpicker,
       hoteltype,
@@ -257,6 +257,7 @@ class Hotel extends React.PureComponent {
                   isVisible={fromDTpicker}
                   onConfirm={this.handleDatePicked("fromDTpicker")}
                   onCancel={this.hideDateTimePicker("fromDTpicker")}
+                  date={CheckIn}
                   minimumDate={new Date()}
                 />
               </Button>
@@ -269,6 +270,7 @@ class Hotel extends React.PureComponent {
                   isVisible={toDTpicker}
                   onConfirm={this.handleDatePicked("toDTpicker")}
                   onCancel={this.hideDateTimePicker("toDTpicker")}
+                  date={CheckOut}
                   minimumDate={this.state.CheckIn}
                 />
               </Button>
