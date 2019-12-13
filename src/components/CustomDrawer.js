@@ -40,7 +40,7 @@ class CustomDrawer extends React.PureComponent {
     const { signIn } = this.props;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#5789FF" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>
             <TouchableOpacity
