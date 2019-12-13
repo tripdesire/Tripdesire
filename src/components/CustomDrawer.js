@@ -15,17 +15,19 @@ class CustomDrawer extends React.PureComponent {
 
   signIn = () => {
     if (isEmpty(this.props.signIn)) {
+      this.props.navigation.closeDrawer();
       this.props.navigation.navigate("SignIn");
     }
   };
 
   _navigateToScreen = route => () => {
+    this.props.navigation.closeDrawer();
     this.props.navigation.navigate(route);
   };
 
   logout = () => {
     this.props.Logout(null);
-    let logout = GoogleSignin.signOut();
+    GoogleSignin.signOut();
   };
 
   render() {
