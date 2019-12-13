@@ -6,14 +6,14 @@ import {
   TextInput,
   Picker,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  Modal
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
-import axios from "axios";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
@@ -73,10 +73,6 @@ class Payment extends React.PureComponent {
       status: "",
       openLoginPage: false
     };
-  }
-
-  componentDidMount() {
-    this.setState({ loading: false });
   }
 
   show = (key, index, isShow) => () => {
@@ -268,7 +264,8 @@ class Payment extends React.PureComponent {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
       if (isEmpty(this.props.signIn)) {
-        Toast.show("Please login or signup", Toast.LONG);
+        //Toast.show("Please login or signup", Toast.LONG);
+        this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
         console.log(data);
         let totalData = data;
@@ -808,9 +805,6 @@ class Payment extends React.PureComponent {
             </View>
             {loading && <ActivityIndicator />}
           </View>
-          <Modal isVisible={openLoginPage}>
-            <SignIn openInModal={true} />
-          </Modal>
         </SafeAreaView>
       </>
     );

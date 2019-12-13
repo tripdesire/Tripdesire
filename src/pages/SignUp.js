@@ -50,7 +50,7 @@ class SignUp extends React.PureComponent {
             this.props.Signup(params);
             this.setState({ loader: false });
             Toast.show("You have successfully Signup", Toast.LONG);
-            this.props.navigation.navigate(page);
+            this.props.navigation.goBack(null);
           } else if (response.data.error) {
             this.setState({ loader: false });
             Toast.show(response.data.error, Toast.LONG);
