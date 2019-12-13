@@ -1,16 +1,6 @@
-import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
+import React from "react";
+import { View, Image, Modal, StyleSheet, SafeAreaView, Platform, ScrollView } from "react-native";
+import { Button, Text, AutoCompleteModal } from "../../components";
 import Toast from "react-native-simple-toast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -18,12 +8,8 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
-import { etravosApi } from "../../service";
 import { Header } from "../../components";
 import SuggLoc from "./LocationModal";
-import Autocomplete from "react-native-autocomplete-input";
-
-const { height } = Dimensions.get("window");
 
 class Cab extends React.PureComponent {
   constructor(props) {
@@ -251,15 +237,6 @@ class Cab extends React.PureComponent {
       });
     }
 
-    // console.log(params);
-    // etravosApi.get("/Cabs/AvailableCabs", params)
-    //   .then(({ data }) => {
-    //     console.log(data);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     Toast.show(error, Toast.LONG);
-    //   });
     if (this.state.sourceName != this.state.destinationName) {
       if (this.state.travelType == 3 && this.state.pickuplocation == this.state.droplocation) {
         Toast.show("Pickup and Drop Location can't Same or empty.", Toast.LONG);

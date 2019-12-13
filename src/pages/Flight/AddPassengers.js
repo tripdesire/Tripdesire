@@ -132,4 +132,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddPassengers;
+export default React.memo(AddPassengers);
