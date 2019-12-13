@@ -1,14 +1,13 @@
-import { DrawerItems } from "react-navigation-drawer";
-import React, { PureComponent } from "react";
-import { SafeAreaView, View, TouchableOpacity, Image, StyleSheet } from "react-native";
+import React from "react";
+import { SafeAreaView, View, Image, StyleSheet } from "react-native";
 import Text from "./TextComponent";
 import Icon from "./IconNB";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Logout } from "../store/action";
-import Toast from "react-native-simple-toast";
-import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
+import { GoogleSignin } from "@react-native-community/google-signin";
 import Button from "./Button";
+
 class CustomDrawer extends React.PureComponent {
   constructor(props) {
     super(props);
