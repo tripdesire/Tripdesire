@@ -9,9 +9,8 @@ import {
   SafeAreaView,
   Linking
 } from "react-native";
-import { Button, Text, ActivityIndicator } from "../../components";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/Ionicons";
 import Stars from "react-native-stars";
 //import MapView from "react-native-maps";
 import moment from "moment";
@@ -61,6 +60,10 @@ class HotelCheckout extends React.Component {
 
   render() {
     const { params } = this.props.navigation.state;
+
+    let Amenities = params.Facilities.split(",").map(s => s.trim());
+    console.log(Amenities);
+
     let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
     return (
@@ -172,25 +175,45 @@ class HotelCheckout extends React.Component {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={{ flex: 1, color: "#ffffff" }}>{params.HotelAddress}</Text>
-                  <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
-                    <Image
-                      source={require("../../assets/imgs/washing-machine.png")}
-                      style={{ width: 30 }}
-                      resizeMode="contain"
-                    />
-                    <Image
-                      source={require("../../assets/imgs/wifi.png")}
-                      style={{ width: 30 }}
-                      resizeMode="contain"
-                    />
-                    <Image
-                      source={require("../../assets/imgs/cafet-area.png")}
-                      style={{ width: 30 }}
-                      resizeMode="contain"
-                    />
-                  </View>
+                <Text style={{ color: "#ffffff" }}>{params.HotelAddress}</Text>
+                <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
+                  {Amenities.map(item => (
+                    <View key={item}>
+                      {item == "Housekeeping - daily" && (
+                        <Icon
+                          type="MaterialCommunityIcons"
+                          size={24}
+                          color="#ffffff"
+                          name="washing-machine"
+                        />
+                      )}
+                      {item == "Complimentary wireless internet" && (
+                        <Icon
+                          style={{ marginHorizontal: 5 }}
+                          color="#ffffff"
+                          size={24}
+                          name="ios-wifi"
+                        />
+                      )}
+                      {item == "24-hour front desk" && (
+                        <Icon
+                          style={{ marginHorizontal: 5 }}
+                          type="FontAwesome5"
+                          name="crosshairs"
+                          size={24}
+                          color="#ffffff"
+                        />
+                      )}
+                      {item == "Air conditioning" && (
+                        <Icon
+                          type="MaterialCommunityIcons"
+                          color="#ffffff"
+                          size={24}
+                          name="air-conditioner"
+                        />
+                      )}
+                    </View>
+                  ))}
                 </View>
               </View>
             </View>
@@ -211,7 +234,7 @@ class HotelCheckout extends React.Component {
                   <Text style={{ fontSize: 18, flex: 1, marginTop: 10 }}>Book your Hotels</Text>
 
                   {params.RoomDetails.map(item => {
-                    const { width, height } = Dimensions.get("window");
+                    const { width } = Dimensions.get("window");
                     const { params } = this.props.navigation.state;
                     const { _selectRadio } = this.state;
                     var str = params.HotelImages[0].Imagepath;
@@ -303,7 +326,6 @@ class HotelCheckout extends React.Component {
                               <Text style={{ color: "#717A81" }}>
                                 {item.RefundRule ? item.RefundRule : ""}
                               </Text>
-                              <Text style={{ color: "#5B89F9", marginTop: 10 }}>Fare Policy</Text>
                             </View>
                           </View>
                         </View>
@@ -318,7 +340,10 @@ class HotelCheckout extends React.Component {
                       <Text style={{ flex: 3, fontSize: 16, marginTop: 20 }}>
                         Property Location
                       </Text>
-                      <HTML html={params.Description} />
+                      <HTML
+                        baseFontStyle={{ color: "#717A81", fontFamily: "Poppins-Regular" }}
+                        html={params.Description}
+                      />
                     </View>
                     {params.RoomChain != null && (
                       <View style={{ marginTop: 10 }}>
@@ -328,28 +353,10 @@ class HotelCheckout extends React.Component {
                     )}
                     {params.Facilities != null && (
                       <View style={{ marginTop: 10 }}>
-                        <Text style={{ flex: 3, fontSize: 16 }}>Amenities</Text>
+                        <Text style={{ flex: 3, fontSize: 16 }}>Facilities</Text>
                         <Text style={{ color: "#717A81", flex: 4 }}>{params.Facilities}</Text>
                       </View>
                     )}
-                    {/* <View>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Dining</Text>
-                      <Text style={{ color: "#717A81", flex: 4 }}>
-                        Property Location Located in Bangalore
-                      </Text>
-                    </View>
-                    <View>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Business</Text>
-                      <Text style={{ color: "#717A81", flex: 4 }}>
-                        Property Location Located in Bangalore
-                      </Text>
-                    </View>
-                    <View>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Other Amenities</Text>
-                      <Text style={{ color: "#717A81", flex: 4 }}>
-                        Property Location Located in Bangalore
-                      </Text>
-                    </View> */}
                   </View>
 
                   <Button

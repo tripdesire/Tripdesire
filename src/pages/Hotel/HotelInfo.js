@@ -155,6 +155,7 @@ class HotelInfo extends React.PureComponent {
     const { width, height } = Dimensions.get("window");
     var str = item.HotelImages[0].Imagepath;
     var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
+    let Amenities = item.Facilities.split(",").map(s => s.trim());
     return (
       <TouchableOpacity
         style={{
@@ -232,22 +233,44 @@ class HotelInfo extends React.PureComponent {
               justifyContent: "space-between",
               alignItems: "center"
             }}>
-            <View style={{ flexDirection: "row" }}>
-              <Image
-                source={require("../../assets/imgs/washing-machine.png")}
-                style={{ width: 30 }}
-                resizeMode="contain"
-              />
-              <Image
-                source={require("../../assets/imgs/wifi.png")}
-                style={{ width: 30 }}
-                resizeMode="contain"
-              />
-              <Image
-                source={require("../../assets/imgs/cafet-area.png")}
-                style={{ width: 30 }}
-                resizeMode="contain"
-              />
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+              {Amenities.map(item => (
+                <View key={item}>
+                  {item == "Housekeeping - daily" && (
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      size={24}
+                      color="#636C73"
+                      name="washing-machine"
+                    />
+                  )}
+                  {item == "Complimentary wireless internet" && (
+                    <Icon
+                      style={{ marginHorizontal: 5 }}
+                      color="#636C73"
+                      size={24}
+                      name="ios-wifi"
+                    />
+                  )}
+                  {item == "24-hour front desk" && (
+                    <Icon
+                      style={{ marginHorizontal: 5 }}
+                      type="FontAwesome5"
+                      name="crosshairs"
+                      size={24}
+                      color="#636C73"
+                    />
+                  )}
+                  {item == "Air conditioning" && (
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      color="#636C73"
+                      size={24}
+                      name="air-conditioner"
+                    />
+                  )}
+                </View>
+              ))}
             </View>
             <Button
               style={{
