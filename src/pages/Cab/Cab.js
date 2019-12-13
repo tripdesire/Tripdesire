@@ -545,11 +545,12 @@ class Cab extends React.PureComponent {
 
 const styles = StyleSheet.create({
   tabButtons: {
-    elevation: 1,
+    elevation: 2,
+    zIndex: 2,
     height: 30,
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.1)",
-    shadowOpacity: 1,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     justifyContent: "center",
     paddingHorizontal: 40,

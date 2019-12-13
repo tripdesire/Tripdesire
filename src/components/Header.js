@@ -13,7 +13,7 @@ class Header extends React.PureComponent {
   };
   render() {
     return (
-      <View style={{ flexDirection: "row", marginTop: 10, marginHorizontal: 16 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", marginEnd: 16 }}>
         <Button onPress={this.goBack}>
           <Icon name="md-arrow-back" size={24} />
         </Button>
