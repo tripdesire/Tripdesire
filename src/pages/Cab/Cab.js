@@ -238,7 +238,9 @@ class Cab extends React.PureComponent {
               flexDirection: "row",
               marginHorizontal: 16,
               marginTop: -15,
-              justifyContent: "center"
+              justifyContent: "center",
+              borderRadius: 10
+              //borderWidth: 2
             }}>
             <Button
               style={{
@@ -545,16 +547,14 @@ class Cab extends React.PureComponent {
 
 const styles = StyleSheet.create({
   tabButtons: {
-    elevation: 1,
+    flex: 1,
+    //elevation: 1,
     height: 30,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: "rgba(0,0,0,0.1)",
-    shadowOpacity: 1,
-    shadowRadius: 4,
+    //shadowOffset: { width: 0, height: 2 },
+    //shadowColor: "rgba(0,0,0,0.1)",
+    //shadowOpacity: 1,
     justifyContent: "center",
-    paddingHorizontal: 40,
-    borderBottomStartRadius: 5,
-    borderTopStartRadius: 5
+    alignItems: "center"
   }
 });
 
