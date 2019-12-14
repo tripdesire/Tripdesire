@@ -5,7 +5,6 @@ import {
   INTERNATIONAL_HOTEL_SUGGESTION,
   HOTEL_COUNTRY_SUGGESTION,
   SIGN_IN,
-  SIGN_UP,
   BUS_SUGGESTION,
   CAB_SUGGESTION,
   LOGOUT,
@@ -42,13 +41,6 @@ export const hotelCountrySugg = data => {
 export const intHotelSugg = data => {
   return {
     type: INTERNATIONAL_HOTEL_SUGGESTION,
-    payload: data
-  };
-};
-
-export const Signup = data => {
-  return {
-    type: SIGN_UP,
     payload: data
   };
 };

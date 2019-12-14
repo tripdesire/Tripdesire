@@ -270,8 +270,8 @@ class OrderDetails extends React.PureComponent {
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingHorizontal: 10
+                    justifyContent: "space-between"
+                    //paddingHorizontal: 10
                   }}>
                   <View>
                     <Text
