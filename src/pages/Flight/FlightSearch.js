@@ -43,6 +43,8 @@ class FlightSearch extends React.PureComponent {
                 <Button
                   style={{
                     backgroundColor: flightType == 1 ? "#5B89F9" : "#FFFFFF",
+                    borderBottomStartRadius: 5,
+                    borderTopStartRadius: 5,
                     ...styles.tabButtons
                   }}
                   onPress={this.setDomesticActive}>
@@ -52,6 +54,8 @@ class FlightSearch extends React.PureComponent {
                 </Button>
                 <Button
                   style={{
+                    borderBottomEndRadius: 5,
+                    borderTopEndRadius: 5,
                     backgroundColor: flightType == 2 ? "#5B89F9" : "#FFFFFF",
                     ...styles.tabButtons
                   }}
@@ -79,9 +83,7 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
     height: 30,
     justifyContent: "center",
-    paddingHorizontal: 50,
-    borderBottomStartRadius: 5,
-    borderTopStartRadius: 5
+    paddingHorizontal: 50
   }
 });
 

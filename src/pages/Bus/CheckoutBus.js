@@ -19,7 +19,7 @@ class CheckoutBus extends React.PureComponent {
       adults: [...Array(selectedSheets.length)].map(item => {
         return {
           name: "",
-          age: 18,
+          age: "",
           gender: "M",
           den: "Mr"
         };
@@ -35,6 +35,9 @@ class CheckoutBus extends React.PureComponent {
   _changeAdults = (index, key) => text => {
     let newData = Object.assign([], this.state.adults);
     newData[index][key] = text;
+    if (key == "gender") {
+      newData[index].den = text == "M" ? "Mr" : "Mrs";
+    }
     this.setState({
       adults: newData
     });
@@ -42,6 +45,12 @@ class CheckoutBus extends React.PureComponent {
 
   _changeAdult = key => text => {
     this.setState({ [key]: text });
+  };
+
+  validate = () => {
+    let needToValidateAdults = false;
+    needToValidateAdults = this.state.adults.every(item => item.name == "" || item.age == "");
+    return needToValidateAdults;
   };
 
   _Next = () => {
@@ -139,106 +148,111 @@ class CheckoutBus extends React.PureComponent {
       UserType: 5
     };
 
-    // if (TripType == 2) {
-    let paramRound = {
-      Address: "South X",
-      Ages: age,
-      BoardingId: BoardingPointReturn.PointId,
-      BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
-      BusTypeName: paramsRound.BusType,
-      CancellationPolicy: paramsRound.CancellationPolicy,
-      City: destinationName,
-      ConvenienceFee: paramsRound.ConvenienceFee,
-      DepartureTime: paramsRound.DepartureTime,
-      DestinationId: paramsRound.DestinationId,
-      DestinationName: sourceName,
-      DisplayName: paramsRound.DisplayName,
-      DroppingId: DroppingPointReturn.PointId,
-      DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
-      EmailId: "nadeem@webiixx.com",
-      EmergencyMobileNo: null,
-      Fares: FaresRound,
-      Genders: gender,
-      IdCardNo: IdNumber,
-      IdCardType: IdCardType,
-      IdCardIssuedBy: IssuedBy,
-      JourneyDate: returnDate,
-      MobileNo: 9999999999,
-      Names: name,
-      NoofSeats: selectedSheetsRound.length,
-      Operator: "GDS Demo Test", //////not showing
-      PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
-      PostalCode: "500035", /////
-      Provider: paramsRound.Provider,
-      ReturnDate: null,
-      State: "Telangana",
-      Seatcodes: null,
-      SeatNos: SeatNosRound,
-      Servicetax: ServiceTaxRound,
-      ServiceCharge: ServiceChargeRound,
-      SourceId: paramsRound.SourceId,
-      SourceName: destinationName,
-      Titles: den,
-      TripId: paramsRound.Id,
-      TripType: 1,
-      UserType: 5
-    };
-    console.log(paramRound);
-    console.log(JSON.stringify(paramRound));
-    //  }
+    if (TripType == 2) {
+      let paramRound = {
+        Address: "South X",
+        Ages: age,
+        BoardingId: BoardingPointReturn.PointId,
+        BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
+        BusTypeName: paramsRound.BusType,
+        CancellationPolicy: paramsRound.CancellationPolicy,
+        City: destinationName,
+        ConvenienceFee: paramsRound.ConvenienceFee,
+        DepartureTime: paramsRound.DepartureTime,
+        DestinationId: paramsRound.DestinationId,
+        DestinationName: sourceName,
+        DisplayName: paramsRound.DisplayName,
+        DroppingId: DroppingPointReturn.PointId,
+        DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
+        EmailId: "nadeem@webiixx.com",
+        EmergencyMobileNo: null,
+        Fares: FaresRound,
+        Genders: gender,
+        IdCardNo: IdNumber,
+        IdCardType: IdCardType,
+        IdCardIssuedBy: IssuedBy,
+        JourneyDate: returnDate,
+        MobileNo: 9999999999,
+        Names: name,
+        NoofSeats: selectedSheetsRound.length,
+        Operator: "GDS Demo Test", //////not showing
+        PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
+        PostalCode: "500035", /////
+        Provider: paramsRound.Provider,
+        ReturnDate: null,
+        State: "Telangana",
+        Seatcodes: null,
+        SeatNos: SeatNosRound,
+        Servicetax: ServiceTaxRound,
+        ServiceCharge: ServiceChargeRound,
+        SourceId: paramsRound.SourceId,
+        SourceName: destinationName,
+        Titles: den,
+        TripId: paramsRound.Id,
+        TripType: 1,
+        UserType: 5
+      };
+      console.log(paramRound);
+      console.log(JSON.stringify(paramRound));
+    }
     console.log(param);
     console.log(JSON.stringify(param));
     //return;
 
-    if (this.state.IdNumber && this.state.IssuedBy) {
-      if (TripType == 1) {
-        this.setState({ loader: true });
-        etravosApi
-          .post("/Buses/BlockBusTicket", param)
-          .then(({ data }) => {
-            console.log(data);
-            this.setState({ loader: false });
-            if (data.BookingStatus == 1) {
-              this.props.navigation.navigate("BusPayment", {
-                BlockingReferenceNo: data.BlockingReferenceNo,
-                BookingReferenceNo: data.BookingReferenceNo,
-                ...this.props.navigation.state.params,
-                adults: adults
-              });
-            } else {
-              Toast.show(data.Message, Toast.LONG);
-            }
-          })
-          .catch(error => {});
-      } else if (TripType == 2) {
-        this.setState({ loader: true });
-        etravosApi.post("/Buses/BlockBusTicket", param).then(({ data }) => {
-          console.log(data);
-          this.setState({ loader: false });
-
+    if (this.state.IdNumber && this.state.IssuedBy && !this.validate()) {
+      var adharcard = /^\d{12}$/;
+      if (this.state.IdCardType == "ADHAR_CARD" && !this.state.IdNumber.match(adharcard)) {
+        Toast.show("Please enter the valid Adhar Card Number", Toast.LONG);
+      } else {
+        if (TripType == 1) {
+          this.setState({ loader: true });
           etravosApi
-            .post("/Buses/BlockBusTicket", paramRound)
-            .then(({ data: BlockRound }) => {
-              console.log(BlockRound);
-              if (data.BookingStatus == 1 && BlockRound.BookingStatus == 1) {
+            .post("/Buses/BlockBusTicket", param)
+            .then(({ data }) => {
+              console.log(data);
+              this.setState({ loader: false });
+              if (data.BookingStatus == 1) {
                 this.props.navigation.navigate("BusPayment", {
                   BlockingReferenceNo: data.BlockingReferenceNo,
                   BookingReferenceNo: data.BookingReferenceNo,
-                  BlockingReferenceNoRound: BlockRound.BlockingReferenceNo,
-                  BookingReferenceNoRound: BlockRound.BookingReferenceNo,
                   ...this.props.navigation.state.params,
                   adults: adults
                 });
               } else {
                 Toast.show(data.Message, Toast.LONG);
-                this.setState({ loader: false });
               }
             })
-            .catch(error => {
-              Toast.show(data.Message, Toast.LONG);
-              this.setState({ loader: false });
-            });
-        });
+            .catch(error => {});
+        } else if (TripType == 2) {
+          this.setState({ loader: true });
+          etravosApi.post("/Buses/BlockBusTicket", param).then(({ data }) => {
+            console.log(data);
+            this.setState({ loader: false });
+
+            etravosApi
+              .post("/Buses/BlockBusTicket", paramRound)
+              .then(({ data: BlockRound }) => {
+                console.log(BlockRound);
+                if (data.BookingStatus == 1 && BlockRound.BookingStatus == 1) {
+                  this.props.navigation.navigate("BusPayment", {
+                    BlockingReferenceNo: data.BlockingReferenceNo,
+                    BookingReferenceNo: data.BookingReferenceNo,
+                    BlockingReferenceNoRound: BlockRound.BlockingReferenceNo,
+                    BookingReferenceNoRound: BlockRound.BookingReferenceNo,
+                    ...this.props.navigation.state.params,
+                    adults: adults
+                  });
+                } else {
+                  Toast.show(data.Message, Toast.LONG);
+                  this.setState({ loader: false });
+                }
+              })
+              .catch(error => {
+                Toast.show(data.Message, Toast.LONG);
+                this.setState({ loader: false });
+              });
+          });
+        }
       }
     } else {
       Toast.show("Please fill all the Details", Toast.LONG);
@@ -290,13 +304,17 @@ class CheckoutBus extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     borderRadius: 8,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
                     marginTop: 20
                   }}>
                   <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-                    <Text style={{ fontWeight: "300", fontSize: 16 }}>Departure</Text>
+                    <Text style={{ fontWeight: "700", fontSize: 16 }}>Departure</Text>
                     <View
                       style={{
                         flexDirection: "row",
@@ -357,6 +375,10 @@ class CheckoutBus extends React.PureComponent {
                   <View
                     style={{
                       elevation: 2,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowColor: "rgba(0,0,0,0.1)",
+                      shadowOpacity: 1,
+                      shadowRadius: 4,
                       borderRadius: 8,
                       backgroundColor: "#ffffff",
                       marginHorizontal: 16,
@@ -424,6 +446,10 @@ class CheckoutBus extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
                     marginVertical: 20,
@@ -489,6 +515,7 @@ class CheckoutBus extends React.PureComponent {
                         borderColor: "#F2F2F2",
                         height: 40,
                         flex: 1,
+                        paddingStart: 5,
                         marginHorizontal: 2
                       }}
                       keyboardType="numeric"
@@ -503,6 +530,7 @@ class CheckoutBus extends React.PureComponent {
                       height: 40,
                       flex: 1,
                       marginTop: 10,
+                      paddingStart: 5,
                       marginHorizontal: 10
                     }}
                     onChangeText={this._changeAdult("IssuedBy")}
@@ -523,47 +551,13 @@ class CheckoutBus extends React.PureComponent {
                             <Text style={{ color: "#5B6974" }}>Seat No.</Text>
 
                             <Text style={{ marginHorizontal: 5 }}>{item.Number}</Text>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                marginStart: 2,
-                                width: 60,
-                                paddingHorizontal: 5,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              {/* <Picker
-                            selectedValue={this.state.adults[index].den}
-                            style={{ height: 50, width: 60 }}
-                            onValueChange={this._changeAdults(index, "den")}>
-                            <Picker.Item label="Mr." value="Mr" />
-                            <Picker.Item label="Mrs." value="Mrs" />
-                          </Picker> */}
-                              <RNPickerSelect
-                                useNativeAndroidPickerStyle={false}
-                                placeholder={{}}
-                                value={this.state.adults[index].den}
-                                style={{
-                                  inputAndroidContainer: { height: 35 },
-                                  inputAndroid: { paddingStart: 0, color: "#000" },
-                                  iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
-                                }}
-                                onValueChange={this._changeAdults(index, "den")}
-                                items={[
-                                  { value: "Mr", label: "Mr." },
-                                  { value: "Mrs", label: "Mrs." }
-                                ]}
-                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
-                              />
-                            </View>
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 flex: 1,
+                                paddingStart: 5,
                                 marginHorizontal: 2
                               }}
                               onChangeText={this._changeAdults(index, "name")}
@@ -613,6 +607,7 @@ class CheckoutBus extends React.PureComponent {
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 flex: 1,
+                                paddingStart: 5,
                                 marginHorizontal: 2
                               }}
                               keyboardType="numeric"
@@ -628,6 +623,10 @@ class CheckoutBus extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
                     marginBottom: 20,

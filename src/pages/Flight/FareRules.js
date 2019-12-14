@@ -29,7 +29,7 @@ class FareDetails extends React.PureComponent {
                 <Ionicons name="md-arrow-back" size={24} />
               </Button>
               <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "700" }}>
-                FareRules
+                Fare Rules
               </Text>
             </View>
             <ScrollView contentContainerStyle={{ marginHorizontal: 16, marginVertical: 10 }}>

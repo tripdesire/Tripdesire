@@ -329,6 +329,10 @@ class BusPayment extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
                     marginTop: 20,
