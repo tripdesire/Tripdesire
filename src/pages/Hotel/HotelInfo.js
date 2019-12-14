@@ -209,14 +209,14 @@ class HotelInfo extends React.PureComponent {
               halfStar={<IconMaterial name={"star-half"} style={[styles.myStarStyle]} />}
             />
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View>
             <View style={{ flexDirection: "row", flex: 2 }}>
               <Image source={require("../../assets/imgs/location.png")} />
               <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5 }}>
                 {item.HotelAddress}
               </Text>
             </View>
-            <Text style={{ color: "#636C73", flex: 1, paddingStart: 5, marginStart: 10 }}>
+            <Text style={{ color: "#636C73", flex: 1, marginStart: 10 }}>
               {this.state.room} : Room , {this.state.Night} : Night
             </Text>
           </View>
