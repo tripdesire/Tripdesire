@@ -62,7 +62,7 @@ class Order extends React.PureComponent {
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
           <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
             <View style={styles.header}>
               <Text style={styles.headerTitle}>Orders</Text>

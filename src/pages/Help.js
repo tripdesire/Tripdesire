@@ -51,7 +51,7 @@ function Help(props) {
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF", elevation: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Help</Text>
         </View>

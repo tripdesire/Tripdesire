@@ -6,7 +6,7 @@ function MyAccount(props) {
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>My Account</Text>
