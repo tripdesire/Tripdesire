@@ -95,10 +95,10 @@ class ProfilePage extends React.PureComponent {
                 flexDirection: "row",
                 height: 56,
                 alignItems: "center",
-                paddingHorizontal: 16,
+                paddingEnd: 16,
                 backgroundColor: "#E4EAF6"
               }}>
-              <Button onPress={() => this.props.navigation.goBack(null)}>
+              <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
               <Text

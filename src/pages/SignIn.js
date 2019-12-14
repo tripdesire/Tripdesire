@@ -34,11 +34,13 @@ class SignIn extends React.PureComponent {
           if (data.code == "1") {
             this.setState({ loader: false });
             this.props.Signin(data.details);
-            if (isCheckout) {
-              this.goBack();
-            } else {
-              this.props.navigation.navigate("Home");
-            }
+            // if (isCheckout) {
+            //   this.goBack();
+            // } else {
+            //   this.props.navigation.navigate("Home");
+            // }
+            this.props.navigation.goBack(null);
+
             Toast.show("You have successfully login", Toast.LONG);
           } else {
             this.setState({ loader: false });
@@ -173,9 +175,14 @@ class SignIn extends React.PureComponent {
               </View>
               <Button
                 style={[styles.facebook_google_button, { marginTop: 20 }]}
+                onPress={this.NavigateToScreen("OTPScreen")}>
+                <Text style={{ color: "#D2D1D1" }}>Sign In via OTP</Text>
+              </Button>
+              <Button
+                style={[styles.facebook_google_button, { marginTop: 20 }]}
                 onPress={() => this._Social_login("google")}>
                 <Image source={require("../assets/imgs/google.png")} />
-                <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
+                <Text style={{ color: "#D2D1D1" }}>Sign In by Google</Text>
               </Button>
               <Button
                 style={[styles.facebook_google_button, { marginTop: 10 }]}
@@ -185,7 +192,7 @@ class SignIn extends React.PureComponent {
                   resizeMode="contain"
                   source={require("../assets/imgs/facebook.png")}
                 />
-                <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Sign Up by Facebook</Text>
+                <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Sign In by Facebook</Text>
               </Button>
             </View>
           </ScrollView>

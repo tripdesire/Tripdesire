@@ -44,6 +44,8 @@ import BoardingRound from "./Bus/BusRound/BoardingRound";
 import BusRoundReturn from "./Bus/BusRound/BusRoundReturn";
 import MyAccount from "./MyAccount";
 import Help from "./Help";
+import OTPScreen from "./OTPScreen";
+import OTPVerify from "./OTPVerify";
 
 export {
   Home,
@@ -91,5 +93,7 @@ export {
   BoardingRound,
   BusRoundReturn,
   MyAccount,
-  Help
+  Help,
+  OTPScreen,
+  OTPVerify
 };

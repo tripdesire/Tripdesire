@@ -54,7 +54,9 @@ import {
   BoardingRound,
   BusRoundReturn,
   MyAccount,
-  Help
+  Help,
+  OTPScreen,
+  OTPVerify
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -95,8 +97,6 @@ const HomeStack = createStackNavigator(
     RenderInternationRound,
     FlightsInfoRoundInt,
     Splash,
-    SignIn,
-    SignUp,
     RoomDetails,
     ThankYou,
     Filter,
@@ -107,9 +107,6 @@ const HomeStack = createStackNavigator(
     ThankYouBus,
     ThankYouHotel,
     Boarding,
-    ForgetPassword,
-    ProfilePage,
-    BillingDetails,
     BusRound,
     SeatOneway,
     SeatRound,
@@ -123,24 +120,42 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const OrderStack = createStackNavigator(
+const LoginStack = createStackNavigator(
   {
-    Order,
-    OrderDetails
+    SignIn,
+    SignUp,
+    OTPScreen,
+    OTPVerify,
+    ForgetPassword
   },
   {
     headerMode: "none",
-    initialRouteName: "Order"
+    initialRouteName: "SignIn"
   }
 );
 
 const AuthStack = createStackNavigator(
   {
-    MyAccount
+    MyAccount,
+    LoginStack,
+    ProfilePage,
+    BillingDetails
   },
   {
     headerMode: "none",
     initialRouteName: "MyAccount"
+  }
+);
+
+const OrderStack = createStackNavigator(
+  {
+    Order,
+    OrderDetails,
+    LoginStack
+  },
+  {
+    headerMode: "none",
+    initialRouteName: "Order"
   }
 );
 
@@ -158,21 +173,26 @@ const TabNavigator = createBottomTabNavigator(
   {
     HomeStack: {
       screen: HomeStack,
-      navigationOptions: {
-        title: "Home",
-        tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require("./src/assets/imgs/home.png")}
-            tintColor={tintColor}
-            style={{ width: 26, height: 26 }}
-          />
-        )
+      navigationOptions: ({ navigation }) => {
+        let { routeName } = navigation.state.routes[navigation.state.index];
+        return {
+          title: "Home",
+          tabBarVisible: routeName === "Home" ? true : false,
+          tabBarIcon: ({ tintColor }) => (
+            <Image
+              source={require("./src/assets/imgs/home.png")}
+              tintColor={tintColor}
+              style={{ width: 26, height: 26 }}
+            />
+          )
+        };
       }
     },
     OrderStack: {
       screen: OrderStack,
       navigationOptions: {
         title: "My Trips",
+
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/my_trips_tab.png")}
@@ -184,15 +204,19 @@ const TabNavigator = createBottomTabNavigator(
     },
     AuthStack: {
       screen: AuthStack,
-      navigationOptions: {
-        title: "My Account",
-        tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require("./src/assets/imgs/my_account.png")}
-            tintColor={tintColor}
-            style={{ width: 26, height: 26 }}
-          />
-        )
+      navigationOptions: ({ navigation }) => {
+        let { routeName } = navigation.state.routes[navigation.state.index];
+        return {
+          title: "My Account",
+          tabBarVisible: routeName === "MyAccount" ? true : false,
+          tabBarIcon: ({ tintColor }) => (
+            <Image
+              source={require("./src/assets/imgs/my_account.png")}
+              tintColor={tintColor}
+              style={{ width: 26, height: 26 }}
+            />
+          )
+        };
       }
     },
     Help: {
