@@ -294,8 +294,8 @@ class Payment extends React.PureComponent {
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {
-                      email: "void@razorpay.com",
-                      contact: "9191919191",
+                      email: user.billing.email,
+                      contact: user.billing.phone,
                       name: "Razorpay Software"
                     },
                     theme: { color: "#E5EBF7" }
@@ -422,7 +422,7 @@ class Payment extends React.PureComponent {
                         style={{ width: 30 }}
                       />
                       <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
-                        Passengers Details
+                        Guest Details
                       </Text>
                     </View>
 

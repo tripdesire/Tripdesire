@@ -89,104 +89,99 @@ class BusPayment extends React.PureComponent {
         // }
         //  return;
         const { user } = this.props;
-        domainApi
-          .post("/checkout/new-order?user_id=" + user.id, param)
-          .then(({ data: order }) => {
-            console.log(order);
+        domainApi.post("/checkout/new-order?user_id=" + user.id, param).then(({ data: order }) => {
+          console.log(order);
 
-            var options = {
-              description: "Credits towards consultation",
-              image: "https://i.imgur.com/3g7nmJC.png",
-              currency: "INR",
-              key: "rzp_test_a3aQYPLYowGvWJ",
-              amount: parseInt(order.total) * 100,
-              name: "TripDesire",
-              prefill: {
-                email: "void@razorpay.com",
-                contact: "9191919191",
-                name: "Razorpay Software"
-              },
-              theme: { color: "#E5EBF7" }
-            };
+          var options = {
+            description: "Credits towards consultation",
+            image: "https://i.imgur.com/3g7nmJC.png",
+            currency: "INR",
+            key: "rzp_test_a3aQYPLYowGvWJ",
+            amount: parseInt(order.total) * 100,
+            name: "TripDesire",
+            prefill: {
+              email: user.billing.email,
+              contact: user.billing.phone,
+              name: "Razorpay Software"
+            },
+            theme: { color: "#E5EBF7" }
+          };
 
-            RazorpayCheckout.open(options)
-              .then(razorpayRes => {
-                if (TripType == 1) {
-                  etravosApi
-                    .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
-                    .then(({ data: Response }) => {
-                      console.log(Response);
-                      if (Response.BookingStatus == 3) {
-                        this.props.navigation.navigate("ThankYouBus", {
-                          order,
-                          razorpayRes,
-                          Response,
-                          ...this.props.navigation.state.params
-                        });
-                        Toast.show(Response.Message, Toast.LONG);
-                        let paymentData = {
-                          order_id: order.id,
-                          status: "completed",
-                          transaction_id: razorpayRes.razorpay_payment_id,
-                          reference_no: Response
-                        };
-                        console.log(paymentData);
-
-                        domainApi.post("/checkout/update-order", paymentData).then(res => {
-                          console.log(res);
-                        });
-                      } else {
-                        Toast.show(Response.Message, Toast.LONG);
-                      }
-                    })
-                    .catch(error => {
-                      // handle failure
-                      alert(`Error: ${error.code} | ${error.description}`);
-                    });
-                } else {
-                  try {
-                    const [BookingOneway, BookingRound] = axios.all([
-                      etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
-                      etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
-                    ]);
-                    console.log(BookingOneway, BookingRound);
-                    if (BookingOneway.BookingStatus == 3 && BookingRound.BookingStatus == 3) {
+          RazorpayCheckout.open(options)
+            .then(razorpayRes => {
+              if (TripType == 1) {
+                etravosApi
+                  .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
+                  .then(({ data: Response }) => {
+                    console.log(Response);
+                    if (Response.BookingStatus == 3) {
                       this.props.navigation.navigate("ThankYouBus", {
-                        ...this.props.navigation.state.params,
+                        order,
                         razorpayRes,
-                        BookingOneway,
-                        BookingRound,
-                        order
+                        Response,
+                        ...this.props.navigation.state.params
                       });
-
-                      Toast.show(BookingOneway.Message, Toast.LONG);
+                      Toast.show(Response.Message, Toast.LONG);
                       let paymentData = {
                         order_id: order.id,
                         status: "completed",
                         transaction_id: razorpayRes.razorpay_payment_id,
-                        reference_no: BookingOneway,
-                        return_reference_no: BookingRound
+                        reference_no: Response
                       };
                       console.log(paymentData);
 
                       domainApi.post("/checkout/update-order", paymentData).then(res => {
                         console.log(res);
                       });
-                    } else if (
-                      BookingOneway.BookingStatus != 3 &&
-                      BookingRound.BookingStatus != 3
-                    ) {
-                      Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                    } else {
+                      Toast.show(Response.Message, Toast.LONG);
                     }
-                  } catch (e) {
-                    console.log(e);
+                  })
+                  .catch(error => {
+                    // handle failure
+                    alert(`Error: ${error.code} | ${error.description}`);
+                  });
+              } else {
+                try {
+                  const [BookingOneway, BookingRound] = axios.all([
+                    etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
+                    etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
+                  ]);
+                  console.log(BookingOneway, BookingRound);
+                  if (BookingOneway.BookingStatus == 3 && BookingRound.BookingStatus == 3) {
+                    this.props.navigation.navigate("ThankYouBus", {
+                      ...this.props.navigation.state.params,
+                      razorpayRes,
+                      BookingOneway,
+                      BookingRound,
+                      order
+                    });
+
+                    Toast.show(BookingOneway.Message, Toast.LONG);
+                    let paymentData = {
+                      order_id: order.id,
+                      status: "completed",
+                      transaction_id: razorpayRes.razorpay_payment_id,
+                      reference_no: BookingOneway,
+                      return_reference_no: BookingRound
+                    };
+                    console.log(paymentData);
+
+                    domainApi.post("/checkout/update-order", paymentData).then(res => {
+                      console.log(res);
+                    });
+                  } else if (BookingOneway.BookingStatus != 3 && BookingRound.BookingStatus != 3) {
+                    Toast.show("Your ticket is not booked successfully.", Toast.LONG);
                   }
+                } catch (e) {
+                  console.log(e);
                 }
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
       }
     }
   };

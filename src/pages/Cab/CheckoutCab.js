@@ -14,7 +14,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
-import axios from "axios";
+import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
@@ -29,7 +29,7 @@ class CheckoutCab extends React.PureComponent {
       firstname: "",
       last_name: "",
       dob: moment()
-        .subtract(18, "years")
+        .subtract(12, "years")
         .toDate(),
       age: "",
       gender: "M",
@@ -41,14 +41,16 @@ class CheckoutCab extends React.PureComponent {
   }
 
   onAdultChange = key => text => {
+    let den = key == "gender" && text == "M" ? "Mr" : "Mrs";
     this.setState({
       [key]: text,
       dobShow: false,
+      den,
       age: moment().diff(moment(text), "years")
     });
   };
 
-  show = () => {
+  handleDtPickerCancel = () => {
     this.setState({ dobShow: false });
   };
 
@@ -163,8 +165,8 @@ class CheckoutCab extends React.PureComponent {
                   amount: parseInt(order.total) * 100,
                   name: "TripDesire",
                   prefill: {
-                    email: "void@razorpay.com",
-                    contact: "9191919191",
+                    email: user.billing.email,
+                    contact: user.billing.phone,
                     name: "Razorpay Software"
                   },
                   theme: { color: "#E5EBF7" }
@@ -256,26 +258,17 @@ class CheckoutCab extends React.PureComponent {
                 <Icon name="md-arrow-back" size={24} />
               </Button>
               <View style={{ marginHorizontal: 5 }}>
-                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
-                <Text style={{ fontSize: 12, color: "#717984" }}>
-                  {/* {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
-                  {params.checkInDate
-                    ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
-                    : ""}
-                  {params.checkOutDate
-                    ? " - " + moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM") + " "
-                    : ""}
-                  |{params.adult > 0 ? " " + params.adult + " Adult" : " "}
-                  {params.child > 0 ? " , " + params.child + " Child" : " "}
-                  {params.infant > 0 ? " , " + params.infant + " Infant" : " "}
-                  {params.className ? "| " + params.className : ""} */}
-                </Text>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>Payment</Text>
               </View>
             </View>
             <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.2)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   borderRadius: 8,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
@@ -343,6 +336,10 @@ class CheckoutCab extends React.PureComponent {
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.2)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   borderRadius: 8,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
@@ -355,7 +352,7 @@ class CheckoutCab extends React.PureComponent {
                       Passengers Details
                     </Text>
                   </View>
-                  <View>
+                  {/* <View>
                     <View
                       style={{
                         flexDirection: "row",
@@ -438,7 +435,7 @@ class CheckoutCab extends React.PureComponent {
                           date={this.state.dob}
                           isVisible={this.state.dobShow}
                           onConfirm={this.onAdultChange("dob")}
-                          onCancel={this.show}
+                          onCancel={this.handleDtPickerCancel}
                           maximumDate={moment()
                             .subtract(12, "years")
                             .toDate()}
@@ -501,12 +498,116 @@ class CheckoutCab extends React.PureComponent {
                         />
                       </View>
                     </View>
+                  </View> */}
+
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginTop: 10,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}>
+                      <Text style={{ flexBasis: "15%" }}>Adult</Text>
+
+                      <TextInput
+                        style={{
+                          borderWidth: 1,
+                          borderColor: "#F2F2F2",
+                          height: 40,
+                          flex: 1,
+                          paddingStart: 5,
+                          marginEnd: 5
+                        }}
+                        onChangeText={this.onAdultChange("firstname")}
+                        placeholder="First Name"
+                      />
+                      <TextInput
+                        style={{
+                          borderWidth: 1,
+                          borderColor: "#F2F2F2",
+                          height: 40,
+                          paddingStart: 5,
+                          flex: 1
+                        }}
+                        placeholder="Last Name"
+                        onChangeText={this.onAdultChange("last_name")}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        marginTop: 5,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}>
+                      <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
+                      <Button
+                        style={{
+                          flex: 1,
+                          borderWidth: 1,
+                          borderColor: "#F2F2F2",
+                          height: 40,
+                          marginEnd: 5,
+                          justifyContent: "center",
+                          paddingStart: 5
+                        }}
+                        onPress={this.showDatePicker}
+                        placeholder="DOB">
+                        <Text>{moment(this.state.dob).format("DD-MMM-YYYY")}</Text>
+                      </Button>
+                      <DateTimePicker
+                        date={this.state.dob}
+                        isVisible={this.state.dobShow}
+                        onConfirm={this.onAdultChange("dob")}
+                        onCancel={this.handleDtPickerCancel}
+                        maximumDate={moment()
+                          .subtract(12, "years")
+                          .toDate()}
+                      />
+                      <View
+                        style={{
+                          flex: 1,
+                          borderWidth: 1,
+                          borderColor: "#F2F2F2",
+                          height: 40,
+                          justifyContent: "center"
+                        }}>
+                        <RNPickerSelect
+                          useNativeAndroidPickerStyle={false}
+                          placeholder={{}}
+                          selectedValue={this.state.gender}
+                          style={{
+                            inputAndroid: {
+                              color: "#000",
+                              padding: 0,
+                              height: 20,
+                              paddingStart: 3
+                            },
+                            inputIOS: { paddingStart: 3, color: "#000" },
+                            iconContainer: { marginEnd: 8 }
+                          }}
+                          onValueChange={(itemValue, itemIndex) =>
+                            this.setState({ gender: itemValue })
+                          }
+                          items={[
+                            { label: "Male", value: "M" },
+                            { label: "Female", value: "F" }
+                          ]}
+                          Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                        />
+                      </View>
+                    </View>
                   </View>
                 </View>
               </View>
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.2)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
                   marginTop: 20,
@@ -544,6 +645,10 @@ class CheckoutCab extends React.PureComponent {
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.2)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
                   marginTop: 20,
