@@ -1,7 +1,7 @@
 import { SIGN_IN, LOGOUT, BILLING, UPDATE_PROFILE } from "../action/actionTypes";
 
 const initialState = {};
-export const signInReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGN_IN:
       return action.payload;

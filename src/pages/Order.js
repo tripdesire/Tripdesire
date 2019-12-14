@@ -19,9 +19,9 @@ class Order extends React.PureComponent {
       orders: []
     };
 
-    const { signIn } = this.props;
+    const { user } = this.props;
 
-    if (isEmpty(signIn)) {
+    if (isEmpty(user)) {
       this.setState({
         loader: false,
         orders: 0
@@ -30,7 +30,7 @@ class Order extends React.PureComponent {
       this.props.navigation.navigate("SignIn", { isCheckout: true });
     } else {
       domainApi
-        .get("/nutri-user/" + signIn.id + "/order-list")
+        .get("/nutri-user/" + user.id + "/order-list")
         .then(({ data }) => {
           console.log(data);
           if (data.status == 1) {
@@ -55,9 +55,9 @@ class Order extends React.PureComponent {
   };
 
   // componentDidMount() {
-  //   const { signIn } = this.props;
+  //   const { user } = this.props;
 
-  //   if (isEmpty(signIn)) {
+  //   if (isEmpty(user)) {
   //     this.setState({
   //       loader: false,
   //       orders: 0
@@ -65,7 +65,7 @@ class Order extends React.PureComponent {
   //     Toast.show("Please login or signup", Toast.LONG);
   //   } else {
   //     domainApi
-  //       .get("/nutri-user/" + signIn.id + "/order-list")
+  //       .get("/nutri-user/" + user.id + "/order-list")
   //       .then(({ data }) => {
   //         console.log(data);
   //         if (data.status == 1) {
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  signIn: state.signIn
+  user: state.user
 });
 
 export default connect(mapStateToProps, null)(Order);

@@ -71,7 +71,11 @@ class SignIn extends React.PureComponent {
           if (data.code == 1) {
             this.setState({ loader: false });
             this.props.Signin(data.details);
-            this.props.navigation.navigate("Home");
+            if (isCheckout) {
+              this.goBack();
+            } else {
+              this.props.navigation.navigate("Home");
+            }
             Toast.show("you are login successfully", Toast.LONG);
           } else {
             Toast.show("you are not login successfully", Toast.LONG);
@@ -91,6 +95,7 @@ class SignIn extends React.PureComponent {
 
   render() {
     const { isCheckout } = this.props.navigation.state.params;
+
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
@@ -222,8 +227,4 @@ const mapDispatchToProps = {
   Signin
 };
 
-const mapStateToProps = state => ({
-  signUp: state.signUp
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(null, mapDispatchToProps)(SignIn);

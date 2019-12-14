@@ -10,12 +10,12 @@ import { LoginButton, AccessToken } from "react-native-fbsdk";
 class ProfilePage extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { signIn } = this.props;
+    const { user } = this.props;
     this.state = {
-      firstname: signIn.first_name,
-      lastname: signIn.last_name,
-      displayname: signIn.username,
-      email: signIn.email,
+      firstname: user.first_name,
+      lastname: user.last_name,
+      displayname: user.username,
+      email: user.email,
       currentPassword: "",
       newPassword: "",
       confirmPassword: ""
@@ -33,7 +33,7 @@ class ProfilePage extends React.PureComponent {
       confirmPassword
     } = this.state;
     let param = {
-      user_id: this.props.signIn.id,
+      user_id: this.props.user.id,
       first_name: firstname,
       last_name: lastname,
       user_email: email,
@@ -187,7 +187,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = state => ({
-  signIn: state.signIn
+  user: state.user
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

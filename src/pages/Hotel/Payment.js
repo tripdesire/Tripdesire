@@ -269,7 +269,7 @@ class Payment extends React.PureComponent {
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
     } else {
-      if (isEmpty(this.props.signIn)) {
+      if (isEmpty(this.props.user)) {
         //Toast.show("Please login or signup", Toast.LONG);
         this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
@@ -281,9 +281,9 @@ class Payment extends React.PureComponent {
           .then(blockres => {
             console.log(blockres.data);
             if (blockres.data.BookingStatus == 1) {
-              const { signIn } = this.props;
+              const { user } = this.props;
               domainApi
-                .post("/checkout/new-order?user_id=" + signIn.id, param)
+                .post("/checkout/new-order?user_id=" + user.id, param)
                 .then(({ data: order }) => {
                   console.log(order);
                   var options = {
@@ -755,7 +755,7 @@ class Payment extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  signIn: state.signIn
+  user: state.user
 });
 
 export default connect(mapStateToProps, null)(Payment);

@@ -14,9 +14,9 @@ class CustomDrawer extends React.PureComponent {
   }
 
   signIn = () => {
-    if (isEmpty(this.props.signIn)) {
+    if (isEmpty(this.props.user)) {
       this.props.navigation.closeDrawer();
-      this.props.navigation.navigate("SignIn");
+      this.props.navigation.navigate("SignIn", {});
     }
   };
 
@@ -31,7 +31,7 @@ class CustomDrawer extends React.PureComponent {
   };
 
   render() {
-    const { signIn } = this.props;
+    const { user } = this.props;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#5789FF" }} />
@@ -41,23 +41,23 @@ class CustomDrawer extends React.PureComponent {
               <Image
                 style={{ width: 50, height: 50, borderRadius: 25 }}
                 source={{
-                  uri: signIn.first_name
-                    ? signIn.avatar_url
+                  uri: user.first_name
+                    ? user.avatar_url
                     : "https://secure.gravatar.com/avatar/0ab9f728e6f3d09a0727affab105f3cb?s=96&d=mm&r=g"
                 }}
               />
-              {!signIn.first_name && (
+              {!user.first_name && (
                 <Text
                   style={{ lineHeight: 22, fontSize: 18, color: "#fff", flex: 4, marginStart: 20 }}>
                   Login / SignUp
                 </Text>
               )}
-              {signIn.first_name && (
+              {user.first_name && (
                 <View style={{ flex: 4, marginStart: 20 }}>
                   <Text style={{ lineHeight: 22, fontSize: 18, color: "#fff", fontWeight: "700" }}>
-                    {signIn.first_name + " " + signIn.last_name}
+                    {user.first_name + " " + user.last_name}
                   </Text>
-                  <Text style={{ lineHeight: 18, color: "#fff" }}>{signIn.email}</Text>
+                  <Text style={{ lineHeight: 18, color: "#fff" }}>{user.email}</Text>
                 </View>
               )}
             </Button>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => ({
-  signIn: state.signIn
+  user: state.user
 });
 
 const mapDispatchToProps = {

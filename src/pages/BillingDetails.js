@@ -10,19 +10,19 @@ import { Signup, Signin, Billing } from "../store/action";
 class BillingDetails extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { signIn } = this.props;
+    const { user } = this.props;
     this.state = {
-      firstname: signIn.billing.first_name,
-      lastname: signIn.billing.last_name,
-      email: signIn.billing.email,
-      phone: signIn.billing.phone,
-      streetAddress: signIn.billing.address_1,
-      city: signIn.billing.city,
-      company: signIn.billing.company,
-      streetAddress1: signIn.billing.address_2,
-      state: signIn.billing.state,
-      postcode: signIn.billing.postcode,
-      country: signIn.billing.country
+      firstname: user.billing.first_name,
+      lastname: user.billing.last_name,
+      email: user.billing.email,
+      phone: user.billing.phone,
+      streetAddress: user.billing.address_1,
+      city: user.billing.city,
+      company: user.billing.company,
+      streetAddress1: user.billing.address_2,
+      state: user.billing.state,
+      postcode: user.billing.postcode,
+      country: user.billing.country
     };
   }
 
@@ -41,7 +41,7 @@ class BillingDetails extends React.PureComponent {
       country
     } = this.state;
     let param = {
-      user_id: this.props.signIn.id,
+      user_id: this.props.user.id,
       billing_first_name: firstname,
       billing_last_name: lastname,
       billing_company: company,
@@ -225,7 +225,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = state => ({
-  signIn: state.signIn
+  user: state.user
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BillingDetails);

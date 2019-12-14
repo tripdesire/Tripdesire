@@ -139,7 +139,7 @@ class CheckoutCab extends React.PureComponent {
     console.log(param);
 
     if (this.state.firstname != "" && this.state.last_name != "") {
-      if (isEmpty(this.props.signIn)) {
+      if (isEmpty(this.props.user)) {
         //Toast.show("Please login or signup", Toast.LONG);
         this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
@@ -149,9 +149,9 @@ class CheckoutCab extends React.PureComponent {
           .then(response => {
             this.setState({ loader: false });
             console.log(response);
-            const { signIn } = this.props;
+            const { user } = this.props;
             domainApi
-              .post("/checkout/new-order?user_id=" + signIn.id, newOrder)
+              .post("/checkout/new-order?user_id=" + user.id, newOrder)
               .then(({ data: order }) => {
                 console.log(order);
 
@@ -617,7 +617,7 @@ class CheckoutCab extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  signIn: state.signIn
+  user: state.user
 });
 
 export default connect(mapStateToProps, null)(CheckoutCab);

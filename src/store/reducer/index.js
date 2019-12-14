@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { domesticSuggestionReducer } from "./domesticSuggestionReducer";
 import { internationalSuggestionReducer } from "./internationalSuggestionReducer";
 import { domesticHotelSuggestionReducer } from "./domesticHotelSuggestionReducer";
-import { signInReducer } from "./signInReducer";
+import { userReducer } from "./userReducer";
 import { signUpReducer } from "./signUpReducer";
 import { busSuggestionReducer } from "./busSuggestionReducer";
 import { cabSuggestionReducer } from "./cabSuggestionReducer";
@@ -14,7 +14,7 @@ export default combineReducers({
   internationalSuggestion: internationalSuggestionReducer,
   domesticHotelSuggestion: domesticHotelSuggestionReducer,
   intHotelSuggestion: intHotelSuggestionReducer,
-  signIn: signInReducer,
+  user: userReducer,
   signUp: signUpReducer,
   busSuggestion: busSuggestionReducer,
   cabSuggestion: cabSuggestionReducer,
