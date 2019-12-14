@@ -5,7 +5,8 @@ import Toast from "react-native-simple-toast";
 class Service {
   constructor() {
     let service = axios.create({
-      baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2" //"https://webapi.etravos.com", ///
+      //baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2",
+      baseURL: "https://tripdesire.co/wp-json/wc/v2"
     });
     service.interceptors.response.use(this.handleSuccess, this.handleError);
     this.service = service;
@@ -34,7 +35,7 @@ class Service {
   };
 
   get(path, params = {}) {
-    return this.service.get(path, {params: params});
+    return this.service.get(path, { params: params });
   }
 
   patch(path, payload) {
