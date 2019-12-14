@@ -5,8 +5,8 @@ import { Text } from "../components";
 function MyAccount(props) {
   return (
     <>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
+      <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>My Account</Text>

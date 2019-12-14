@@ -61,8 +61,8 @@ class Order extends React.PureComponent {
     const { loader, orders } = this.state;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
             <View style={styles.header}>
               <Text style={styles.headerTitle}>Orders</Text>
@@ -99,15 +99,14 @@ function OrderItems({ item, onPress }) {
   return (
     <Button
       style={{
-        marginHorizontal: 8,
-        marginVertical: 8,
+        margin: 8,
         borderRadius: 8,
-        padding: 10,
+        padding: 12,
         backgroundColor: "#FFFFFF",
         elevation: 3,
         shadowOpacity: 0.2,
         shadowRadius: 1,
-        shadowOffset: { height: 3, width: 0 }
+        shadowOffset: { height: 1, width: 0 }
       }}
       onPress={_onPress}>
       <View

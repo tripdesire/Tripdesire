@@ -50,8 +50,8 @@ function Help(props) {
 
   return (
     <>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#E4EAF6" }}>
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
+      <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Help</Text>
         </View>
@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 16
+    padding: 16,
+    backgroundColor: "#FFF"
   },
   header: {
     flexDirection: "row",
@@ -128,9 +129,9 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     borderRadius: 8,
     elevation: 5,
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.4,
     shadowRadius: 1,
-    shadowOffset: { height: 3, width: 0 }
+    shadowOffset: { height: 1, width: 0 }
   },
   img: {
     width: 64,
