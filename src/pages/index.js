@@ -42,6 +42,8 @@ import SeatRound from "./Bus/BusRound/SeatRound";
 import BoardingOneway from "./Bus/BusRound/BoardingOneway";
 import BoardingRound from "./Bus/BusRound/BoardingRound";
 import BusRoundReturn from "./Bus/BusRound/BusRoundReturn";
+import MyAccount from "./MyAccount";
+import Help from "./Help";
 
 export {
   Home,
@@ -87,5 +89,7 @@ export {
   SeatRound,
   BoardingOneway,
   BoardingRound,
-  BusRoundReturn
+  BusRoundReturn,
+  MyAccount,
+  Help
 };

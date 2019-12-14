@@ -1,11 +1,12 @@
 import React from "react";
+import { Image } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { Provider } from "react-redux";
 import { store, persistor } from "./src/store";
-import { TouchableOpacity } from "react-native";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { createDrawerNavigator } from "react-navigation-drawer";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 import { CustomDrawer, Icon } from "./src/components";
 import {
   Home,
@@ -51,7 +52,9 @@ import {
   SeatRound,
   BoardingOneway,
   BoardingRound,
-  BusRoundReturn
+  BusRoundReturn,
+  MyAccount,
+  Help
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -131,6 +134,16 @@ const OrderStack = createStackNavigator(
   }
 );
 
+const AuthStack = createStackNavigator(
+  {
+    MyAccount
+  },
+  {
+    headerMode: "none",
+    initialRouteName: "MyAccount"
+  }
+);
+
 const DrawerNavigator = createDrawerNavigator(
   {
     HomeStack,
@@ -141,10 +154,76 @@ const DrawerNavigator = createDrawerNavigator(
   }
 );
 
+const TabNavigator = createBottomTabNavigator(
+  {
+    HomeStack: {
+      screen: HomeStack,
+      navigationOptions: {
+        title: "Home",
+        tabBarIcon: ({ tintColor }) => (
+          <Image
+            source={require("./src/assets/imgs/home.png")}
+            tintColor={tintColor}
+            style={{ width: 24, height: 24 }}
+          />
+        )
+      }
+    },
+    OrderStack: {
+      screen: OrderStack,
+      navigationOptions: {
+        title: "My Trips",
+        tabBarIcon: ({ tintColor }) => (
+          <Image
+            source={require("./src/assets/imgs/my_trips_tab.png")}
+            tintColor={tintColor}
+            style={{ width: 24, height: 24 }}
+          />
+        )
+      }
+    },
+    AuthStack: {
+      screen: AuthStack,
+      navigationOptions: {
+        title: "My Account",
+        tabBarIcon: ({ tintColor }) => (
+          <Image
+            source={require("./src/assets/imgs/my_account.png")}
+            tintColor={tintColor}
+            style={{ width: 24, height: 24 }}
+          />
+        )
+      }
+    },
+    Help: {
+      screen: Help,
+      navigationOptions: {
+        title: "Help",
+        tabBarIcon: ({ tintColor }) => (
+          <Image
+            source={require("./src/assets/imgs/help_tab.png")}
+            tintColor={tintColor}
+            style={{ width: 24, height: 24 }}
+          />
+        )
+      }
+    }
+  },
+  {
+    tabBarOptions: {
+      activeBackgroundColor: "#1E2A48",
+      inactiveBackgroundColor: "#1E2A48",
+      activeTintColor: "#FFFFFF",
+      inactiveTintColor: "#828E99"
+    }
+    //contentComponent: CustomDrawer
+  }
+);
+
 const AppNavigator = createSwitchNavigator({
   Splash,
   //HomeStack,
-  DrawerNavigator
+  TabNavigator
 });
 
 const AppContainer = createAppContainer(AppNavigator);

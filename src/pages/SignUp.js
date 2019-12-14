@@ -1,12 +1,11 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { View, Image, StyleSheet, ScrollView, Dimensions, TextInput } from "react-native";
 import Toast from "react-native-simple-toast";
-import { etravosApi, domainApi } from "../service";
-import moment from "moment";
+import { domainApi } from "../service";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
-import { Signup, Signin } from "../store/action";
-import { GoogleSignin, statusCodes } from "@react-native-community/google-signin";
+import { Signin } from "../store/action";
+import { GoogleSignin } from "@react-native-community/google-signin";
 import { LoginButton, AccessToken } from "react-native-fbsdk";
 import axios from "axios";
 
@@ -47,7 +46,6 @@ class SignUp extends React.PureComponent {
         }).then(response => {
           if (response.data.status == 1) {
             console.log(response);
-            this.props.Signup(params);
             this.setState({ loader: false });
             Toast.show("You have successfully Signup", Toast.LONG);
             this.props.navigation.goBack(null);
@@ -88,12 +86,6 @@ class SignUp extends React.PureComponent {
       });
     }
   };
-
-  // _SignOut = () => {
-  //   console.log("hey");
-  //   let logout = GoogleSignin.signOut();
-  //   console.log(logout);
-  // };
 
   render() {
     const { loader } = this.state;
@@ -262,7 +254,6 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = {
-  Signup,
   Signin
 };
 
