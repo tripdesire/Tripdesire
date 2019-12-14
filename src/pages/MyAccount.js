@@ -1,16 +1,141 @@
-import React, { Component } from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
-import { Text } from "../components";
+import React from "react";
+import { View, StyleSheet, SafeAreaView, Image } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { isEmpty } from "lodash";
+import { GoogleSignin } from "@react-native-community/google-signin";
+import { Logout } from "../store/action";
+import { Text, Button, Icon } from "../components";
 
-function MyAccount(props) {
+function MyAccount({ navigation }) {
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const login = () => {
+    navigation.navigate("LoginStack", { isCheckout: true });
+  };
+  const signUp = () => {
+    navigation.navigate("SignUp", {});
+  };
+
+  const myTrips = () => {
+    if (isEmpty(user)) {
+      navigation.navigate("LoginStack", { isCheckout: true });
+    } else {
+      navigation.navigate("OrderStack");
+    }
+  };
+
+  const help = () => {
+    if (isEmpty(user)) {
+      navigation.navigate("LoginStack", { isCheckout: true });
+    } else {
+      navigation.navigate("Help");
+    }
+  };
+
+  const editAddress = () => {
+    navigation.navigate("BillingDetails", {});
+  };
+
+  const myProfile = () => {
+    navigation.navigate("ProfilePage");
+  };
+
+  const logout = () => {
+    dispatch(Logout(null));
+    GoogleSignin.signOut();
+  };
+
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>My Account</Text>
+        </View>
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>My Account</Text>
-          </View>
+          <Image
+            source={require("../assets/imgs/profile_tab.png")}
+            style={{ width: 112, height: 112 }}
+          />
+          {isEmpty(user) ? (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Button onPress={login}>
+                <Text style={styles.loginButton}>Login</Text>
+              </Button>
+              <View style={{ width: 3, backgroundColor: "#757575", height: 18 }} />
+              <Button onPress={login}>
+                <Text style={styles.loginButton}>Sign Up</Text>
+              </Button>
+            </View>
+          ) : (
+            <>
+              <Text style={styles.loginButton}>
+                {user.first_name !== "" && user.last_name !== ""
+                  ? user.first_name + " " + user.last_name
+                  : user.first_name !== ""
+                  ? user.first_name
+                  : user.username}
+              </Text>
+              {user.email !== "" && <Text>{user.email}</Text>}
+            </>
+          )}
+          <View style={{ marginTop: 16 }} />
+          {!isEmpty(user) && (
+            <Button style={styles.rowView} onPress={myProfile}>
+              <Image
+                source={require("../assets/imgs/my_account.png")}
+                style={{ width: 28, height: 28 }}
+              />
+              <Text style={styles.rowText}>My Profile</Text>
+            </Button>
+          )}
+
+          <Button style={styles.rowView} onPress={myTrips}>
+            <Image
+              source={require("../assets/imgs/my_trip.png")}
+              style={{ width: 28, height: 28 }}
+            />
+            <Text style={styles.rowText}>My Trips</Text>
+          </Button>
+
+          {!isEmpty(user) && (
+            <Button style={styles.rowView} onPress={editAddress}>
+              <Image
+                source={require("../assets/imgs/edit_address.png")}
+                style={{ width: 28, height: 28 }}
+              />
+              <Text style={styles.rowText}>Edit Address</Text>
+            </Button>
+          )}
+
+          <Button style={styles.rowView}>
+            <Image
+              source={require("../assets/imgs/privacy.png")}
+              style={{ width: 28, height: 28 }}
+            />
+            <Text style={styles.rowText}>Privacy Policy</Text>
+          </Button>
+
+          <Button style={styles.rowView}>
+            <Image
+              source={require("../assets/imgs/term_condition.png")}
+              style={{ width: 28, height: 28 }}
+            />
+            <Text style={styles.rowText}>Terms & Condition</Text>
+          </Button>
+
+          <Button style={styles.rowView} onPress={help}>
+            <Image source={require("../assets/imgs/help.png")} style={{ width: 28, height: 28 }} />
+            <Text style={styles.rowText}>Help</Text>
+          </Button>
+
+          {!isEmpty(user) && (
+            <Button style={styles.rowView} onPress={logout}>
+              <Icon type="AntDesign" name="logout" size={24} color="#999DA0" />
+              <Text style={styles.rowText}>Logout</Text>
+            </Button>
+          )}
         </View>
       </SafeAreaView>
     </>
@@ -21,7 +146,9 @@ export default MyAccount;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    padding: 16
   },
   header: {
     flexDirection: "row",
@@ -34,5 +161,21 @@ const styles = StyleSheet.create({
     color: "#1E293B",
     fontWeight: "700",
     fontSize: 16
+  },
+  loginButton: {
+    fontWeight: "bold",
+    fontSize: 16,
+    padding: 10
+  },
+  rowView: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    height: 48
+  },
+  rowText: {
+    marginStart: 16,
+    fontSize: 18,
+    color: "#999DA0"
   }
 });

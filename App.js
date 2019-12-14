@@ -3,7 +3,7 @@ import { Image } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Provider } from "react-redux";
 import { store, persistor } from "./src/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
@@ -54,18 +54,12 @@ import {
   BoardingRound,
   BusRoundReturn,
   MyAccount,
-  Help
+  Help,
+  OTPScreen,
+  OTPVerify
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
-
-function TabBarComponent(props) {
-  return (
-    <View>
-      <BottomTabBar {...props} style={{ backgroundColor: "#1E2A48" }} />
-    </View>
-  );
-}
 
 class App extends React.PureComponent {
   render() {
@@ -103,8 +97,6 @@ const HomeStack = createStackNavigator(
     RenderInternationRound,
     FlightsInfoRoundInt,
     Splash,
-    SignIn,
-    SignUp,
     RoomDetails,
     ThankYou,
     Filter,
@@ -115,9 +107,6 @@ const HomeStack = createStackNavigator(
     ThankYouBus,
     ThankYouHotel,
     Boarding,
-    ForgetPassword,
-    ProfilePage,
-    BillingDetails,
     BusRound,
     SeatOneway,
     SeatRound,
@@ -131,24 +120,42 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const OrderStack = createStackNavigator(
+const LoginStack = createStackNavigator(
   {
-    Order,
-    OrderDetails
+    SignIn,
+    SignUp,
+    OTPScreen,
+    OTPVerify,
+    ForgetPassword
   },
   {
     headerMode: "none",
-    initialRouteName: "Order"
+    initialRouteName: "SignIn"
   }
 );
 
 const AuthStack = createStackNavigator(
   {
-    MyAccount
+    MyAccount,
+    LoginStack,
+    ProfilePage,
+    BillingDetails
   },
   {
     headerMode: "none",
     initialRouteName: "MyAccount"
+  }
+);
+
+const OrderStack = createStackNavigator(
+  {
+    Order,
+    OrderDetails,
+    LoginStack
+  },
+  {
+    headerMode: "none",
+    initialRouteName: "Order"
   }
 );
 
@@ -166,41 +173,50 @@ const TabNavigator = createBottomTabNavigator(
   {
     HomeStack: {
       screen: HomeStack,
-      navigationOptions: {
-        title: "Home",
-        tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require("./src/assets/imgs/home.png")}
-            tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
-          />
-        )
+      navigationOptions: ({ navigation }) => {
+        let { routeName } = navigation.state.routes[navigation.state.index];
+        return {
+          title: "Home",
+          tabBarVisible: routeName === "Home" ? true : false,
+          tabBarIcon: ({ tintColor }) => (
+            <Image
+              source={require("./src/assets/imgs/home.png")}
+              tintColor={tintColor}
+              style={{ width: 26, height: 26 }}
+            />
+          )
+        };
       }
     },
     OrderStack: {
       screen: OrderStack,
       navigationOptions: {
         title: "My Trips",
+
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/my_trips_tab.png")}
             tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 26, height: 26 }}
           />
         )
       }
     },
     AuthStack: {
       screen: AuthStack,
-      navigationOptions: {
-        title: "My Account",
-        tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require("./src/assets/imgs/my_account.png")}
-            tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
-          />
-        )
+      navigationOptions: ({ navigation }) => {
+        let { routeName } = navigation.state.routes[navigation.state.index];
+        return {
+          title: "My Account",
+          tabBarVisible: routeName === "MyAccount" ? true : false,
+          tabBarIcon: ({ tintColor }) => (
+            <Image
+              source={require("./src/assets/imgs/my_account.png")}
+              tintColor={tintColor}
+              style={{ width: 26, height: 26 }}
+            />
+          )
+        };
       }
     },
     Help: {
@@ -211,7 +227,7 @@ const TabNavigator = createBottomTabNavigator(
           <Image
             source={require("./src/assets/imgs/help_tab.png")}
             tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 26, height: 26 }}
           />
         )
       }
@@ -225,7 +241,9 @@ const TabNavigator = createBottomTabNavigator(
       inactiveTintColor: "#828E99",
       // tabBarComponent: TabBarComponent
       style: {
-        backgroundColor: "#1E2A48"
+        backgroundColor: "#1E2A48",
+        //paddingVertical: 12,
+        height: 55
       }
     }
     //contentComponent: CustomDrawer
