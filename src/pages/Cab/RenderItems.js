@@ -79,7 +79,7 @@ class RenderItems extends React.PureComponent {
         this.setState({ loading: false });
         console.log(data);
         if (data.code == "1") {
-          Toast.show(data.message, Toast.LONG);
+          // Toast.show(data.message, Toast.LONG);
           this.setState({ loading: true });
           axios
             .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
@@ -169,9 +169,11 @@ class RenderItems extends React.PureComponent {
               <Text>{this.props.item.AdditionalInfo.BaggageQuantity} bags</Text>
             </View>
             <View style={{ alignItems: "flex-end" }}>
-              <Text style={{ fontSize: 16, fontWeight: "600", lineHeight: 20 }}>
-                ₹ {this.props.item.PerKm}/km
-              </Text>
+              {this.props.item.PerKm > 0 && (
+                <Text style={{ fontSize: 16, fontWeight: "600", lineHeight: 20 }}>
+                  ₹ {this.props.item.PerKm}/km
+                </Text>
+              )}
               <Text style={{ fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
                 ₹ {this.props.item.TotalNetAmount}
               </Text>
@@ -179,7 +181,7 @@ class RenderItems extends React.PureComponent {
           </View>
         </View>
         <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
-          <Text style={{ flex: 1, paddingEnd: 10 }}>Full cancellation policy</Text>
+          {/* <Text style={{ flex: 1, paddingEnd: 10 }}>Full cancellation policy</Text> */}
           <Button
             style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
             onPress={this._onFareDetails}>
@@ -210,42 +212,53 @@ class FareDetails extends React.PureComponent {
   render() {
     const { data } = this.props;
     return (
-      <View>
-        <View style={styles.headerContainer}>
-          <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
-            <Icon name="md-arrow-back" size={24} />
-          </Button>
-          <Text style={{ fontWeight: "700", fontSize: 18 }}>Fare Details</Text>
-        </View>
-        <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16 }}>Fare Details</Text>
-        <Text style={{ marginHorizontal: 16 }}>
-          Approx. one way distance : {data.ApproxDistance} Kms.
-        </Text>
-        <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16, marginTop: 10 }}>
-          If you will use car/cab more than day(s) and {data.ApproxDistance} kms extra charges as
-          follows:
-        </Text>
-        <Text style={{ marginHorizontal: 16 }}>After {data.ApproxDistance} kms & day(s) :</Text>
-        <View style={{ marginHorizontal: 16, flexDirection: "row", alignItems: "center" }}>
-          <View style={{ backgroundColor: "black", width: 8, height: 8, borderRadius: 8 }}></View>
-          <Text style={{ marginStart: 10 }}>Rs {data.PerKm} per Km.</Text>
-        </View>
-        <View style={{ marginHorizontal: 16, flexDirection: "row", alignItems: "center" }}>
-          <View style={{ backgroundColor: "black", width: 8, height: 8, borderRadius: 8 }}></View>
-          <Text style={{ marginStart: 10 }}>Rs {data.DriverCharges} per day driver charges</Text>
-        </View>
-        <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16, marginTop: 10 }}>
-          Terms & Conditions:
-        </Text>
-        <Text style={{ marginHorizontal: 16 }}>Fare includes Vehicle & Fuel charges</Text>
-        <Text style={{ marginHorizontal: 16 }}>
-          Each day will be counted from midnight 12 to midnight 12
-        </Text>
-        <Text style={{ marginHorizontal: 16 }}>
-          Toll(both-ways), State Tax, Parking & Airport Entry (not included in bill) to be paid
-          wherever applicable
-        </Text>
-      </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View>
+            <View style={styles.headerContainer}>
+              <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text style={{ fontWeight: "700", fontSize: 18 }}>Fare Details</Text>
+            </View>
+            <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16 }}>
+              Fare Details
+            </Text>
+            <Text style={{ marginHorizontal: 16 }}>
+              Approx. one way distance : {data.ApproxDistance} Kms.
+            </Text>
+            <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16, marginTop: 10 }}>
+              If you will use car/cab more than day(s) and {data.ApproxDistance} kms extra charges
+              as follows:
+            </Text>
+            <Text style={{ marginHorizontal: 16 }}>After {data.ApproxDistance} kms & day(s) :</Text>
+            <View style={{ marginHorizontal: 16, flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{ backgroundColor: "black", width: 8, height: 8, borderRadius: 8 }}></View>
+              <Text style={{ marginStart: 10 }}>Rs {data.PerKm} per Km.</Text>
+            </View>
+            <View style={{ marginHorizontal: 16, flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{ backgroundColor: "black", width: 8, height: 8, borderRadius: 8 }}></View>
+              <Text style={{ marginStart: 10 }}>
+                Rs {data.DriverCharges} per day driver charges
+              </Text>
+            </View>
+            <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16, marginTop: 10 }}>
+              Terms & Conditions:
+            </Text>
+            <Text style={{ marginHorizontal: 16 }}>Fare includes Vehicle & Fuel charges</Text>
+            <Text style={{ marginHorizontal: 16 }}>
+              Each day will be counted from midnight 12 to midnight 12
+            </Text>
+            <Text style={{ marginHorizontal: 16 }}>
+              Toll(both-ways), State Tax, Parking & Airport Entry (not included in bill) to be paid
+              wherever applicable
+            </Text>
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

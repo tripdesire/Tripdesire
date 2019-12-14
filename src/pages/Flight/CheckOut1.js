@@ -556,8 +556,8 @@ class CheckOut1 extends React.PureComponent {
                       amount: parseInt(order.total) * 100,
                       name: "TripDesire",
                       prefill: {
-                        email: "void@razorpay.com",
-                        contact: "9191919191",
+                        email: user.billing.email,
+                        contact: user.billing.phone,
                         name: "Razorpay Software"
                       },
                       theme: { color: "#E5EBF7" }
@@ -1119,59 +1119,6 @@ class CheckOut1 extends React.PureComponent {
                       ))}
                   </View>
                 </View>
-                {/* <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginTop: 20,
-                height: 240,
-                borderRadius: 8
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 10,
-                  marginVertical: 5,
-                  alignItems: "center"
-                }}>
-                <Icon name="bag" size={30} type="SimpleLineIcons"/>
-                <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
-                  Contact Details
-                </Text>
-              </View>
-              <Text style={{ marginHorizontal: 10 }}>Email Address*</Text>
-              <TextInput
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#F2F2F2",
-                  height: 30,
-                  flex: 1,
-                  marginHorizontal: 10
-                }}
-              />
-              <Text style={{ marginHorizontal: 10 }}>Street Address*</Text>
-              <TextInput
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#F2F2F2",
-                  height: 30,
-                  flex: 1,
-                  marginHorizontal: 10
-                }}
-              />
-              <TextInput
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#F2F2F2",
-                  height: 25,
-                  marginTop: 10,
-                  flex: 1,
-                  marginBottom: 10,
-                  marginHorizontal: 10
-                }}
-              />
-            </View> */}
 
                 <View
                   style={{
