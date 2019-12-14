@@ -171,7 +171,7 @@ class Hotel extends React.PureComponent {
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flexDirection: "column", height: 140, backgroundColor: "#E5EBF7" }}>
             <Header firstName="Hotels" lastName="Search" onPress={this.goBack} />
           </View>

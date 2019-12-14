@@ -29,7 +29,7 @@ class Home extends React.PureComponent {
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <View
               style={{

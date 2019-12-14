@@ -74,7 +74,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
         <View style={styles.headerContainer}>
           <Button onPress={onBackPress} style={{ padding: 16 }}>
             <Icon name="md-arrow-back" size={24} />

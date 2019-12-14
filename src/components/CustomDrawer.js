@@ -35,7 +35,7 @@ class CustomDrawer extends React.PureComponent {
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#5789FF" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>
             <Button style={styles.menuHeader} onPress={this.signIn}>
               <Image

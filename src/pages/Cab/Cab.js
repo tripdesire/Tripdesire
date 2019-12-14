@@ -442,7 +442,7 @@ class Cab extends React.PureComponent {
                         inputAndroid: { color: "#000", padding: 0, height: 20 }
                       }}
                       value={this.state.tripType}
-                      Icon={() => <Icon name="ios-arrow-down" size={20} color="gray" />}
+                      Icon={() => <Icon name="ios-arrow-down" size={20} color="grey" />}
                     />
                   </View>
                 </View>
@@ -460,7 +460,7 @@ class Cab extends React.PureComponent {
                       inputAndroid: { color: "#000", padding: 0, height: 20 }
                     }}
                     value={this.state.pickuptime}
-                    Icon={() => <Icon name="ios-arrow-down" size={20} color="gray" />}
+                    Icon={() => <Icon name="ios-arrow-down" size={20} color="grey" />}
                   />
                 </View>
               </View>

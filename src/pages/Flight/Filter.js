@@ -204,7 +204,7 @@ class Filter extends React.Component {
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "gray" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={styles.headerContainer}>
             <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
               <Icon name="md-arrow-back" size={24} />
