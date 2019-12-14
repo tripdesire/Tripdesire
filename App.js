@@ -2,11 +2,11 @@ import React from "react";
 import { Image } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import { createDrawerNavigator } from "react-navigation-drawer";
+import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
 import { Provider } from "react-redux";
 import { store, persistor } from "./src/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
-import { createDrawerNavigator } from "react-navigation-drawer";
-import { createBottomTabNavigator } from "react-navigation-tabs";
 import { CustomDrawer, Icon } from "./src/components";
 import {
   Home,
@@ -58,6 +58,14 @@ import {
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
+
+function TabBarComponent(props) {
+  return (
+    <View>
+      <BottomTabBar {...props} style={{ backgroundColor: "#1E2A48" }} />
+    </View>
+  );
+}
 
 class App extends React.PureComponent {
   render() {
@@ -211,10 +219,14 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeBackgroundColor: "#1E2A48",
-      inactiveBackgroundColor: "#1E2A48",
+      //activeBackgroundColor: "#1E2A48",
+      //inactiveBackgroundColor: "#1E2A48",
       activeTintColor: "#FFFFFF",
-      inactiveTintColor: "#828E99"
+      inactiveTintColor: "#828E99",
+      // tabBarComponent: TabBarComponent
+      style: {
+        backgroundColor: "#1E2A48"
+      }
     }
     //contentComponent: CustomDrawer
   }
