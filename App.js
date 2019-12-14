@@ -164,7 +164,7 @@ const TabNavigator = createBottomTabNavigator(
           <Image
             source={require("./src/assets/imgs/home.png")}
             tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 26, height: 26 }}
           />
         )
       }
@@ -177,7 +177,7 @@ const TabNavigator = createBottomTabNavigator(
           <Image
             source={require("./src/assets/imgs/my_trips_tab.png")}
             tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 26, height: 26 }}
           />
         )
       }
@@ -190,7 +190,7 @@ const TabNavigator = createBottomTabNavigator(
           <Image
             source={require("./src/assets/imgs/my_account.png")}
             tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 26, height: 26 }}
           />
         )
       }
@@ -203,7 +203,7 @@ const TabNavigator = createBottomTabNavigator(
           <Image
             source={require("./src/assets/imgs/help_tab.png")}
             tintColor={tintColor}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 26, height: 26 }}
           />
         )
       }
@@ -217,7 +217,9 @@ const TabNavigator = createBottomTabNavigator(
       inactiveTintColor: "#828E99",
       // tabBarComponent: TabBarComponent
       style: {
-        backgroundColor: "#1E2A48"
+        backgroundColor: "#1E2A48",
+        //paddingVertical: 12,
+        height: 55
       }
     }
     //contentComponent: CustomDrawer
