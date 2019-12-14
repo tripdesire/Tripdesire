@@ -15,7 +15,6 @@ import Stars from "react-native-stars";
 //import MapView from "react-native-maps";
 import moment from "moment";
 import HTML from "react-native-render-html";
-import RoomDetails from "./RoomDetails";
 
 class HotelCheckout extends React.Component {
   constructor(props) {
@@ -143,14 +142,14 @@ class HotelCheckout extends React.Component {
                     justifyContent: "space-between",
                     marginVertical: 15
                   }}>
-                  <View style={{ flexDirection: "row" }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text style={{ color: "#ffffff" }}>({params.city})</Text>
                     <View style={{ alignItems: "flex-start", marginStart: 10 }}>
                       <Stars
                         default={parseInt(params.StarRating)}
                         count={5}
                         half={true}
-                        starSize={50}
+                        starSize={80}
                         fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}
                         emptyStar={
                           <IconMaterial
@@ -163,10 +162,12 @@ class HotelCheckout extends React.Component {
                     </View>
                   </View>
                   <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-                    <Image
-                      source={require("../../assets/imgs/location.png")}
-                      style={{ width: 20, height: 15 }}
-                      resizeMode="contain"
+                    <Icon
+                      name="location-pin"
+                      type="SimpleLineIcons"
+                      size={16}
+                      style={{ marginEnd: 5 }}
+                      color="#fff"
                     />
                     <TouchableOpacity
                       style={{ color: "#717A81", fontSize: 12 }}
@@ -245,15 +246,6 @@ class HotelCheckout extends React.Component {
                     return (
                       <View key={item.RoomIndex}>
                         <View style={{ marginVertical: 20, flexDirection: "row" }}>
-                          {/* <Image
-                            style={{
-                              width: width / 4,
-                              height: width / 5,
-                              borderRadius: 5
-                            }}
-                            source={require("../../assets/imgs/Hotel-Img.png")}
-                          /> */}
-
                           <Image
                             style={{
                               width: width / 4,
@@ -265,13 +257,11 @@ class HotelCheckout extends React.Component {
 
                           <View
                             style={{
-                              justifyContent: "space-between",
-                              flexDirection: "row",
                               marginHorizontal: 10,
                               flex: 1
                             }}>
                             <TouchableOpacity
-                              style={{ flex: 3, paddingEnd: 4 }}
+                              style={{ paddingEnd: 4 }}
                               onPress={this._radioButton(item)}>
                               <View style={{ flexDirection: "row" }}>
                                 <TouchableOpacity
@@ -300,35 +290,39 @@ class HotelCheckout extends React.Component {
                                   {item.RoomType}
                                 </Text>
                               </View>
-                              <Text style={{ fontSize: 16 }}>Room Description</Text>
-                              <Text style={{ color: "#717A81" }}>
-                                {item.RoomDescription != ""
-                                  ? item.RoomDescription
-                                  : "No room Descriptions"}
-                              </Text>
-
-                              <Text style={{ fontSize: 16 }}>Inclusions</Text>
-                              <Text style={{ color: "#717A81" }}>
-                                {item.Inclusions != "" ? item.Inclusions : "No room Inclusions"}
-                              </Text>
                             </TouchableOpacity>
-                            <View style={{ flex: 2, paddingStart: 4, marginStart: 10 }}>
-                              <Text
-                                style={{
-                                  fontSize: 18,
-                                  fontWeight: "700"
-                                }}>
-                                ₹ {item.RoomTotal}
-                              </Text>
-                              <Text style={{ color: "#717A81" }}>
-                                {params.room}:Room(s),{params.Night}:night
-                              </Text>
-                              <Text style={{ color: "#717A81" }}>
-                                {item.RefundRule ? item.RefundRule : ""}
-                              </Text>
-                            </View>
+
+                            <Text
+                              style={{
+                                fontSize: 18,
+                                fontWeight: "700"
+                              }}>
+                              ₹ {item.RoomTotal}
+                            </Text>
                           </View>
                         </View>
+
+                        <View style={{ marginBottom: 10 }}>
+                          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <Text style={{ color: "#717A81" }}>
+                              {params.room}:Room(s),{params.Night}:night
+                            </Text>
+                            <Text style={{ color: "#717A81" }}>
+                              {item.RefundRule ? item.RefundRule : ""}
+                            </Text>
+                          </View>
+                          <Text style={{ fontSize: 16 }}>Room Cancellation Policy</Text>
+                          <Text style={{ color: "#717A81" }}>
+                            {item.RoomCancellationPolicy != ""
+                              ? item.RoomCancellationPolicy
+                              : "No room Descriptions"}
+                          </Text>
+                          <Text style={{ fontSize: 16 }}>Inclusions</Text>
+                          <Text style={{ color: "#717A81" }}>
+                            {item.Inclusions != "" ? item.Inclusions : "No room Inclusions"}
+                          </Text>
+                        </View>
+
                         <View style={{ height: 1.35, backgroundColor: "#DDDDDD" }}></View>
                       </View>
                     );

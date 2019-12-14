@@ -185,20 +185,13 @@ class HotelInfo extends React.PureComponent {
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
                 ${item.RoomDetails[0].RoomTotal}
               </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  resizeMode="contain"
-                  style={{ width: 30 }}
-                  source={require("../../assets/imgs/logo.png")}
-                />
-                <Text style={{ color: "green" }}>{item.StarRating}/5</Text>
-                <Text>(2732)</Text>
-              </View>
             </View>
           </View>
           <View
             style={{
-              flexDirection: "row"
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between"
             }}>
             <Text style={{ color: "#636C73", marginEnd: 10 }}>{this.state.city}</Text>
             <Stars
@@ -216,7 +209,7 @@ class HotelInfo extends React.PureComponent {
               halfStar={<IconMaterial name={"star-half"} style={[styles.myStarStyle]} />}
             />
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", flex: 2 }}>
               <Image source={require("../../assets/imgs/location.png")} />
               <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5 }}>
@@ -224,7 +217,7 @@ class HotelInfo extends React.PureComponent {
               </Text>
             </View>
             <Text style={{ color: "#636C73", flex: 1, paddingStart: 5, marginStart: 10 }}>
-              {this.state.room}:Room(s),{this.state.Night}:Night
+              {this.state.room} : Room , {this.state.Night} : Night
             </Text>
           </View>
           <View
