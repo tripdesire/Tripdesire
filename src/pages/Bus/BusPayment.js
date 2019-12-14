@@ -293,7 +293,7 @@ class BusPayment extends React.PureComponent {
                     </View>
                   </View>
                 </View>
-                <View
+                {/* <View
                   style={{
                     elevation: 2,
                     shadowOffset: { width: 0, height: 2 },
@@ -324,7 +324,7 @@ class BusPayment extends React.PureComponent {
                     }}>
                     <Text style={{ color: "#fff" }}>Apply</Text>
                   </Button>
-                </View>
+                </View> */}
 
                 <View
                   style={{

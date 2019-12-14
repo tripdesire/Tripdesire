@@ -1128,6 +1128,10 @@ class OrderDetails extends React.PureComponent {
               style={{
                 marginHorizontal: 8,
                 elevation: 1,
+                shadowOffset: { width: 0, height: 2 },
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
                 borderRadius: 5,
                 marginTop: 10
               }}>
@@ -1157,15 +1161,21 @@ class OrderDetails extends React.PureComponent {
                     }}>
                     Passenger
                   </Text>
-                  <Text>Kamal Gangwar</Text>
+                  {adult_details.map((item, index) => {
+                    return <Text key={"Sap_".index}>{item.fname + " " + item.lname}</Text>;
+                  })}
                 </View>
                 <View>
                   <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
-                  <Text>22</Text>
+                  {adult_details.map((item, index) => {
+                    return <Text key={"Sap_".index}>{item.age}</Text>;
+                  })}
                 </View>
                 <View>
                   <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
-                  <Text>Male</Text>
+                  {adult_details.map((item, index) => {
+                    return <Text key={"Sap_".index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
+                  })}
                 </View>
               </View>
             </View>
@@ -1394,15 +1404,23 @@ class OrderDetails extends React.PureComponent {
                         }}>
                         Passenger
                       </Text>
-                      <Text>Kamal Gangwar</Text>
+                      {adult_details.map((item, index) => {
+                        return <Text key={"Sap_".index}>{item.fname}</Text>;
+                      })}
                     </View>
                     <View>
                       <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
-                      <Text>22</Text>
+                      {adult_details.map((item, index) => {
+                        return <Text key={"Sap_".index}>{item.age}</Text>;
+                      })}
                     </View>
                     <View>
                       <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
-                      <Text>Male</Text>
+                      {adult_details.map((item, index) => {
+                        return (
+                          <Text key={"Sap_".index}>{item.gender == "M" ? "Male" : "Female"}</Text>
+                        );
+                      })}
                     </View>
                   </View>
                 </View>
@@ -1464,9 +1482,14 @@ class OrderDetails extends React.PureComponent {
       );
     } else {
       return (
-        <View>
-          <Text>Invalid Ticket Contact Admin</Text>
-        </View>
+        <>
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+            <View>
+              <Text>Invalid Ticket Contact Admin</Text>
+            </View>
+          </SafeAreaView>
+        </>
       );
     }
   }

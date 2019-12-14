@@ -33,7 +33,7 @@ class FareDetails extends React.PureComponent {
               </Text>
             </View>
             <ScrollView contentContainerStyle={{ marginHorizontal: 16, marginVertical: 10 }}>
-              <HTML html={this.props.data} />
+              <HTML baseFontStyle={{ fontFamily: "Poppins-Regular" }} html={this.props.data} />
             </ScrollView>
           </View>
         </SafeAreaView>

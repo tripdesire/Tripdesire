@@ -183,8 +183,8 @@ const style = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 16
   },
-  _Details: { color: "#717A81", flex: 1, alignItems: "flex-start" },
-  _textHeading: { color: "#717A81", flex: 2 }
+  _Details: { color: "#717A81", flex: 2, alignItems: "flex-start" },
+  _textHeading: { color: "#717A81", flex: 3 }
 });
 
 export default HotelPayment;

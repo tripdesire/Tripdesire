@@ -367,14 +367,6 @@ class CheckOut extends React.PureComponent {
                         {params.className}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "flex-start"
-                      }}>
-                      <IconMaterial name="share-variant" size={20} color="#5D89F4" />
-                    </View>
                   </View>
                 </View>
               </View>
@@ -400,7 +392,10 @@ class CheckOut extends React.PureComponent {
                       </Text>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 10 }}>
-                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img || "https://via.placeholder.com/150" }} />
+                      <Image
+                        style={{ width: 35, resizeMode: "contain" }}
+                        source={{ uri: img || "https://via.placeholder.com/150" }}
+                      />
                       <View style={{ marginStart: 10, flex: 1 }}>
                         <Text>
                           {params.departFlight.FlightSegments[0].AirLineName} |{" "}
@@ -653,7 +648,7 @@ class CheckOut extends React.PureComponent {
                     </Text>
                   </View>
                 </View>
-                <View
+                {/* <View
                   style={{
                     elevation: 2,
                     backgroundColor: "#ffffff",
@@ -676,7 +671,7 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
                   </Button>
-                </View>
+                </View> */}
                 <Button
                   style={{
                     backgroundColor: "#F68E1D",
@@ -774,7 +769,10 @@ class CheckOut extends React.PureComponent {
                       </Text>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 10 }}>
-                      <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img|| "https://via.placeholder.com/150" }} />
+                      <Image
+                        style={{ width: 35, resizeMode: "contain" }}
+                        source={{ uri: img || "https://via.placeholder.com/150" }}
+                      />
                       <View style={{ marginStart: 10, flex: 1 }}>
                         <Text>
                           {params.departFlight.IntOnward.FlightSegments[0].AirLineName} |{" "}
@@ -851,7 +849,7 @@ class CheckOut extends React.PureComponent {
                       </View>
                       <View style={{ flexDirection: "row", marginTop: 10 }}>
                         <Image
-                          source={{ uri: imgIntRet || "https://via.placeholder.com/150"}}
+                          source={{ uri: imgIntRet || "https://via.placeholder.com/150" }}
                           resizeMode="contain"
                           style={{ width: 40 }}
                         />
@@ -1024,7 +1022,7 @@ class CheckOut extends React.PureComponent {
                     </Text>
                   </View>
                 </View>
-                <View
+                {/* <View
                   style={{
                     elevation: 2,
                     backgroundColor: "#ffffff",
@@ -1047,7 +1045,7 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
                   </Button>
-                </View>
+                </View> */}
                 <Button
                   style={{
                     backgroundColor: "#F68E1D",
@@ -1055,7 +1053,6 @@ class CheckOut extends React.PureComponent {
                     alignItems: "center",
                     justifyContent: "center",
                     height: 40,
-                    marginBottom: 20,
                     borderRadius: 20
                   }}
                   onPress={this.navigateToScreen("CheckOut1", params)}>
