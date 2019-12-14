@@ -112,7 +112,7 @@ class BoardingRound extends React.PureComponent {
       .then(({ data }) => {
         console.log(data);
         if (data.code == "1") {
-          Toast.show(data.message, Toast.LONG);
+          //Toast.show(data.message, Toast.LONG);
           domainApi.get("/cart").then(({ data }) => {
             console.log(data);
             const { bp, dp } = this.state;
