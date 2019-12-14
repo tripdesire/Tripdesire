@@ -3,7 +3,7 @@ import { Image } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Provider } from "react-redux";
 import { store, persistor } from "./src/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
@@ -58,14 +58,6 @@ import {
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
-
-function TabBarComponent(props) {
-  return (
-    <View>
-      <BottomTabBar {...props} style={{ backgroundColor: "#1E2A48" }} />
-    </View>
-  );
-}
 
 class App extends React.PureComponent {
   render() {
