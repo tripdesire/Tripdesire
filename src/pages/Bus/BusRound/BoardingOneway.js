@@ -65,7 +65,7 @@ class BoardingOneway extends React.PureComponent {
           <View>
             <Header firstName="Select Boarding and Selected Point" />
             <View style={{ marginTop: 40 }}>
-              <View style={{ paddingStart: 20 }}>
+              <View style={{ paddingStart: 20, marginHorizontal: 16 }}>
                 <Text style={{ color: "#5D666D" }}>--Boarding Points--</Text>
                 <RNPickerSelect
                   useNativeAndroidPickerStyle={false}
@@ -81,7 +81,7 @@ class BoardingOneway extends React.PureComponent {
                   Icon={() => <Icon name="ios-arrow-down" size={20} />}
                 />
               </View>
-              <View style={{ paddingStart: 20, marginTop: 40 }}>
+              <View style={{ paddingStart: 20, marginTop: 40, marginHorizontal: 16 }}>
                 <Text style={{ color: "#5D666D" }}>--Dropping Points--</Text>
                 <RNPickerSelect
                   useNativeAndroidPickerStyle={false}

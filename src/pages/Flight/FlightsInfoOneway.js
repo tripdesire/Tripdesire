@@ -467,10 +467,11 @@ class FlightsInfoOneway extends React.PureComponent {
                     borderBottomRightRadius: 5,
                     borderTopRightRadius: 5
                   }}>
-                  <Image
-                    style={{ width: 20, marginHorizontal: 8 }}
-                    resizeMode="contain"
-                    source={require("../../assets/imgs/cal.png")}
+                  <Icon
+                    name="md-calendar"
+                    size={24}
+                    color="#fff"
+                    style={{ paddingHorizontal: 10 }}
                   />
                 </Button>
               </View>

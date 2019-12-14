@@ -504,7 +504,11 @@ class CheckoutBus extends React.PureComponent {
                         }
                         items={[
                           { value: "ADHAR_CARD", label: "Adhar Card" },
-                          { value: "PAN_CARD", label: "PAN_CARD" }
+                          { value: "PAN_CARD", label: "Pan Card" },
+                          { value: "DRIVING_LICENSE", label: "Driving License" },
+                          { value: "PASSPORT", label: "Passport" },
+                          { value: "RATION_CARD", label: "Ration Card" },
+                          { value: "VOTER_CARD", label: "Voter Card" }
                         ]}
                         Icon={() => <Icon name="ios-arrow-down" size={20} />}
                       />
@@ -692,47 +696,6 @@ class CheckoutBus extends React.PureComponent {
                     <HTML html={cartData.total_price} />
                   </View>
                 </View>
-
-                {/* <View
-              style={{
-                elevation: 2,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 30,
-                marginTop: 20,
-                height: 190,
-                padding: 10,
-                borderRadius: 8
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginVertical: 5,
-                  alignItems: "center"
-                }}>
-                <IconSimple name="bag" size={30} />
-                <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
-                  Contact Details
-                </Text>
-              </View>
-              <Text style={{ color: "#5B6974" }}>Email Address*</Text>
-              <TextInput
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#F2F2F2",
-                  height: 30,
-                  flex: 1
-                }}
-              />
-              <Text style={{ color: "#5B6974" }}>Mobile*</Text>
-              <TextInput
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#F2F2F2",
-                  height: 30,
-                  flex: 1
-                }}
-              />
-            </View> */}
 
                 <Button
                   style={{

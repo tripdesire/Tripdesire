@@ -13,7 +13,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
-import axios from "axios";
+import RNPickerSelect from "react-native-picker-select";
 import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
 import { connect } from "react-redux";
@@ -120,6 +120,9 @@ class CheckOut1 extends React.PureComponent {
     if ((key = "dob")) {
       newData[index].age = moment().diff(moment(text), "years");
     }
+    if (key == "gender") {
+      newData[index].den = text == "M" ? "Mr" : "Mrs";
+    }
     newData[index].show = false;
     this.setState({
       adults: newData
@@ -132,6 +135,9 @@ class CheckOut1 extends React.PureComponent {
     if ((key = "dob")) {
       newData[index].age = moment().diff(moment(text), "years");
     }
+    if (key == "gender") {
+      newData[index].den = text == "M" ? "Mr" : "Mrs";
+    }
     newData[index].show = false;
     this.setState({
       childs: newData
@@ -143,6 +149,9 @@ class CheckOut1 extends React.PureComponent {
     newData[index][key] = text;
     if ((key = "dob")) {
       newData[index].age = moment().diff(moment(text), "years");
+    }
+    if (key == "gender") {
+      newData[index].den = text == "M" ? "Mr" : "Mrs";
     }
     newData[index].show = false;
     this.setState({
@@ -720,7 +729,7 @@ class CheckOut1 extends React.PureComponent {
                               alignItems: "center"
                             }}>
                             <Text>Adult {index + 1}</Text>
-                            <View
+                            {/* <View
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
@@ -736,13 +745,14 @@ class CheckOut1 extends React.PureComponent {
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
                               </Picker>
-                            </View>
+                            </View> */}
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 flex: 1,
+                                paddingStart: 5,
                                 marginHorizontal: 2
                               }}
                               onChangeText={this.onAdultChange(index, "firstname")}
@@ -751,6 +761,7 @@ class CheckOut1 extends React.PureComponent {
                             <TextInput
                               style={{
                                 borderWidth: 1,
+                                paddingStart: 5,
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 flex: 1
@@ -813,13 +824,34 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "center",
                                 alignItems: "center"
                               }}>
-                              <Picker
+                              {/* <Picker
                                 selectedValue={this.state.adults[index].gender}
                                 style={{ height: 50, width: 100 }}
                                 onValueChange={this.onAdultChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
-                              </Picker>
+                              </Picker> */}
+                              <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                placeholder={{}}
+                                selectedValue={this.state.adults[index].gender}
+                                style={{
+                                  inputAndroid: {
+                                    color: "#000",
+                                    padding: 0,
+                                    height: 20,
+                                    paddingStart: 3
+                                  },
+                                  inputIOS: { paddingStart: 3, color: "#000" },
+                                  iconContainer: { marginEnd: 8 }
+                                }}
+                                onValueChange={this.onAdultChange(index, "gender")}
+                                items={[
+                                  { label: "Male", value: "M" },
+                                  { label: "Female", value: "F" }
+                                ]}
+                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                              />
                             </View>
                           </View>
                           <Button style={{ marginTop: 10 }} onPress={this._FFN}>
@@ -875,7 +907,7 @@ class CheckOut1 extends React.PureComponent {
                               alignItems: "center"
                             }}>
                             <Text>Child {index + 1}</Text>
-                            <View
+                            {/* <View
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
@@ -891,7 +923,7 @@ class CheckOut1 extends React.PureComponent {
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
                               </Picker>
-                            </View>
+                            </View> */}
                             <TextInput
                               style={{
                                 borderWidth: 1,
@@ -969,13 +1001,34 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "center",
                                 alignItems: "center"
                               }}>
-                              <Picker
+                              {/* <Picker
                                 selectedValue={this.state.childs[index].gender}
                                 style={{ height: 50, width: 80 }}
                                 onValueChange={this.onChildsChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
-                              </Picker>
+                              </Picker> */}
+                              <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                placeholder={{}}
+                                selectedValue={this.state.childs[index].gender}
+                                style={{
+                                  inputAndroid: {
+                                    color: "#000",
+                                    padding: 0,
+                                    height: 20,
+                                    paddingStart: 3
+                                  },
+                                  inputIOS: { paddingStart: 3, color: "#000" },
+                                  iconContainer: { marginEnd: 8 }
+                                }}
+                                onValueChange={this.onChildsChange(index, "gender")}
+                                items={[
+                                  { label: "Male", value: "M" },
+                                  { label: "Female", value: "F" }
+                                ]}
+                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                              />
                             </View>
                             <TextInput
                               style={{
@@ -1003,7 +1056,7 @@ class CheckOut1 extends React.PureComponent {
                               alignItems: "center"
                             }}>
                             <Text>Infant {index + 1}</Text>
-                            <View
+                            {/* <View
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
@@ -1019,7 +1072,7 @@ class CheckOut1 extends React.PureComponent {
                                 <Picker.Item label="Mr." value="Mr" />
                                 <Picker.Item label="Mrs." value="Mrs" />
                               </Picker>
-                            </View>
+                            </View> */}
                             <TextInput
                               style={{
                                 borderWidth: 1,
@@ -1095,13 +1148,34 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "center",
                                 alignItems: "center"
                               }}>
-                              <Picker
+                              {/* <Picker
                                 selectedValue={this.state.infants[index].gender}
                                 style={{ height: 50, width: 80 }}
                                 onValueChange={this.onInfantChange(index, "gender")}>
                                 <Picker.Item label="Male" value="M" />
                                 <Picker.Item label="Female" value="F" />
-                              </Picker>
+                              </Picker> */}
+                              <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                placeholder={{}}
+                                selectedValue={this.state.infants[index].gender}
+                                style={{
+                                  inputAndroid: {
+                                    color: "#000",
+                                    padding: 0,
+                                    height: 20,
+                                    paddingStart: 3
+                                  },
+                                  inputIOS: { paddingStart: 3, color: "#000" },
+                                  iconContainer: { marginEnd: 8 }
+                                }}
+                                onValueChange={this.onInfantChange(index, "gender")}
+                                items={[
+                                  { label: "Male", value: "M" },
+                                  { label: "Female", value: "F" }
+                                ]}
+                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                              />
                             </View>
                             <TextInput
                               style={{
