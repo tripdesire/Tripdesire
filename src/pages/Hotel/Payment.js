@@ -436,7 +436,9 @@ class Payment extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text style={{ flexBasis: "20%" }}>Adult {index + 1}</Text>
+                            <Text style={{ flexBasis: "20%", color: "#5D666D" }}>
+                              Adult {index + 1}
+                            </Text>
 
                             <TextInput
                               style={{
