@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>700390422426-jd4ktatcufq8ncqd6p3728be7c3cl3bj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.700390422426-jd4ktatcufq8ncqd6p3728be7c3cl3bj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>700390422426-5vb2044a3tdrt0065u8ogf11rv9hd96r.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCdgwTb8oFJcmC-h5LZhs4dDnowBJ8ZaHg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>700390422426</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tripdesire</string>
+	<key>PROJECT_ID</key>
+	<string>tripdesire-c1700</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tripdesire-c1700.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:700390422426:ios:c297e105fac699515b2c23</string>
+	<key>DATABASE_URL</key>
+	<string>https://tripdesire-c1700.firebaseio.com</string>
+</dict>
+</plist>

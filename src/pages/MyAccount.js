@@ -7,7 +7,9 @@ import { Logout } from "../store/action";
 import { Text, Button, Icon } from "../components";
 
 function MyAccount({ navigation }) {
-  GoogleSignin.configure();
+  GoogleSignin.configure({
+    iosClientId: "700390422426-jd4ktatcufq8ncqd6p3728be7c3cl3bj.apps.googleusercontent.com"
+  });
 
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();

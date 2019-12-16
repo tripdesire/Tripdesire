@@ -11,6 +11,9 @@ import axios from "axios";
 
 class SignUp extends React.PureComponent {
   constructor(props) {
+    GoogleSignin.configure({
+      iosClientId: "700390422426-jd4ktatcufq8ncqd6p3728be7c3cl3bj.apps.googleusercontent.com"
+    });
     super(props);
     this.state = {
       loader: false,
@@ -64,7 +67,6 @@ class SignUp extends React.PureComponent {
 
   _Social_login = social => {
     if (social == "google") {
-      GoogleSignin.configure();
       GoogleSignin.signIn().then(user => {
         let details = user.user;
         details.mode = "google";

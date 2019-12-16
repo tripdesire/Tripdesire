@@ -3,10 +3,10 @@ import { View, SafeAreaView, StyleSheet } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Button, Text, Icon } from "../../components";
 
-function AddPassengers({ submit, onModalBackPress }) {
-  const [adult, setAdult] = useState("1");
-  const [children, setChildren] = useState("0");
-  const [infants, setInfants] = useState("0");
+function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, infantsCount }) {
+  const [adult, setAdult] = useState(adultCount);
+  const [children, setChildren] = useState(childrenCount);
+  const [infants, setInfants] = useState(infantsCount);
 
   const _submit = () => {
     submit && submit({ adult, children, infants });

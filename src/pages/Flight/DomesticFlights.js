@@ -319,6 +319,9 @@ class DomesticFlights extends React.PureComponent {
           onRequestClose={this.setModalVisible("modalPassengers", false)}>
           <AddPassengers
             submit={this.submit}
+            adultCount={this.state.adult}
+            childrenCount={this.state.children}
+            infantsCount={this.state.infants}
             onModalBackPress={this.setModalVisible("modalPassengers", false)}
           />
         </Modal>
