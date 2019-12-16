@@ -6,7 +6,7 @@ import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../co
 import { connect } from "react-redux";
 import { Signin } from "../store/action";
 import { GoogleSignin } from "@react-native-community/google-signin";
-import { LoginButton, AccessToken } from "react-native-fbsdk";
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from "react-native-fbsdk";
 import axios from "axios";
 
 class SignUp extends React.PureComponent {
@@ -81,9 +81,50 @@ class SignUp extends React.PureComponent {
         });
       });
     } else if (social == "facebook") {
-      AccessToken.getCurrentAccessToken().then(data => {
-        console.log(data);
-      });
+      LoginManager.logInWithPermissions(["public_profile", "email"]).then(
+        result => {
+          if (result.isCancelled) {
+            //console.log("Login cancelled");
+          } else {
+            AccessToken.getCurrentAccessToken().then(data => {
+              const infoRequest = new GraphRequest(
+                "/me?fields=id,first_name,last_name,email,name",
+                { accessToken: data.accessToken },
+                (error, result) => {
+                  if (error) {
+                    //console.log(error);
+                  } else {
+                    let details = result;
+                    details.mode = "facebook";
+                    console.log(result);
+                    this.setState({ loader: true });
+                    domainApi.post("/social-login", details).then(({ data }) => {
+                      console.log(data);
+                      if (data.code == 1) {
+                        this.setState({ loader: false });
+                        this.props.Signin(data.details);
+                        if (isCheckout) {
+                          this.goBack();
+                        } else {
+                          this.props.navigation.navigate("Home");
+                        }
+                        Toast.show("you are login successfully", Toast.LONG);
+                      } else {
+                        this.setState({ loader: false });
+                        Toast.show("you are not login successfully", Toast.LONG);
+                      }
+                    });
+                  }
+                }
+              );
+              new GraphRequestManager().addRequest(infoRequest).start();
+            });
+          }
+        },
+        error => {
+          //console.log("Login fail with error: " + error);
+        }
+      );
     }
   };
 
