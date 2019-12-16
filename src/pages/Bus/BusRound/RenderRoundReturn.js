@@ -1,20 +1,8 @@
-import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-  Modal
-} from "react-native";
-import { Button, Text, ActivityIndicator, DomesticFlights, Icon } from "../../../components";
+import React from "react";
+import { View, TouchableOpacity } from "react-native";
+import { Button, Text, Icon } from "../../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Foundation from "react-native-vector-icons/Foundation";
-import { etravosApi } from "../../../service";
-import moment from "moment";
 import { withNavigation } from "react-navigation";
-import Toast from "react-native-simple-toast";
 class RenderRoundReturn extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -23,7 +11,7 @@ class RenderRoundReturn extends React.PureComponent {
 
   _SelectedSeat = (item, index) => () => {
     console.log("render....");
-    const { tripType, sourceName, destinationName, TripType } = this.props;
+    //const { tripType, sourceName, destinationName, TripType } = this.props;
     this.props.getBus(item, index);
     this.props.navigation.navigate("SeatRound", {
       paramsRound: item,

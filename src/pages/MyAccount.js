@@ -39,6 +39,32 @@ function MyAccount({ navigation }) {
     navigation.navigate("ProfilePage");
   };
 
+  const privacyPolicy = () => {
+    let url = "https://demo66.tutiixx.com/privacy-policy/";
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (!supported) {
+          Alert.alert("Invalid URL");
+        } else {
+          Linking.openURL(url);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  const termsCondition = () => {
+    let url = "https://demo66.tutiixx.com/terms-and-conditions/";
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (!supported) {
+          Alert.alert("Invalid URL");
+        } else {
+          Linking.openURL(url);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
   const logout = () => {
     dispatch(Logout(null));
     GoogleSignin.signOut();
@@ -107,7 +133,7 @@ function MyAccount({ navigation }) {
             </Button>
           )}
 
-          <Button style={styles.rowView}>
+          <Button style={styles.rowView} onPress={privacyPolicy}>
             <Image
               source={require("../assets/imgs/privacy.png")}
               style={{ width: 28, height: 28 }}
@@ -115,7 +141,7 @@ function MyAccount({ navigation }) {
             <Text style={styles.rowText}>Privacy Policy</Text>
           </Button>
 
-          <Button style={styles.rowView}>
+          <Button style={styles.rowView} onPress={termsCondition}>
             <Image
               source={require("../assets/imgs/term_condition.png")}
               style={{ width: 28, height: 28 }}
