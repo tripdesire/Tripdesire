@@ -1,5 +1,4 @@
-import React, { PureComponent } from "react";
-import { Text } from "../components";
+import React from "react";
 import { Image, ImageBackground, Dimensions } from "react-native";
 
 const { height, width } = Dimensions.get("window");

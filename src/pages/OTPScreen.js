@@ -16,8 +16,8 @@ class OTPScreen extends React.Component {
   }
 
   sendOTP = () => {
-    //const { isCheckout } = this.props.navigation.state.params;
-    console.log(getCallingCode(this.state.country_code));
+    const { onBack } = this.props.navigation.state.params;
+
     if (this.state.phone == "" || this.state.phone.length < 4 || this.state.phone.length > 13) {
       Toast.show("Phone number is not valid", Toast.LONG);
       return;
@@ -35,8 +35,8 @@ class OTPScreen extends React.Component {
         } else {
           this.navigateToScreen("OTPVerify", {
             phone: this.state.phone,
-            country_code: getCallingCode(this.state.country_code)
-            // isCheckout
+            country_code: getCallingCode(this.state.country_code),
+            onBack
           });
         }
       })
