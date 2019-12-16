@@ -159,15 +159,15 @@ const OrderStack = createStackNavigator(
   }
 );
 
-const DrawerNavigator = createDrawerNavigator(
-  {
-    HomeStack,
-    OrderStack
-  },
-  {
-    contentComponent: CustomDrawer
-  }
-);
+// const DrawerNavigator = createDrawerNavigator(
+//   {
+//     HomeStack,
+//     OrderStack
+//   },
+//   {
+//     contentComponent: CustomDrawer
+//   }
+// );
 
 const TabNavigator = createBottomTabNavigator(
   {

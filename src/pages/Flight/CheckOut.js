@@ -961,7 +961,7 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Base Fare</Text>
                     <Text style={{ marginEnd: 10 }}>
-                      {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                      ₹ {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                   </View>
                   <View
@@ -1001,6 +1001,7 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Tax</Text>
                     <Text style={{ marginEnd: 10 }}>
+                      ₹
                       {params.departFlight.FareDetails.ChargeableFares.Tax +
                         params.departFlight.FareDetails.ChargeableFares.STax}
                     </Text>

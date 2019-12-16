@@ -167,12 +167,12 @@ class CheckOut1 extends React.PureComponent {
       item => item.firstname == "" || item.last_name == "" || item.age == ""
     );
     needToValidateChilds =
-      this.state.childs != 0 &&
+      this.state.childs.length != 0 &&
       this.state.childs.every(
         item => item.firstname == "" || item.last_name == "" || item.age == ""
       );
     needToValidateInfants =
-      this.state.infants != 0 &&
+      this.state.infants.length != 0 &&
       this.state.infants.every(
         item => item.firstname == "" || item.last_name == "" || item.age == ""
       );

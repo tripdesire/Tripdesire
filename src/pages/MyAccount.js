@@ -20,19 +20,15 @@ function MyAccount({ navigation }) {
   // };
 
   const myTrips = () => {
-    if (isEmpty(user)) {
-      navigation.navigate("LoginStack", { isCheckout: true });
-    } else {
-      navigation.navigate("OrderStack");
-    }
+    // if (isEmpty(user)) {
+    //   navigation.navigate("LoginStack", { isCheckout: true });
+    // } else {
+    navigation.navigate("OrderStack");
+    // }
   };
 
   const help = () => {
-    if (isEmpty(user)) {
-      navigation.navigate("LoginStack", { isCheckout: true });
-    } else {
-      navigation.navigate("Help");
-    }
+    navigation.navigate("Help");
   };
 
   const editAddress = () => {

@@ -1,15 +1,12 @@
 import React from "react";
 import { View, Image, SafeAreaView } from "react-native";
 import { Button, HomeButtonComponent, Text } from "../../src/components";
-import { connect } from "react-redux";
-import { DomSugg, IntSugg, DomHotelSugg } from "../store/action";
 
 class Home extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       suggestions: [],
-
       isSelect: true
     };
   }
@@ -39,9 +36,9 @@ class Home extends React.PureComponent {
                 marginTop: 40
               }}>
               <Text style={{ fontSize: 26, color: "#1B294C", fontWeight: "600" }}>WHERE WOULD</Text>
-              <Button onPress={this.props.navigation.openDrawer}>
+              {/* <Button onPress={this.props.navigation.openDrawer}>
                 <Image style={{ width: 30 }} source={require("../assets/imgs/bar.png")} />
-              </Button>
+              </Button> */}
             </View>
             <Text
               style={{
@@ -103,10 +100,4 @@ class Home extends React.PureComponent {
   }
 }
 
-const mapDispatchToProps = {
-  DomSugg,
-  IntSugg,
-  DomHotelSugg
-};
-
-export default connect(null, mapDispatchToProps)(Home);
+export default Home;
