@@ -728,7 +728,7 @@ class CheckOut1 extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text>Adult {index + 1}</Text>
+                            <Text style={{ flexBasis: "20%" }}>Adult {index + 1}</Text>
                             {/* <View
                               style={{
                                 borderWidth: 1,
@@ -784,7 +784,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{ color: "#5D666D", flexBasis: "20%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -1030,7 +1030,7 @@ class CheckOut1 extends React.PureComponent {
                                 Icon={() => <Icon name="ios-arrow-down" size={20} />}
                               />
                             </View>
-                            <TextInput
+                            {/* <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
@@ -1040,7 +1040,7 @@ class CheckOut1 extends React.PureComponent {
                               placeholder="Age"
                               keyboardType="numeric"
                               onChangeText={this.onChildsChange(index, "age")}
-                            />
+                            /> */}
                           </View>
                         </View>
                       ))}
@@ -1177,7 +1177,7 @@ class CheckOut1 extends React.PureComponent {
                                 Icon={() => <Icon name="ios-arrow-down" size={20} />}
                               />
                             </View>
-                            <TextInput
+                            {/* <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
@@ -1187,7 +1187,7 @@ class CheckOut1 extends React.PureComponent {
                               placeholder="Age"
                               keyboardType="numeric"
                               onChangeText={this.onInfantChange(index, "age")}
-                            />
+                            /> */}
                           </View>
                         </View>
                       ))}
