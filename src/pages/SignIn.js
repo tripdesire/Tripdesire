@@ -53,8 +53,13 @@ class SignIn extends React.PureComponent {
     }
   };
 
-  navigateToScreen = page => () => {
-    this.props.navigation.navigate(page);
+  navigateToScreen = (page, params = {}) => () => {
+    if (page == "OTPScreen") {
+      const { onBack } = this.props.navigation.state.params;
+      this.props.navigation.navigate(page, { onBack });
+    } else {
+      this.props.navigation.navigate(page, params);
+    }
   };
 
   socialLogin = social => {

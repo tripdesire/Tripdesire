@@ -79,13 +79,14 @@ class OTPVerify extends Component {
           this.setState({ loader: false });
           this.props.Signin(data.details);
           onBack && onBack();
-          this.goBack();
+          //this.props.navigation.pop(3);
           this.props.navigation.goBack(null);
           this.props.navigation.goBack(null);
           this.props.navigation.goBack(null);
-          Toast.show("you are login successfully", Toast.LONG);
+          Toast.show("Login successful", Toast.LONG);
         } else {
-          Toast.show("Otp not verified", Toast.LONG);
+          this.setState({ loader: false });
+          Toast.show("Wrong Email / Password.", Toast.LONG);
         }
       })
       .catch(() => {
