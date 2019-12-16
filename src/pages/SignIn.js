@@ -10,6 +10,7 @@ import { LoginButton, AccessToken } from "react-native-fbsdk";
 
 class SignIn extends React.PureComponent {
   constructor(props) {
+    GoogleSignin.configure();
     super(props);
     this.state = {
       email: "",
@@ -19,7 +20,7 @@ class SignIn extends React.PureComponent {
   }
 
   login = () => {
-    const { isCheckout } = this.props.navigation.state.params;
+    const { isCheckout, onBack } = this.props.navigation.state.params;
     console.log(this.state);
     if (this.state.email != "" && this.state.password != "") {
       this.setState({ loader: true });
@@ -34,17 +35,13 @@ class SignIn extends React.PureComponent {
           if (data.code == "1") {
             this.setState({ loader: false });
             this.props.Signin(data.details);
-            // if (isCheckout) {
-            //   this.goBack();
-            // } else {
-            //   this.props.navigation.navigate("Home");
-            // }
+            onBack && onBack();
             this.props.navigation.goBack(null);
 
-            Toast.show("You have successfully login", Toast.LONG);
+            Toast.show("Login successful", Toast.LONG);
           } else {
             this.setState({ loader: false });
-            Toast.show("Wrong Email And Password.", Toast.LONG);
+            Toast.show("Wrong Email / Password.", Toast.LONG);
           }
         })
         .catch(error => {
@@ -56,14 +53,13 @@ class SignIn extends React.PureComponent {
     }
   };
 
-  NavigateToScreen = page => () => {
+  navigateToScreen = page => () => {
     this.props.navigation.navigate(page);
   };
 
   _Social_login = social => {
-    const { isCheckout } = this.props.navigation.state.params;
+    const { isCheckout, onBack } = this.props.navigation.state.params;
     if (social == "google") {
-      GoogleSignin.configure();
       GoogleSignin.signIn().then(user => {
         let details = user.user;
         details.mode = "google";
@@ -73,14 +69,12 @@ class SignIn extends React.PureComponent {
           if (data.code == 1) {
             this.setState({ loader: false });
             this.props.Signin(data.details);
-            if (isCheckout) {
-              this.goBack();
-            } else {
-              this.props.navigation.navigate("Home");
-            }
-            Toast.show("you are login successfully", Toast.LONG);
+            onBack && onBack();
+            this.goBack();
+            Toast.show("Login successful", Toast.LONG);
           } else {
-            Toast.show("you are not login successfully", Toast.LONG);
+            this.setState({ loader: false });
+            Toast.show("Wrong Email / Password.", Toast.LONG);
           }
         });
       });
@@ -109,11 +103,9 @@ class SignIn extends React.PureComponent {
               alignItems: "center",
               backgroundColor: "#E4EAF6"
             }}>
-            {isCheckout && (
-              <Button onPress={this.goBack} style={{ padding: 16 }}>
-                <Icon name="md-arrow-back" size={24} />
-              </Button>
-            )}
+            <Button onPress={this.goBack} style={{ padding: 16 }}>
+              <Icon name="md-arrow-back" size={24} />
+            </Button>
             <Text
               style={{ fontSize: 18, color: "#1E293B", paddingHorizontal: 16, fontWeight: "100" }}>
               Login
@@ -148,10 +140,10 @@ class SignIn extends React.PureComponent {
                 <Text style={{ color: "#fff" }}>Login</Text>
               </Button>
               <View style={{ flexDirection: "row", justifyContent: "center", marginVertical: 20 }}>
-                <Button style={{ marginEnd: 5 }} onPress={this.NavigateToScreen("ForgetPassword")}>
+                <Button style={{ marginEnd: 5 }} onPress={this.navigateToScreen("ForgetPassword")}>
                   <Text style={{ color: "#000" }}>Forget Password ?</Text>
                 </Button>
-                <Button style={{ marginStart: 5 }} onPress={this.NavigateToScreen("SignUp")}>
+                <Button style={{ marginStart: 5 }} onPress={this.navigateToScreen("SignUp")}>
                   <Text style={{ color: "#000" }}>Register here ?</Text>
                 </Button>
               </View>
@@ -175,7 +167,7 @@ class SignIn extends React.PureComponent {
               </View>
               <Button
                 style={[styles.facebook_google_button, { marginTop: 20 }]}
-                onPress={this.NavigateToScreen("OTPScreen")}>
+                onPress={this.navigateToScreen("OTPScreen")}>
                 <Text style={{ color: "#D2D1D1" }}>Sign In via OTP</Text>
               </Button>
               <Button

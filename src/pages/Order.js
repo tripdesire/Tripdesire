@@ -1,64 +1,62 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { Text, Button, ActivityIndicator } from "../components";
 import { SafeAreaView } from "react-native";
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { View, StyleSheet, FlatList } from "react-native";
 import Toast from "react-native-simple-toast";
-import axios from "axios";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
-import { etravosApi, domainApi } from "../service";
+import { domainApi } from "../service";
 import moment from "moment";
 
 class Order extends React.PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {
-      loader: true,
+      loading: false,
       orders: []
     };
-
-    const { user } = this.props;
-
-    if (isEmpty(user)) {
-      this.setState({
-        loader: false,
-        orders: 0
-      });
-      //Toast.show("Please login or signup", Toast.LONG);
-      this.props.navigation.navigate("SignIn", { isCheckout: true });
-    } else {
-      domainApi
-        .get("/nutri-user/" + user.id + "/order-list")
-        .then(({ data }) => {
-          // console.log(data);
-          if (data.status == 1) {
-            this.setState({
-              orders: data.data,
-              loader: false
-            });
-          } else {
-            Toast.show("Orders are not found", Toast.SHORT);
-            this.setState({ loader: false });
-          }
-        })
-        .catch(error => {
-          console.log(error, Toast.LONG);
-        });
+  }
+  componentDidMount() {
+    if (!isEmpty(this.props.user)) {
+      this.loadOrders();
     }
   }
 
-  _orderDetails = value => {
+  loadOrders = () => {
+    console.log("loading orders");
+    const { user } = this.props;
+    this.setState({ loading: true });
+
+    domainApi
+      .get("/nutri-user/" + user.id + "/order-list")
+      .then(({ data }) => {
+        if (data.status == 1) {
+          this.setState({ orders: data.data, loading: false });
+        } else {
+          Toast.show("Orders not found", Toast.SHORT);
+          this.setState({ loading: false });
+        }
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+        Toast.show(error.toString(), Toast.LONG);
+      });
+  };
+
+  navigateToLogin = () => {
+    this.props.navigation.navigate("SignIn", { onBack: this.loadOrders });
+  };
+  navigateToOrderDetails = value => {
     this.props.navigation.navigate("OrderDetails", value);
   };
 
-  _renderItem = ({ item }) => <OrderItems item={item} onPress={this._orderDetails} />;
+  renderItem = ({ item }) => <OrderItems item={item} onPress={this.navigateToOrderDetails} />;
 
-  _keyExtractor = item => "order_" + item.order_data.id;
+  keyExtractor = item => "order_" + item.order_data.id;
 
   render() {
-    const { loader, orders } = this.state;
+    const { loading, orders } = this.state;
+    const { user } = this.props;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
@@ -67,19 +65,27 @@ class Order extends React.PureComponent {
             <View style={styles.header}>
               <Text style={styles.headerTitle}>Orders</Text>
             </View>
-
-            {orders.length > 0 ? (
+            {isEmpty(user) ? (
+              <View style={styles.loginContainer}>
+                <Text style={{ textAlign: "center" }}>
+                  You need to be logged in in order to view trips
+                </Text>
+                <Button onPress={this.navigateToLogin} style={styles.loginButton}>
+                  <Text style={{ color: "#FFF" }}>LOGIN</Text>
+                </Button>
+              </View>
+            ) : orders.length > 0 ? (
               <FlatList
                 data={orders}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
+                keyExtractor={this.keyExtractor}
+                renderItem={this.renderItem}
               />
             ) : (
               <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                 <Text>Orders are not found</Text>
               </View>
             )}
-            {loader && <ActivityIndicator />}
+            {loading && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>
@@ -109,11 +115,7 @@ function OrderItems({ item, onPress }) {
         shadowOffset: { height: 1, width: 0 }
       }}
       onPress={_onPress}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between"
-        }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Booking Id : </Text>
           <Text style={{ lineHeight: 18 }}>{item.order_data.id}</Text>
@@ -138,7 +140,10 @@ function OrderItems({ item, onPress }) {
 }
 
 const styles = StyleSheet.create({
-  Heading: { fontSize: 16, fontWeight: "700" },
+  Heading: {
+    fontSize: 16,
+    fontWeight: "700"
+  },
   header: {
     flexDirection: "row",
     paddingHorizontal: 16,
@@ -150,6 +155,19 @@ const styles = StyleSheet.create({
     color: "#1E293B",
     fontWeight: "700",
     fontSize: 18
+  },
+  loginContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    paddingHorizontal: 92
+  },
+  loginButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 20,
+    borderRadius: 4,
+    backgroundColor: "#F68E1F",
+    marginTop: 20
   }
 });
 
@@ -157,4 +175,4 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, null)(Order);
+export default connect(mapStateToProps)(Order);

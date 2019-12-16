@@ -21,7 +21,7 @@ class SignUp extends React.PureComponent {
     };
   }
 
-  navigateToScreen = (page, params = {}) => () => {
+  signUp = () => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let params = {
       fname: this.state.firstname,
@@ -38,25 +38,26 @@ class SignUp extends React.PureComponent {
     if (this.state.firstname != "" && this.state.email != "" && this.state.password != "") {
       if (reg.test(this.state.email) === true) {
         this.setState({ loader: true });
-        axios({
-          method: "post",
-          url: "https://demo66.tutiixx.com/wp-json/wc/v2/register",
-          data: bodyFormData,
-          config: { headers: { "Content-Type": "multipart/form-data" } }
-        }).then(response => {
-          if (response.data.status == 1) {
-            console.log(response);
+        domainApi
+          .post("/register", bodyFormData, {
+            config: { headers: { "Content-Type": "multipart/form-data" } }
+          })
+          .then(response => {
+            if (response.data.status == 1) {
+              console.log(response);
+              this.setState({ loader: false });
+              Toast.show("Successful Signup! Login now", Toast.LONG);
+              this.props.navigation.goBack(null);
+            } else {
+              this.setState({ loader: false });
+              Toast.show("Something went wrong", Toast.LONG);
+            }
+          })
+          .catch(() => {
             this.setState({ loader: false });
-            Toast.show("You have successfully Signup", Toast.LONG);
-            this.props.navigation.goBack(null);
-          } else if (response.data.error) {
-            this.setState({ loader: false });
-            Toast.show(response.data.error, Toast.LONG);
-          }
-          console.log(response);
-        });
+          });
       } else {
-        Toast.show("Please enter the valid email.", Toast.LONG);
+        Toast.show("Please fill all fields", Toast.LONG);
       }
     }
   };
@@ -73,10 +74,11 @@ class SignUp extends React.PureComponent {
           if (data.code == 1) {
             this.setState({ loader: false });
             this.props.Signin(data.details);
-            this.props.navigation.navigate("Home");
-            Toast.show("you are login successfully", Toast.LONG);
+            this.props.navigation.goBack(null);
+            Toast.show("Login successful", Toast.LONG);
           } else {
-            Toast.show("you are not login successfully", Toast.LONG);
+            this.setState({ loader: false });
+            Toast.show("Wrong Email / Password.", Toast.LONG);
           }
         });
       });
@@ -154,7 +156,7 @@ class SignUp extends React.PureComponent {
               imgpath={require("../assets/imgs/password.png")}
               onChangeText={text => this.setState({ password: text })}
             />
-            <Button style={styles.button} onPress={this.navigateToScreen("SignIn")}>
+            <Button style={styles.button} onPress={this.signUp}>
               <Text style={{ color: "#fff" }}>Sign Up</Text>
             </Button>
             <View

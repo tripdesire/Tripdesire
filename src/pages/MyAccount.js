@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Image } from "react-native";
+import { View, StyleSheet, SafeAreaView, Image, Linking } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty } from "lodash";
 import { GoogleSignin } from "@react-native-community/google-signin";
@@ -7,15 +7,17 @@ import { Logout } from "../store/action";
 import { Text, Button, Icon } from "../components";
 
 function MyAccount({ navigation }) {
+  GoogleSignin.configure();
+
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const login = () => {
     navigation.navigate("LoginStack", { isCheckout: true });
   };
-  const signUp = () => {
-    navigation.navigate("SignUp", {});
-  };
+  // const signUp = () => {
+  //   navigation.navigate("SignUp", {});
+  // };
 
   const myTrips = () => {
     if (isEmpty(user)) {

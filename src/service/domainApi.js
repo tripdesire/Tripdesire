@@ -47,12 +47,13 @@ class Service {
     });
   }
 
-  post(path, payload) {
+  post(path, payload, extra = {}) {
     return this.service.request({
       method: "POST",
       url: path,
       responseType: "json",
-      data: payload
+      data: payload,
+      ...extra
     });
   }
 }
