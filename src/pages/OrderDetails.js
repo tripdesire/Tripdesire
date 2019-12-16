@@ -486,9 +486,10 @@ class OrderDetails extends React.PureComponent {
                       }}>
                       Passenger
                     </Text>
-                    {adult_details.map((item, index) => {
-                      return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
-                    })}
+                    {adult_details &&
+                      adult_details.map((item, index) => {
+                        return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
+                      })}
                     {child_details.length > 0 &&
                       child_details.map((item, index) => {
                         return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;

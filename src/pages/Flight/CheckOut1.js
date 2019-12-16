@@ -1247,7 +1247,7 @@ class CheckOut1 extends React.PureComponent {
                 <Button
                   style={{
                     backgroundColor: "#F68E1D",
-                    marginHorizontal: 100,
+                    marginHorizontal: 140,
                     alignItems: "center",
                     marginVertical: 30,
                     justifyContent: "center",
@@ -1255,7 +1255,7 @@ class CheckOut1 extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._order}>
-                  <Text style={{ color: "#fff" }}>Place Order</Text>
+                  <Text style={{ color: "#fff", fontWeight: "700" }}>Book Now</Text>
                 </Button>
               </ScrollView>
             </View>
