@@ -114,14 +114,8 @@ class BusRoundReturn extends React.PureComponent {
   _keyExtractorReturn = (item, index) => "ReturnBus_" + index;
 
   render() {
-    const { returnBus, loader, index, swiperIndex, onwardFare, returnFare } = this.state;
-    const {
-      tripType,
-      sourceName,
-      destinationName,
-      journeyDate,
-      returnDate
-    } = this.props.navigation.state.params;
+    const { returnBus, loader } = this.state;
+    const { sourceName, destinationName, returnDate } = this.props.navigation.state.params;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />

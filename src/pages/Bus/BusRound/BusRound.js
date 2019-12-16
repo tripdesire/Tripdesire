@@ -1,11 +1,8 @@
-import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator, HeaderFlights, Icon } from "../../../components";
+import React from "react";
+import { Dimensions, Image, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
+import { Button, Text, ActivityIndicator, Icon } from "../../../components";
 import Toast from "react-native-simple-toast";
-import { withNavigation } from "react-navigation";
-import SwiperFlatList from "react-native-swiper-flatlist";
 import { etravosApi } from "../../../service";
-import moment from "moment";
 import RenderRound from "./RenderRound";
 import Filter from "../Filter";
 
@@ -17,13 +14,8 @@ class BusRound extends React.PureComponent {
     this.state = {
       loader: false,
       onwardBus: [],
-      returnBus: [],
       selectedOnward: 0,
-      selectedReturn: 0,
-      index: 0,
-      swiperIndex: 0,
-      onwardFare: "",
-      returnFare: ""
+      onwardFare: ""
     };
   }
 
@@ -35,7 +27,6 @@ class BusRound extends React.PureComponent {
       .then(({ data }) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {
-          this.setState({ nofound: data.AvailableTrips.length, loader: false });
           Toast.show("Data not found.", Toast.LONG);
         }
         this.setState({
@@ -59,7 +50,8 @@ class BusRound extends React.PureComponent {
       sourceId,
       destinationId,
       journeyDate,
-      returnDate
+      returnDate,
+      params
     } = this.props.navigation.state.params;
     return (
       <RenderRound
@@ -78,10 +70,6 @@ class BusRound extends React.PureComponent {
     );
   };
 
-  _onChangeIndex = ({ index }) => {
-    this.setState({ swiperIndex: index });
-  };
-
   _getBusOnward = (value, index) => {
     console.log("hey");
     this.setState({
@@ -93,7 +81,7 @@ class BusRound extends React.PureComponent {
   _keyExtractorOnward = (item, index) => "OnwardBus_" + index;
 
   render() {
-    const { onwardBus, returnBus, loader, index, swiperIndex, onwardFare, returnFare } = this.state;
+    const { onwardBus, loader, onwardFare } = this.state;
     const {
       tripType,
       sourceName,
@@ -107,11 +95,7 @@ class BusRound extends React.PureComponent {
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <View style={{ backgroundColor: "#E5EBF7" }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "100%"
-                }}>
+              <View style={{ flexDirection: "row", width: "100%" }}>
                 <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                   <Icon name="md-arrow-back" size={24} />
                 </Button>
@@ -126,12 +110,7 @@ class BusRound extends React.PureComponent {
                   </View>
                 </View>
                 <Button
-                  style={{
-                    flexDirection: "row",
-                    marginStart: "auto",
-                    paddingEnd: 8,
-                    paddingVertical: 16
-                  }}>
+                  style={styles.sortFilter}>
                   <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
                   <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
                     Sort & Filter
