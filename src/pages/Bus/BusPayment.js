@@ -383,7 +383,7 @@ class BusPayment extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._PlaceOrder}>
-                  <Text style={{ color: "#fff" }}>Place Order</Text>
+                  <Text style={{ color: "#fff" }}>Book Now</Text>
                 </Button>
               </ScrollView>
             </View>

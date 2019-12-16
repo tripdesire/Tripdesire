@@ -48,7 +48,12 @@ class FlightSearch extends React.PureComponent {
                     ...styles.tabButtons
                   }}
                   onPress={this.setDomesticActive}>
-                  <Text style={{ color: flightType == 1 ? "#FFFFFF" : "#000000", fontSize: 12 }}>
+                  <Text
+                    style={{
+                      color: flightType == 1 ? "#FFFFFF" : "#5D666D",
+                      fontSize: 16,
+                      fontWeight: "600"
+                    }}>
                     Domestic
                   </Text>
                 </Button>
@@ -60,7 +65,12 @@ class FlightSearch extends React.PureComponent {
                     ...styles.tabButtons
                   }}
                   onPress={this.setInternationalActive}>
-                  <Text style={{ fontSize: 12, color: flightType == 2 ? "#FFFFFF" : "#000000" }}>
+                  <Text
+                    style={{
+                      color: flightType == 2 ? "#FFFFFF" : "#5D666D",
+                      fontSize: 16,
+                      fontWeight: "600"
+                    }}>
                     International
                   </Text>
                 </Button>

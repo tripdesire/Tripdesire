@@ -41,7 +41,7 @@ class DomesticFlights extends React.PureComponent {
       Journey_date: new Date(),
       Return_date: new Date(),
       tripTypeColorOneway: "#000000",
-      tripTypeColorRound: "#BDC4CA",
+      tripTypeColorRound: "#5D666D",
       selectRound: false,
       fromDTpicker: false,
       toDTpicker: false
@@ -180,7 +180,9 @@ class DomesticFlights extends React.PureComponent {
           <Button
             style={{ justifyContent: "center" }}
             onPress={() => this._SelectTripType("oneway")}>
-            <Text style={{ color: tripTypeColorOneway }}>One Way</Text>
+            <Text style={{ color: tripTypeColorOneway, fontWeight: "600", fontSize: 14 }}>
+              One Way
+            </Text>
           </Button>
           <Image
             style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
@@ -189,7 +191,9 @@ class DomesticFlights extends React.PureComponent {
           <Button
             style={{ justifyContent: "center" }}
             onPress={() => this._SelectTripType("round")}>
-            <Text style={{ color: tripTypeColorRound }}>Round Trip</Text>
+            <Text style={{ color: tripTypeColorRound, fontWeight: "600", fontSize: 14 }}>
+              Round Trip
+            </Text>
           </Button>
         </View>
 
@@ -202,13 +206,13 @@ class DomesticFlights extends React.PureComponent {
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalFrom", true)}>
             <Text style={{ color: "#5D666D" }}>From: </Text>
-            <Text style={{ color: "#5D666D" }}>{from}</Text>
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
           </Button>
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalTo", true)}>
             <Text style={{ color: "#5D666D" }}>To:</Text>
-            <Text style={{ color: "#5D666D" }}>{to}</Text>
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{to}</Text>
           </Button>
         </View>
 
@@ -223,7 +227,9 @@ class DomesticFlights extends React.PureComponent {
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.showDateTimePicker("fromDTpicker")}>
             <Text style={{ color: "#5D666D" }}>Depart </Text>
-            <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+              {moment(Journey_date).format("DD-MMM-YYYY")}
+            </Text>
             <DateTimePicker
               isVisible={fromDTpicker}
               date={Journey_date}
@@ -237,7 +243,9 @@ class DomesticFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.showDateTimePicker("toDTpicker")}>
               <Text style={{ color: "#5D666D" }}>Return</Text>
-              <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
+              <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                {moment(Return_date).format("DD-MMM-YYYY")}
+              </Text>
               <DateTimePicker
                 isVisible={toDTpicker}
                 date={Return_date}
@@ -263,7 +271,7 @@ class DomesticFlights extends React.PureComponent {
             }}>
             <Text style={{ color: "#5D666D", marginStart: 5 }}>Passengers:</Text>
             <View style={{ flex: 1, paddingStart: 5 }}>
-              <Text style={{ color: "#5D666D", marginStart: 5 }}>
+              <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600", lineHeight: 22 }}>
                 {adult > 0 ? adult + " Adults" : ""}
                 {children > 0 ? ", " + children + " Children" : ""}
                 {infants > 0 ? ", " + infants + " Infants" : ""}
@@ -275,7 +283,8 @@ class DomesticFlights extends React.PureComponent {
                   width: 70,
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: 12
+                  borderRadius: 12,
+                  marginTop: 5
                 }}
                 onPress={this.setModalVisible("modalPassengers", true)}>
                 <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
@@ -286,10 +295,14 @@ class DomesticFlights extends React.PureComponent {
             <Text style={{ color: "#5D666D" }}>Class</Text>
             <RNPickerSelect
               useNativeAndroidPickerStyle={false}
+              itemstyle={{ fontWeight: "700", fontSize: 24 }}
               placeholder={{}}
               value={this.state.class}
               style={{
-                inputAndroid: { color: "#000", padding: 0, height: 20 }
+                inputAndroid: {
+                  padding: 0,
+                  height: 20
+                }
               }}
               onValueChange={(itemValue, index) =>
                 this.setState({ class: itemValue, index: index })

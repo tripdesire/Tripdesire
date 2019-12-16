@@ -28,25 +28,24 @@ class Home extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <View
+            <Text
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                fontSize: 28,
+                color: "#1B294C",
+                fontWeight: "600",
                 marginHorizontal: 20,
-                marginTop: 40
+                marginTop: 50,
+                lineHeight: 34
               }}>
-              <Text style={{ fontSize: 26, color: "#1B294C", fontWeight: "600" }}>WHERE WOULD</Text>
-              {/* <Button onPress={this.props.navigation.openDrawer}>
-                <Image style={{ width: 30 }} source={require("../assets/imgs/bar.png")} />
-              </Button> */}
-            </View>
+              WHERE WOULD
+            </Text>
             <Text
               style={{
                 color: "#5789FF",
-                fontSize: 26,
-                fontWeight: "600",
-                marginHorizontal: 20,
-                marginVertical: 5
+                fontSize: 36,
+                lineHeight: 40,
+                fontWeight: "700",
+                marginHorizontal: 20
               }}>
               YOU WANT TO GO?
             </Text>

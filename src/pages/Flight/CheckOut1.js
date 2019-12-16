@@ -1252,7 +1252,8 @@ class CheckOut1 extends React.PureComponent {
                     marginVertical: 30,
                     justifyContent: "center",
                     height: 40,
-                    borderRadius: 20
+                    borderRadius: 20,
+                    marginTop: "auto"
                   }}
                   onPress={this._order}>
                   <Text style={{ color: "#fff", fontWeight: "700" }}>Book Now</Text>
