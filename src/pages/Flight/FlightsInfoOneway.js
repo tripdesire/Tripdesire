@@ -6,6 +6,7 @@ import { orderBy } from "lodash";
 import FlightListRender from "./FlightListRender";
 import FlightListInternational from "./FlightListInternational";
 import { etravosApi } from "../../service";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import Filter from "./Filter";
 
@@ -46,22 +47,23 @@ class FlightsInfoOneway extends React.PureComponent {
         sortBy: "Fare low to high"
       },
       filterFlights: [],
-      propsName: props.navigation.state.params
+      propsName: props.navigation.state.params,
+      showCalender: false
     };
   }
 
   componentDidMount() {
-    let data = this.props.navigation.state.params;
+    let data = Object.assign({}, this.props.navigation.state.params);
     this.genrateDates(data.journeyDate);
-    data.journeyDate = this.state.journeyDate;
-    this.setState({ loader: true });
     this.ApiCall(data);
   }
 
   ApiCall(data) {
+    this.setState({ loader: true });
     etravosApi
       .get("/Flights/AvailableFlights", data)
       .then(({ data }) => {
+        this.setState({ loader: false });
         console.log(data);
         if (this.state.flight_type == 1) {
           console.log(data.DomesticOnwardFlights);
@@ -101,12 +103,13 @@ class FlightsInfoOneway extends React.PureComponent {
   genrateDates(date) {
     let dates = [];
     date = moment(date, "DD-MM-YYYY");
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 90; i++) {
       let d = date.add(1, "days");
       dates.push({
         fullDate: d.format("DD-MM-YYYY"),
         day: d.format("ddd"),
-        date: d.format("DD")
+        date: d.format("DD"),
+        month: d.format("MMM")
       });
     }
     let month = date.format("MMM");
@@ -317,12 +320,24 @@ class FlightsInfoOneway extends React.PureComponent {
 
   _ChangeDate = item => () => {
     this.setState({ journeyDate: item.fullDate });
-
-    let data = this.props.navigation.state.params;
+    let data = Object.assign({}, this.props.navigation.state.params);
     data.journeyDate = item.fullDate;
-
-    console.log(this.state);
     this.ApiCall(data);
+  };
+
+  handleDatePicked = date => {
+    this.setState({ journeyDate: moment(date).format("DD-MM-YYYY") });
+    let data = Object.assign({}, this.props.navigation.state.params);
+    data.journeyDate = moment(date).format("DD-MM-YYYY");
+    this.ApiCall(data);
+  };
+
+  _openCalenderShow = () => {
+    this.setState({ showCalender: true });
+  };
+
+  hideDateTimePicker = () => {
+    this.setState({ showCalender: false });
   };
 
   _renderItem = ({ item }) => (
@@ -331,6 +346,7 @@ class FlightsInfoOneway extends React.PureComponent {
       onPress={this._ChangeDate(item)}>
       <Text style={{ fontSize: 12, color: "#717984" }}>{item.day}</Text>
       <Text style={{ fontSize: 20, fontWeight: "700" }}>{item.date}</Text>
+      <Text style={{ fontSize: 12, color: "#717984" }}>{item.month}</Text>
     </Button>
   );
   itemSeparator = () => (
@@ -408,7 +424,8 @@ class FlightsInfoOneway extends React.PureComponent {
       filterFlights,
       dates,
       flight_type,
-      flightCount
+      flightCount,
+      showCalender
     } = this.state;
     return (
       <>
@@ -466,12 +483,23 @@ class FlightsInfoOneway extends React.PureComponent {
                     justifyContent: "center",
                     borderBottomRightRadius: 5,
                     borderTopRightRadius: 5
-                  }}>
+                  }}
+                  onPress={this._openCalenderShow}>
                   <Icon
                     name="md-calendar"
                     size={24}
                     color="#fff"
                     style={{ paddingHorizontal: 10 }}
+                  />
+                  <DateTimePicker
+                    isVisible={showCalender}
+                    date={moment(journeyDate, "DD-MM-YYYY").toDate()}
+                    maximumDate={moment()
+                      .add(1, "years")
+                      .toDate()}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
+                    minimumDate={new Date()}
                   />
                 </Button>
               </View>
