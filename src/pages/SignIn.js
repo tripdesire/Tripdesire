@@ -74,11 +74,7 @@ class SignIn extends React.PureComponent {
             Toast.show("Login successful", Toast.LONG);
           } else {
             this.setState({ loader: false });
-<<<<<<< HEAD
             Toast.show("Wrong Email / Password.", Toast.LONG);
-=======
-            Toast.show("you are not login successfully", Toast.LONG);
->>>>>>> 0009b2d713e44f4a4f32d905dc5ddb263e620cdd
           }
         });
       });
