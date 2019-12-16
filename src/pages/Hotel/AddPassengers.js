@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
 import { Button, Text } from "../../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import RNPickerSelect from "react-native-picker-select";
+import Toast from "react-native-simple-toast";
 
 class AddPassengers extends React.PureComponent {
   constructor(props) {
@@ -36,7 +37,6 @@ class AddPassengers extends React.PureComponent {
   };
 
   onChildrenChange = index => value => {
-    console.log(index);
     let newData = Object.assign([], this.state.data);
     newData[index].children = value;
     newData[index].childAge = [-1, -1];
@@ -53,8 +53,26 @@ class AddPassengers extends React.PureComponent {
     });
   };
 
+  validate = () => {
+    let needToValidateChildsAge = false;
+    for (let i = 0; i < this.state.data.length; i++) {
+      for (let j = 0; j < this.state.data[i].children; j++) {
+        console.log(this.state.data[i].childAge[j]);
+        if (this.state.data[i].children > 0 && this.state.data[i].childAge[j] == -1) {
+          return needToValidateChildsAge == false;
+        } else if (this.state.data[i].children == 0) {
+          return needToValidateChildsAge == false;
+        }
+      }
+    }
+  };
+
   _submit = () => {
-    this.props.submit && this.props.submit(this.state);
+    if (!this.validate()) {
+      this.props.submit && this.props.submit(this.state);
+    } else {
+      Toast.show("Children age can't empty");
+    }
   };
 
   render() {
@@ -122,13 +140,21 @@ class AddPassengers extends React.PureComponent {
                         iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                       }}
                       onValueChange={this.onAdultsChange(index)}
-                      items={[
-                        { value: 0, label: "0" },
-                        { value: 1, label: "1" },
-                        { value: 2, label: "2" },
-                        { value: 3, label: "3" },
-                        { value: 4, label: "4" }
-                      ]}
+                      items={
+                        index == 0
+                          ? [
+                              { value: 1, label: "1" },
+                              { value: 2, label: "2" },
+                              { value: 3, label: "3" },
+                              { value: 4, label: "4" }
+                            ]
+                          : [
+                              { value: 1, label: "1" },
+                              { value: 2, label: "2" },
+                              { value: 3, label: "3" },
+                              { value: 4, label: "4" }
+                            ]
+                      }
                       Icon={() => <Icon name="ios-arrow-down" size={20} />}
                     />
                   </View>
