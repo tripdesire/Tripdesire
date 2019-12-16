@@ -64,7 +64,7 @@ class OTPVerify extends Component {
   };
   verifyOTP = () => {
     const { phone, country_code, code: otp } = this.state;
-    //const { isCheckout } = this.props.navigation.state.params;
+    const { onBack } = this.props.navigation.state.params;
 
     if (otp.length < 4) {
       Toast.show("Invalid code");
@@ -78,13 +78,11 @@ class OTPVerify extends Component {
         if (data.code == 1) {
           this.setState({ loader: false });
           this.props.Signin(data.details);
-          //if (isCheckout) {
+          onBack && onBack();
+          this.goBack();
           this.props.navigation.goBack(null);
           this.props.navigation.goBack(null);
           this.props.navigation.goBack(null);
-          //   } else {
-          //     this.props.navigation.navigate("Home");
-          //   }
           Toast.show("you are login successfully", Toast.LONG);
         } else {
           Toast.show("Otp not verified", Toast.LONG);

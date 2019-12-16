@@ -20,7 +20,7 @@ class SignIn extends React.PureComponent {
   }
 
   login = () => {
-    const { isCheckout, onBack } = this.props.navigation.state.params;
+    const { onBack } = this.props.navigation.state.params;
     console.log(this.state);
     if (this.state.email != "" && this.state.password != "") {
       this.setState({ loader: true });
@@ -57,8 +57,8 @@ class SignIn extends React.PureComponent {
     this.props.navigation.navigate(page);
   };
 
-  _Social_login = social => {
-    const { isCheckout, onBack } = this.props.navigation.state.params;
+  socialLogin = social => {
+    const { onBack } = this.props.navigation.state.params;
     if (social == "google") {
       GoogleSignin.signIn().then(user => {
         let details = user.user;
@@ -78,11 +78,11 @@ class SignIn extends React.PureComponent {
           }
         });
       });
-    } else if (social == "facebook") {
+    } else {
       LoginManager.logInWithPermissions(["public_profile", "email"]).then(
         result => {
           if (result.isCancelled) {
-            //console.log("Login cancelled");
+            Toast.show("Login cancelled", Toast.LONG);
           } else {
             AccessToken.getCurrentAccessToken().then(data => {
               const infoRequest = new GraphRequest(
@@ -90,28 +90,32 @@ class SignIn extends React.PureComponent {
                 { accessToken: data.accessToken },
                 (error, result) => {
                   if (error) {
+                    Toast.show(error.toString(), Toast.LONG);
                     //console.log(error);
                   } else {
                     let details = result;
                     details.mode = "facebook";
                     console.log(result);
                     this.setState({ loader: true });
-                    domainApi.post("/social-login", details).then(({ data }) => {
-                      console.log(data);
-                      if (data.code == 1) {
-                        this.setState({ loader: false });
-                        this.props.Signin(data.details);
-                        if (isCheckout) {
+                    domainApi
+                      .post("/social-login", details)
+                      .then(({ data }) => {
+                        console.log(data);
+                        if (data.code == 1) {
+                          this.setState({ loader: false });
+                          this.props.Signin(data.details);
+                          onBack && onBack();
                           this.goBack();
+                          Toast.show("Login successful", Toast.LONG);
                         } else {
-                          this.props.navigation.navigate("Home");
+                          this.setState({ loader: false });
+                          Toast.show("Login Failed", Toast.LONG);
                         }
-                        Toast.show("you are login successfully", Toast.LONG);
-                      } else {
+                      })
+                      .catch(err => {
                         this.setState({ loader: false });
-                        Toast.show("you are not login successfully", Toast.LONG);
-                      }
-                    });
+                        Toast.show(err.toString(), Toast.LONG);
+                      });
                   }
                 }
               );
@@ -131,8 +135,6 @@ class SignIn extends React.PureComponent {
   };
 
   render() {
-    const { isCheckout } = this.props.navigation.state.params;
-
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
@@ -213,13 +215,13 @@ class SignIn extends React.PureComponent {
               </Button>
               <Button
                 style={[styles.facebook_google_button, { marginTop: 20 }]}
-                onPress={() => this._Social_login("google")}>
+                onPress={() => this.socialLogin("google")}>
                 <Image source={require("../assets/imgs/google.png")} />
                 <Text style={{ color: "#D2D1D1" }}>Sign In by Google</Text>
               </Button>
               <Button
                 style={[styles.facebook_google_button, { marginTop: 10 }]}
-                onPress={() => this._Social_login("facebook")}>
+                onPress={() => this.socialLogin("facebook")}>
                 <Image
                   style={{ width: 40, height: 40 }}
                   resizeMode="contain"
