@@ -5,8 +5,8 @@ import Toast from "react-native-simple-toast";
 class Service {
   constructor() {
     let service = axios.create({
-      //baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2",
-      baseURL: "https://tripdesire.co/wp-json/wc/v2"
+      baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2"
+      //baseURL: "https://tripdesire.co/wp-json/wc/v2"
     });
     service.interceptors.response.use(this.handleSuccess, this.handleError);
     this.service = service;

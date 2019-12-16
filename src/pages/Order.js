@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, Button, ActivityIndicator } from "../components";
-import { SafeAreaView } from "react-native";
+import { Text, Button } from "../components";
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import Toast from "react-native-simple-toast";
 import { isEmpty } from "lodash";
@@ -13,7 +13,10 @@ class Order extends React.PureComponent {
     super(props);
     this.state = {
       loading: false,
-      orders: []
+      orders: [],
+      offset: 0,
+      limit: 20,
+      allowMoreScroll: true
     };
   }
   componentDidMount() {
@@ -25,13 +28,21 @@ class Order extends React.PureComponent {
   loadOrders = () => {
     console.log("loading orders");
     const { user } = this.props;
+    const { offset, limit, allowMoreScroll } = this.state;
+    if (!allowMoreScroll) {
+      return;
+    }
     this.setState({ loading: true });
-
     domainApi
-      .get("/nutri-user/" + user.id + "/order-list")
+      .post("/nutri-user/" + user.id + "/order-list", { offset, limit })
       .then(({ data }) => {
         if (data.status == 1) {
-          this.setState({ orders: data.data, loading: false });
+          this.setState({
+            orders: [...this.state.orders, ...data.data],
+            loading: false,
+            offset: offset + limit,
+            allowMoreScroll: data.data.length >= limit
+          });
         } else {
           Toast.show("Orders not found", Toast.SHORT);
           this.setState({ loading: false });
@@ -61,32 +72,46 @@ class Order extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
-          <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
-            <View style={styles.header}>
-              <Text style={styles.headerTitle}>Orders</Text>
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Orders</Text>
+          </View>
+          {isEmpty(user) ? (
+            <View style={styles.loginContainer}>
+              <Text style={{ textAlign: "center" }}>
+                You need to be logged in in order to view trips
+              </Text>
+              <Button onPress={this.navigateToLogin} style={styles.loginButton}>
+                <Text style={{ color: "#FFF" }}>LOGIN</Text>
+              </Button>
             </View>
-            {isEmpty(user) ? (
-              <View style={styles.loginContainer}>
-                <Text style={{ textAlign: "center" }}>
-                  You need to be logged in in order to view trips
-                </Text>
-                <Button onPress={this.navigateToLogin} style={styles.loginButton}>
-                  <Text style={{ color: "#FFF" }}>LOGIN</Text>
-                </Button>
-              </View>
-            ) : orders.length > 0 ? (
+          ) : orders.length > 0 ? (
+            <View style={{ flex: 5 }}>
               <FlatList
                 data={orders}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
+                onEndReached={this.loadOrders}
+                contentContainerStyle={{ backgroundColor: "#FFF" }}
+                onEndReachedThreshold={0.5}
               />
-            ) : (
-              <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+            </View>
+          ) : (
+            !loading && (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#FFF"
+                }}>
                 <Text>Orders are not found</Text>
               </View>
-            )}
-            {loading && <ActivityIndicator />}
-          </View>
+            )
+          )}
+
+          {loading && (
+            <ActivityIndicator style={{ flex: 1, backgroundColor: "#FFF" }} size="large" />
+          )}
         </SafeAreaView>
       </>
     );
@@ -157,6 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   loginContainer: {
+    backgroundColor: "#FFF",
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
