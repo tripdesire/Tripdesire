@@ -177,7 +177,7 @@ class DomesticFlights extends React.PureComponent {
             onPress={() => this._SelectTripType("oneway")}>
             <Text
               style={{
-                color: tripType == 1 ? "#000000" : "#BDC4CA",
+                color: tripType == 1 ? "#5D666D" : "#BDC4CA",
                 fontWeight: "600",
                 fontSize: 14
               }}>
@@ -193,7 +193,7 @@ class DomesticFlights extends React.PureComponent {
             onPress={() => this._SelectTripType("round")}>
             <Text
               style={{
-                color: tripType == 2 ? "#000000" : "#BDC4CA",
+                color: tripType == 2 ? "#5D666D" : "#BDC4CA",
                 fontWeight: "600",
                 fontSize: 14
               }}>
@@ -210,13 +210,13 @@ class DomesticFlights extends React.PureComponent {
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalFrom", true)}>
-            <Text style={{ color: "#5D666D" }}>From: </Text>
+            <Text style={{ color: "#5D666D" }}>From </Text>
             <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
           </Button>
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalTo", true)}>
-            <Text style={{ color: "#5D666D" }}>To:</Text>
+            <Text style={{ color: "#5D666D" }}>To</Text>
             <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{to}</Text>
           </Button>
         </View>
@@ -233,7 +233,7 @@ class DomesticFlights extends React.PureComponent {
             onPress={this.showDateTimePicker("fromDTpicker")}>
             <Text style={{ color: "#5D666D" }}>Depart </Text>
             <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
-              {moment(Journey_date).format("DD-MMM-YYYY")}
+              {moment(Journey_date).format("DD MMM YYYY")}
             </Text>
             <DateTimePicker
               isVisible={fromDTpicker}
@@ -249,7 +249,7 @@ class DomesticFlights extends React.PureComponent {
               onPress={this.showDateTimePicker("toDTpicker")}>
               <Text style={{ color: "#5D666D" }}>Return</Text>
               <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
-                {moment(Return_date).format("DD-MMM-YYYY")}
+                {moment(Return_date).format("DD MMM YYYY")}
               </Text>
               <DateTimePicker
                 isVisible={toDTpicker}
@@ -272,12 +272,15 @@ class DomesticFlights extends React.PureComponent {
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalPassengers", true)}>
-            <Text style={{ color: "#5D666D" }}>Passengers:</Text>
+            <Text style={{ color: "#5D666D" }}>Passengers</Text>
 
             <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
-              {adult > 0 ? adult + " Adults" : ""}
+              {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
+                ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
+                : parseInt(adult) + parseInt(children) + parseInt(infants)}
+              {/* {adult > 0 ? adult + " Adults" : ""} 
               {children > 0 ? ", " + children + " Children" : ""}
-              {infants > 0 ? ", " + infants + " Infants" : ""}
+              {infants > 0 ? ", " + infants + " Infants" : ""} */}
             </Text>
           </Button>
           <View style={{ flex: 1, paddingStart: 20 }}>
@@ -286,6 +289,7 @@ class DomesticFlights extends React.PureComponent {
               useNativeAndroidPickerStyle={false}
               itemstyle={{ fontWeight: "700", fontSize: 24 }}
               placeholder={{}}
+              pickerProps={{ mode: "dropdown" }}
               value={this.state.class}
               style={{
                 inputIOS: {

@@ -12,12 +12,6 @@ class Home extends React.PureComponent {
   }
 
   navigateToScreen = (page, params = {}) => () => {
-    this.setState({
-      IconcolorFlight: page == "FlightSearch" ? "#5789FF" : "#8898A7",
-      IconcolorHotels: page == "Hotel" ? "#5789FF" : "#8898A7",
-      IconcolorBus: page == "Bus" ? "#5789FF" : "#8898A7",
-      IconcolorCab: page == "Cab" ? "#5789FF" : "#8898A7"
-    });
     this.props.navigation.navigate(page);
   };
 
@@ -61,14 +55,14 @@ class Home extends React.PureComponent {
                 marginTop: 40
               }}>
               <HomeButtonComponent
+                tintColor={"#616A71"}
                 name="Flights"
-                tintColor="#8396A5"
                 img_name={require("../assets/imgs/flight.png")}
                 onPress={this.navigateToScreen("FlightSearch")}
               />
               <HomeButtonComponent
                 name="Hotels"
-                //tintColor="#5789FF"
+                tintColor={"#616A71"}
                 img_name={require("../assets/imgs/Hotel.png")}
                 onPress={this.navigateToScreen("Hotel")}
               />
@@ -81,13 +75,13 @@ class Home extends React.PureComponent {
               }}>
               <HomeButtonComponent
                 name="Buses"
-                //tintColor="#5789FF"
+                tintColor={"#616A71"}
                 img_name={require("../assets/imgs/bus.png")}
                 onPress={this.navigateToScreen("Bus")}
               />
               <HomeButtonComponent
                 name="Cabs"
-                //tintColor="#5789FF"
+                tintColor={"#616A71"}
                 img_name={require("../assets/imgs/car.png")}
                 onPress={this.navigateToScreen("Cab")}
               />

@@ -48,8 +48,6 @@ class InternationalFlights extends React.PureComponent {
       Button_text_color_domestic: "#FFFFFF",
       Button_text_color_international: "#000000",
       backgroundColor_international: "#FFFFFF",
-      tripTypeColorOneway: "#5D666D",
-      tripTypeColorRound: "#BDC4CA",
       selectRound: false,
       fromDTpicker: false,
       toDTpicker: false
@@ -96,8 +94,6 @@ class InternationalFlights extends React.PureComponent {
 
   _SelectTripType = value => {
     this.setState({
-      tripTypeColorOneway: value == "oneway" ? "#5D666D" : "#BDC4CA",
-      tripTypeColorRound: value == "oneway" ? "#BDC4CA" : "#5D666D",
       tripType: value == "oneway" ? 1 : 2,
       selectRound: value == "round" ? true : false
     });
@@ -193,8 +189,7 @@ class InternationalFlights extends React.PureComponent {
       adult,
       children,
       infants,
-      tripTypeColorOneway,
-      tripTypeColorRound,
+      tripType,
       selectRound
     } = this.state;
     return (
@@ -217,7 +212,14 @@ class InternationalFlights extends React.PureComponent {
           <Button
             style={{ justifyContent: "center" }}
             onPress={() => this._SelectTripType("oneway")}>
-            <Text style={{ color: tripTypeColorOneway }}>One Way</Text>
+            <Text
+              style={{
+                color: tripType == 1 ? "#5D666D" : "#BDC4CA",
+                fontWeight: "600",
+                fontSize: 14
+              }}>
+              One Way
+            </Text>
           </Button>
           <Image
             style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
@@ -226,7 +228,14 @@ class InternationalFlights extends React.PureComponent {
           <Button
             style={{ justifyContent: "center" }}
             onPress={() => this._SelectTripType("round")}>
-            <Text style={{ color: tripTypeColorRound }}>Round Trip</Text>
+            <Text
+              style={{
+                color: tripType == 2 ? "#5D666D" : "#BDC4CA",
+                fontWeight: "600",
+                fontSize: 14
+              }}>
+              Round Trip
+            </Text>
           </Button>
         </View>
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
@@ -237,14 +246,14 @@ class InternationalFlights extends React.PureComponent {
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalFrom", true)}>
-            <Text style={{ color: "#5D666D" }}>From: </Text>
-            <Text style={{ color: "#5D666D" }}>{from}</Text>
+            <Text style={{ color: "#5D666D" }}>From</Text>
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
           </Button>
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalTo", true)}>
-            <Text style={{ color: "#5D666D" }}>To:</Text>
-            <Text style={{ color: "#5D666D" }}>{to}</Text>
+            <Text style={{ color: "#5D666D" }}>To</Text>
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{to}</Text>
           </Button>
         </View>
 
@@ -259,7 +268,9 @@ class InternationalFlights extends React.PureComponent {
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.showDateTimePicker("fromDTpicker")}>
             <Text style={{ color: "#5D666D" }}>Depart </Text>
-            <Text>{moment(Journey_date).format("DD-MMM-YYYY")}</Text>
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+              {moment(Journey_date).format("DD MMM YYYY")}
+            </Text>
             <DateTimePicker
               isVisible={fromDTpicker}
               date={Journey_date}
@@ -273,7 +284,9 @@ class InternationalFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.showDateTimePicker("toDTpicker")}>
               <Text style={{ color: "#5D666D" }}>Return</Text>
-              <Text>{moment(Return_date).format("DD-MMM-YYYY")}</Text>
+              <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                {moment(Return_date).format("DD MMM YYYY")}
+              </Text>
               <DateTimePicker
                 isVisible={toDTpicker}
                 date={Return_date}
@@ -292,28 +305,17 @@ class InternationalFlights extends React.PureComponent {
             style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/person.png")}
           />
-          <View style={{ flex: 1, paddingStart: 20 }}>
-            <Text style={{ color: "#5D666D" }}>Passengers:</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={{ color: "#5D666D" }}>
-                {adult > 0 ? adult + " Adults" : ""}
-                {children > 0 ? ", " + children + " Children" : ""}
-                {infants > 0 ? ", " + infants + " Infants" : ""}
-              </Text>
-              <Button
-                style={{
-                  backgroundColor: "#F68E1F",
-                  height: 25,
-                  width: 70,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 12
-                }}
-                onPress={this.setPassengers}>
-                <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
-              </Button>
-            </View>
-          </View>
+          <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
+            <Text style={{ color: "#5D666D" }}>Passengers</Text>
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+              {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
+                ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
+                : parseInt(adult) + parseInt(children) + parseInt(infants)}
+              {/* {adult > 0 ? adult + " Adults" : ""}
+              {children > 0 ? ", " + children + " Children" : ""}
+              {infants > 0 ? ", " + infants + " Infants" : ""} */}
+            </Text>
+          </Button>
           <View style={{ flex: 1, paddingStart: 20 }}>
             <Text style={{ color: "#5D666D" }}>Class</Text>
             <RNPickerSelect
@@ -334,6 +336,7 @@ class InternationalFlights extends React.PureComponent {
                   color: "#5D666D"
                 }
               }}
+              pickerProps={{ mode: "dropdown" }}
               onValueChange={(itemValue, index) =>
                 this.setState({ class: itemValue, index: index })
               }
