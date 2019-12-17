@@ -124,7 +124,7 @@ class Bus extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ backgroundColor: "#E4EAF6" }}>
+            <View style={{ backgroundColor: "#E4EAF6", height: 80 }}>
               <Header firstName="Bus" lastName="Search" />
             </View>
 
@@ -140,12 +140,14 @@ class Bus extends React.PureComponent {
                 <Button
                   style={{
                     backgroundColor: TripType == 1 ? "#5B89F9" : "#FFFFFF",
+                    borderBottomStartRadius: 5,
+                    borderTopStartRadius: 5,
                     ...styles.tabButton
                   }}
                   onPress={() => this._triptype("onewway")}>
                   <Text
                     style={{
-                      color: TripType == 1 ? "#ffffff" : "#000000",
+                      color: TripType == 1 ? "#ffffff" : "#5D666D",
                       fontSize: 16,
                       fontWeight: "600"
                     }}>
@@ -155,6 +157,8 @@ class Bus extends React.PureComponent {
                 <Button
                   style={{
                     backgroundColor: TripType == 2 ? "#5B89F9" : "#FFFFFF",
+                    borderBottomEndRadius: 5,
+                    borderTopEndRadius: 5,
                     ...styles.tabButton
                   }}
                   onPress={() => this._triptype("round")}>
@@ -162,7 +166,7 @@ class Bus extends React.PureComponent {
                     style={{
                       fontSize: 16,
                       fontWeight: "600",
-                      color: TripType == 2 ? "#ffffff" : "#000000"
+                      color: TripType == 2 ? "#ffffff" : "#5D666D"
                     }}>
                     Round
                   </Text>
@@ -326,9 +330,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
     justifyContent: "center",
-    paddingHorizontal: 45,
-    borderBottomEndRadius: 5,
-    borderTopEndRadius: 5
+    paddingHorizontal: 45
   }
 });
 

@@ -330,14 +330,14 @@ class Cab extends React.PureComponent {
                   source={require("../../assets/imgs/white-arrow-left-side.png")}
                 />
                 <Button onPress={() => this._SelectTripType("airport")}>
-                  <Text style={{ color: tripType == 6 ? "#000000" : "#BDC4CA" }}>Airport</Text>
+                  <Text style={{ color: tripType == 6 ? "#5D666D" : "#BDC4CA" }}>Airport</Text>
                 </Button>
                 <Image
                   style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
                   source={require("../../assets/imgs/Round-trip-arrow.png")}
                 />
                 <Button onPress={() => this._SelectTripType("railway")}>
-                  <Text style={{ color: tripType == 7 ? "#000000" : "#BDC4CA" }}>
+                  <Text style={{ color: tripType == 7 ? "#5D666D" : "#BDC4CA" }}>
                     Railway Station
                   </Text>
                 </Button>
@@ -348,7 +348,7 @@ class Cab extends React.PureComponent {
                 <Button
                   style={{ justifyContent: "center" }}
                   onPress={() => this._SelectTripType("hotel")}>
-                  <Text style={{ color: tripType == 8 ? "#000000" : "#BDC4CA" }}>Area/Hotel</Text>
+                  <Text style={{ color: tripType == 8 ? "#5D666D" : "#BDC4CA" }}>Area/Hotel</Text>
                 </Button>
               </View>
             )}
@@ -358,15 +358,23 @@ class Cab extends React.PureComponent {
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.setModalVisible("modalFrom", true)}>
-                <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>From</Text>
-                <Text numberOfLines={1}>{from}</Text>
+                <Text style={{ color: "#5D666D" }}>From</Text>
+                <Text
+                  numberOfLines={1}
+                  style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                  {from}
+                </Text>
               </Button>
               {travelType == 1 && (
                 <Button
                   style={{ flex: 1, paddingStart: 20 }}
                   onPress={this.setModalVisible("modalTo", true)}>
-                  <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>To</Text>
-                  <Text numberOfLines={1}>{to}</Text>
+                  <Text style={{ color: "#5D666D" }}>To</Text>
+                  <Text
+                    numberOfLines={1}
+                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                    {to}
+                  </Text>
                 </Button>
               )}
             </View>
@@ -391,7 +399,9 @@ class Cab extends React.PureComponent {
                     style={{ flex: 1, paddingStart: 20 }}
                     onPress={this.setModalVisible("modalDropSugg", true)}>
                     <Text style={{ color: "#5D666D" }}>Drop Location</Text>
-                    <Text numberOfLines={1}>
+                    <Text
+                      numberOfLines={1}
+                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
                       {droplocation != "" ? droplocation : "Tap To Enter"}
                     </Text>
                   </Button>
@@ -410,7 +420,9 @@ class Cab extends React.PureComponent {
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.showDateTimePicker("fromDTpicker")}>
                 <Text style={{ color: "#5D666D" }}>Depart</Text>
-                <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
+                <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                  {moment(this.state.CheckIn).format("DD MMM YYYY")}
+                </Text>
                 <DateTimePicker
                   isVisible={fromDTpicker}
                   onConfirm={this.handleDatePicked("fromDTpicker")}
@@ -423,7 +435,11 @@ class Cab extends React.PureComponent {
                   style={{ flex: 1, paddingStart: 20 }}
                   onPress={this.showDateTimePicker("toDTpicker")}>
                   <Text style={{ color: "#5D666D" }}>Return</Text>
-                  <Text numberOfLines={1}>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
+                  <Text
+                    numberOfLines={1}
+                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                    {moment(this.state.CheckOut).format("DD MMM YYYY")}
+                  </Text>
                   <DateTimePicker
                     isVisible={toDTpicker}
                     onConfirm={this.handleDatePicked("toDTpicker")}
@@ -454,7 +470,13 @@ class Cab extends React.PureComponent {
                       ]}
                       style={{
                         //iconContainer: { paddingEnd: 32 },
-                        inputAndroid: { color: "#000", padding: 0, height: 20 }
+                        inputAndroid: {
+                          color: "#5D666D",
+                          padding: 0,
+                          height: 20,
+                          fontWeight: "600",
+                          fontSize: 18
+                        }
                       }}
                       pickerProps={{ mode: "dropdown" }}
                       value={this.state.tripType}
@@ -473,7 +495,13 @@ class Cab extends React.PureComponent {
                     items={this.state.item}
                     style={{
                       //iconContainer: { paddingEnd: 32 },
-                      inputAndroid: { color: "#000", padding: 0, height: 20 }
+                      inputAndroid: {
+                        color: "#5D666D",
+                        padding: 0,
+                        height: 20,
+                        fontWeight: "600",
+                        fontSize: 18
+                      }
                     }}
                     pickerProps={{ mode: "dropdown" }}
                     value={this.state.pickuptime}
