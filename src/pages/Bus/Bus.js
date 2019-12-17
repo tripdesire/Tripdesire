@@ -147,7 +147,12 @@ class Bus extends React.PureComponent {
                     ...styles.tabButton
                   }}
                   onPress={() => this._triptype("onewway")}>
-                  <Text style={{ color: TripType == 1 ? "#ffffff" : "#000000", fontSize: 12 }}>
+                  <Text
+                    style={{
+                      color: TripType == 1 ? "#ffffff" : "#000000",
+                      fontSize: 16,
+                      fontWeight: "600"
+                    }}>
                     Oneway
                   </Text>
                 </Button>
@@ -159,7 +164,8 @@ class Bus extends React.PureComponent {
                   onPress={() => this._triptype("round")}>
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: 16,
+                      fontWeight: "600",
                       color: TripType == 2 ? "#ffffff" : "#000000"
                     }}>
                     Round
@@ -324,7 +330,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
     justifyContent: "center",
-    paddingHorizontal: 60,
+    paddingHorizontal: 45,
     borderBottomEndRadius: 5,
     borderTopEndRadius: 5
   }
