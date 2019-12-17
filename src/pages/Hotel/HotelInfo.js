@@ -190,7 +190,7 @@ class HotelInfo extends React.PureComponent {
             <Text style={{ fontSize: 16, flex: 1 }}>{item.HotelName}</Text>
             <View style={{ marginStart: 10 }}>
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                ${item.RoomDetails[0].RoomTotal}
+                ₹{item.RoomDetails[0].RoomTotal}
               </Text>
             </View>
           </View>
