@@ -27,7 +27,7 @@ class FlightSearch extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ backgroundColor: "#E4EAF6", flex: 1 }}>
+            <View style={{ backgroundColor: "#E4EAF6", height: 72 }}>
               <Header firstName="Flights" lastName="Search" />
             </View>
 

@@ -166,7 +166,7 @@ class DomesticFlights extends React.PureComponent {
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            marginVertical: 40
+            marginVertical: 16
           }}>
           <Image
             style={{
@@ -264,33 +264,17 @@ class DomesticFlights extends React.PureComponent {
             style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/person.png")}
           />
-          <View
-            style={{
-              flex: 1,
-              paddingStart: 20
-            }}>
-            <Text style={{ color: "#5D666D", marginStart: 5 }}>Passengers:</Text>
-            <View style={{ flex: 1, paddingStart: 5 }}>
-              <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600", lineHeight: 22 }}>
-                {adult > 0 ? adult + " Adults" : ""}
-                {children > 0 ? ", " + children + " Children" : ""}
-                {infants > 0 ? ", " + infants + " Infants" : ""}
-              </Text>
-              <Button
-                style={{
-                  backgroundColor: "#F68E1F",
-                  height: 25,
-                  width: 70,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 12,
-                  marginTop: 5
-                }}
-                onPress={this.setModalVisible("modalPassengers", true)}>
-                <Text style={{ color: "#fff", paddingHorizontal: 15 }}>ADD</Text>
-              </Button>
-            </View>
-          </View>
+          <Button
+            style={{ flex: 1, paddingStart: 20 }}
+            onPress={this.setModalVisible("modalPassengers", true)}>
+            <Text style={{ color: "#5D666D" }}>Passengers:</Text>
+
+            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+              {adult > 0 ? adult + " Adults" : ""}
+              {children > 0 ? ", " + children + " Children" : ""}
+              {infants > 0 ? ", " + infants + " Infants" : ""}
+            </Text>
+          </Button>
           <View style={{ flex: 1, paddingStart: 20 }}>
             <Text style={{ color: "#5D666D" }}>Class</Text>
             <RNPickerSelect
@@ -299,9 +283,17 @@ class DomesticFlights extends React.PureComponent {
               placeholder={{}}
               value={this.state.class}
               style={{
+                inputIOS: {
+                  fontSize: 18,
+                  fontWeight: "600",
+                  color: "#5D666D"
+                },
                 inputAndroid: {
                   padding: 0,
-                  height: 20
+                  height: 20,
+                  fontSize: 18,
+                  fontWeight: "600",
+                  color: "#5D666D"
                 }
               }}
               onValueChange={(itemValue, index) =>

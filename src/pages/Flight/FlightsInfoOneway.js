@@ -95,7 +95,7 @@ class FlightsInfoOneway extends React.PureComponent {
         }
       })
       .catch(error => {
-        Toast.show(error, Toast.LONG);
+        Toast.show(error.toString(), Toast.LONG);
         this.setState({ loader: false });
       });
   }
