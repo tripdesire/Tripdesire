@@ -19,6 +19,8 @@ import moment from "moment";
 import Toast from "react-native-simple-toast";
 import Filter from "./Filter";
 
+const { width, height } = Dimensions.get("window");
+
 class HotelInfo extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -71,7 +73,7 @@ class HotelInfo extends React.PureComponent {
       })
       .catch(error => {
         Toast.show(error.toString(), Toast.LONG);
-        console.log(error);
+        this.setState({ loader: false });
       });
   }
 
@@ -152,20 +154,23 @@ class HotelInfo extends React.PureComponent {
   }
 
   _renderItemList = ({ item, index }) => {
-    const { width, height } = Dimensions.get("window");
     var str = item.HotelImages[0].Imagepath;
     var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
-    let Amenities = item.Facilities.split(",").map(s => s.trim());
+    let Amenities = item.Facilities ? item.Facilities.split(",").map(s => s.trim()) : [];
+    const even = index % 2 == 0;
     return (
-      <TouchableOpacity
+      <Button
         style={{
-          padding: index % 2 == 0 ? 10 : 26,
+          padding: even ? 10 : 26,
           marginTop: 16,
-          marginHorizontal: index % 2 == 0 ? 16 : null,
+          marginHorizontal: even ? 16 : null,
           flexDirection: "row",
-          elevation: index % 2 == 0 ? 1 : null,
-          borderRadius: index % 2 == 0 ? 5 : null,
-          backgroundColor: index % 2 == 0 ? null : "#E9ECF3"
+          borderRadius: even ? 5 : null,
+          backgroundColor: even ? "#FFFFFF" : "#E9ECF3",
+          elevation: even ? 2 : null,
+          shadowOpacity: 0.4,
+          shadowRadius: 1,
+          shadowOffset: { height: even ? 1 : null, width: 0 }
         }}
         onPress={() => this._BookNow(item, index)}>
         <Image
@@ -280,7 +285,7 @@ class HotelInfo extends React.PureComponent {
             </Button>
           </View>
         </View>
-      </TouchableOpacity>
+      </Button>
     );
   };
 

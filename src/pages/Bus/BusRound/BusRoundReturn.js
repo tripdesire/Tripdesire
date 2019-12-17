@@ -1,13 +1,9 @@
-import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator, HeaderFlights, Icon } from "../../../components";
+import React from "react";
+import { Dimensions, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
+import { Button, Text, ActivityIndicator, Icon } from "../../../components";
 import Toast from "react-native-simple-toast";
-import { withNavigation } from "react-navigation";
-import SwiperFlatList from "react-native-swiper-flatlist";
 import { etravosApi } from "../../../service";
-import moment from "moment";
 import RenderRoundReturn from "./RenderRoundReturn";
-import Filter from "../Filter";
 
 const { width, height } = Dimensions.get("window");
 class BusRoundReturn extends React.PureComponent {
@@ -17,11 +13,7 @@ class BusRoundReturn extends React.PureComponent {
     console.log("Round");
     this.state = {
       loader: false,
-      returnBus: [],
-      selectedReturn: 0,
-      index: 0,
-      swiperIndex: 0,
-      returnFare: ""
+      returnBus: []
     };
   }
 
@@ -56,13 +48,10 @@ class BusRoundReturn extends React.PureComponent {
       .then(({ data }) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {
-          this.setState({ nofound: data.AvailableTrips.length, loader: false });
           Toast.show("Data not found.", Toast.LONG);
         }
         this.setState({
           returnBus: data.AvailableTrips,
-          returnFare: data.AvailableTrips.length > 0 ? data.AvailableTrips[0].Fares : 0,
-          //   filteredBuses: data.AvailableTrips,
           loader: false
         });
       })
@@ -70,6 +59,97 @@ class BusRoundReturn extends React.PureComponent {
         this.setState({ loader: false });
       });
   }
+
+  openFilter = () => {
+    this.setState({ filterModalVisible: true });
+  };
+  closeFilter = () => {
+    this.setState({ filterModalVisible: false });
+  };
+  onChangeFilter = filterValues => {
+    this.setState({ filterValues });
+  };
+
+  filter = () => {
+    const { filterValues, buses } = this.state;
+    let filteredBuses = buses.filter(
+      item =>
+        (filterValues.busTimings.length == 0 ||
+          filterValues.busTimings.some(values => {
+            values = values.split("to").map(v => v.trim());
+            if (values[1].toLowerCase().includes("p")) {
+              return moment(item.DepartureTime, "HH:mm A").isBetween(
+                moment(values[0], "HH:mm A"),
+                moment(values[1], "HH:mm A"),
+                null,
+                "[)"
+              );
+            } else {
+              return moment(item.DepartureTime, "HH:mm A").isBetween(
+                moment(values[0], "HH:mm A"),
+                moment(values[1], "HH:mm A").add("1", "days"),
+                null,
+                "[)"
+              );
+            }
+          })) &&
+        (filterValues.busType.length == 0 ||
+          filterValues.busType.some(val => item.BusType.includes(val))) &&
+        (filterValues.travels.length == 0 || filterValues.travels.includes(item.DisplayName)) &&
+        (filterValues.boardingPoints.length == 0 ||
+          item.BoardingTimes.some(value => filterValues.boardingPoints.includes(value.Location))) &&
+        (filterValues.droppingPoints.length == 0 ||
+          item.DroppingTimes.some(value => filterValues.droppingPoints.includes(value.Location)))
+    );
+
+    switch (filterValues.sortBy) {
+      case "Travels Asc":
+        filteredBuses = orderBy(filteredBuses, "DisplayName", "asc");
+        break;
+      case "Travels Desc":
+        filteredBuses = orderBy(filteredBuses, "DisplayName", "desc");
+        break;
+      case "Fare low to high":
+        filteredBuses = orderBy(filteredBuses, "Fares", "asc");
+        break;
+      case "Fare high to low":
+        filteredBuses = orderBy(filteredBuses, "Fares", "desc");
+        break;
+      case "Departure Asc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.DepartureTime, "hh:mm A").toDate(),
+          "asc"
+        );
+        break;
+      case "Departure Desc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.DepartureTime, "hh:mm A").toDate(),
+          "desc"
+        );
+        break;
+      case "Arrival Asc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.ArrivalTime, "hh:mm A").toDate(),
+          "asc"
+        );
+        break;
+      case "Arrival Desc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.ArrivalTime, "hh:mm A").toDate(),
+          "desc"
+        );
+        break;
+    }
+
+    this.setState({
+      filteredBuses,
+      filterModalVisible: false
+    });
+  };
 
   _renderItemReturn = ({ item, index }) => {
     const {
@@ -99,22 +179,10 @@ class BusRoundReturn extends React.PureComponent {
     );
   };
 
-  _onChangeIndex = ({ index }) => {
-    this.setState({ swiperIndex: index });
-  };
-
-  _getBusReturn = (value, index) => {
-    console.log("hey");
-    this.setState({
-      returnFare: value.Fares,
-      selectedReturn: index
-    });
-  };
-
   _keyExtractorReturn = (item, index) => "ReturnBus_" + index;
 
   render() {
-    const { returnBus, loader } = this.state;
+    const { returnBus, loader, filterModalVisible, filterValues, filteredBuses } = this.state;
     const { sourceName, destinationName, returnDate } = this.props.navigation.state.params;
     return (
       <>
@@ -140,13 +208,7 @@ class BusRoundReturn extends React.PureComponent {
                     </Text>
                   </View>
                 </View>
-                <Button
-                  style={{
-                    flexDirection: "row",
-                    marginStart: "auto",
-                    paddingEnd: 8,
-                    paddingVertical: 16
-                  }}>
+                <Button style={styles.sortFilter} onPress={this.openFilter}>
                   <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
                   <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
                     Sort & Filter
@@ -157,14 +219,31 @@ class BusRoundReturn extends React.PureComponent {
 
             <View style={{ flex: 4 }}>
               <FlatList
-                data={returnBus}
+                data={filteredBuses}
                 keyExtractor={this._keyExtractorReturn}
                 renderItem={this._renderItemReturn}
                 contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                extraData={this.state.selectedReturn}
               />
+              {!loader && filteredBuses.length == 0 && (
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
+                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+                </View>
+              )}
               {loader && <ActivityIndicator />}
             </View>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={filterModalVisible}
+              onRequestClose={this.closeFilter}>
+              <Filter
+                data={returnBus}
+                onBackPress={this.closeFilter}
+                filterValues={filterValues}
+                onChangeFilter={this.onChangeFilter}
+                filter={this.filter}
+              />
+            </Modal>
           </View>
         </SafeAreaView>
       </>
@@ -181,6 +260,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 50,
     borderRadius: 20
+  },
+  sortFilter: {
+    flexDirection: "row",
+    marginStart: "auto",
+    paddingEnd: 8,
+    paddingVertical: 16
   }
 });
 

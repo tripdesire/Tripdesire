@@ -1,11 +1,9 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal } from "../../components";
-import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
-import { etravosApi } from "../../service";
 import { Header } from "../../components";
 
 class Bus extends React.PureComponent {
@@ -24,14 +22,7 @@ class Bus extends React.PureComponent {
       modalFrom: false,
       CheckIn: new Date(),
       CheckOut: new Date(),
-      show_CheckIn: false,
-      show_CheckOut: false,
-      mode: "date",
       tripType: 1,
-      backgroundColor_oneway: "#5B89F9",
-      Button_text_color_oneway: "#FFFFFF",
-      Button_text_color_round: "#000000",
-      backgroundColor_round: "#FFFFFF",
       isselect: true,
       _select_round: false,
       fromDTpicker: false,
@@ -62,36 +53,6 @@ class Bus extends React.PureComponent {
 
   setModalVisible = (key, visible) => () => {
     this.setState({ [key]: visible });
-  };
-
-  setDate = (event, date) => {
-    date = date || this.state.CheckIn;
-    this.setState({
-      show_CheckIn: Platform.OS === "ios" ? true : false,
-      CheckIn: date
-    });
-  };
-
-  setDate_CheckOut = (event, date) => {
-    date = date || this.state.CheckOut;
-    this.setState({
-      show_CheckOut: Platform.OS === "ios" ? true : false,
-      CheckOut: date
-    });
-  };
-
-  show = mode => () => {
-    this.setState({
-      show_CheckIn: true,
-      mode
-    });
-  };
-
-  showTo = mode => () => {
-    this.setState({
-      show_CheckOut: true,
-      mode
-    });
   };
 
   handleFrom = item => {
@@ -129,12 +90,8 @@ class Bus extends React.PureComponent {
 
   _triptype = value => {
     this.setState({
-      backgroundColor_oneway: value == "onewway" ? "#5B89F9" : "#FFFFFF",
-      backgroundColor_round: value == "onewway" ? "#FFFFFF" : "#5B89F9",
-      Button_text_color_oneway: value == "onewway" ? "#ffffff" : "#000000",
-      Button_text_color_round: value == "onewway" ? "#000000" : "#ffffff",
       _select_round: value == "round" ? true : false,
-      tripType: value == "round" ? 1 : 1,
+      tripType: 1,
       TripType: value == "round" ? 2 : 1
     });
   };
@@ -161,17 +118,7 @@ class Bus extends React.PureComponent {
   };
 
   render() {
-    const {
-      from,
-      to,
-      backgroundColor_oneway,
-      backgroundColor_round,
-      Button_text_color_oneway,
-      Button_text_color_round,
-      _select_round,
-      fromDTpicker,
-      toDTpicker
-    } = this.state;
+    const { from, to, _select_round, fromDTpicker, toDTpicker, TripType } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
@@ -196,40 +143,24 @@ class Bus extends React.PureComponent {
                 }}>
                 <Button
                   style={{
-                    backgroundColor: backgroundColor_oneway,
-                    elevation: 1,
-                    height: 30,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    justifyContent: "center",
-                    paddingHorizontal: 60,
-                    borderBottomStartRadius: 5,
-                    borderTopStartRadius: 5
+                    backgroundColor: TripType == 1 ? "#5B89F9" : "#FFFFFF",
+                    ...styles.tabButton
                   }}
                   onPress={() => this._triptype("onewway")}>
-                  <Text style={{ color: Button_text_color_oneway, fontSize: 12 }}>Oneway</Text>
+                  <Text style={{ color: TripType == 1 ? "#ffffff" : "#000000", fontSize: 12 }}>
+                    Oneway
+                  </Text>
                 </Button>
                 <Button
                   style={{
-                    backgroundColor: backgroundColor_round,
-                    elevation: 1,
-                    height: 30,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    justifyContent: "center",
-                    paddingHorizontal: 60,
-                    borderBottomEndRadius: 5,
-                    borderTopEndRadius: 5
+                    backgroundColor: TripType == 2 ? "#5B89F9" : "#FFFFFF",
+                    ...styles.tabButton
                   }}
                   onPress={() => this._triptype("round")}>
                   <Text
                     style={{
                       fontSize: 12,
-                      color: Button_text_color_round
+                      color: TripType == 2 ? "#ffffff" : "#000000"
                     }}>
                     Round
                   </Text>
@@ -384,5 +315,20 @@ class Bus extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  tabButton: {
+    elevation: 1,
+    height: 30,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "rgba(0,0,0,0.1)",
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    justifyContent: "center",
+    paddingHorizontal: 60,
+    borderBottomEndRadius: 5,
+    borderTopEndRadius: 5
+  }
+});
 
 export default Bus;

@@ -22,9 +22,6 @@ class RenderRound extends React.PureComponent {
   }
 
   _SelectedSeat = (item, index) => () => {
-    console.log("render....");
-    const { tripType, sourceName, destinationName, TripType } = this.props;
-    this.props.getBus(item, index);
     this.props.navigation.navigate("SeatOneway", {
       params: item,
       ...this.props.navigation.state.params

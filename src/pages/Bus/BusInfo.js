@@ -40,7 +40,6 @@ class BusInfo extends React.PureComponent {
       .then(({ data }) => {
         console.log(data.AvailableTrips);
         if (data.AvailableTrips.length == 0) {
-          this.setState({ nofound: data.AvailableTrips.length, loader: false });
           Toast.show("Data not found.", Toast.LONG);
         }
         this.setState({
@@ -153,7 +152,7 @@ class BusInfo extends React.PureComponent {
     });
   };
 
-  _BookNow = item => () => {
+  _bookNow = item => () => {
     const {
       tripType,
       sourceName,
@@ -195,7 +194,7 @@ class BusInfo extends React.PureComponent {
               paddingHorizontal: 10,
               paddingVertical: 5
             }}
-            onPress={this._BookNow(item)}>
+            onPress={this._bookNow(item)}>
             <Text style={{ color: "#fff", fontWeight: "600" }}>Select Seats</Text>
           </Button>
         </View>
@@ -244,7 +243,6 @@ class BusInfo extends React.PureComponent {
       journeyDate,
       day,
       loader,
-      nofound,
       CancellationPolicy,
       filterModalVisible,
       filteredBuses
@@ -289,17 +287,18 @@ class BusInfo extends React.PureComponent {
                 </Button>
               </View>
             </View>
-            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+            <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
               <FlatList
                 data={filteredBuses}
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}
               />
-              {nofound == 0 && (
+              {!loader && filteredBuses.length == 0 && (
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
                   <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
                 </View>
               )}
+              {loader && <ActivityIndicator />}
             </View>
             <Modal
               animationType="slide"
@@ -321,7 +320,6 @@ class BusInfo extends React.PureComponent {
                 filter={this.filter}
               />
             </Modal>
-            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>
