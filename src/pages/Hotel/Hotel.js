@@ -134,9 +134,12 @@ class Hotel extends React.PureComponent {
     let Difference_In_Time = this.state.CheckOut - this.state.CheckIn;
     //let Difference_In_Days =  Math.round(Difference_In_Time / (1000 * 3600 * 24), 1);
     let Difference_In_Days = moment
-      .duration(moment(this.state.CheckOut).diff(moment(this.state.CheckIn)))
+      .duration(
+        moment(this.state.CheckOut)
+          .startOf("day")
+          .diff(moment(this.state.CheckIn).startOf("day"))
+      )
       .asDays();
-    console.log(Difference_In_Days);
     let params = {
       city: this.state.city,
       destinationId: this.state.cityId,
