@@ -143,7 +143,12 @@ class Bus extends React.PureComponent {
                     ...styles.tabButton
                   }}
                   onPress={() => this._triptype("onewway")}>
-                  <Text style={{ color: TripType == 1 ? "#ffffff" : "#000000", fontSize: 12 }}>
+                  <Text
+                    style={{
+                      color: TripType == 1 ? "#ffffff" : "#000000",
+                      fontSize: 16,
+                      fontWeight: "600"
+                    }}>
                     Oneway
                   </Text>
                 </Button>
@@ -155,7 +160,8 @@ class Bus extends React.PureComponent {
                   onPress={() => this._triptype("round")}>
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: 16,
+                      fontWeight: "600",
                       color: TripType == 2 ? "#ffffff" : "#000000"
                     }}>
                     Round
@@ -182,13 +188,13 @@ class Bus extends React.PureComponent {
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: "#5D666D" }}>From</Text>
                     <Text
-                      style={{ fontSize: 18 }}
+                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}
                       onPress={this.setModalVisible("modalFrom", true)}>
                       {from}
                     </Text>
                   </View>
                   <Button style={{ justifyContent: "center" }} onPress={this._exchange}>
-                    <IconMaterial name="swap-vertical" size={40} />
+                    <IconMaterial name="swap-vertical" color="#5D666D" size={40} />
                   </Button>
                 </View>
               </View>
@@ -203,7 +209,9 @@ class Bus extends React.PureComponent {
                 <IconMaterial name="bus" size={40} color="#A5A9AC" />
                 <View style={{ marginStart: 20, flex: 1 }}>
                   <Text style={{ color: "#5D666D" }}>To</Text>
-                  <Text style={{ fontSize: 18 }} onPress={this.setModalVisible("modalTo", true)}>
+                  <Text
+                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}
+                    onPress={this.setModalVisible("modalTo", true)}>
                     {to}
                   </Text>
                 </View>
@@ -230,7 +238,9 @@ class Bus extends React.PureComponent {
                   onPress={this.showDateTimePicker("fromDTpicker")}>
                   <Text style={{ color: "#5D666D" }}>Depart</Text>
 
-                  <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
+                  <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                    {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
+                  </Text>
                   <DateTimePicker
                     isVisible={fromDTpicker}
                     onConfirm={this.handleDatePicked("fromDTpicker")}
@@ -246,7 +256,9 @@ class Bus extends React.PureComponent {
                     }}
                     onPress={this.showDateTimePicker("toDTpicker")}>
                     <Text style={{ color: "#5D666D" }}>Return</Text>
-                    <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
+                    <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                      {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
+                    </Text>
                     <DateTimePicker
                       isVisible={toDTpicker}
                       onConfirm={this.handleDatePicked("toDTpicker")}
@@ -314,7 +326,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
     justifyContent: "center",
-    paddingHorizontal: 60,
+    paddingHorizontal: 45,
     borderBottomEndRadius: 5,
     borderTopEndRadius: 5
   }
