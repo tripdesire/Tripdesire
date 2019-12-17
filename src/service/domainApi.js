@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 import Toast from "react-native-simple-toast";
 
 class Service {
@@ -8,6 +9,7 @@ class Service {
       baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2"
       //baseURL: "https://tripdesire.co/wp-json/wc/v2"
     });
+    axiosRetry(service, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
     service.interceptors.response.use(this.handleSuccess, this.handleError);
     this.service = service;
   }

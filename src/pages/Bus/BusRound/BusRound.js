@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
+import { Dimensions, Modal, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../../components";
 import Toast from "react-native-simple-toast";
 import { etravosApi } from "../../../service";
@@ -14,8 +14,17 @@ class BusRound extends React.PureComponent {
     this.state = {
       loader: false,
       onwardBus: [],
+      filteredBuses: [],
       selectedOnward: 0,
-      onwardFare: ""
+      filterModalVisible: false,
+      filterValues: {
+        busTimings: [],
+        busType: [],
+        travels: [],
+        boardingPoints: [],
+        droppingPoints: [],
+        sortBy: "Fare low to high"
+      }
     };
   }
 
@@ -31,7 +40,6 @@ class BusRound extends React.PureComponent {
         }
         this.setState({
           onwardBus: data.AvailableTrips,
-          onwardFare: data.AvailableTrips.length > 0 ? data.AvailableTrips[0].Fares : 0,
           filteredBuses: data.AvailableTrips,
           loader: false
         });
@@ -40,6 +48,97 @@ class BusRound extends React.PureComponent {
         this.setState({ loader: false });
       });
   }
+
+  openFilter = () => {
+    this.setState({ filterModalVisible: true });
+  };
+  closeFilter = () => {
+    this.setState({ filterModalVisible: false });
+  };
+  onChangeFilter = filterValues => {
+    this.setState({ filterValues });
+  };
+
+  filter = () => {
+    const { filterValues, buses } = this.state;
+    let filteredBuses = buses.filter(
+      item =>
+        (filterValues.busTimings.length == 0 ||
+          filterValues.busTimings.some(values => {
+            values = values.split("to").map(v => v.trim());
+            if (values[1].toLowerCase().includes("p")) {
+              return moment(item.DepartureTime, "HH:mm A").isBetween(
+                moment(values[0], "HH:mm A"),
+                moment(values[1], "HH:mm A"),
+                null,
+                "[)"
+              );
+            } else {
+              return moment(item.DepartureTime, "HH:mm A").isBetween(
+                moment(values[0], "HH:mm A"),
+                moment(values[1], "HH:mm A").add("1", "days"),
+                null,
+                "[)"
+              );
+            }
+          })) &&
+        (filterValues.busType.length == 0 ||
+          filterValues.busType.some(val => item.BusType.includes(val))) &&
+        (filterValues.travels.length == 0 || filterValues.travels.includes(item.DisplayName)) &&
+        (filterValues.boardingPoints.length == 0 ||
+          item.BoardingTimes.some(value => filterValues.boardingPoints.includes(value.Location))) &&
+        (filterValues.droppingPoints.length == 0 ||
+          item.DroppingTimes.some(value => filterValues.droppingPoints.includes(value.Location)))
+    );
+
+    switch (filterValues.sortBy) {
+      case "Travels Asc":
+        filteredBuses = orderBy(filteredBuses, "DisplayName", "asc");
+        break;
+      case "Travels Desc":
+        filteredBuses = orderBy(filteredBuses, "DisplayName", "desc");
+        break;
+      case "Fare low to high":
+        filteredBuses = orderBy(filteredBuses, "Fares", "asc");
+        break;
+      case "Fare high to low":
+        filteredBuses = orderBy(filteredBuses, "Fares", "desc");
+        break;
+      case "Departure Asc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.DepartureTime, "hh:mm A").toDate(),
+          "asc"
+        );
+        break;
+      case "Departure Desc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.DepartureTime, "hh:mm A").toDate(),
+          "desc"
+        );
+        break;
+      case "Arrival Asc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.ArrivalTime, "hh:mm A").toDate(),
+          "asc"
+        );
+        break;
+      case "Arrival Desc":
+        filteredBuses = orderBy(
+          filteredBuses,
+          item => moment(item.ArrivalTime, "hh:mm A").toDate(),
+          "desc"
+        );
+        break;
+    }
+
+    this.setState({
+      filteredBuses,
+      filterModalVisible: false
+    });
+  };
 
   _renderItemOnward = ({ item, index }) => {
     const {
@@ -50,14 +149,12 @@ class BusRound extends React.PureComponent {
       sourceId,
       destinationId,
       journeyDate,
-      returnDate,
-      params
+      returnDate
     } = this.props.navigation.state.params;
     return (
       <RenderRound
         item={item}
         index={index}
-        getBus={this._getBusOnward}
         tripType={tripType}
         sourceName={sourceName}
         sourceId={sourceId}
@@ -70,20 +167,11 @@ class BusRound extends React.PureComponent {
     );
   };
 
-  _getBusOnward = (value, index) => {
-    console.log("hey");
-    this.setState({
-      onwardFare: value.Fares,
-      selectedOnward: index
-    });
-  };
-
   _keyExtractorOnward = (item, index) => "OnwardBus_" + index;
 
   render() {
-    const { onwardBus, loader, onwardFare } = this.state;
+    const { onwardBus, loader, filteredBuses, filterValues, filterModalVisible } = this.state;
     const {
-      tripType,
       sourceName,
       destinationName,
       journeyDate,
@@ -109,8 +197,7 @@ class BusRound extends React.PureComponent {
                     </Text>
                   </View>
                 </View>
-                <Button
-                  style={styles.sortFilter}>
+                <Button style={styles.sortFilter} onPress={this.openFilter}>
                   <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
                   <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
                     Sort & Filter
@@ -121,14 +208,31 @@ class BusRound extends React.PureComponent {
 
             <View style={{ flex: 4 }}>
               <FlatList
-                data={onwardBus}
+                data={filteredBuses}
                 keyExtractor={this._keyExtractorOnward}
                 renderItem={this._renderItemOnward}
                 contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                extraData={this.state.selectedOnward}
               />
+              {!loader && filteredBuses.length == 0 && (
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
+                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+                </View>
+              )}
               {loader && <ActivityIndicator />}
             </View>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={filterModalVisible}
+              onRequestClose={this.closeFilter}>
+              <Filter
+                data={onwardBus}
+                onBackPress={this.closeFilter}
+                filterValues={filterValues}
+                onChangeFilter={this.onChangeFilter}
+                filter={this.filter}
+              />
+            </Modal>
           </View>
         </SafeAreaView>
       </>
@@ -145,6 +249,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 50,
     borderRadius: 20
+  },
+  sortFilter: {
+    flexDirection: "row",
+    marginStart: "auto",
+    paddingEnd: 8,
+    paddingVertical: 16
   }
 });
 

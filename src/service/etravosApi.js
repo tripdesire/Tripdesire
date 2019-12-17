@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 import Toast from "react-native-simple-toast";
 
 class Service {
@@ -12,6 +13,7 @@ class Service {
         ConsumerSecret: "1B8338C50149C78CCAEB0CC72527146ADB5E347B"
       }
     });
+    axiosRetry(service, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
     service.interceptors.response.use(this.handleSuccess, this.handleError);
     this.service = service;
   }

@@ -20,7 +20,9 @@ class Hotel extends React.PureComponent {
       _country: false,
       _place: false,
       CheckIn: new Date(),
-      CheckOut: new Date(),
+      CheckOut: moment()
+        .add(1, "days")
+        .toDate(),
       adults: "1~0~0~0",
       adults_count: 1,
       children: "0~0~0~0",
@@ -88,7 +90,9 @@ class Hotel extends React.PureComponent {
     let data = {};
     if (key == "fromDTpicker") {
       data.CheckIn = date;
-      data.CheckOut = date;
+      data.CheckOut = moment(date)
+        .add(1, "days")
+        .toDate();
     } else {
       data.CheckOut = date;
     }
@@ -128,7 +132,11 @@ class Hotel extends React.PureComponent {
 
   _search = () => {
     let Difference_In_Time = this.state.CheckOut - this.state.CheckIn;
-    let Difference_In_Days = 1; //Math.round(Difference_In_Time / (1000 * 3600 * 24), 1); // moment.duration(moment.diff(this.state.CheckOut, this.state.CheckIn)).asDays();
+    //let Difference_In_Days =  Math.round(Difference_In_Time / (1000 * 3600 * 24), 1);
+    let Difference_In_Days = moment
+      .duration(moment(this.state.CheckOut).diff(moment(this.state.CheckIn)))
+      .asDays();
+    console.log(Difference_In_Days);
     let params = {
       city: this.state.city,
       destinationId: this.state.cityId,
@@ -291,7 +299,9 @@ class Hotel extends React.PureComponent {
                   onConfirm={this.handleDatePicked("toDTpicker")}
                   onCancel={this.hideDateTimePicker("toDTpicker")}
                   date={CheckOut}
-                  minimumDate={this.state.CheckIn}
+                  minimumDate={moment(this.state.CheckIn)
+                    .add(1, "days")
+                    .toDate()}
                 />
               </Button>
             </View>
