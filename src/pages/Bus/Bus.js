@@ -226,45 +226,38 @@ class Bus extends React.PureComponent {
                   style={{ width: 25, resizeMode: "contain", marginStart: 10 }}
                   source={require("../../assets/imgs/cal.png")}
                 />
-                <View
+                <Button
                   style={{
                     flex: 1,
                     paddingStart: 20
-                  }}>
-                  <Text style={{ color: "#5D666D", marginStart: 5 }}>Depart</Text>
+                  }}
+                  onPress={this.showDateTimePicker("fromDTpicker")}>
+                  <Text style={{ color: "#5D666D" }}>Depart</Text>
 
-                  <Button
-                    style={{ flex: 1, marginStart: 5 }}
-                    onPress={this.showDateTimePicker("fromDTpicker")}>
-                    <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
-                  </Button>
+                  <Text>{moment(this.state.CheckIn).format("DD-MMM-YYYY")}</Text>
                   <DateTimePicker
                     isVisible={fromDTpicker}
                     onConfirm={this.handleDatePicked("fromDTpicker")}
                     onCancel={this.hideDateTimePicker("fromDTpicker")}
                     minimumDate={new Date()}
                   />
-                </View>
+                </Button>
                 {_select_round && (
-                  <View
+                  <Button
                     style={{
                       flex: 1,
                       paddingStart: 20
-                    }}>
-                    <Text style={{ color: "#5D666D", marginStart: 5 }}>Return</Text>
-
-                    <Button
-                      style={{ flex: 1, marginStart: 5 }}
-                      onPress={this.showDateTimePicker("toDTpicker")}>
-                      <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
-                    </Button>
+                    }}
+                    onPress={this.showDateTimePicker("toDTpicker")}>
+                    <Text style={{ color: "#5D666D" }}>Return</Text>
+                    <Text>{moment(this.state.CheckOut).format("DD-MMM-YYYY")}</Text>
                     <DateTimePicker
                       isVisible={toDTpicker}
                       onConfirm={this.handleDatePicked("toDTpicker")}
                       onCancel={this.hideDateTimePicker("toDTpicker")}
                       minimumDate={this.state.CheckIn}
                     />
-                  </View>
+                  </Button>
                 )}
               </View>
 
