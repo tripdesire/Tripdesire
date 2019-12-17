@@ -156,7 +156,9 @@ class HotelInfo extends React.PureComponent {
   _renderItemList = ({ item, index }) => {
     var str = item.HotelImages[0].Imagepath;
     var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
-    let Amenities = item.Facilities ? item.Facilities.split(",").map(s => s.trim()) : [];
+    let Amenities = Array.isArray(item.Facilities)
+      ? item.Facilities.split(",").map(s => s.trim())
+      : [];
     const even = index % 2 == 0;
     return (
       <Button

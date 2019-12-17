@@ -1,6 +1,7 @@
 import React from "react";
 import { Dimensions, Modal, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../../components";
+import { orderBy } from "lodash";
 import Toast from "react-native-simple-toast";
 import { etravosApi } from "../../../service";
 import RenderRound from "./RenderRound";
@@ -60,8 +61,8 @@ class BusRound extends React.PureComponent {
   };
 
   filter = () => {
-    const { filterValues, buses } = this.state;
-    let filteredBuses = buses.filter(
+    const { filterValues, onwardBus } = this.state;
+    let filteredBuses = onwardBus.filter(
       item =>
         (filterValues.busTimings.length == 0 ||
           filterValues.busTimings.some(values => {
