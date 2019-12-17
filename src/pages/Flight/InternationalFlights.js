@@ -249,6 +249,15 @@ class InternationalFlights extends React.PureComponent {
             <Text style={{ color: "#5D666D" }}>From</Text>
             <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
           </Button>
+        </View>
+
+        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+          <Image
+            style={{ width: 25, resizeMode: "contain" }}
+            source={require("../../assets/imgs/flights-1.png")}
+          />
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalTo", true)}>

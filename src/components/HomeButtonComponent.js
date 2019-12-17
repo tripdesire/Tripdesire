@@ -5,7 +5,7 @@ import Button from "./Button";
 function HomeButtonComponent({ tintColor, onPress, img_name, name }) {
   return (
     <Button onPress={onPress} style={styles.container}>
-      <Image tintColor={tintColor} style={{ width: 72, height: 72 }} source={img_name} />
+      <Image style={{ width: 72, height: 72, tintColor }} source={img_name} />
       <Text style={{ fontSize: 16, color: "#616A71", fontWeight: "700" }}>{name}</Text>
     </Button>
   );

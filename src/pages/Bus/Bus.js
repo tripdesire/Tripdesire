@@ -151,7 +151,7 @@ class Bus extends React.PureComponent {
                       fontSize: 16,
                       fontWeight: "600"
                     }}>
-                    Oneway
+                    One Way
                   </Text>
                 </Button>
                 <Button

@@ -278,7 +278,7 @@ class CheckoutBus extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ height: 56, backgroundColor: "#E5EBF7", flex: 1 }}>
+            <View style={{ height: 56, backgroundColor: "#E5EBF7", height: 80 }}>
               <View style={{ flexDirection: "row", width: "100%" }}>
                 <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                   <Icon name="md-arrow-back" size={24} />
@@ -346,9 +346,37 @@ class CheckoutBus extends React.PureComponent {
                         marginTop: 10,
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ flex: 1, color: "#5B6974" }}>Boarding Point</Text>
-                      <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
+                      <Text style={{ flex: 2, color: "#5B6974" }}>Boarding Point</Text>
+                      {/* <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
                         Seats No.
+                      </Text>
+                      <Text style={{ flex: 2, color: "#5B6974" }}>Bus Type</Text> */}
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}>
+                      <Text style={{ flex: 2 }}>{BoardingPoint.Location}</Text>
+                      {/* {Array.isArray(selectedSheets) &&
+                        selectedSheets.map((item, index) => {
+                          return (
+                            <Text style={{ flex: 1, marginHorizontal: 5 }} key={"Sap" + index}>
+                              {item.Number + "\n"}
+                            </Text>
+                          );
+                        })}
+                      <Text style={{ flex: 2 }}>{params.BusType}</Text> */}
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginTop: 10,
+                        justifyContent: "space-between"
+                      }}>
+                      {/* <Text style={{ flex: 2, color: "#5B6974" }}>Boarding Point</Text> */}
+                      <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
+                        Seat(s)
                       </Text>
                       <Text style={{ flex: 1, color: "#5B6974" }}>Bus Type</Text>
                     </View>
@@ -357,7 +385,7 @@ class CheckoutBus extends React.PureComponent {
                         flexDirection: "row",
                         justifyContent: "space-between"
                       }}>
-                      <Text style={{ flex: 3 }}>{BoardingPoint.Location}</Text>
+                      {/* <Text style={{ flex: 2 }}>{BoardingPoint.Location}</Text> */}
                       {Array.isArray(selectedSheets) &&
                         selectedSheets.map((item, index) => {
                           return (
@@ -366,7 +394,7 @@ class CheckoutBus extends React.PureComponent {
                             </Text>
                           );
                         })}
-                      <Text style={{ flex: 3 }}>{params.BusType}</Text>
+                      <Text style={{ flex: 1 }}>{params.BusType}</Text>
                     </View>
                   </View>
                 </View>

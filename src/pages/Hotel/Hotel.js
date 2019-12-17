@@ -242,33 +242,45 @@ class Hotel extends React.PureComponent {
               </Button>
             </View>
 
-            <View style={{ margin: 16, marginTop: 54, flexDirection: "row", alignItems: "center" }}>
+            {hoteltype == 2 && (
+              <>
+                <View
+                  style={{ margin: 16, marginTop: 54, flexDirection: "row", alignItems: "center" }}>
+                  <Icon
+                    name="location"
+                    type="Entypo"
+                    style={{ color: "#858585", fontSize: 24, marginTop: 5 }}
+                  />
+
+                  <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.countryOpen}>
+                    <Text style={{ color: "#5D666D" }}>Country</Text>
+                    <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                      {country}
+                    </Text>
+                  </Button>
+                </View>
+                <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+              </>
+            )}
+            <View
+              style={{
+                margin: 16,
+                marginTop: hoteltype == 2 ? 16 : 54,
+                flexDirection: "row",
+                alignItems: "center"
+              }}>
               <Icon
                 name="location"
                 type="Entypo"
                 style={{ color: "#858585", fontSize: 24, marginTop: 5 }}
               />
-              {hoteltype == 2 && (
-                <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.countryOpen}>
-                  <Text style={{ color: "#5D666D" }}>Country</Text>
-                  <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
-                    {country}
-                  </Text>
-                </Button>
-              )}
               <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.modalOpen}>
                 <Text style={{ color: "#5D666D" }}>City</Text>
                 <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{place}</Text>
               </Button>
             </View>
 
-            <View
-              style={{
-                height: 1,
-                backgroundColor: "#DDDDDD",
-                marginHorizontal: 20
-              }}
-            />
+            <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image

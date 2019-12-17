@@ -106,6 +106,17 @@ class DomesticFlights extends React.PureComponent {
     });
   };
 
+  exchange = () => {
+    // this.setState({
+    //   from: this.state.to,
+    //   sourceName: this.state.destinationName,
+    //   destinationName: this.state.sourceName,
+    //   sourceId: this.state.destinationId,
+    //   destinationId: this.state.sourceId,
+    //   to: this.state.from
+    // });
+  };
+
   _search = () => {
     let jd = moment(this.state.Journey_date).format("DD-MM-YYYY");
     let rd = moment(this.state.Return_date).format("DD-MM-YYYY");
@@ -213,6 +224,18 @@ class DomesticFlights extends React.PureComponent {
             <Text style={{ color: "#5D666D" }}>From </Text>
             <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
           </Button>
+          <Button onPress={this._exchange}>
+            <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
+          </Button>
+        </View>
+
+        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+          <Image
+            style={{ width: 25, resizeMode: "contain" }}
+            source={require("../../assets/imgs/flights-1.png")}
+          />
           <Button
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalTo", true)}>

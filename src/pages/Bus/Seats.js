@@ -268,107 +268,118 @@ class Seats extends React.PureComponent {
     //console.log(lowerColumns);
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <Header firstName="Seats" />
-
-        {seats.lower.length > 0 && seats.upper.length > 0 && (
-          <View style={styles.tabContainer}>
-            <Button
-              onPress={() => this.setState({ selectedTab: "lower" })}
-              style={[selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null, styles.tab]}>
-              <Text style={[selectedTab == "lower" ? { color: "#FFF" } : null]}>Lower Birth</Text>
-            </Button>
-            <Button
-              onPress={() => this.setState({ selectedTab: "upper" })}
-              style={[selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null, styles.tab]}>
-              <Text style={[selectedTab == "upper" ? { color: "#FFF" } : null]}>Upper Birth</Text>
-            </Button>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+          <View style={{backgroundColor:"#E5EBF7"}}>
+          <Header firstName="Seats" />
           </View>
-        )}
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
-          {selectedTab == "lower" && lowerRows > 0 && lowerColumns > 0 && (
-            <View
-              style={{
-                paddingHorizontal: lowerRows < 5 ? 48 : 24,
-                flexDirection: "column",
-                flexWrap: "wrap",
-                height: 50 * lowerColumns
-              }}>
-              {[...Array(lowerRows)].map((c, row) => {
-                return [...Array(lowerColumns)].map((r, column) => {
-                  let item = seats.lower.find(v => v.Row == row + 1 && v.Column == column + 1);
-                  let rowSpan = seats.lower.find(v => v.Row == row + 1 && v.Column == column);
-                  //let colSpan = seats.lower.find(v => v.Row == row && v.Column == column + 1);
-                  if (item) {
-                    return this.renderSeat(item);
-                  } else if (rowSpan && rowSpan.Length == 2) {
-                    return (
-                      <View
-                        key={"seat_blank" + row + column}
-                        style={{ width: `${100 / lowerRows}%`, height: 0 }}
-                      />
-                    );
-                  } else {
-                    return (
-                      <View
-                        key={"seat_blank" + row + column}
-                        style={{ width: `${100 / lowerRows}%`, height: 50 }}
-                      />
-                    );
-                  }
-                });
-              })}
-            </View>
-          )}
 
-          {selectedTab == "upper" && upperRows > 0 && upperColumns > 0 && (
-            <View
-              style={{
-                paddingHorizontal: upperRows < 5 ? 48 : 24,
-                flexDirection: "column",
-                flexWrap: "wrap",
-                height: 50 * upperColumns
-              }}>
-              {[...Array(upperRows)].map((c, row) => {
-                return [...Array(upperColumns)].map((r, column) => {
-                  let item = seats.upper.find(v => v.Row == row + 1 && v.Column == column + 1);
-                  let rowSpan = seats.upper.find(v => v.Row == row + 1 && v.Column == column);
-                  //let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
-                  if (item) {
-                    return this.renderSeat(item);
-                  } else if (rowSpan && rowSpan.Length == 2) {
-                    return (
-                      <View
-                        style={{ width: `${100 / upperRows}%`, height: 0 }}
-                        key={"seat_blank_" + row + column}
-                      />
-                    );
-                  } else {
-                    return (
-                      <View
-                        key={"seat_blank_" + row + column}
-                        style={{ width: `${100 / upperRows}%`, height: 50 }}
-                      />
-                    );
-                  }
-                });
-              })}
+          {seats.lower.length > 0 && seats.upper.length > 0 && (
+            <View style={styles.tabContainer}>
+              <Button
+                onPress={() => this.setState({ selectedTab: "lower" })}
+                style={[
+                  selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null,
+                  styles.tab
+                ]}>
+                <Text style={[selectedTab == "lower" ? { color: "#FFF" } : null]}>Lower Birth</Text>
+              </Button>
+              <Button
+                onPress={() => this.setState({ selectedTab: "upper" })}
+                style={[
+                  selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null,
+                  styles.tab
+                ]}>
+                <Text style={[selectedTab == "upper" ? { color: "#FFF" } : null]}>Upper Birth</Text>
+              </Button>
             </View>
           )}
-          <Button
-            style={{
-              backgroundColor: "#F68E1F",
-              marginHorizontal: 100,
-              height: 40,
-              justifyContent: "center",
-              borderRadius: 20,
-              marginVertical: 16
-            }}
-            onPress={this._bookNow}>
-            <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>
-          </Button>
-        </ScrollView>
-      </SafeAreaView>
+          <ScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
+            {selectedTab == "lower" && lowerRows > 0 && lowerColumns > 0 && (
+              <View
+                style={{
+                  paddingHorizontal: lowerRows < 5 ? 48 : 24,
+                  flexDirection: "column",
+                  flexWrap: "wrap",
+                  height: 50 * lowerColumns
+                }}>
+                {[...Array(lowerRows)].map((c, row) => {
+                  return [...Array(lowerColumns)].map((r, column) => {
+                    let item = seats.lower.find(v => v.Row == row + 1 && v.Column == column + 1);
+                    let rowSpan = seats.lower.find(v => v.Row == row + 1 && v.Column == column);
+                    //let colSpan = seats.lower.find(v => v.Row == row && v.Column == column + 1);
+                    if (item) {
+                      return this.renderSeat(item);
+                    } else if (rowSpan && rowSpan.Length == 2) {
+                      return (
+                        <View
+                          key={"seat_blank" + row + column}
+                          style={{ width: `${100 / lowerRows}%`, height: 0 }}
+                        />
+                      );
+                    } else {
+                      return (
+                        <View
+                          key={"seat_blank" + row + column}
+                          style={{ width: `${100 / lowerRows}%`, height: 50 }}
+                        />
+                      );
+                    }
+                  });
+                })}
+              </View>
+            )}
+
+            {selectedTab == "upper" && upperRows > 0 && upperColumns > 0 && (
+              <View
+                style={{
+                  paddingHorizontal: upperRows < 5 ? 48 : 24,
+                  flexDirection: "column",
+                  flexWrap: "wrap",
+                  height: 50 * upperColumns
+                }}>
+                {[...Array(upperRows)].map((c, row) => {
+                  return [...Array(upperColumns)].map((r, column) => {
+                    let item = seats.upper.find(v => v.Row == row + 1 && v.Column == column + 1);
+                    let rowSpan = seats.upper.find(v => v.Row == row + 1 && v.Column == column);
+                    //let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
+                    if (item) {
+                      return this.renderSeat(item);
+                    } else if (rowSpan && rowSpan.Length == 2) {
+                      return (
+                        <View
+                          style={{ width: `${100 / upperRows}%`, height: 0 }}
+                          key={"seat_blank_" + row + column}
+                        />
+                      );
+                    } else {
+                      return (
+                        <View
+                          key={"seat_blank_" + row + column}
+                          style={{ width: `${100 / upperRows}%`, height: 50 }}
+                        />
+                      );
+                    }
+                  });
+                })}
+              </View>
+            )}
+            <Button
+              style={{
+                backgroundColor: "#F68E1F",
+                marginHorizontal: 100,
+                height: 40,
+                justifyContent: "center",
+                borderRadius: 20,
+                marginVertical: 16
+              }}
+              onPress={this._bookNow}>
+              <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>
+            </Button>
+          </ScrollView>
+        </SafeAreaView>
+      </>
     );
   }
 }

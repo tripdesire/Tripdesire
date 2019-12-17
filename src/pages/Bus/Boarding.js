@@ -122,8 +122,8 @@ class Boarding extends React.PureComponent {
                   placeholder={{}}
                   value={bp}
                   style={{
-                    inputAndroidContainer: { height: 35 },
-                    inputAndroid: { paddingStart: 0, color: "#000" },
+                    inputIOS: { paddingEnd: 32, color: "#000" },
+                    inputAndroid: { paddingStart: 0, color: "#000", paddingEnd: 32 },
                     iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                   }}
                   onValueChange={itemValue => this.setState({ bp: itemValue })}

@@ -365,19 +365,27 @@ class Cab extends React.PureComponent {
                   {from}
                 </Text>
               </Button>
-              {travelType == 1 && (
-                <Button
-                  style={{ flex: 1, paddingStart: 20 }}
-                  onPress={this.setModalVisible("modalTo", true)}>
-                  <Text style={{ color: "#5D666D" }}>To</Text>
-                  <Text
-                    numberOfLines={1}
-                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
-                    {to}
-                  </Text>
-                </Button>
-              )}
             </View>
+
+            {travelType == 1 && (
+              <>
+                <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
+                <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+                  <IconMaterial name="bus" size={25} color="#A5A9AC" />
+
+                  <Button
+                    style={{ flex: 1, paddingStart: 20 }}
+                    onPress={this.setModalVisible("modalTo", true)}>
+                    <Text style={{ color: "#5D666D" }}>To</Text>
+                    <Text
+                      numberOfLines={1}
+                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                      {to}
+                    </Text>
+                  </Button>
+                </View>
+              </>
+            )}
 
             {travelType == 3 && (
               <>
