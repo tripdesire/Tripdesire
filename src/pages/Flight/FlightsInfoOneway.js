@@ -432,7 +432,7 @@ class FlightsInfoOneway extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ flex: 1, backgroundColor: "#E5EBF7" }}>
+            <View style={{ height: 112, backgroundColor: "#E5EBF7" }}>
               <HeaderFlights
                 from={from}
                 to={to}
@@ -457,7 +457,7 @@ class FlightsInfoOneway extends React.PureComponent {
               </HeaderFlights>
             </View>
 
-            <View style={{ flex: 4 }}>
+            <View style={{ flex: 1 }}>
               <View
                 style={{
                   flexDirection: "row",
