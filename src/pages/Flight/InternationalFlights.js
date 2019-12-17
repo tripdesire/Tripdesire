@@ -48,7 +48,7 @@ class InternationalFlights extends React.PureComponent {
       Button_text_color_domestic: "#FFFFFF",
       Button_text_color_international: "#000000",
       backgroundColor_international: "#FFFFFF",
-      tripTypeColorOneway: "#000000",
+      tripTypeColorOneway: "#5D666D",
       tripTypeColorRound: "#BDC4CA",
       selectRound: false,
       fromDTpicker: false,
@@ -96,8 +96,8 @@ class InternationalFlights extends React.PureComponent {
 
   _SelectTripType = value => {
     this.setState({
-      tripTypeColorOneway: value == "oneway" ? "#000000" : "#BDC4CA",
-      tripTypeColorRound: value == "oneway" ? "#BDC4CA" : "#000000",
+      tripTypeColorOneway: value == "oneway" ? "#5D666D" : "#BDC4CA",
+      tripTypeColorRound: value == "oneway" ? "#BDC4CA" : "#5D666D",
       tripType: value == "oneway" ? 1 : 2,
       selectRound: value == "round" ? true : false
     });
@@ -203,7 +203,7 @@ class InternationalFlights extends React.PureComponent {
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            marginVertical: 40
+            marginVertical: 16
           }}>
           <Image
             style={{
@@ -321,7 +321,18 @@ class InternationalFlights extends React.PureComponent {
               placeholder={{}}
               value={this.state.class}
               style={{
-                inputAndroid: { color: "#000", padding: 0, height: 20 }
+                inputIOS: {
+                  fontSize: 18,
+                  fontWeight: "600",
+                  color: "#5D666D"
+                },
+                inputAndroid: {
+                  padding: 0,
+                  height: 20,
+                  fontSize: 18,
+                  fontWeight: "600",
+                  color: "#5D666D"
+                }
               }}
               onValueChange={(itemValue, index) =>
                 this.setState({ class: itemValue, index: index })

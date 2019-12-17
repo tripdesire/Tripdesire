@@ -40,8 +40,8 @@ class DomesticFlights extends React.PureComponent {
       ToCode: "BLR",
       Journey_date: new Date(),
       Return_date: new Date(),
-      tripTypeColorOneway: "#000000",
-      tripTypeColorRound: "#5D666D",
+      tripTypeColorOneway: "#5D666D",
+      tripTypeColorRound: "#BDC4CA",
       selectRound: false,
       fromDTpicker: false,
       toDTpicker: false
@@ -78,8 +78,8 @@ class DomesticFlights extends React.PureComponent {
 
   _SelectTripType = value => {
     this.setState({
-      tripTypeColorOneway: value == "oneway" ? "#000000" : "#BDC4CA",
-      tripTypeColorRound: value == "oneway" ? "#BDC4CA" : "#000000",
+      tripTypeColorOneway: value == "oneway" ? "#5D666D" : "#BDC4CA",
+      tripTypeColorRound: value == "oneway" ? "#BDC4CA" : "#5D666D",
       tripType: value == "oneway" ? 1 : 2,
       selectRound: value == "round" ? true : false
     });
