@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
     height: 30,
     justifyContent: "center",
-    paddingHorizontal: 50
+    paddingHorizontal: 30
   }
 });
 

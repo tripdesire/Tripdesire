@@ -40,8 +40,6 @@ class DomesticFlights extends React.PureComponent {
       ToCode: "BLR",
       Journey_date: new Date(),
       Return_date: new Date(),
-      tripTypeColorOneway: "#5D666D",
-      tripTypeColorRound: "#BDC4CA",
       selectRound: false,
       fromDTpicker: false,
       toDTpicker: false
@@ -78,8 +76,6 @@ class DomesticFlights extends React.PureComponent {
 
   _SelectTripType = value => {
     this.setState({
-      tripTypeColorOneway: value == "oneway" ? "#5D666D" : "#BDC4CA",
-      tripTypeColorRound: value == "oneway" ? "#BDC4CA" : "#5D666D",
       tripType: value == "oneway" ? 1 : 2,
       selectRound: value == "round" ? true : false
     });
@@ -147,8 +143,7 @@ class DomesticFlights extends React.PureComponent {
     const {
       from,
       to,
-      tripTypeColorOneway,
-      tripTypeColorRound,
+      tripType,
       selectRound,
       fromDTpicker,
       toDTpicker,
@@ -180,7 +175,12 @@ class DomesticFlights extends React.PureComponent {
           <Button
             style={{ justifyContent: "center" }}
             onPress={() => this._SelectTripType("oneway")}>
-            <Text style={{ color: tripTypeColorOneway, fontWeight: "600", fontSize: 14 }}>
+            <Text
+              style={{
+                color: tripType == 1 ? "#000000" : "#BDC4CA",
+                fontWeight: "600",
+                fontSize: 14
+              }}>
               One Way
             </Text>
           </Button>
@@ -191,7 +191,12 @@ class DomesticFlights extends React.PureComponent {
           <Button
             style={{ justifyContent: "center" }}
             onPress={() => this._SelectTripType("round")}>
-            <Text style={{ color: tripTypeColorRound, fontWeight: "600", fontSize: 14 }}>
+            <Text
+              style={{
+                color: tripType == 2 ? "#000000" : "#BDC4CA",
+                fontWeight: "600",
+                fontSize: 14
+              }}>
               Round Trip
             </Text>
           </Button>
