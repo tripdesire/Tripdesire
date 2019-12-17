@@ -156,9 +156,7 @@ class HotelInfo extends React.PureComponent {
   _renderItemList = ({ item, index }) => {
     var str = item.HotelImages[0].Imagepath;
     var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
-    let Amenities = Array.isArray(item.Facilities)
-      ? item.Facilities.split(",").map(s => s.trim())
-      : [];
+    let Amenities = item.Facilities ? item.Facilities.split(",").map(s => s.trim()) : [];
     const even = index % 2 == 0;
     return (
       <Button
@@ -236,7 +234,7 @@ class HotelInfo extends React.PureComponent {
             <View style={{ flexDirection: "row", marginTop: 10 }}>
               {Amenities.map(item => (
                 <View key={item}>
-                  {item == "Housekeeping - daily" && (
+                  {item.toLowerCase() == "housekeeping - daily" && (
                     <Icon
                       type="MaterialCommunityIcons"
                       size={24}
@@ -244,7 +242,7 @@ class HotelInfo extends React.PureComponent {
                       name="washing-machine"
                     />
                   )}
-                  {item == "Complimentary wireless internet" && (
+                  {item.toLowerCase() == "complimentary wireless internet" && (
                     <Icon
                       style={{ marginHorizontal: 5 }}
                       color="#636C73"
@@ -252,7 +250,7 @@ class HotelInfo extends React.PureComponent {
                       name="ios-wifi"
                     />
                   )}
-                  {item == "24-hour front desk" && (
+                  {item.toLowerCase() == "24-hour front desk" && (
                     <Icon
                       style={{ marginHorizontal: 5 }}
                       type="FontAwesome5"
@@ -261,7 +259,7 @@ class HotelInfo extends React.PureComponent {
                       color="#636C73"
                     />
                   )}
-                  {item == "Air conditioning" && (
+                  {item.toLowerCase() == "air conditioning" && (
                     <Icon
                       type="MaterialCommunityIcons"
                       color="#636C73"

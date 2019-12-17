@@ -93,7 +93,7 @@ class AutoCompleteModal extends React.PureComponent {
           etravosApi
             .get("/Flights/Airports?flightType=2")
             .then(({ data }) => {
-              this.props.intHotelSuggestion(data);
+              this.props.IntSugg(data);
               this.setState({ loader: false, filteredList: data });
             })
             .catch(err => {

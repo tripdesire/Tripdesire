@@ -12,6 +12,8 @@ import {
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
+import { mergeWith } from "lodash";
+import { etravosApi } from "../../service";
 //import MapView from "react-native-maps";
 import moment from "moment";
 import HTML from "react-native-render-html";
@@ -25,7 +27,9 @@ class HotelCheckout extends React.Component {
       _selectRadio: "1",
       selectedRoom: params.RoomDetails[0]
     };
+    this.SingleHotelData();
   }
+  componentDidMount() {}
 
   _radioButton = item => () => {
     this.setState({
@@ -33,6 +37,43 @@ class HotelCheckout extends React.Component {
       selectedRoom: item
     });
   };
+
+  SingleHotelData() {
+    console.log("hey");
+    const { params } = this.props.navigation.state;
+    let param = {
+      hotelId: params.HotelId,
+      webService: params.WebService,
+      cityId: params.cityid,
+      provider: params.Provider,
+      adults: params.adultDetail,
+      children: params.childDetail,
+      arrivalDate: params.checkInDate,
+      departureDate: params.checkOutDate,
+      noOfDays: params.Night,
+      childrenAges: params.childAge,
+      roomscount: params.room,
+      userType: 5,
+      hotelType: params.hoteltype,
+      user: ""
+    };
+
+    console.log(param);
+
+    etravosApi
+      .get("/Hotels/HotelDetails", param)
+      .then(({ data }) => {
+        //console.log(res);
+        const { params } = this.props.navigation.state;
+
+        let merged = mergeWith({}, params, data, (a, b) => (b === null ? a : undefined));
+        console.log(merged);
+        this.props.navigation.setParams(merged);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   _viewLocation = (lat, lag) => () => {
     console.log(lat);
@@ -60,7 +101,7 @@ class HotelCheckout extends React.Component {
   render() {
     const { params } = this.props.navigation.state;
 
-    let Amenities = params.Facilities.split(",").map(s => s.trim());
+    let Amenities = params.Facilities ? params.Facilities.split(",").map(s => s.trim()) : [];
     console.log(Amenities);
 
     let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
@@ -70,7 +111,7 @@ class HotelCheckout extends React.Component {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#5B89F9" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, flexDirection: "column" }}>
-            <View style={{ flex: 4, backgroundColor: "#5B89F9" }}>
+            <View style={{ backgroundColor: "#5B89F9", paddingBottom: 40 }}>
               <View
                 style={{
                   height: 56,
@@ -180,7 +221,7 @@ class HotelCheckout extends React.Component {
                 <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
                   {Amenities.map(item => (
                     <View key={item}>
-                      {item == "Housekeeping - daily" && (
+                      {item.toLowerCase() == "housekeeping - daily" && (
                         <Icon
                           type="MaterialCommunityIcons"
                           size={24}
@@ -188,7 +229,7 @@ class HotelCheckout extends React.Component {
                           name="washing-machine"
                         />
                       )}
-                      {item == "Complimentary wireless internet" && (
+                      {item.toLowerCase() == "complimentary wireless internet" && (
                         <Icon
                           style={{ marginHorizontal: 5 }}
                           color="#ffffff"
@@ -196,7 +237,7 @@ class HotelCheckout extends React.Component {
                           name="ios-wifi"
                         />
                       )}
-                      {item == "24-hour front desk" && (
+                      {item.toLowerCase() == "24-hour front desk" && (
                         <Icon
                           style={{ marginHorizontal: 5 }}
                           type="FontAwesome5"
@@ -205,7 +246,7 @@ class HotelCheckout extends React.Component {
                           color="#ffffff"
                         />
                       )}
-                      {item == "Air conditioning" && (
+                      {item.toLowerCase() == "air conditioning" && (
                         <Icon
                           type="MaterialCommunityIcons"
                           color="#ffffff"
@@ -218,7 +259,7 @@ class HotelCheckout extends React.Component {
                 </View>
               </View>
             </View>
-            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+            <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
               <View
                 style={{
                   elevation: 2,
@@ -348,7 +389,7 @@ class HotelCheckout extends React.Component {
                     {params.Facilities != null && (
                       <View style={{ marginTop: 10 }}>
                         <Text style={{ flex: 3, fontSize: 16 }}>Facilities</Text>
-                        <Text style={{ color: "#717A81", flex: 4 }}>{params.Facilities}</Text>
+                        <Text style={{ color: "#717A81" }}>{Amenities.join(", ")}</Text>
                       </View>
                     )}
                   </View>
