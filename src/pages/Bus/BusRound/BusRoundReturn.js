@@ -1,5 +1,6 @@
 import React from "react";
 import { Dimensions, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
+import { orderBy } from "lodash";
 import { Button, Text, ActivityIndicator, Icon } from "../../../components";
 import Toast from "react-native-simple-toast";
 import { etravosApi } from "../../../service";
@@ -13,7 +14,15 @@ class BusRoundReturn extends React.PureComponent {
     console.log("Round");
     this.state = {
       loader: false,
-      returnBus: []
+      returnBus: [],
+      filterValues: {
+        busTimings: [],
+        busType: [],
+        travels: [],
+        boardingPoints: [],
+        droppingPoints: [],
+        sortBy: "Fare low to high"
+      }
     };
   }
 
@@ -71,8 +80,8 @@ class BusRoundReturn extends React.PureComponent {
   };
 
   filter = () => {
-    const { filterValues, buses } = this.state;
-    let filteredBuses = buses.filter(
+    const { filterValues, returnBus } = this.state;
+    let filteredBuses = returnBus.filter(
       item =>
         (filterValues.busTimings.length == 0 ||
           filterValues.busTimings.some(values => {
