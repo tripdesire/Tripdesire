@@ -227,10 +227,8 @@ class Cab extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View style={{ flexDirection: "column", backgroundColor: "#E4EAF6", height: 100 }}>
-            <View style={{ backgroundColor: "#E4EAF6", height: 56 }}>
-              <Header firstName="Cab" lastName="Search" />
-            </View>
+          <View style={{ flexDirection: "column", backgroundColor: "#E4EAF6", height: 80 }}>
+            <Header firstName="Cab" lastName="Search" />
           </View>
 
           <View
@@ -250,7 +248,12 @@ class Cab extends React.PureComponent {
                 ...styles.tabButtons
               }}
               onPress={() => this._triptype("oneway")}>
-              <Text style={{ color: travelType == 2 ? "#ffffff" : "#000000", fontSize: 12 }}>
+              <Text
+                style={{
+                  color: travelType == 2 ? "#ffffff" : "#5D666D",
+                  fontSize: 16,
+                  fontWeight: "600"
+                }}>
                 Local
               </Text>
             </Button>
@@ -260,7 +263,12 @@ class Cab extends React.PureComponent {
                 ...styles.tabButtons
               }}
               onPress={() => this._triptype("round")}>
-              <Text style={{ fontSize: 12, color: travelType == 1 ? "#ffffff" : "#000000" }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: travelType == 1 ? "#ffffff" : "#5D666D"
+                }}>
                 Outstation
               </Text>
             </Button>
@@ -272,7 +280,12 @@ class Cab extends React.PureComponent {
                 ...styles.tabButtons
               }}
               onPress={() => this._triptype("transfer")}>
-              <Text style={{ fontSize: 12, color: travelType == 3 ? "#ffffff" : "#000000" }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: travelType == 3 ? "#ffffff" : "#5D666D"
+                }}>
                 Transfer
               </Text>
             </Button>
@@ -345,14 +358,14 @@ class Cab extends React.PureComponent {
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.setModalVisible("modalFrom", true)}>
-                <Text style={{ color: "#5D666D" }}>From</Text>
+                <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>From</Text>
                 <Text numberOfLines={1}>{from}</Text>
               </Button>
               {travelType == 1 && (
                 <Button
                   style={{ flex: 1, paddingStart: 20 }}
                   onPress={this.setModalVisible("modalTo", true)}>
-                  <Text style={{ color: "#5D666D" }}>To</Text>
+                  <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>To</Text>
                   <Text numberOfLines={1}>{to}</Text>
                 </Button>
               )}
@@ -368,7 +381,9 @@ class Cab extends React.PureComponent {
                     style={{ flex: 1, paddingStart: 20 }}
                     onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
                     <Text style={{ color: "#5D666D" }}>Pickup Location</Text>
-                    <Text numberOfLines={1}>
+                    <Text
+                      numberOfLines={1}
+                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
                       {pickuplocation != "" ? pickuplocation : "Tap To Enter"}
                     </Text>
                   </Button>
@@ -441,6 +456,7 @@ class Cab extends React.PureComponent {
                         //iconContainer: { paddingEnd: 32 },
                         inputAndroid: { color: "#000", padding: 0, height: 20 }
                       }}
+                      pickerProps={{ mode: "dropdown" }}
                       value={this.state.tripType}
                       Icon={() => <Icon name="ios-arrow-down" size={20} color="grey" />}
                     />
@@ -459,6 +475,7 @@ class Cab extends React.PureComponent {
                       //iconContainer: { paddingEnd: 32 },
                       inputAndroid: { color: "#000", padding: 0, height: 20 }
                     }}
+                    pickerProps={{ mode: "dropdown" }}
                     value={this.state.pickuptime}
                     Icon={() => <Icon name="ios-arrow-down" size={20} color="grey" />}
                   />
@@ -550,13 +567,13 @@ const styles = StyleSheet.create({
     elevation: 2,
     zIndex: 2,
     height: 30,
+    paddingHorizontal: 30,
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "#757575",
     shadowOpacity: 0.2,
     shadowRadius: 2,
     justifyContent: "center",
-    alignItems: "center",
-    flex: 1
+    alignItems: "center"
   }
 });
 
