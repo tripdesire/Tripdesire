@@ -106,15 +106,27 @@ class DomesticFlights extends React.PureComponent {
     });
   };
 
-  exchange = () => {
-    // this.setState({
-    //   from: this.state.to,
-    //   sourceName: this.state.destinationName,
-    //   destinationName: this.state.sourceName,
-    //   sourceId: this.state.destinationId,
-    //   destinationId: this.state.sourceId,
-    //   to: this.state.from
-    // });
+  _exchange = () => {
+    const {
+      from,
+      to,
+      sourceName,
+      destinationName,
+      fromCode,
+      ToCode,
+      sourceAirportName,
+      destinationAirportName
+    } = this.state;
+    this.setState({
+      from: to,
+      to: from,
+      sourceName: destinationName,
+      sourceAirportName: destinationAirportName,
+      destinationAirportName: sourceAirportName,
+      destinationName: sourceName,
+      fromCode: ToCode,
+      ToCode: fromCode
+    });
   };
 
   _search = () => {

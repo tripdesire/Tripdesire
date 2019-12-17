@@ -4,6 +4,7 @@ import { orderBy } from "lodash";
 import { Button, Text, ActivityIndicator, Icon } from "../../../components";
 import Toast from "react-native-simple-toast";
 import { etravosApi } from "../../../service";
+import Filter from "../Filter";
 import RenderRoundReturn from "./RenderRoundReturn";
 
 const { width, height } = Dimensions.get("window");
@@ -15,6 +16,8 @@ class BusRoundReturn extends React.PureComponent {
     this.state = {
       loader: false,
       returnBus: [],
+      filterModalVisible: false,
+      filteredBuses: [],
       filterValues: {
         busTimings: [],
         busType: [],
@@ -56,11 +59,12 @@ class BusRoundReturn extends React.PureComponent {
       .get("/Buses/AvailableBuses", param)
       .then(({ data }) => {
         console.log(data.AvailableTrips);
-        if (data.AvailableTrips.length == 0) {
+        if (Array.isArray(data.AvailableTrips) && data.AvailableTrips.length == 0) {
           Toast.show("Data not found.", Toast.LONG);
         }
         this.setState({
           returnBus: data.AvailableTrips,
+          filteredBuses: data.AvailableTrips,
           loader: false
         });
       })
@@ -167,6 +171,7 @@ class BusRoundReturn extends React.PureComponent {
       destinationName,
       TripType,
       sourceId,
+      loader,
       destinationId,
       journeyDate,
       returnDate

@@ -55,9 +55,9 @@ class RenderRoundReturn extends React.PureComponent {
             marginVertical: 10
           }}>
           <IconMaterial name="bus" size={50} color="#6287F9" />
-          <View>
+          <View style={{ flexShrink: 1 }}>
             <Text style={{ fontSize: 18, lineHeight: 20 }}>{item.DisplayName}</Text>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View style={{ flexDirection: "row" }}>
               <Text style={{ fontSize: 16, lineHeight: 18 }}>{item.DepartureTime}</Text>
               <Text style={{ fontSize: 16, lineHeight: 18 }}> | </Text>
               <Text style={{ color: "#ADADAF", alignSelf: "center", lineHeight: 18 }}>

@@ -60,20 +60,22 @@ class BoardingOneway extends React.PureComponent {
     const { boardingpoints, droppingpoints, bp, dp } = this.state;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>
-            <Header firstName="Select Boarding and Selected Point" />
+            <View style={{ backgroundColor: "#E5EBF7" }}>
+              <Header firstName="Select Boarding and Dropping Point" />
+            </View>
             <View style={{ marginTop: 40 }}>
-              <View style={{ paddingStart: 20, marginHorizontal: 16 }}>
+              <View style={{ marginHorizontal: 16 }}>
                 <Text style={{ color: "#5D666D" }}>--Boarding Points--</Text>
                 <RNPickerSelect
                   useNativeAndroidPickerStyle={false}
                   placeholder={{}}
                   value={bp}
                   style={{
-                    inputAndroidContainer: { height: 40 },
-                    inputAndroid: { paddingStart: 0, color: "#000" },
+                    inputIOS: { paddingEnd: 32, color: "#000" },
+                    inputAndroid: { paddingStart: 0, color: "#000", paddingEnd: 32 },
                     iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                   }}
                   onValueChange={itemValue => this.setState({ bp: itemValue })}
@@ -81,15 +83,15 @@ class BoardingOneway extends React.PureComponent {
                   Icon={() => <Icon name="ios-arrow-down" size={20} />}
                 />
               </View>
-              <View style={{ paddingStart: 20, marginTop: 40, marginHorizontal: 16 }}>
+              <View style={{ marginTop: 40, marginHorizontal: 16 }}>
                 <Text style={{ color: "#5D666D" }}>--Dropping Points--</Text>
                 <RNPickerSelect
                   useNativeAndroidPickerStyle={false}
                   placeholder={{}}
                   value={dp}
                   style={{
-                    inputAndroidContainer: { height: 40 },
-                    inputAndroid: { paddingStart: 0, color: "#000" },
+                    inputIOS: { paddingEnd: 32, color: "#000" },
+                    inputAndroid: { paddingStart: 0, color: "#000", paddingEnd: 32 },
                     iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                   }}
                   onValueChange={itemValue => this.setState({ dp: itemValue })}

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
-import { Button, Text, Header } from "../../components";
+import { Button, Text, Header, ActivityIndicator } from "../../components";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../../service";
@@ -44,6 +44,7 @@ class Seats extends React.PureComponent {
       .get("/Buses/TripDetails", queryParams)
       .then(({ data }) => {
         //data.Seats = data1;
+        this.setState({ loading: false });
         if (Array.isArray(data.Seats) && data.Seats) {
           let seats = { upper: [], lower: [] };
           for (let i of data.Seats) {
@@ -271,8 +272,8 @@ class Seats extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-          <View style={{backgroundColor:"#E5EBF7"}}>
-          <Header firstName="Seats" />
+          <View style={{ backgroundColor: "#E5EBF7" }}>
+            <Header firstName="Seats" />
           </View>
 
           {seats.lower.length > 0 && seats.upper.length > 0 && (
@@ -378,6 +379,7 @@ class Seats extends React.PureComponent {
               <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>
             </Button>
           </ScrollView>
+          {loading && <ActivityIndicator />}
         </SafeAreaView>
       </>
     );

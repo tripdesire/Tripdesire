@@ -1,5 +1,13 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, FlatList, ScrollView, Modal } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  Modal,
+  TouchableOpacity
+} from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, ActivityIndicator, DomesticFlights } from "../../components";
 import FareDetails from "./FareRules";
@@ -9,7 +17,6 @@ import Toast from "react-native-simple-toast";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
 import { etravosApi } from "../../service";
-
 import moment from "moment";
 var newData = [];
 class FlightListRender extends React.PureComponent {
@@ -98,11 +105,12 @@ class FlightListRender extends React.PureComponent {
     let img = "http://webapi.i2space.co.in" + item.FlightSegments[0].ImagePath;
 
     return (
-      <View
+      <TouchableOpacity
         style={{
           paddingVertical: index % 2 == 0 ? 30 : 10,
           backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
-        }}>
+        }}
+        onPress={this.bookNow}>
         <View
           style={{
             flexDirection: "row",
@@ -126,8 +134,8 @@ class FlightListRender extends React.PureComponent {
           }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 40, height: 40, marginEnd: 4 }}
-              source={{ uri: img || "https://via.placeholder.com/150"}}
+              style={{ width: 40, height: 40, marginEnd: 10 }}
+              source={{ uri: img || "https://via.placeholder.com/150" }}
               resizeMode="cover"
             />
             <View>
@@ -154,7 +162,7 @@ class FlightListRender extends React.PureComponent {
               <Text style={{ fontSize: 18, lineHeight: 20 }}>{ad}</Text>
               <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>{to}</Text>
             </View>
-            <Button
+            {/* <Button
               style={{
                 backgroundColor: "#F68E1F",
                 borderRadius: 14,
@@ -173,7 +181,7 @@ class FlightListRender extends React.PureComponent {
                 }}>
                 Book Now
               </Text>
-            </Button>
+            </Button> */}
           </View>
         </View>
         <View
@@ -444,7 +452,7 @@ class FlightListRender extends React.PureComponent {
           onRequestClose={this.closeModal}>
           <FareDetails data={this.state.farerule} onBackPress={this.closeModal} />
         </Modal>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
