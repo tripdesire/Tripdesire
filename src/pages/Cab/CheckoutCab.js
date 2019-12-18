@@ -159,7 +159,7 @@ class CheckoutCab extends React.PureComponent {
 
                 var options = {
                   description: "Credits towards consultation",
-                  image: "https://i.imgur.com/3g7nmJC.png",
+                  //image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
                   key: "rzp_test_a3aQYPLYowGvWJ",
                   amount: parseInt(order.total) * 100,
@@ -617,7 +617,7 @@ class CheckoutCab extends React.PureComponent {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Icon type="Foundation" name="shopping-bag" size={22} />
                   <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
-                    Fare Breakkup
+                    Fare Break up
                   </Text>
                 </View>
                 <View

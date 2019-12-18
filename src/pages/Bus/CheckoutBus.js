@@ -311,91 +311,44 @@ class CheckoutBus extends React.PureComponent {
                     borderRadius: 8,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
-                    marginTop: 20
+                    marginTop: 20,
+                    padding: 8
                   }}>
-                  <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-                    <Text style={{ fontWeight: "700", fontSize: 16 }}>Departure</Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        marginTop: 10,
-                        justifyContent: "space-between"
-                      }}>
-                      <Text style={{ flex: 1, color: "#5B6974" }}>Name</Text>
-                      <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
-                        Journey Date
-                      </Text>
-                      <Text style={{ flex: 1, color: "#5B6974" }}>Route</Text>
+                  <Text style={{ fontWeight: "700", fontSize: 16, paddingHorizontal: 4 }}>
+                    Departure
+                  </Text>
+                  <View style={{ flexDirection: "row", marginTop: 10 }}>
+                    <View style={{ flex: 3, paddingHorizontal: 4 }}>
+                      <Text style={{ color: "#5B6974" }}>Name</Text>
+                      <Text>{params.DisplayName}</Text>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}>
-                      <Text style={{ flex: 1 }}>{params.DisplayName}</Text>
-                      <Text style={{ flex: 1, marginHorizontal: 5 }}>
-                        {moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")}
+                    <View style={{ flex: 2, paddingHorizontal: 4 }}>
+                      <Text style={{ color: "#5B6974" }}>Journey Date</Text>
+                      <Text>{moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")}</Text>
+                    </View>
+                    <View style={{ flex: 1, paddingHorizontal: 4 }}>
+                      <Text style={{ color: "#5B6974" }}>Seat(s)</Text>
+                      <Text>
+                        {Array.isArray(selectedSheets) &&
+                          selectedSheets.map(item => item.Number).join()}
                       </Text>
-                      <Text style={{ flex: 1 }}>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: "row", marginTop: 10 }}>
+                    <View style={{ flex: 1, paddingHorizontal: 4 }}>
+                      <Text style={{ color: "#5B6974" }}>Route</Text>
+                      <Text>
                         {sourceName} To {destinationName}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        marginTop: 10,
-                        justifyContent: "space-between"
-                      }}>
-                      <Text style={{ flex: 2, color: "#5B6974" }}>Boarding Point</Text>
-                      {/* <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
-                        Seats No.
-                      </Text>
-                      <Text style={{ flex: 2, color: "#5B6974" }}>Bus Type</Text> */}
+                    <View style={{ flex: 1, paddingHorizontal: 4 }}>
+                      <Text style={{ color: "#5B6974" }}>Bus Type</Text>
+                      <Text>{params.BusType}</Text>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}>
-                      <Text style={{ flex: 2 }}>{BoardingPoint.Location}</Text>
-                      {/* {Array.isArray(selectedSheets) &&
-                        selectedSheets.map((item, index) => {
-                          return (
-                            <Text style={{ flex: 1, marginHorizontal: 5 }} key={"Sap" + index}>
-                              {item.Number + "\n"}
-                            </Text>
-                          );
-                        })}
-                      <Text style={{ flex: 2 }}>{params.BusType}</Text> */}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        marginTop: 10,
-                        justifyContent: "space-between"
-                      }}>
-                      {/* <Text style={{ flex: 2, color: "#5B6974" }}>Boarding Point</Text> */}
-                      <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
-                        Seat(s)
-                      </Text>
-                      <Text style={{ flex: 1, color: "#5B6974" }}>Bus Type</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}>
-                      {/* <Text style={{ flex: 2 }}>{BoardingPoint.Location}</Text> */}
-                      {Array.isArray(selectedSheets) &&
-                        selectedSheets.map((item, index) => {
-                          return (
-                            <Text style={{ flex: 1, marginHorizontal: 5 }} key={"Sap" + index}>
-                              {item.Number + "\n"}
-                            </Text>
-                          );
-                        })}
-                      <Text style={{ flex: 1 }}>{params.BusType}</Text>
-                    </View>
+                  </View>
+                  <View style={{ flex: 1, paddingHorizontal: 4, marginTop: 10 }}>
+                    <Text style={{ color: "#5B6974" }}>Boarding Point</Text>
+                    <Text>{BoardingPoint.Location}</Text>
                   </View>
                 </View>
 
@@ -414,58 +367,41 @@ class CheckoutBus extends React.PureComponent {
                     }}>
                     <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
                       <Text style={{ fontWeight: "300", fontSize: 16 }}>Arrival</Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginTop: 10,
-                          justifyContent: "space-between"
-                        }}>
-                        <Text style={{ flex: 1, color: "#5B6974" }}>Name</Text>
-                        <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
-                          Journey Date
-                        </Text>
-                        <Text style={{ flex: 1, color: "#5B6974" }}>Route</Text>
+
+                      <View style={{ flexDirection: "row", marginTop: 10 }}>
+                        <View style={{ flex: 3, paddingHorizontal: 4 }}>
+                          <Text style={{ color: "#5B6974" }}>Name</Text>
+                          <Text>{paramsRound.DisplayName}</Text>
+                        </View>
+                        <View style={{ flex: 2, paddingHorizontal: 4 }}>
+                          <Text style={{ color: "#5B6974" }}>Journey Date</Text>
+                          <Text>
+                            {moment(paramsRound.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")}
+                          </Text>
+                        </View>
+                        <View style={{ flex: 1, paddingHorizontal: 4 }}>
+                          <Text style={{ color: "#5B6974" }}>Seat(s)</Text>
+                          <Text>
+                            {Array.isArray(selectedSheetsRound) &&
+                              selectedSheetsRound.map(item => item.Number).join()}
+                          </Text>
+                        </View>
                       </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between"
-                        }}>
-                        <Text style={{ flex: 1 }}>{paramsRound.DisplayName}</Text>
-                        <Text style={{ flex: 1, marginHorizontal: 5 }}>
-                          {moment(paramsRound.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")}
-                        </Text>
-                        <Text style={{ flex: 1 }}>
-                          {destinationName} To {sourceName}
-                        </Text>
+                      <View style={{ flexDirection: "row", marginTop: 10 }}>
+                        <View style={{ flex: 1, paddingHorizontal: 4 }}>
+                          <Text style={{ color: "#5B6974" }}>Route</Text>
+                          <Text>
+                            {destinationName} To {sourceName}
+                          </Text>
+                        </View>
+                        <View style={{ flex: 1, paddingHorizontal: 4 }}>
+                          <Text style={{ color: "#5B6974" }}>Bus Type</Text>
+                          <Text>{paramsRound.BusType}</Text>
+                        </View>
                       </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginTop: 10,
-                          justifyContent: "space-between"
-                        }}>
-                        <Text style={{ flex: 1, color: "#5B6974" }}>Boarding Point</Text>
-                        <Text style={{ flex: 1, color: "#5B6974", marginHorizontal: 5 }}>
-                          Seats No.
-                        </Text>
-                        <Text style={{ flex: 1, color: "#5B6974" }}>Bus Type</Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between"
-                        }}>
-                        <Text style={{ flex: 3 }}>{BoardingPointReturn.Location}</Text>
-                        {Array.isArray(selectedSheetsRound) &&
-                          selectedSheetsRound.map((item, index) => {
-                            return (
-                              <Text style={{ flex: 1, marginHorizontal: 5 }} key={"Sap" + index}>
-                                {item.Number + "\n"}
-                              </Text>
-                            );
-                          })}
-                        <Text style={{ flex: 3 }}>{paramsRound.BusType}</Text>
+                      <View style={{ flex: 1, paddingHorizontal: 4, marginTop: 10 }}>
+                        <Text style={{ color: "#5B6974" }}>Boarding Point</Text>
+                        <Text>{BoardingPointReturn.Location}</Text>
                       </View>
                     </View>
                   </View>
@@ -515,8 +451,8 @@ class CheckoutBus extends React.PureComponent {
                         flex: 1,
                         marginStart: 2,
                         paddingHorizontal: 5,
-                        justifyContent: "center",
-                        alignItems: "center"
+                        justifyContent: "center"
+                        //alignItems: "center"
                       }}>
                       <RNPickerSelect
                         useNativeAndroidPickerStyle={false}
@@ -613,8 +549,8 @@ class CheckoutBus extends React.PureComponent {
                                 flex: 1,
                                 marginStart: 2,
                                 paddingHorizontal: 5,
-                                justifyContent: "center",
-                                alignItems: "center"
+                                justifyContent: "center"
+                                //alignItems: "center"
                               }}>
                               <RNPickerSelect
                                 useNativeAndroidPickerStyle={false}

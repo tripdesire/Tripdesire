@@ -288,7 +288,7 @@ class Payment extends React.PureComponent {
                   console.log(order);
                   var options = {
                     description: "Credits towards consultation",
-                    image: "https://i.imgur.com/3g7nmJC.png",
+                    //image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
                     key: "rzp_test_a3aQYPLYowGvWJ",
                     amount: parseInt(order.total) * 100,

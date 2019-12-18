@@ -2,7 +2,6 @@ import React from "react";
 import { View, Image, Modal, StyleSheet, SafeAreaView, Platform, ScrollView } from "react-native";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -325,25 +324,33 @@ class Cab extends React.PureComponent {
                   alignItems: "center",
                   marginTop: 40
                 }}>
-                <Image
-                  style={{ width: 20, resizeMode: "contain", marginHorizontal: 5 }}
-                  source={require("../../assets/imgs/white-arrow-left-side.png")}
+                <Icon
+                  name={Platform.OS == "ios" ? "plane" : "plane"}
+                  type="FontAwesome"
+                  size={16}
+                  style={{ marginEnd: 5 }}
+                  color={tripType == 6 ? "#5D666D" : "#BDC4CA"}
                 />
                 <Button onPress={() => this._SelectTripType("airport")}>
                   <Text style={{ color: tripType == 6 ? "#5D666D" : "#BDC4CA" }}>Airport</Text>
                 </Button>
-                <Image
-                  style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
-                  source={require("../../assets/imgs/Round-trip-arrow.png")}
+                <Icon
+                  name={Platform.OS == "ios" ? "ios-train" : "md-train"}
+                  size={16}
+                  color={tripType == 7 ? "#5D666D" : "#BDC4CA"}
+                  style={{ marginStart: 10, marginEnd: 5 }}
                 />
                 <Button onPress={() => this._SelectTripType("railway")}>
                   <Text style={{ color: tripType == 7 ? "#5D666D" : "#BDC4CA" }}>
                     Railway Station
                   </Text>
                 </Button>
-                <Image
-                  style={{ width: 25, resizeMode: "contain", marginHorizontal: 5 }}
-                  source={require("../../assets/imgs/Round-trip-arrow.png")}
+                <Icon
+                  name={Platform.OS == "ios" ? "hotel" : "hotel"}
+                  size={14}
+                  color={tripType == 8 ? "#5D666D" : "#BDC4CA"}
+                  type="FontAwesome5"
+                  style={{ marginStart: 10, marginEnd: 5 }}
                 />
                 <Button
                   style={{ justifyContent: "center" }}
@@ -354,7 +361,7 @@ class Cab extends React.PureComponent {
             )}
 
             <View style={{ margin: 16, marginTop: 40, flexDirection: "row", alignItems: "center" }}>
-              <IconMaterial name="bus" size={25} color="#A5A9AC" />
+              <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={40} color="#5D666D" />
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.setModalVisible("modalFrom", true)}>
@@ -371,7 +378,11 @@ class Cab extends React.PureComponent {
               <>
                 <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
                 <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-                  <IconMaterial name="bus" size={25} color="#A5A9AC" />
+                  <Icon
+                    name={Platform.OS == "ios" ? "ios-car" : "md-car"}
+                    size={40}
+                    color="#5D666D"
+                  />
 
                   <Button
                     style={{ flex: 1, paddingStart: 20 }}

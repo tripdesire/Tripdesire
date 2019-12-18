@@ -14,15 +14,6 @@ import {
 import { Button, Text, AutoCompleteModal, ActivityIndicator, Header, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import { withNavigation } from "react-navigation";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import moment from "moment";
-import RNPickerSelect from "react-native-picker-select";
-import { etravosApi } from "../../service";
-import SuggLoc from "./LocationModal";
-import Autocomplete from "react-native-autocomplete-input";
 import axios from "axios";
 
 const { height } = Dimensions.get("window");
@@ -158,7 +149,7 @@ class RenderItems extends React.PureComponent {
                 color="#6287F9"
                 style={{ paddingHorizontal: 5 }}
               />
-              <Text>{this.props.item.SeatingCapacity} Setas</Text>
+              <Text>{this.props.item.SeatingCapacity} Seats</Text>
               <Icon
                 name="shopping-bag"
                 type="Foundation"

@@ -13,11 +13,13 @@ class CheckOut extends React.PureComponent {
     console.log(this.props.navigation.state.params);
     this.state = {
       loading: false,
-      return: false
+      return: false,
+      data: "",
+      CouponText: ""
     };
   }
 
-  navigateToScreen = (page, params = {}) => () => {
+  componentDidMount() {
     const { params } = this.props.navigation.state;
     Object.assign(params, {
       itemId: 87
@@ -227,8 +229,8 @@ class CheckOut extends React.PureComponent {
           .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
           .then(({ data }) => {
             console.log(data);
-            this.props.navigation.navigate(page, { params, data });
-            this.setState({ loading: false });
+            // this.props.navigation.navigate(page, { params, data });
+            this.setState({ data: data, loading: false });
           })
           .catch(error => {
             Toast.show(error, Toast.LONG);
@@ -240,6 +242,232 @@ class CheckOut extends React.PureComponent {
         Toast.show(error, Toast.LONG);
         this.setState({ loading: false });
       });
+  }
+
+  navigateToScreen = (page, params = {}) => () => {
+    this.props.navigation.navigate(page, { params, data: this.state.data });
+    // const { params } = this.props.navigation.state;
+    // Object.assign(params, {
+    //   itemId: 87
+    // });
+
+    // let dt =
+    //   params.flightType == 1
+    //     ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("HH:MM")
+    //     : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format("HH:MM");
+
+    // let dtReturn =
+    //   params.flightType == 2 && params.tripType == 2
+    //     ? moment(params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime).format("HH:MM")
+    //     : params.flightType == 1 && params.tripType == 2
+    //     ? moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format("HH:MM")
+    //     : "";
+
+    // let at =
+    //   params.flightType == 1
+    //     ? moment(
+    //         params.departFlight.FlightSegments[params.departFlight.FlightSegments.length - 1]
+    //           .ArrivalDateTime
+    //       ).format("HH:MM")
+    //     : moment(
+    //         params.departFlight.IntOnward.FlightSegments[
+    //           params.departFlight.IntOnward.FlightSegments.length - 1
+    //         ].ArrivalDateTime
+    //       ).format("HH:MM");
+
+    // let atReturn =
+    //   params.flightType == 2 && params.tripType == 2
+    //     ? moment(
+    //         params.departFlight.IntReturn.FlightSegments[
+    //           params.departFlight.IntReturn.FlightSegments.length - 1
+    //         ].ArrivalDateTime
+    //       ).format("HH:MM")
+    //     : params.flightType == 1 && params.tripType == 2
+    //     ? moment(
+    //         params.arrivalFlight.FlightSegments[params.arrivalFlight.FlightSegments.length - 1]
+    //           .ArrivalDateTime
+    //       ).format("HH:MM")
+    //     : "";
+    // let departureDate =
+    //   params.flightType == 1
+    //     ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("MMM DD")
+    //     : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format(
+    //         "MMM DD"
+    //       );
+
+    // let departureDateReturn =
+    //   params.flightType == 2 && params.tripType == 2
+    //     ? moment(params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime).format("MMM DD")
+    //     : params.flightType == 1 && params.tripType == 2
+    //     ? moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format("MMM DD")
+    //     : "";
+    // let arrivalDate =
+    //   params.flightType == 1
+    //     ? moment(
+    //         params.departFlight.FlightSegments[params.departFlight.FlightSegments.length - 1]
+    //           .ArrivalDateTime
+    //       ).format("MMM DD")
+    //     : moment(
+    //         params.departFlight.IntOnward.FlightSegments[
+    //           params.departFlight.IntOnward.FlightSegments.length - 1
+    //         ].ArrivalDateTime
+    //       ).format("MMM DD");
+
+    // let arrivalDateReturn =
+    //   params.flightType == 2 && params.tripType == 2
+    //     ? moment(
+    //         params.departFlight.IntReturn.FlightSegments[
+    //           params.departFlight.IntReturn.FlightSegments.length - 1
+    //         ].ArrivalDateTime
+    //       ).format("MMM DD")
+    //     : params.flightType == 1 && params.tripType == 2
+    //     ? moment(
+    //         params.arrivalFlight.FlightSegments[params.arrivalFlight.FlightSegments.length - 1]
+    //           .ArrivalDateTime
+    //       ).format("MMM DD")
+    //     : "";
+
+    // let param = {
+    //   id: 87,
+    //   quantity: "1",
+    //   int_fl_item_result_data: params.flightType == 2 ? params.departFlight : {},
+    //   onward_item_result_data: params.flightType == 1 ? params.departFlight : {},
+    //   single_fl_name:
+    //     params.flightType == 1
+    //       ? params.departFlight.FlightSegments[0].AirLineName
+    //       : params.departFlight.IntOnward.FlightSegments[0].AirLineName,
+    //   single_fl_code: params.departFlight.FlightUId,
+    //   single_fl_from: params.from,
+    //   single_fl_to: params.to,
+    //   single_fl_time1: dt,
+    //   single_fl_time2: at,
+    //   single_fl_time_dur:
+    //     params.flightType == 1
+    //       ? params.departFlight.FlightSegments[0].Duration
+    //       : params.departFlight.IntOnward.FlightSegments[0].Duration,
+    //   single_fl_stop:
+    //     params.flightType == 1
+    //       ? params.departFlight.FlightSegments[0].StopQuantity
+    //       : params.departFlight.IntOnward.FlightSegments[0].StopQuantity,
+    //   single_fl_conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
+    //   single_fl_schagre: params.departFlight.FareDetails.ChargeableFares.SCharge,
+    //   single_fl_tax: params.departFlight.FareDetails.ChargeableFares.Tax,
+    //   single_fl_dept_date: departureDate,
+    //   single_fl_arriv_date: arrivalDate,
+    //   single_fl_fare_rule: "Refundable",
+    //   single_fl_base_fare: params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
+    //   single_fl_gst:
+    //     params.departFlight.FareDetails.IsGSTMandatory == false
+    //       ? 0
+    //       : params.departFlight.FareDetails.IsGSTMandatory,
+    //   return_item_result_data:
+    //     params.flightType == 1 && params.tripType == 2 ? params.arrivalFlight : {},
+    //   return_fl_name:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.IntReturn.FlightSegments[0].AirLineName
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FlightSegments[0].AirLineName
+    //       : "",
+    //   return_fl_code:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.FlightUId
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FlightUId
+    //       : "",
+    //   return_fl_from: params.tripType == 2 ? params.to : "",
+    //   return_fl_to: params.tripType == 2 ? params.from : "",
+    //   return_fl_time1: params.tripType == 2 ? dtReturn : "",
+    //   return_fl_time2: params.tripType == 2 ? atReturn : "",
+    //   return_fl_time_dur:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.IntReturn.FlightSegments[0].Duration
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FlightSegments[0].Duration
+    //       : "",
+    //   return_fl_stop:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.IntReturn.FlightSegments[0].StopQuantity
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FlightSegments[0].StopQuantity
+    //       : "",
+    //   return_fl_conveniencefee:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.FareDetails.ChargeableFares.Conveniencefee
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FareDetails.ChargeableFares.Conveniencefee
+    //       : "",
+    //   return_fl_schagre:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.FareDetails.ChargeableFares.SCharge
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FareDetails.ChargeableFares.SCharge
+    //       : "",
+    //   return_fl_tax:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.FareDetails.ChargeableFares.Tax
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FareDetails.ChargeableFares.Tax
+    //       : "",
+    //   return_fl_dept_date: params.tripType == 2 ? departureDateReturn : "",
+    //   return_fl_arriv_date: params.tripType == 2 ? arrivalDateReturn : "",
+    //   return_fl_fare_rule: "Refundable",
+    //   return_fl_base_fare:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.FareDetails.ChargeableFares.ActualBaseFare
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare
+    //       : "",
+    //   return_fl_gst:
+    //     params.flightType == 2 &&
+    //     params.tripType == 2 &&
+    //     params.departFlight.FareDetails.IsGSTMandatory == false
+    //       ? params.departFlight.FareDetails.IsGSTMandatory
+    //       : params.flightType == 1 &&
+    //         params.tripType == 2 &&
+    //         params.arrivalFlight.FareDetails.IsGSTMandatory == false
+    //       ? params.departFlight.FareDetails.IsGSTMandatory
+    //       : 0,
+    //   fl_tot_price:
+    //     params.flightType == 2 && params.tripType == 2
+    //       ? params.departFlight.FareDetails.TotalFare
+    //       : params.flightType == 1 && params.tripType == 2
+    //       ? params.departFlight.FareDetails.TotalFare + params.arrivalFlight.FareDetails.TotalFare
+    //       : params.flightType == 1 && params.tripType == 1
+    //       ? params.departFlight.FareDetails.TotalFare
+    //       : params.flightType == 2 && params.tripType == 1
+    //       ? params.departFlight.FareDetails.TotalFare
+    //       : "",
+    //   fl_adults: params.adult,
+    //   fl_children: params.child,
+    //   fl_infant: params.infant,
+    //   fl_ctype: params.className
+    // };
+
+    // console.log(JSON.stringify(param));
+
+    // this.setState({ loading: true });
+    // axios
+    //   .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param)
+    //   .then(res => {
+    //     console.log(res);
+    //     // if (res.data.code == 1) {
+    //     axios
+    //       .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
+    //       .then(({ data }) => {
+    //         console.log(data);
+    //         this.props.navigation.navigate(page, { params, data });
+    //         this.setState({ loading: false });
+    //       })
+    //       .catch(error => {
+    //         Toast.show(error, Toast.LONG);
+    //         this.setState({ loading: false });
+    //       });
+    //     // }
+    //   })
+    //   .catch(error => {
+    //     Toast.show(error, Toast.LONG);
+    //     this.setState({ loading: false });
+    //   });
   };
 
   render() {
@@ -372,6 +600,10 @@ class CheckOut extends React.PureComponent {
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
                   marginVertical: 20,
@@ -531,6 +763,10 @@ class CheckOut extends React.PureComponent {
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
                   borderRadius: 8
@@ -544,7 +780,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <IconSimple name="bag" size={24} />
                   <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
-                    Fare Backup
+                    Fare Break up
                   </Text>
                 </View>
                 <View
@@ -642,30 +878,35 @@ class CheckOut extends React.PureComponent {
                   </Text>
                 </View>
               </View>
-              {/* <View
+              <View
+                style={{
+                  elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  backgroundColor: "#ffffff",
+                  marginHorizontal: 16,
+                  marginVertical: 20,
+                  borderRadius: 8,
+                  height: 40,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}>
+                <TextInput
+                  placeholder="Have a Promo Code?"
+                  style={{ marginStart: 5, flex: 1 }}
+                  onChangeText={text => this.setState({ CouponText: text })}></TextInput>
+                <Button
                   style={{
-                    elevation: 2,
-                    backgroundColor: "#ffffff",
-                    marginHorizontal: 16,
-                    marginVertical: 20,
-                    borderRadius: 8,
-                    height: 40,
-                    justifyContent: "space-between",
-                    flexDirection: "row"
+                    backgroundColor: "#5B89F9",
+                    justifyContent: "center",
+                    borderBottomRightRadius: 8,
+                    borderTopRightRadius: 8
                   }}>
-                  <TextInput
-                    placeholder="Have a Promo Code?"
-                    style={{ marginStart: 5, flex: 1 }}></TextInput>
-                  <Button
-                    style={{
-                      backgroundColor: "#5B89F9",
-                      justifyContent: "center",
-                      borderBottomRightRadius: 8,
-                      borderTopRightRadius: 8
-                    }}>
-                    <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
-                  </Button>
-                </View> */}
+                  <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
+                </Button>
+              </View>
               <Button
                 style={{
                   backgroundColor: "#F68E1D",

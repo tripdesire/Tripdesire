@@ -94,7 +94,7 @@ class BusPayment extends React.PureComponent {
 
           var options = {
             description: "Credits towards consultation",
-            image: "https://i.imgur.com/3g7nmJC.png",
+            // image: "https://i.imgur.com/3g7nmJC.png",
             currency: "INR",
             key: "rzp_test_a3aQYPLYowGvWJ",
             amount: parseInt(order.total) * 100,
@@ -243,7 +243,7 @@ class BusPayment extends React.PureComponent {
                       style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 10 }}>
                       <IconSimple name="bag" size={30} />
                       <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
-                        Fare Backup
+                        Fare Break up
                       </Text>
                     </View>
                     <View

@@ -559,7 +559,7 @@ class CheckOut1 extends React.PureComponent {
 
                     var options = {
                       description: "Credits towards consultation",
-                      image: "https://i.imgur.com/3g7nmJC.png",
+                      // image: "https://i.imgur.com/3g7nmJC.png",
                       currency: "INR",
                       key: "rzp_test_a3aQYPLYowGvWJ",
                       amount: parseInt(order.total) * 100,
@@ -821,8 +821,8 @@ class CheckOut1 extends React.PureComponent {
                                 flex: 1,
                                 paddingHorizontal: 2,
                                 marginHorizontal: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
+                                justifyContent: "center"
+                                // alignItems: "center"
                               }}>
                               {/* <Picker
                                 selectedValue={this.state.adults[index].gender}

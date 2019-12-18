@@ -13,6 +13,7 @@ class Boarding extends React.PureComponent {
     console.log(props.navigation.state.params);
     const { params } = props.navigation.state.params;
     this.state = {
+      loader: false,
       bp: params.BoardingTimes[0],
       dp: params.DroppingTimes[0],
       boardingpoints: params.BoardingTimes.map(item => {
@@ -78,14 +79,18 @@ class Boarding extends React.PureComponent {
     console.log(param);
 
     if (TripType == 1) {
+      this.setState({ loader: true });
       domainApi
         .post("/cart/add", param)
         .then(({ data }) => {
           console.log(data);
+          this.setState({ loader: false });
           if (data.code == "1") {
             // Toast.show(data.message, Toast.LONG);
+            this.setState({ loader: true });
             domainApi.get("/cart").then(({ data }) => {
               console.log(data);
+              this.setState({ loader: false });
               const { bp, dp } = this.state;
               this.props.navigation.navigate("CheckoutBus", {
                 cartData: data,
@@ -99,6 +104,7 @@ class Boarding extends React.PureComponent {
           }
         })
         .catch(error => {
+          this.setState({ loader: false });
           console.log(error);
         });
     } else {
@@ -125,7 +131,12 @@ class Boarding extends React.PureComponent {
                   value={bp}
                   style={{
                     inputIOS: { paddingEnd: 32, color: "#000" },
-                    inputAndroid: { paddingStart: 0, color: "#000", paddingEnd: 32 },
+                    inputAndroid: {
+                      paddingStart: 0,
+                      color: "#000",
+                      height: "auto",
+                      paddingEnd: 32
+                    },
                     iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                   }}
                   onValueChange={itemValue => this.setState({ bp: itemValue })}

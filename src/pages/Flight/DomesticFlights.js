@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Modal } from "react-native";
+import { View, Image, Modal, Platform } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import AddPassengers from "./AddPassengers";
@@ -344,7 +344,7 @@ class DomesticFlights extends React.PureComponent {
                 this.setState({ class: itemValue, index: index })
               }
               items={className}
-              Icon={() => <Icon name="ios-arrow-down" size={20} />}
+              Icon={() => <Icon name={Platform.OS == "ios" ? "ios-arrow-down" : ""} size={20} />}
             />
           </View>
         </View>

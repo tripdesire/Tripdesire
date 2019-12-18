@@ -120,23 +120,29 @@ class SeatRound extends React.PureComponent {
   };
 
   updateSheets = item => () => {
-    let selectedSheetsRound = [...this.state.selectedSheetsRound];
-    let index = selectedSheetsRound.findIndex(val => val.Number == item.Number);
-    if (index != -1) {
-      selectedSheetsRound.splice(index, 1);
-    } else {
-      selectedSheetsRound.push(item);
+    if (item.IsAvailableSeat === "true" || item.IsAvailableSeat === "True") {
+      let selectedSheetsRound = [...this.state.selectedSheetsRound];
+      let index = selectedSheetsRound.findIndex(val => val.Number == item.Number);
+      if (index != -1) {
+        selectedSheetsRound.splice(index, 1);
+      } else {
+        selectedSheetsRound.push(item);
+      }
+      this.setState({ selectedSheetsRound });
+      console.log(selectedSheetsRound);
     }
-    this.setState({ selectedSheetsRound });
-    console.log(selectedSheetsRound);
   };
 
   renderSeat = item => {
     const { lowerRows, selectedSheetsRound } = this.state;
-    const backgroundColor = selectedSheetsRound.some(val => item.Number == val.Number)
-      ? "#BBBBBB"
-      : "#FFF";
-    const seatColor = item.IsLadiesSeat == "True" ? "pink" : "#757575";
+    const backgroundColor =
+      item.IsAvailableSeat === "false" || item.IsAvailableSeat === "False"
+        ? "#BBBBBB"
+        : selectedSheetsRound.some(val => item.Number == val.Number)
+        ? "#5B89F9"
+        : "#FFF";
+    const seatColor =
+      item.IsLadiesSeat == "True" || item.IsLadiesSeat == "true" ? "pink" : "#757575";
 
     if (item.Length == 2 && item.Width == 1) {
       //Horizonatal Sleeper

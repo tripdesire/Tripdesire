@@ -122,23 +122,29 @@ class Seats extends React.PureComponent {
   };
 
   updateSheets = item => () => {
-    let selectedSheets = [...this.state.selectedSheets];
-    let index = selectedSheets.findIndex(val => val.Number == item.Number);
-    if (index != -1) {
-      selectedSheets.splice(index, 1);
-    } else {
-      selectedSheets.push(item);
+    if (item.IsAvailableSeat === "true" || item.IsAvailableSeat === "True") {
+      let selectedSheets = [...this.state.selectedSheets];
+      let index = selectedSheets.findIndex(val => val.Number == item.Number);
+      if (index != -1) {
+        selectedSheets.splice(index, 1);
+      } else {
+        selectedSheets.push(item);
+      }
+      this.setState({ selectedSheets });
+      console.log(selectedSheets);
     }
-    this.setState({ selectedSheets });
-    console.log(selectedSheets);
   };
 
   renderSeat = item => {
     const { lowerRows, selectedSheets } = this.state;
-    const backgroundColor = selectedSheets.some(val => item.Number == val.Number)
-      ? "#BBBBBB"
-      : "#FFF";
-    const seatColor = item.IsLadiesSeat == "True" ? "pink" : "#757575";
+    const backgroundColor =
+      item.IsAvailableSeat === "false" || item.IsAvailableSeat === "False"
+        ? "#BBBBBB"
+        : selectedSheets.some(val => item.Number == val.Number)
+        ? "#BBBBBB"
+        : "#FFF";
+    const seatColor =
+      item.IsLadiesSeat == "True" || item.IsLadiesSeat == "true" ? "pink" : "#757575";
 
     if (item.Length == 2 && item.Width == 1) {
       //Horizonatal Sleeper
@@ -303,12 +309,12 @@ class Seats extends React.PureComponent {
                   paddingHorizontal: lowerRows < 5 ? 48 : 24,
                   flexDirection: "column",
                   flexWrap: "wrap",
-                  height: 50 * lowerColumns
+                  height: 50 * (lowerColumns + 1)
                 }}>
                 {[...Array(lowerRows)].map((c, row) => {
                   return [...Array(lowerColumns)].map((r, column) => {
-                    let item = seats.lower.find(v => v.Row == row + 1 && v.Column == column + 1);
-                    let rowSpan = seats.lower.find(v => v.Row == row + 1 && v.Column == column);
+                    let item = seats.lower.find(v => v.Row == row + 1 && v.Column == column);
+                    let rowSpan = seats.lower.find(v => v.Row == row + 1 && v.Column == column - 1);
                     //let colSpan = seats.lower.find(v => v.Row == row && v.Column == column + 1);
                     if (item) {
                       return this.renderSeat(item);
@@ -338,12 +344,12 @@ class Seats extends React.PureComponent {
                   paddingHorizontal: upperRows < 5 ? 48 : 24,
                   flexDirection: "column",
                   flexWrap: "wrap",
-                  height: 50 * upperColumns
+                  height: 50 * (upperColumns + 1)
                 }}>
                 {[...Array(upperRows)].map((c, row) => {
                   return [...Array(upperColumns)].map((r, column) => {
-                    let item = seats.upper.find(v => v.Row == row + 1 && v.Column == column + 1);
-                    let rowSpan = seats.upper.find(v => v.Row == row + 1 && v.Column == column);
+                    let item = seats.upper.find(v => v.Row == row + 1 && v.Column == column);
+                    let rowSpan = seats.upper.find(v => v.Row == row + 1 && v.Column == column - 1);
                     //let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
                     if (item) {
                       return this.renderSeat(item);

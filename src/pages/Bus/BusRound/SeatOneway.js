@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
-import { Button, Text, Header, ActivityIndicator } from "../../../components";
+import { StyleSheet, View, ScrollView, SafeAreaView, Platform } from "react-native";
+import { Button, Text, Header, ActivityIndicator, Icon } from "../../../components";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
-import { etravosApi, domainApi } from "../../../service";
+import { etravosApi } from "../../../service";
 //import data1 from "../../Bus";
 //console.log(data1);
 
@@ -122,23 +122,29 @@ class SeatOneway extends React.PureComponent {
   };
 
   updateSheets = item => () => {
-    let selectedSheets = [...this.state.selectedSheets];
-    let index = selectedSheets.findIndex(val => val.Number == item.Number);
-    if (index != -1) {
-      selectedSheets.splice(index, 1);
-    } else {
-      selectedSheets.push(item);
+    if (item.IsAvailableSeat === "true" || item.IsAvailableSeat === "True") {
+      let selectedSheets = [...this.state.selectedSheets];
+      let index = selectedSheets.findIndex(val => val.Number == item.Number);
+      if (index != -1) {
+        selectedSheets.splice(index, 1);
+      } else {
+        selectedSheets.push(item);
+      }
+      this.setState({ selectedSheets });
+      console.log(selectedSheets);
     }
-    this.setState({ selectedSheets });
-    console.log(selectedSheets);
   };
 
   renderSeat = item => {
     const { lowerRows, selectedSheets } = this.state;
-    const backgroundColor = selectedSheets.some(val => item.Number == val.Number)
-      ? "#BBBBBB"
-      : "#FFF";
-    const seatColor = item.IsLadiesSeat == "True" ? "pink" : "#757575";
+    const backgroundColor =
+      item.IsAvailableSeat === "false" || item.IsAvailableSeat === "False"
+        ? "#BBBBBB"
+        : selectedSheets.some(val => item.Number == val.Number)
+        ? "#5B89F9"
+        : "#FFF";
+    const seatColor =
+      item.IsLadiesSeat == "True" || item.IsLadiesSeat == "true" ? "pink" : "#757575";
 
     if (item.Length == 2 && item.Width == 1) {
       //Horizonatal Sleeper
@@ -277,23 +283,146 @@ class SeatOneway extends React.PureComponent {
           </View>
 
           {seats.lower.length > 0 && seats.upper.length > 0 && (
-            <View style={styles.tabContainer}>
-              <Button
-                onPress={() => this.setState({ selectedTab: "lower" })}
-                style={[
-                  selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null,
-                  styles.tab
-                ]}>
-                <Text style={[selectedTab == "lower" ? { color: "#FFF" } : null]}>Lower Birth</Text>
-              </Button>
-              <Button
-                onPress={() => this.setState({ selectedTab: "upper" })}
-                style={[
-                  selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null,
-                  styles.tab
-                ]}>
-                <Text style={[selectedTab == "upper" ? { color: "#FFF" } : null]}>Upper Birth</Text>
-              </Button>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-between",
+                  padding: 16
+                }}>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+                  <View>
+                    <Icon
+                      size={16}
+                      style={{ marginEnd: 5, fontWeight: "700" }}
+                      color="#BBBBBB"
+                      name={Platform.OS == "ios" ? "ios-radio-button-off" : "md-radio-button-off"}
+                    />
+                  </View>
+                  <Text>Available</Text>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+                  <View>
+                    <Icon
+                      size={16}
+                      style={{ marginEnd: 5 }}
+                      color="#5B89F9"
+                      name={Platform.OS == "ios" ? "ios-radio-button-off" : "md-radio-button-off"}
+                    />
+                  </View>
+                  <Text>Selected</Text>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+                  <View>
+                    <Icon
+                      size={16}
+                      style={{ marginEnd: 5 }}
+                      color="pink"
+                      name={Platform.OS == "ios" ? "ios-radio-button-off" : "md-radio-button-off"}
+                    />
+                  </View>
+                  <Text>Ladies</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 16,
+                  paddingBottom: 16
+                }}>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+                  <View>
+                    <Icon
+                      size={16}
+                      style={{ marginEnd: 5, fontWeight: "700" }}
+                      color="#BBBBBB"
+                      type="FontAwesome"
+                      backgroundColor="#BBBBBB"
+                      name={Platform.OS == "ios" ? "circle" : "circle"}
+                    />
+                  </View>
+                  <Text>Booked</Text>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+                  <View
+                    style={{
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      marginEnd: 5,
+                      borderColor: "#BBBBBB",
+                      width: 30,
+                      height: 30,
+                      backgroundColor: "#fff"
+                    }}>
+                    <View
+                      style={{
+                        ...StyleSheet.absoluteFill,
+                        borderEndWidth: 6,
+                        borderStartWidth: 6,
+                        borderBottomWidth: 6,
+                        borderRadius: 3,
+                        borderColor: "#BBBBBB",
+                        marginTop: 15,
+                        marginStart: -3,
+                        marginEnd: -3,
+                        marginBottom: -3
+                      }}
+                    />
+                    <Text
+                      style={{ textAlign: "center", flex: 2, textAlignVertical: "center" }}></Text>
+                  </View>
+                  <Text>Seater</Text>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+                  <View
+                    style={{
+                      borderRadius: 5,
+                      borderColor: "#BBBBBB",
+                      borderWidth: 2,
+                      marginEnd: 5,
+                      width: 60,
+                      height: 30,
+                      backgroundColor: "#BBBBBBB",
+                      flexDirection: "row"
+                    }}>
+                    <Text
+                      style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}></Text>
+                    <View
+                      style={{
+                        borderRadius: 3,
+                        paddingHorizontal: 3,
+                        margin: 5
+                      }}
+                    />
+                  </View>
+                  <Text>Sleeper</Text>
+                </View>
+              </View>
+              <View style={styles.tabContainer}>
+                <Button
+                  onPress={() => this.setState({ selectedTab: "lower" })}
+                  style={[
+                    selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null,
+                    styles.tab
+                  ]}>
+                  <Text style={[selectedTab == "lower" ? { color: "#FFF" } : null]}>
+                    Lower Birth
+                  </Text>
+                </Button>
+                <Button
+                  onPress={() => this.setState({ selectedTab: "upper" })}
+                  style={[
+                    selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null,
+                    styles.tab
+                  ]}>
+                  <Text style={[selectedTab == "upper" ? { color: "#FFF" } : null]}>
+                    Upper Birth
+                  </Text>
+                </Button>
+              </View>
             </View>
           )}
           <ScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
