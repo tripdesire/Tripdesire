@@ -102,7 +102,10 @@ class HotelInfo extends React.PureComponent {
       item =>
         (filterValues.rating.length == 0 || filterValues.rating.includes(item.StarRating)) &&
         (filterValues.amenities.length == 0 ||
-          filterValues.amenities.some(value => item.Facilities.includes(value))) &&
+          !item.Facilities ||
+          filterValues.amenities.some(value =>
+            item.Facilities.toLowerCase().includes(value.toLowerCase())
+          )) &&
         (filterValues.price.length == 0 ||
           (item.RoomDetails.some(value => filterValues.price[0] <= value.RoomTotal) &&
             item.RoomDetails.some(value => filterValues.price[1] >= value.RoomTotal)))

@@ -20,7 +20,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
       "Seat Desc"
     ]
   });
-  const [widthSeekBar, setWidthSeekBar] = useState(100);
+  const [widthSeekBar, setWidthSeekBar] = useState(200);
 
   useEffect(() => {
     console.log(data);

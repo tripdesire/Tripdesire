@@ -20,7 +20,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
       "Rating Desc"
     ]
   });
-  const [widthSeekBar, setWidthSeekBar] = useState(100);
+  const [widthSeekBar, setWidthSeekBar] = useState(200);
 
   useEffect(() => {
     //console.log(data);
@@ -29,7 +29,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
 
     for (let value of data) {
       price.push(...value.RoomDetails.map(item => item.RoomTotal));
-      amenities.push(...value.Facilities.split(",").map(item => item.trim()));
+      value.Facilities && amenities.push(...value.Facilities.split(",").map(item => item.trim()));
     }
     amenities = uniq(amenities).sort();
     price = [Math.floor(min(price)), Math.ceil(max(price))];

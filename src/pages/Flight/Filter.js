@@ -31,7 +31,7 @@ class Filter extends React.Component {
       },
       index: 0,
       timeStops: this.getTimeStops(),
-      widthSeekBar: 100
+      widthSeekBar: 200
     };
     this.filterTabs = [
       "Stops",
