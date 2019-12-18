@@ -1,11 +1,12 @@
 import React, { PureComponent } from "react";
-import { View, Image, TextInput, ScrollView, SafeAreaView } from "react-native";
+import { View, Image, TextInput, ScrollView, SafeAreaView, StyleSheet } from "react-native";
 import Toast from "react-native-simple-toast";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
 import axios from "axios";
+import { domainApi } from "../../service";
 
 class CheckOut extends React.PureComponent {
   constructor(props) {
@@ -14,12 +15,53 @@ class CheckOut extends React.PureComponent {
     this.state = {
       loading: false,
       return: false,
-      data: "",
-      CouponText: ""
+      inputCoupon: false,
+      data: {},
+      coupon_code: ""
     };
   }
 
-  componentDidMount() {
+  applyCoupon = () => {
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart/coupon", { coupon_code: this.state.coupon_code })
+      .then(({ data }) => {
+        console.log(data);
+        if (data.code && data.code == 201) {
+          Toast.show(data.message.join());
+        }
+        this.toggleCoupon(false)();
+        this.setState({ data: data, loading: false });
+        this.ApiCall();
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  };
+
+  removeCoupon = code => () => {
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart/remove-coupon", {
+        coupon_code: code
+      })
+      .then(({ data }) => {
+        this.setState({ loading: false });
+        this.toggleCoupon(true)();
+        this.ApiCall();
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  };
+
+  toggleCoupon = show => () => {
+    this.setState({
+      inputCoupon: show
+    });
+  };
+
+  ApiCall() {
     const { params } = this.props.navigation.state;
     Object.assign(params, {
       itemId: 87
@@ -217,7 +259,7 @@ class CheckOut extends React.PureComponent {
       fl_ctype: params.className
     };
 
-    console.log(JSON.stringify(param));
+    //  console.log(JSON.stringify(param));
 
     this.setState({ loading: true });
     axios
@@ -244,230 +286,12 @@ class CheckOut extends React.PureComponent {
       });
   }
 
+  componentDidMount() {
+    this.ApiCall();
+  }
+
   navigateToScreen = (page, params = {}) => () => {
     this.props.navigation.navigate(page, { params, data: this.state.data });
-    // const { params } = this.props.navigation.state;
-    // Object.assign(params, {
-    //   itemId: 87
-    // });
-
-    // let dt =
-    //   params.flightType == 1
-    //     ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("HH:MM")
-    //     : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format("HH:MM");
-
-    // let dtReturn =
-    //   params.flightType == 2 && params.tripType == 2
-    //     ? moment(params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime).format("HH:MM")
-    //     : params.flightType == 1 && params.tripType == 2
-    //     ? moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format("HH:MM")
-    //     : "";
-
-    // let at =
-    //   params.flightType == 1
-    //     ? moment(
-    //         params.departFlight.FlightSegments[params.departFlight.FlightSegments.length - 1]
-    //           .ArrivalDateTime
-    //       ).format("HH:MM")
-    //     : moment(
-    //         params.departFlight.IntOnward.FlightSegments[
-    //           params.departFlight.IntOnward.FlightSegments.length - 1
-    //         ].ArrivalDateTime
-    //       ).format("HH:MM");
-
-    // let atReturn =
-    //   params.flightType == 2 && params.tripType == 2
-    //     ? moment(
-    //         params.departFlight.IntReturn.FlightSegments[
-    //           params.departFlight.IntReturn.FlightSegments.length - 1
-    //         ].ArrivalDateTime
-    //       ).format("HH:MM")
-    //     : params.flightType == 1 && params.tripType == 2
-    //     ? moment(
-    //         params.arrivalFlight.FlightSegments[params.arrivalFlight.FlightSegments.length - 1]
-    //           .ArrivalDateTime
-    //       ).format("HH:MM")
-    //     : "";
-    // let departureDate =
-    //   params.flightType == 1
-    //     ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("MMM DD")
-    //     : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format(
-    //         "MMM DD"
-    //       );
-
-    // let departureDateReturn =
-    //   params.flightType == 2 && params.tripType == 2
-    //     ? moment(params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime).format("MMM DD")
-    //     : params.flightType == 1 && params.tripType == 2
-    //     ? moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format("MMM DD")
-    //     : "";
-    // let arrivalDate =
-    //   params.flightType == 1
-    //     ? moment(
-    //         params.departFlight.FlightSegments[params.departFlight.FlightSegments.length - 1]
-    //           .ArrivalDateTime
-    //       ).format("MMM DD")
-    //     : moment(
-    //         params.departFlight.IntOnward.FlightSegments[
-    //           params.departFlight.IntOnward.FlightSegments.length - 1
-    //         ].ArrivalDateTime
-    //       ).format("MMM DD");
-
-    // let arrivalDateReturn =
-    //   params.flightType == 2 && params.tripType == 2
-    //     ? moment(
-    //         params.departFlight.IntReturn.FlightSegments[
-    //           params.departFlight.IntReturn.FlightSegments.length - 1
-    //         ].ArrivalDateTime
-    //       ).format("MMM DD")
-    //     : params.flightType == 1 && params.tripType == 2
-    //     ? moment(
-    //         params.arrivalFlight.FlightSegments[params.arrivalFlight.FlightSegments.length - 1]
-    //           .ArrivalDateTime
-    //       ).format("MMM DD")
-    //     : "";
-
-    // let param = {
-    //   id: 87,
-    //   quantity: "1",
-    //   int_fl_item_result_data: params.flightType == 2 ? params.departFlight : {},
-    //   onward_item_result_data: params.flightType == 1 ? params.departFlight : {},
-    //   single_fl_name:
-    //     params.flightType == 1
-    //       ? params.departFlight.FlightSegments[0].AirLineName
-    //       : params.departFlight.IntOnward.FlightSegments[0].AirLineName,
-    //   single_fl_code: params.departFlight.FlightUId,
-    //   single_fl_from: params.from,
-    //   single_fl_to: params.to,
-    //   single_fl_time1: dt,
-    //   single_fl_time2: at,
-    //   single_fl_time_dur:
-    //     params.flightType == 1
-    //       ? params.departFlight.FlightSegments[0].Duration
-    //       : params.departFlight.IntOnward.FlightSegments[0].Duration,
-    //   single_fl_stop:
-    //     params.flightType == 1
-    //       ? params.departFlight.FlightSegments[0].StopQuantity
-    //       : params.departFlight.IntOnward.FlightSegments[0].StopQuantity,
-    //   single_fl_conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
-    //   single_fl_schagre: params.departFlight.FareDetails.ChargeableFares.SCharge,
-    //   single_fl_tax: params.departFlight.FareDetails.ChargeableFares.Tax,
-    //   single_fl_dept_date: departureDate,
-    //   single_fl_arriv_date: arrivalDate,
-    //   single_fl_fare_rule: "Refundable",
-    //   single_fl_base_fare: params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
-    //   single_fl_gst:
-    //     params.departFlight.FareDetails.IsGSTMandatory == false
-    //       ? 0
-    //       : params.departFlight.FareDetails.IsGSTMandatory,
-    //   return_item_result_data:
-    //     params.flightType == 1 && params.tripType == 2 ? params.arrivalFlight : {},
-    //   return_fl_name:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.IntReturn.FlightSegments[0].AirLineName
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FlightSegments[0].AirLineName
-    //       : "",
-    //   return_fl_code:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.FlightUId
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FlightUId
-    //       : "",
-    //   return_fl_from: params.tripType == 2 ? params.to : "",
-    //   return_fl_to: params.tripType == 2 ? params.from : "",
-    //   return_fl_time1: params.tripType == 2 ? dtReturn : "",
-    //   return_fl_time2: params.tripType == 2 ? atReturn : "",
-    //   return_fl_time_dur:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.IntReturn.FlightSegments[0].Duration
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FlightSegments[0].Duration
-    //       : "",
-    //   return_fl_stop:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.IntReturn.FlightSegments[0].StopQuantity
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FlightSegments[0].StopQuantity
-    //       : "",
-    //   return_fl_conveniencefee:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.FareDetails.ChargeableFares.Conveniencefee
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FareDetails.ChargeableFares.Conveniencefee
-    //       : "",
-    //   return_fl_schagre:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.FareDetails.ChargeableFares.SCharge
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FareDetails.ChargeableFares.SCharge
-    //       : "",
-    //   return_fl_tax:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.FareDetails.ChargeableFares.Tax
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FareDetails.ChargeableFares.Tax
-    //       : "",
-    //   return_fl_dept_date: params.tripType == 2 ? departureDateReturn : "",
-    //   return_fl_arriv_date: params.tripType == 2 ? arrivalDateReturn : "",
-    //   return_fl_fare_rule: "Refundable",
-    //   return_fl_base_fare:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.FareDetails.ChargeableFares.ActualBaseFare
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare
-    //       : "",
-    //   return_fl_gst:
-    //     params.flightType == 2 &&
-    //     params.tripType == 2 &&
-    //     params.departFlight.FareDetails.IsGSTMandatory == false
-    //       ? params.departFlight.FareDetails.IsGSTMandatory
-    //       : params.flightType == 1 &&
-    //         params.tripType == 2 &&
-    //         params.arrivalFlight.FareDetails.IsGSTMandatory == false
-    //       ? params.departFlight.FareDetails.IsGSTMandatory
-    //       : 0,
-    //   fl_tot_price:
-    //     params.flightType == 2 && params.tripType == 2
-    //       ? params.departFlight.FareDetails.TotalFare
-    //       : params.flightType == 1 && params.tripType == 2
-    //       ? params.departFlight.FareDetails.TotalFare + params.arrivalFlight.FareDetails.TotalFare
-    //       : params.flightType == 1 && params.tripType == 1
-    //       ? params.departFlight.FareDetails.TotalFare
-    //       : params.flightType == 2 && params.tripType == 1
-    //       ? params.departFlight.FareDetails.TotalFare
-    //       : "",
-    //   fl_adults: params.adult,
-    //   fl_children: params.child,
-    //   fl_infant: params.infant,
-    //   fl_ctype: params.className
-    // };
-
-    // console.log(JSON.stringify(param));
-
-    // this.setState({ loading: true });
-    // axios
-    //   .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param)
-    //   .then(res => {
-    //     console.log(res);
-    //     // if (res.data.code == 1) {
-    //     axios
-    //       .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
-    //       .then(({ data }) => {
-    //         console.log(data);
-    //         this.props.navigation.navigate(page, { params, data });
-    //         this.setState({ loading: false });
-    //       })
-    //       .catch(error => {
-    //         Toast.show(error, Toast.LONG);
-    //         this.setState({ loading: false });
-    //       });
-    //     // }
-    //   })
-    //   .catch(error => {
-    //     Toast.show(error, Toast.LONG);
-    //     this.setState({ loading: false });
-    //   });
   };
 
   render() {
@@ -874,39 +698,85 @@ class CheckOut extends React.PureComponent {
                     Total Payable
                   </Text>
                   <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                    ₹ {params.departFlight.FareDetails.TotalFare}
+                    ₹ {this.state.data.total_price}
                   </Text>
                 </View>
               </View>
-              <View
-                style={{
-                  elevation: 2,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  backgroundColor: "#ffffff",
-                  marginHorizontal: 16,
-                  marginVertical: 20,
-                  borderRadius: 8,
-                  height: 40,
-                  justifyContent: "space-between",
-                  flexDirection: "row"
-                }}>
-                <TextInput
-                  placeholder="Have a Promo Code?"
-                  style={{ marginStart: 5, flex: 1 }}
-                  onChangeText={text => this.setState({ CouponText: text })}></TextInput>
-                <Button
-                  style={{
-                    backgroundColor: "#5B89F9",
-                    justifyContent: "center",
-                    borderBottomRightRadius: 8,
-                    borderTopRightRadius: 8
-                  }}>
-                  <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
-                </Button>
-              </View>
+              {this.state.data.hasOwnProperty("coupon") && this.state.data.coupon.length == 0 ? (
+                this.state.inputCoupon ? (
+                  <View
+                    style={{
+                      elevation: 1,
+                      justifyContent: "center",
+                      marginVertical: 8,
+                      marginHorizontal: 8,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowColor: "rgba(0,0,0,0.1)",
+                      shadowOpacity: 1,
+                      shadowRadius: 4
+                    }}>
+                    <TextInput
+                      placeholder="Enter Coupon Code"
+                      value={this.state.coupon_code}
+                      onChangeText={text => this.setState({ coupon_code: text })}
+                    />
+                    <Button
+                      onPress={this.applyCoupon}
+                      style={{
+                        position: "absolute",
+                        backgroundColor: "#222222",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        end: 8,
+                        zIndex: 1,
+                        elevation: 1,
+                        shadowOpacity: 0.2,
+                        shadowRadius: 1,
+                        shadowOffset: { height: 1, width: 0 }
+                      }}>
+                      <Text style={{ color: "#FFFFFF" }}>Apply</Text>
+                    </Button>
+                  </View>
+                ) : (
+                  <Button
+                    onPress={this.toggleCoupon(true)}
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { justifyContent: "flex-start", marginHorizontal: 8 }
+                    ]}>
+                    <Icon
+                      name="brightness-percent"
+                      size={20}
+                      color="#E7BA34"
+                      type="MaterialCommunityIcons"
+                    />
+                    <Text style={{ fontWeight: "700", marginStart: 8 }}>APPLY COUPON</Text>
+                    <Icon
+                      name="ios-arrow-forward"
+                      style={{ fontSize: 20, color: "#E7BA34", marginStart: "auto" }}
+                      size={20}
+                    />
+                  </Button>
+                )
+              ) : (
+                Array.isArray(this.state.data.coupon) &&
+                this.state.data.coupon.length > 0 &&
+                this.state.data.coupon.map(coupon => (
+                  <View
+                    style={[styles.billingContainer, styles.billingRow, { marginHorizontal: 8 }]}
+                    key={coupon.code}>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
+                      {coupon.code}
+                    </Text>
+                    <Button
+                      style={{ marginStart: "auto", padding: 5 }}
+                      onPress={this.removeCoupon(coupon.code)}>
+                      <Icon name="md-close" color="#E7BA34" size={20} />
+                    </Button>
+                  </View>
+                ))
+              )}
               <Button
                 style={{
                   backgroundColor: "#F68E1D",
@@ -1251,30 +1121,67 @@ class CheckOut extends React.PureComponent {
                   </Text>
                 </View>
               </View>
-              {/* <View
-                  style={{
-                    elevation: 2,
-                    backgroundColor: "#ffffff",
-                    marginHorizontal: 16,
-                    marginVertical: 20,
-                    borderRadius: 8,
-                    height: 40,
-                    justifyContent: "space-between",
-                    flexDirection: "row"
-                  }}>
-                  <TextInput
-                    placeholder="Have a Promo Code?"
-                    style={{ marginStart: 5, flex: 1 }}></TextInput>
+              {this.state.data.coupon.length == 0 ? (
+                this.state.inputCoupon ? (
+                  <View style={{ justifyContent: "center", width: "100%", marginVertical: 8 }}>
+                    <TextInput
+                      placeholder="Enter Coupon Code"
+                      value={this.state.coupon_code}
+                      onChangeText={text => this.setState({ coupon_code: text })}
+                    />
+                    <Button
+                      onPress={this.applyCoupon}
+                      style={{
+                        position: "absolute",
+                        backgroundColor: "#222222",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        end: 8,
+                        zIndex: 1,
+                        elevation: 1,
+                        shadowOpacity: 0.2,
+                        shadowRadius: 1,
+                        shadowOffset: { height: 1, width: 0 }
+                      }}>
+                      <Text style={{ color: "#FFFFFF" }}>Apply</Text>
+                    </Button>
+                  </View>
+                ) : (
                   <Button
-                    style={{
-                      backgroundColor: "#5B89F9",
-                      justifyContent: "center",
-                      borderBottomRightRadius: 8,
-                      borderTopRightRadius: 8
-                    }}>
-                    <Text style={{ color: "#fff", paddingHorizontal: 10 }}>Apply</Text>
+                    onPress={this.toggleCoupon(true)}
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { justifyContent: "flex-start" }
+                    ]}>
+                    <Icon
+                      name="brightness-percent"
+                      size={20}
+                      color="#E7BA34"
+                      type="MaterialCommunityIcons"
+                    />
+                    <Text style={{ fontWeight: "700", marginStart: 8 }}>APPLY COUPON</Text>
+                    <Icon
+                      name="ios-arrow-forward"
+                      style={{ fontSize: 20, color: "#E7BA34", marginStart: "auto" }}
+                      size={20}
+                    />
                   </Button>
-                </View> */}
+                )
+              ) : (
+                this.state.data.coupon.map(coupon => (
+                  <View style={[styles.billingContainer, styles.billingRow]} key={coupon.code}>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
+                      {coupon.code}
+                    </Text>
+                    <Button
+                      style={{ marginStart: "auto" }}
+                      onPress={this.removeCoupon(coupon.code)}>
+                      <Icon name="md-close" color="#E7BA34" size={20} />
+                    </Button>
+                  </View>
+                ))
+              )}
               <Button
                 style={{
                   backgroundColor: "#F68E1D",
@@ -1296,5 +1203,24 @@ class CheckOut extends React.PureComponent {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  billingContainer: {
+    elevation: 1,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: { height: 1, width: 0 },
+    padding: 8,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    marginVertical: 8
+  },
+  billingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8
+  }
+});
 
 export default CheckOut;

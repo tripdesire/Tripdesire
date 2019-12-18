@@ -203,6 +203,7 @@ class Cab extends React.PureComponent {
       if (this.state.travelType == 3 && this.state.pickuplocation == this.state.droplocation) {
         Toast.show("Pickup and Drop Location can't Same or empty.", Toast.LONG);
       } else {
+        console.log(JSON.stringify(params));
         this.props.navigation.navigate("CabList", params);
       }
     } else {
