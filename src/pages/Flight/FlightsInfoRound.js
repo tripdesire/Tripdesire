@@ -182,7 +182,7 @@ class FlightsInfoRound extends React.PureComponent {
         (filterValues.stops.length == 0 ||
           filterValues.stops.includes(item.FlightSegments.length - 1)) &&
         (filterValues.fareType.length == 0 ||
-          filterValues.fareType.includes(item.FlightSegments[0].BookingClassFare.Rule)) &&
+          filterValues.fareType.includes(item.FlightSegments[0].BookingClassFare.Rule.trim())) &&
         (filterValues.airlines.length == 0 ||
           filterValues.airlines.includes(item.FlightSegments[0].AirLineName)) &&
         (filterValues.connectingLocations.length == 0 ||

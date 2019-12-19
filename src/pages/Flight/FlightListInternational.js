@@ -219,6 +219,7 @@ class FlightListInternational extends React.PureComponent {
           <Button onPress={this._email}>
             <Icon name="mail" size={20} color="#F68E1F" />
           </Button>
+
           {/* <View
             style={{
               width: 1,

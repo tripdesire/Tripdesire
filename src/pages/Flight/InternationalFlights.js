@@ -165,6 +165,7 @@ class InternationalFlights extends React.PureComponent {
       sourceAirportName: this.state.sourceAirportName,
       userType: 5
     };
+    console.log(JSON.stringify(params));
     console.log(params);
     console.log(this.state.tripType);
     if (this.state.adult >= this.state.infants) {

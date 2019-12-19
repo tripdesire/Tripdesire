@@ -1122,9 +1122,19 @@ class CheckOut extends React.PureComponent {
                   </Text>
                 </View>
               </View>
-              {this.state.data.coupon.length == 0 ? (
+              {this.state.data.hasOwnProperty("coupon") && this.state.data.coupon.length == 0 ? (
                 this.state.inputCoupon ? (
-                  <View style={{ justifyContent: "center", width: "100%", marginVertical: 8 }}>
+                  <View
+                    style={{
+                      elevation: 1,
+                      justifyContent: "center",
+                      marginVertical: 8,
+                      marginHorizontal: 8,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowColor: "rgba(0,0,0,0.1)",
+                      shadowOpacity: 1,
+                      shadowRadius: 4
+                    }}>
                     <TextInput
                       placeholder="Enter Coupon Code"
                       value={this.state.coupon_code}
@@ -1153,7 +1163,7 @@ class CheckOut extends React.PureComponent {
                     style={[
                       styles.billingContainer,
                       styles.billingRow,
-                      { justifyContent: "flex-start" }
+                      { justifyContent: "flex-start", marginHorizontal: 8 }
                     ]}>
                     <Icon
                       name="brightness-percent"
@@ -1170,13 +1180,17 @@ class CheckOut extends React.PureComponent {
                   </Button>
                 )
               ) : (
+                Array.isArray(this.state.data.coupon) &&
+                this.state.data.coupon.length > 0 &&
                 this.state.data.coupon.map(coupon => (
-                  <View style={[styles.billingContainer, styles.billingRow]} key={coupon.code}>
+                  <View
+                    style={[styles.billingContainer, styles.billingRow, { marginHorizontal: 8 }]}
+                    key={coupon.code}>
                     <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
                       {coupon.code}
                     </Text>
                     <Button
-                      style={{ marginStart: "auto" }}
+                      style={{ marginStart: "auto", padding: 5 }}
                       onPress={this.removeCoupon(coupon.code)}>
                       <Icon name="md-close" color="#E7BA34" size={20} />
                     </Button>
