@@ -709,7 +709,8 @@ class CheckOut extends React.PureComponent {
                       elevation: 1,
                       justifyContent: "center",
                       marginVertical: 8,
-                      marginHorizontal: 8,
+                      paddingVertical: 10,
+                      marginHorizontal: 16,
                       shadowOffset: { width: 0, height: 2 },
                       shadowColor: "rgba(0,0,0,0.1)",
                       shadowOpacity: 1,
@@ -743,7 +744,7 @@ class CheckOut extends React.PureComponent {
                     style={[
                       styles.billingContainer,
                       styles.billingRow,
-                      { justifyContent: "flex-start", marginHorizontal: 8 }
+                      { justifyContent: "flex-start", marginHorizontal: 16, marginTop: 10 }
                     ]}>
                     <Icon
                       name="brightness-percent"
@@ -764,7 +765,7 @@ class CheckOut extends React.PureComponent {
                 this.state.data.coupon.length > 0 &&
                 this.state.data.coupon.map(coupon => (
                   <View
-                    style={[styles.billingContainer, styles.billingRow, { marginHorizontal: 8 }]}
+                    style={[styles.billingContainer, styles.billingRow, { marginHorizontal: 16 }]}
                     key={coupon.code}>
                     <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
                       {coupon.code}
