@@ -1,5 +1,15 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, FlatList, ScrollView, Modal, Linking, Alert } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  Modal,
+  Linking,
+  Alert,
+  TouchableOpacity
+} from "react-native";
 import { Button, Text, ActivityIndicator, InternationalFlights } from "../../components";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -116,11 +126,12 @@ class FlightListInternational extends React.PureComponent {
 
     const { from, to, className } = this.props;
     return (
-      <View
+      <TouchableOpacity
         style={{
           paddingVertical: this.props.index % 2 == 0 ? 30 : 10,
           backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
-        }}>
+        }}
+        onPress={() => this.bookNow(this.props.item)}>
         <View
           style={{
             flexDirection: "row",
@@ -470,7 +481,7 @@ class FlightListInternational extends React.PureComponent {
           onRequestClose={this.closeModal}>
           <FareDetails data={this.state.farerule} onBackPress={this.closeModal} />
         </Modal>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

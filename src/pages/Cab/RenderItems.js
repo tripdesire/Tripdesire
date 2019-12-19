@@ -37,66 +37,13 @@ class RenderItems extends React.PureComponent {
 
   _BookNow = item => () => {
     const { params } = this.props;
-    let data = {
-      id: 2238,
-      quantity: 1,
-      car_item_data: item,
-      image_path: "",
-      car_name: item.Name,
-      travel_type: params.travelType,
-      trip_type: parseInt(params.tripType),
-      pickup_time: params.pickUpTime,
-      journey_date: params.journeyDate,
-      return_date: params.travelType == 1 ? params.returnDate : "",
-      source_city: params.sourceName,
-      source_id: parseInt(params.sourceId),
-      destination_city: params.travelType == 1 ? params.destinationName : "",
-      destination_id: params.travelType == 1 ? parseInt(params.destinationId) : 0, /////
-      car_seat: item.SeatingCapacity,
-      car_bagesQty: parseInt(item.AdditionalInfo.BaggageQuantity),
-      per_km: item.PerKm,
-      convenience_fee: item.ConvenienceFee,
-      total_price: item.TotalAmount,
-      driver_charge: item.DriverCharges,
-      terms_conditions: item.TermsConditions
-    };
+    // let param = {
+    //   params: params,
+    //   item: item,
 
-    console.log(data);
-
-    this.setState({ loading: true });
-    axios
-      .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", data)
-      .then(({ data }) => {
-        this.setState({ loading: false });
-        console.log(data);
-        if (data.code == "1") {
-          // Toast.show(data.message, Toast.LONG);
-          this.setState({ loading: true });
-          axios
-            .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
-            .then(({ data: CartData }) => {
-              this.setState({ loading: false });
-              console.log(CartData);
-              let param = {
-                params: params,
-                item: item,
-                cartData: CartData
-              };
-              console.log(param);
-              this.props.navigation.navigate("CheckoutCab", param);
-            })
-            .catch(error => {
-              this.setState({ loading: false });
-              console.log(error);
-            });
-        } else {
-          Toast.show(data.message, Toast.LONG);
-        }
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        console.log(error);
-      });
+    // };
+    // console.log(param);
+    this.props.navigation.navigate("CheckoutCab", { params, item });
   };
 
   render() {

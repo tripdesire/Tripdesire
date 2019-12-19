@@ -409,6 +409,10 @@ class Payment extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     borderRadius: 8,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
@@ -445,7 +449,8 @@ class Payment extends React.PureComponent {
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
-                                flex: 1
+                                flex: 1,
+                                paddingStart: 5
                               }}
                               onChangeText={this.onAdultChange(index, "firstname")}
                               placeholder="First Name"
@@ -455,7 +460,9 @@ class Payment extends React.PureComponent {
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
-                                flex: 1
+                                flex: 1,
+                                marginStart: 5,
+                                paddingStart: 5
                               }}
                               placeholder="Last Name"
                               onChangeText={this.onAdultChange(index, "last_name")}
@@ -497,6 +504,7 @@ class Payment extends React.PureComponent {
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
+                                marginStart: 5,
                                 justifyContent: "center"
                               }}>
                               <RNPickerSelect
@@ -524,7 +532,7 @@ class Payment extends React.PureComponent {
                           </View>
                         </View>
                       ))}
-                    <View style={{ height: 1, backgroundColor: "#DDD", width: "100%" }} />
+
                     {parseInt(params.child) > 0 &&
                       [...Array(parseInt(params.child))].map((e, index) => (
                         <View key={"child_" + index}>
@@ -633,6 +641,10 @@ class Payment extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
                     marginTop: 20,

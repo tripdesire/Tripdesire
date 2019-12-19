@@ -1,19 +1,70 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, Dimensions, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator } from "../../components";
+import { View, Image, TextInput, StyleSheet, Dimensions, SafeAreaView } from "react-native";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
 import axios from "axios";
+import HTML from "react-native-render-html";
 import { etravosApi, domainApi } from "../../service";
 
 class HotelPayment extends React.PureComponent {
   constructor(props) {
     super(props);
     const { params } = props.navigation.state;
+    this.state = {
+      loading: false,
+      inputCoupon: false,
+      data: {},
+      coupon_code: ""
+    };
   }
 
-  _payment = () => {
+  applyCoupon = () => {
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart/coupon", { coupon_code: this.state.coupon_code })
+      .then(({ data }) => {
+        console.log(data);
+        if (data.code && data.code == 201) {
+          Toast.show(data.message.join());
+        }
+        this.toggleCoupon(false)();
+        this.setState({ data: data });
+        this.ApiCall();
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  };
+
+  removeCoupon = code => () => {
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart/remove-coupon", {
+        coupon_code: code
+      })
+      .then(({ data }) => {
+        this.toggleCoupon(true)();
+        this.ApiCall();
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  };
+
+  toggleCoupon = show => () => {
+    this.setState({
+      inputCoupon: show
+    });
+  };
+
+  componentDidMount() {
+    this.ApiCall();
+  }
+
+  ApiCall() {
     const params = { ...this.props.navigation.state.params, itemId: 222 };
 
     let param = {
@@ -48,8 +99,14 @@ class HotelPayment extends React.PureComponent {
 
     axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(({ data }) => {
       console.log(data);
-      this.props.navigation.navigate("Payment", { params, data });
+      this.setState({ data: data, loading: false });
+      //this.props.navigation.navigate("Payment", { params, data });
     });
+  }
+
+  _payment = () => {
+    const params = { ...this.props.navigation.state.params, itemId: 222 };
+    this.props.navigation.navigate("Payment", { params, data: this.state.data });
   };
 
   render() {
@@ -96,6 +153,10 @@ class HotelPayment extends React.PureComponent {
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   marginHorizontal: 16,
                   borderRadius: 8,
                   backgroundColor: "#ffffff",
@@ -117,11 +178,32 @@ class HotelPayment extends React.PureComponent {
                     fontSize: 18,
                     fontWeight: "700",
                     backgroundColor: "#E5EBF7",
-                    paddingBottom: 16,
                     paddingHorizontal: 16
                   }}>
-                  ₹ {params.selectedRoom.RoomTotal}
+                  {"₹ " + this.state.data.total_price}
                 </Text>
+                {!this.state.inputCoupon && (
+                  <View
+                    style={{
+                      backgroundColor: "#E5EBF7",
+                      paddingStart: 5,
+                      paddingBottom: 10
+                    }}>
+                    {Array.isArray(this.state.data.coupon) &&
+                      this.state.data.coupon.length > 0 &&
+                      this.state.data.coupon.map(coupon => (
+                        <HTML
+                          key={coupon.code}
+                          baseFontStyle={{
+                            color: "green",
+                            fontWeight: "700"
+                          }}
+                          containerStyle={{ marginHorizontal: 10 }}
+                          html={"- " + coupon.discount}
+                        />
+                      ))}
+                  </View>
+                )}
                 <View style={style._textDetailsStyle}>
                   <Text style={style._textHeading}>City</Text>
                   <Text style={style._Details}>{params.city} (INDIA)</Text>
@@ -152,6 +234,90 @@ class HotelPayment extends React.PureComponent {
                   <Text style={style._textHeading}>Guest(s)</Text>
                   <Text style={style._Details}>{params.adult + params.child}</Text>
                 </View>
+                {this.state.data.hasOwnProperty("coupon") && this.state.data.coupon.length == 0 ? (
+                  this.state.inputCoupon ? (
+                    <View
+                      style={{
+                        elevation: 1,
+                        backgroundColor: "#fff",
+                        justifyContent: "center",
+                        marginVertical: 20,
+                        paddingVertical: 10,
+                        marginHorizontal: 16,
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowColor: "rgba(0,0,0,0.1)",
+                        shadowOpacity: 1,
+                        shadowRadius: 4,
+                        borderRadius: 8
+                      }}>
+                      <TextInput
+                        placeholder="Enter Coupon Code"
+                        value={this.state.coupon_code}
+                        style={{ marginStart: 5 }}
+                        onChangeText={text => this.setState({ coupon_code: text })}
+                      />
+                      <Button
+                        onPress={this.applyCoupon}
+                        style={{
+                          position: "absolute",
+                          backgroundColor: "#222222",
+                          paddingHorizontal: 8,
+                          paddingVertical: 4,
+                          end: 8,
+                          zIndex: 1,
+                          elevation: 1,
+                          shadowOpacity: 0.2,
+                          shadowRadius: 1,
+                          borderRadius: 8,
+                          shadowOffset: { height: 1, width: 0 }
+                        }}>
+                        <Text style={{ color: "#FFFFFF" }}>Apply</Text>
+                      </Button>
+                    </View>
+                  ) : (
+                    <Button
+                      onPress={this.toggleCoupon(true)}
+                      style={[
+                        styles.billingContainer,
+                        styles.billingRow,
+                        { justifyContent: "flex-start", marginHorizontal: 16, marginVertical: 20 }
+                      ]}>
+                      <Icon
+                        name="brightness-percent"
+                        size={20}
+                        color="#E7BA34"
+                        type="MaterialCommunityIcons"
+                      />
+                      <Text style={{ fontWeight: "700", marginStart: 8 }}>APPLY COUPON</Text>
+                      <Icon
+                        name="ios-arrow-forward"
+                        style={{ fontSize: 20, color: "#E7BA34", marginStart: "auto" }}
+                        size={20}
+                      />
+                    </Button>
+                  )
+                ) : (
+                  Array.isArray(this.state.data.coupon) &&
+                  this.state.data.coupon.length > 0 &&
+                  this.state.data.coupon.map(coupon => (
+                    <View
+                      style={[
+                        styles.billingContainer,
+                        styles.billingRow,
+                        { marginHorizontal: 16, marginVertical: 20 }
+                      ]}
+                      key={coupon.code}>
+                      <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
+                        {coupon.code}
+                      </Text>
+                      <Button
+                        style={{ marginStart: "auto", padding: 5 }}
+                        onPress={this.removeCoupon(coupon.code)}>
+                        <Icon name="md-close" color="#E7BA34" size={20} />
+                      </Button>
+                    </View>
+                  ))
+                )}
                 <Button
                   style={{
                     backgroundColor: "#F68E1D",
@@ -164,11 +330,12 @@ class HotelPayment extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._payment}>
-                  <Text style={{ color: "#fff" }}>Continue Booking</Text>
+                  <Text style={{ color: "#fff" }}>Next</Text>
                 </Button>
               </View>
             </View>
           </View>
+          {this.state.loading && <ActivityIndicator />}
         </SafeAreaView>
       </>
     );
@@ -185,6 +352,25 @@ const style = StyleSheet.create({
   },
   _Details: { color: "#717A81", flex: 2, alignItems: "flex-start" },
   _textHeading: { color: "#717A81", flex: 3 }
+});
+
+const styles = StyleSheet.create({
+  billingContainer: {
+    elevation: 1,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: { height: 1, width: 0 },
+    padding: 8,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    marginVertical: 8
+  },
+  billingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8
+  }
 });
 
 export default HotelPayment;

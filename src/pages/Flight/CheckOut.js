@@ -6,6 +6,7 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
 import axios from "axios";
+import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
 
 class CheckOut extends React.PureComponent {
@@ -31,8 +32,9 @@ class CheckOut extends React.PureComponent {
           Toast.show(data.message.join());
         }
         this.toggleCoupon(false)();
-        this.setState({ data: data, loading: false });
+        this.setState({ data: data });
         this.ApiCall();
+        this.setState({ loading: false });
       })
       .catch(() => {
         this.setState({ loading: false });
@@ -46,9 +48,9 @@ class CheckOut extends React.PureComponent {
         coupon_code: code
       })
       .then(({ data }) => {
-        this.setState({ loading: false });
         this.toggleCoupon(true)();
         this.ApiCall();
+        this.setState({ loading: false });
       })
       .catch(() => {
         this.setState({ loading: false });
@@ -685,6 +687,28 @@ class CheckOut extends React.PureComponent {
                     {params.departFlight.FareDetails.ChargeableFares.Tax}
                   </Text>
                 </View>
+                {!this.state.inputCoupon && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Discount</Text>
+                    {Array.isArray(this.state.data.coupon) &&
+                      this.state.data.coupon.length > 0 &&
+                      this.state.data.coupon.map(coupon => (
+                        <HTML
+                          key={coupon.code}
+                          baseFontStyle={{
+                            color: "green",
+                            fontWeight: "700"
+                          }}
+                          containerStyle={{ marginHorizontal: 10 }}
+                          html={"- " + coupon.discount}
+                        />
+                      ))}
+                  </View>
+                )}
                 <View
                   style={{
                     flexDirection: "row",
@@ -707,18 +731,21 @@ class CheckOut extends React.PureComponent {
                   <View
                     style={{
                       elevation: 1,
+                      backgroundColor: "#fff",
                       justifyContent: "center",
-                      marginVertical: 8,
+                      marginVertical: 20,
                       paddingVertical: 10,
                       marginHorizontal: 16,
                       shadowOffset: { width: 0, height: 2 },
                       shadowColor: "rgba(0,0,0,0.1)",
                       shadowOpacity: 1,
-                      shadowRadius: 4
+                      shadowRadius: 4,
+                      borderRadius: 8
                     }}>
                     <TextInput
                       placeholder="Enter Coupon Code"
                       value={this.state.coupon_code}
+                      style={{ marginStart: 5 }}
                       onChangeText={text => this.setState({ coupon_code: text })}
                     />
                     <Button
@@ -733,6 +760,7 @@ class CheckOut extends React.PureComponent {
                         elevation: 1,
                         shadowOpacity: 0.2,
                         shadowRadius: 1,
+                        borderRadius: 8,
                         shadowOffset: { height: 1, width: 0 }
                       }}>
                       <Text style={{ color: "#FFFFFF" }}>Apply</Text>
@@ -744,7 +772,7 @@ class CheckOut extends React.PureComponent {
                     style={[
                       styles.billingContainer,
                       styles.billingRow,
-                      { justifyContent: "flex-start", marginHorizontal: 16, marginTop: 10 }
+                      { justifyContent: "flex-start", marginHorizontal: 16, marginVertical: 20 }
                     ]}>
                     <Icon
                       name="brightness-percent"
@@ -765,7 +793,11 @@ class CheckOut extends React.PureComponent {
                 this.state.data.coupon.length > 0 &&
                 this.state.data.coupon.map(coupon => (
                   <View
-                    style={[styles.billingContainer, styles.billingRow, { marginHorizontal: 16 }]}
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { marginHorizontal: 16, marginVertical: 20 }
+                    ]}
                     key={coupon.code}>
                     <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
                       {coupon.code}
@@ -854,6 +886,10 @@ class CheckOut extends React.PureComponent {
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
                   marginVertical: 20,
@@ -1009,6 +1045,10 @@ class CheckOut extends React.PureComponent {
               <View
                 style={{
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   backgroundColor: "#ffffff",
                   marginHorizontal: 16,
                   borderRadius: 8
@@ -1105,6 +1145,28 @@ class CheckOut extends React.PureComponent {
                       params.departFlight.FareDetails.ChargeableFares.STax}
                   </Text>
                 </View>
+                {!this.state.inputCoupon && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Discount</Text>
+                    {Array.isArray(this.state.data.coupon) &&
+                      this.state.data.coupon.length > 0 &&
+                      this.state.data.coupon.map(coupon => (
+                        <HTML
+                          key={coupon.code}
+                          baseFontStyle={{
+                            color: "green",
+                            fontWeight: "700"
+                          }}
+                          containerStyle={{ marginHorizontal: 10 }}
+                          html={"- " + coupon.discount}
+                        />
+                      ))}
+                  </View>
+                )}
                 <View
                   style={{
                     flexDirection: "row",
@@ -1118,7 +1180,7 @@ class CheckOut extends React.PureComponent {
                     Total Payable
                   </Text>
                   <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                    ₹ {params.departFlight.FareDetails.TotalFare}
+                    ₹ {this.state.data.total_price}
                   </Text>
                 </View>
               </View>
@@ -1127,17 +1189,21 @@ class CheckOut extends React.PureComponent {
                   <View
                     style={{
                       elevation: 1,
+                      backgroundColor: "#fff",
                       justifyContent: "center",
-                      marginVertical: 8,
-                      marginHorizontal: 8,
+                      marginVertical: 20,
+                      paddingVertical: 10,
+                      marginHorizontal: 16,
                       shadowOffset: { width: 0, height: 2 },
                       shadowColor: "rgba(0,0,0,0.1)",
                       shadowOpacity: 1,
-                      shadowRadius: 4
+                      shadowRadius: 4,
+                      borderRadius: 8
                     }}>
                     <TextInput
                       placeholder="Enter Coupon Code"
                       value={this.state.coupon_code}
+                      style={{ marginStart: 5 }}
                       onChangeText={text => this.setState({ coupon_code: text })}
                     />
                     <Button
@@ -1152,6 +1218,7 @@ class CheckOut extends React.PureComponent {
                         elevation: 1,
                         shadowOpacity: 0.2,
                         shadowRadius: 1,
+                        borderRadius: 8,
                         shadowOffset: { height: 1, width: 0 }
                       }}>
                       <Text style={{ color: "#FFFFFF" }}>Apply</Text>
@@ -1163,7 +1230,7 @@ class CheckOut extends React.PureComponent {
                     style={[
                       styles.billingContainer,
                       styles.billingRow,
-                      { justifyContent: "flex-start", marginHorizontal: 8 }
+                      { justifyContent: "flex-start", marginHorizontal: 16, marginVertical: 20 }
                     ]}>
                     <Icon
                       name="brightness-percent"
@@ -1184,7 +1251,11 @@ class CheckOut extends React.PureComponent {
                 this.state.data.coupon.length > 0 &&
                 this.state.data.coupon.map(coupon => (
                   <View
-                    style={[styles.billingContainer, styles.billingRow, { marginHorizontal: 8 }]}
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { marginHorizontal: 16, marginVertical: 20 }
+                    ]}
                     key={coupon.code}>
                     <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
                       {coupon.code}

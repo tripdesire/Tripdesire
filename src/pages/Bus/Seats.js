@@ -141,7 +141,7 @@ class Seats extends React.PureComponent {
       item.IsAvailableSeat === "false" || item.IsAvailableSeat === "False"
         ? "#BBBBBB"
         : selectedSheets.some(val => item.Number == val.Number)
-        ? "#BBBBBB"
+        ? "#5B89F9"
         : "#FFF";
     const seatColor =
       item.IsLadiesSeat == "True" || item.IsLadiesSeat == "true" ? "pink" : "#757575";
