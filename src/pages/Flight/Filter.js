@@ -64,7 +64,7 @@ class Filter extends React.Component {
       case 1:
         for (let value of data) {
           stops.push(value.FlightSegments.length - 1);
-          fareType.push(value.FlightSegments[0].BookingClassFare.Rule);
+          fareType.push(value.FlightSegments[0].BookingClassFare.Rule.trim());
           airlines.push(value.FlightSegments[0].AirLineName);
           for (let j = 1; j < value.FlightSegments.length; j++) {
             connectingLocations.push(value.FlightSegments[j].IntDepartureAirportName);
@@ -79,7 +79,7 @@ class Filter extends React.Component {
           let connectingLocationsR = [];
           for (let value of returnFlights) {
             stopsR.push(value.FlightSegments.length - 1);
-            fareTypeR.push(value.FlightSegments[0].BookingClassFare.Rule);
+            fareTypeR.push(value.FlightSegments[0].BookingClassFare.Rule.trim());
             airlinesR.push(value.FlightSegments[0].AirLineName);
             for (let j = 1; j < value.FlightSegments.length; j++) {
               connectingLocationsR.push(value.FlightSegments[j].IntDepartureAirportName);
@@ -101,7 +101,7 @@ class Filter extends React.Component {
       case 2:
         for (let value of data) {
           stops.push(value.IntOnward.FlightSegments.length - 1);
-          fareType.push(value.IntOnward.FlightSegments[0].BookingClassFare.Rule);
+          fareType.push(value.IntOnward.FlightSegments[0].BookingClassFare.Rule.trim());
           airlines.push(value.IntOnward.FlightSegments[0].AirLineName);
           for (let j = 1; j < value.IntOnward.FlightSegments.length; j++) {
             connectingLocations.push(value.IntOnward.FlightSegments[j].IntDepartureAirportName);
@@ -109,7 +109,7 @@ class Filter extends React.Component {
           price.push(value.FareDetails.TotalFare);
           if (value.IntReturn.length > 0) {
             stops.push(value.IntReturn.FlightSegments.length - 1);
-            fareType.push(value.IntReturn.FlightSegments[0].BookingClassFare.Rule);
+            fareType.push(value.IntReturn.FlightSegments[0].BookingClassFare.Rule.trim());
             airlines.push(value.IntReturn.FlightSegments[0].AirLineName);
             for (let j = 1; j < value.IntReturn.FlightSegments.length; j++) {
               connectingLocations.push(value.IntReturn.FlightSegments[j].IntDepartureAirportName);
