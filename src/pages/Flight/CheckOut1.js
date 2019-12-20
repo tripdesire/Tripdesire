@@ -164,18 +164,14 @@ class CheckOut1 extends React.PureComponent {
     let needToValidateChilds = false;
     let needToValidateInfants = false;
     needToValidateAdults = this.state.adults.every(
-      item => item.firstname == "" || item.last_name == "" || item.age == ""
+      item => item.firstname == "" || item.last_name == ""
     );
     needToValidateChilds =
       this.state.childs.length != 0 &&
-      this.state.childs.every(
-        item => item.firstname == "" || item.last_name == "" || item.age == ""
-      );
+      this.state.childs.every(item => item.firstname == "" || item.last_name == "");
     needToValidateInfants =
       this.state.infants.length != 0 &&
-      this.state.infants.every(
-        item => item.firstname == "" || item.last_name == "" || item.age == ""
-      );
+      this.state.infants.every(item => item.firstname == "" || item.last_name == "");
 
     return needToValidateAdults || needToValidateChilds || needToValidateInfants;
   };
@@ -183,6 +179,7 @@ class CheckOut1 extends React.PureComponent {
   _order = async () => {
     const { params } = this.props.navigation.state.params;
     console.log(this.state);
+
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.LONG);
       return;
