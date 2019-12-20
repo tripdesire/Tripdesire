@@ -288,7 +288,7 @@ class BusPayment extends React.PureComponent {
                       }}>
                       <Text style={{ fontSize: 16 }}>TOTAL PAYABLE</Text>
                       <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                        {cartData.total_price}
+                        ₹ {cartData.total_price}
                       </Text>
                     </View>
                   </View>

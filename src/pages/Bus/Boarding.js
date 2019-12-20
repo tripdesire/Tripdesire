@@ -40,73 +40,14 @@ class Boarding extends React.PureComponent {
   }
 
   _bookNow = () => {
-    const {
-      params,
-      sourceName,
-      destinationName,
-      tripType,
-      TripType,
-      selectedSheets
-    } = this.props.navigation.state.params;
-    console.log(params, selectedSheets);
-
-    let Seats = [...selectedSheets.map(item => item.Number)].join("~");
-    let param = {
-      id: 273,
-      quantity: 1,
-      bus_item_result_data: params,
-      display_name: params.DisplayName,
-      bus_type: params.BusType,
-      departure_time: params.DepartureTime,
-      arrival_time: params.ArrivalTime,
-      source_city: sourceName,
-      source_id: params.SourceId,
-      destination_city: destinationName,
-      destination_id: params.DestinationId,
-      boarding_point: params.SourceId + ";" + sourceName,
-      dropping_point: params.DestinationId + ";" + destinationName,
-      time_duration: params.Duration,
-      select_seat: selectedSheets.length,
-      select_seat_number: Seats,
-      base_fare: params.Fares,
-      service_charge: params.etravosApiTax,
-      service_tax: 0,
-      ConvenienceFee: params.ConvenienceFee,
-      trip_type: tripType,
-      journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
-    };
-
-    console.log(param);
-
+    const { TripType } = this.props.navigation.state.params;
     if (TripType == 1) {
-      this.setState({ loader: true });
-      domainApi
-        .post("/cart/add", param)
-        .then(({ data }) => {
-          console.log(data);
-          this.setState({ loader: false });
-          if (data.code == "1") {
-            // Toast.show(data.message, Toast.LONG);
-            this.setState({ loader: true });
-            domainApi.get("/cart").then(({ data }) => {
-              console.log(data);
-              this.setState({ loader: false });
-              const { bp, dp } = this.state;
-              this.props.navigation.navigate("CheckoutBus", {
-                cartData: data,
-                ...this.props.navigation.state.params,
-                BoardingPoint: bp,
-                DroppingPoint: dp
-              });
-            });
-          } else {
-            Toast.show(res.data.message, Toast.LONG);
-          }
-        })
-        .catch(error => {
-          this.setState({ loader: false });
-          console.log(error);
-        });
+      const { bp, dp } = this.state;
+      this.props.navigation.navigate("CheckoutBus", {
+        ...this.props.navigation.state.params,
+        BoardingPoint: bp,
+        DroppingPoint: dp
+      });
     } else {
       this.props.navigation.navigate("BusRound");
     }

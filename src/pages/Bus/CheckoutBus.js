@@ -1,8 +1,7 @@
 import React, { PureComponent } from "react";
-import { View, Image, TextInput, Picker, ScrollView, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator } from "../../components";
-import Icon from "react-native-vector-icons/Ionicons";
-import { etravosApi } from "../../service";
+import { View, Image, TextInput, Picker, ScrollView, SafeAreaView, StyleSheet } from "react-native";
+import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { etravosApi, domainApi } from "../../service";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-simple-toast";
@@ -24,12 +23,147 @@ class CheckoutBus extends React.PureComponent {
           den: "Mr"
         };
       }),
-      loader: false
+      loader: false,
+      inputCoupon: false,
+      cartData: {},
+      coupon_code: ""
     };
   }
 
+  applyCoupon = () => {
+    this.setState({ loader: true });
+    domainApi
+      .get("/cart/coupon", { coupon_code: this.state.coupon_code })
+      .then(({ data }) => {
+        console.log(data);
+        if (data.code && data.code == 201) {
+          Toast.show(data.message.join());
+        }
+        this.toggleCoupon(false)();
+        this.setState({ cartData: data });
+        this.ApiCall();
+        this.setState({ loader: false });
+      })
+      .catch(() => {
+        this.setState({ loader: false });
+      });
+  };
+
+  removeCoupon = code => () => {
+    this.setState({ loader: true });
+    domainApi
+      .get("/cart/remove-coupon", {
+        coupon_code: code
+      })
+      .then(({ data }) => {
+        this.toggleCoupon(true)();
+        this.ApiCall();
+        this.setState({ loader: false });
+      })
+      .catch(() => {
+        this.setState({ loader: false });
+      });
+  };
+
+  toggleCoupon = show => () => {
+    this.setState({
+      inputCoupon: show
+    });
+  };
+
   componentDidMount() {
+    this.ApiCall();
+  }
+
+  ApiCall() {
     console.log(this.props.navigation.state.params);
+
+    const {
+      params,
+      paramsRound,
+      sourceName,
+      destinationName,
+      tripType,
+      TripType,
+      selectedSheets,
+      selectedSheetsRound
+    } = this.props.navigation.state.params;
+    console.log(params, selectedSheets);
+
+    let Seats = [...selectedSheets.map(item => item.Number)].join("~");
+    let paramAddToCart = {
+      id: 273,
+      quantity: 1,
+      bus_item_result_data: params,
+      display_name: params.DisplayName,
+      bus_type: params.BusType,
+      departure_time: params.DepartureTime,
+      arrival_time: params.ArrivalTime,
+      source_city: sourceName,
+      source_id: params.SourceId,
+      destination_city: destinationName,
+      destination_id: params.DestinationId,
+      boarding_point: params.SourceId + ";" + sourceName,
+      dropping_point: params.DestinationId + ";" + destinationName,
+      time_duration: params.Duration,
+      select_seat: selectedSheets.length,
+      select_seat_number: Seats,
+      base_fare: params.Fares,
+      service_charge: params.etravosApiTax,
+      service_tax: 0,
+      ConvenienceFee: params.ConvenienceFee,
+      trip_type: tripType,
+      journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
+    };
+
+    if (TripType == 2) {
+      let SeatsRound = [...selectedSheetsRound.map(item => item.Number)].join("~");
+      (paramAddToCart.return_display_name = paramsRound.DisplayName), ////Return
+        (paramAddToCart.return_bus_type = paramsRound.BusType),
+        (paramAddToCart.return_departure_time = paramsRound.DepartureTime),
+        (paramAddToCart.return_arrival_time = params.ArrivalTime),
+        (paramAddToCart.return_source_city = destinationName),
+        (paramAddToCart.return_source_id = paramsRound.SourceId),
+        (paramAddToCart.return_destination_city = destinationName),
+        (paramAddToCart.return_destination_id = paramsRound.DestinationId),
+        (paramAddToCart.return_boarding_point = paramsRound.SourceId + ";" + sourceName),
+        (paramAddToCart.return_dropping_point = paramsRound.DestinationId + ";" + destinationName),
+        (paramAddToCart.return_time_duration = paramsRound.Duration),
+        (paramAddToCart.return_select_seat = selectedSheetsRound.length),
+        (paramAddToCart.return_select_seat_number = SeatsRound),
+        (paramAddToCart.return_base_fare = paramsRound.Fares),
+        (paramAddToCart.return_service_charge = paramsRound.OperatorServiceCharge),
+        (paramAddToCart.return_service_tax = paramsRound.ServiceTax),
+        (paramAddToCart.return_ConvenienceFee = paramsRound.ConvenienceFee),
+        (paramAddToCart.return_trip_type = tripType),
+        (paramAddToCart.return_journey_date = moment(paramsRound.Journeydate, "YYYY-MM-DD").format(
+          "DD-MM-YYYY"
+        ));
+    }
+
+    console.log(paramAddToCart);
+
+    this.setState({ loader: true });
+    domainApi
+      .post("/cart/add", paramAddToCart)
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ loader: false });
+        if (data.code == "1") {
+          // Toast.show(data.message, Toast.LONG);
+          this.setState({ loader: true });
+          domainApi.get("/cart").then(({ data }) => {
+            console.log(data);
+            this.setState({ cartData: data, loader: false });
+          });
+        } else {
+          Toast.show(res.data.message, Toast.LONG);
+        }
+      })
+      .catch(error => {
+        this.setState({ loader: false });
+        console.log(error);
+      });
   }
 
   _changeAdults = (index, key) => text => {
@@ -63,7 +197,6 @@ class CheckoutBus extends React.PureComponent {
       BoardingPointReturn,
       DroppingPoint,
       DroppingPointReturn,
-      cartData,
       destinationName,
       selectedSheets,
       selectedSheetsRound,
@@ -216,7 +349,8 @@ class CheckoutBus extends React.PureComponent {
                   BlockingReferenceNo: data.BlockingReferenceNo,
                   BookingReferenceNo: data.BookingReferenceNo,
                   ...this.props.navigation.state.params,
-                  adults: adults
+                  adults: adults,
+                  cartData: this.state.cartData
                 });
               } else {
                 Toast.show(data.Message, Toast.LONG);
@@ -240,7 +374,8 @@ class CheckoutBus extends React.PureComponent {
                     BlockingReferenceNoRound: BlockRound.BlockingReferenceNo,
                     BookingReferenceNoRound: BlockRound.BookingReferenceNo,
                     ...this.props.navigation.state.params,
-                    adults: adults
+                    adults: adults,
+                    cartData: this.state.cartData
                   });
                 } else {
                   Toast.show(data.Message, Toast.LONG);
@@ -262,7 +397,6 @@ class CheckoutBus extends React.PureComponent {
     const {
       params,
       paramsRound,
-      cartData,
       destinationName,
       sourceName,
       BoardingPoint,
@@ -272,7 +406,7 @@ class CheckoutBus extends React.PureComponent {
       TripType,
       selectedSheetsRound
     } = this.props.navigation.state.params;
-    const { loader } = this.state;
+    const { loader, cartData } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
@@ -597,8 +731,7 @@ class CheckoutBus extends React.PureComponent {
                     shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
-                    marginBottom: 20,
-                    paddingVertical: 20,
+                    paddingVertical: 16,
                     borderRadius: 8
                   }}>
                   <View
@@ -637,16 +770,31 @@ class CheckoutBus extends React.PureComponent {
                     <Text>Conv. Fee</Text>
                     <Text>0</Text>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      flex: 1,
-                      marginHorizontal: 10,
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={{ fontWeight: "700", fontSize: 16 }}>Total Fare</Text>
-                    <Text style={{ fontWeight: "700", fontSize: 16 }}>0</Text>
-                  </View>
+                  {!this.state.inputCoupon && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}>
+                      {Array.isArray(this.state.cartData.coupon) &&
+                        this.state.cartData.coupon.length > 0 && (
+                          <Text style={{ marginStart: 10, fontWeight: "700" }}>Discount</Text>
+                        )}
+                      {Array.isArray(this.state.cartData.coupon) &&
+                        this.state.cartData.coupon.length > 0 &&
+                        this.state.cartData.coupon.map(coupon => (
+                          <HTML
+                            key={coupon.code}
+                            baseFontStyle={{
+                              color: "green",
+                              fontWeight: "700"
+                            }}
+                            containerStyle={{ marginHorizontal: 10 }}
+                            html={"- " + coupon.discount}
+                          />
+                        ))}
+                    </View>
+                  )}
                   <View
                     style={{
                       flexDirection: "row",
@@ -657,9 +805,96 @@ class CheckoutBus extends React.PureComponent {
                     <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>
                       Total Payable
                     </Text>
-                    <HTML html={cartData.total_price} />
+                    <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>
+                      ₹ {cartData.total_price}
+                    </Text>
                   </View>
                 </View>
+
+                {this.state.cartData.hasOwnProperty("coupon") &&
+                this.state.cartData.coupon.length == 0 ? (
+                  this.state.inputCoupon ? (
+                    <View
+                      style={{
+                        elevation: 1,
+                        backgroundColor: "#fff",
+                        justifyContent: "center",
+                        marginHorizontal: 16,
+                        marginTop: 20,
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowColor: "rgba(0,0,0,0.1)",
+                        shadowOpacity: 1,
+                        shadowRadius: 4,
+                        borderRadius: 8
+                      }}>
+                      <TextInput
+                        placeholder="Enter Coupon Code"
+                        value={this.state.coupon_code}
+                        style={{ marginStart: 5 }}
+                        onChangeText={text => this.setState({ coupon_code: text })}
+                      />
+                      <Button
+                        onPress={this.applyCoupon}
+                        style={{
+                          position: "absolute",
+                          backgroundColor: "#222222",
+                          paddingHorizontal: 8,
+                          paddingVertical: 4,
+                          end: 8,
+                          zIndex: 1,
+                          elevation: 1,
+                          shadowOpacity: 0.2,
+                          shadowRadius: 1,
+                          borderRadius: 8,
+                          shadowOffset: { height: 1, width: 0 }
+                        }}>
+                        <Text style={{ color: "#FFFFFF" }}>Apply</Text>
+                      </Button>
+                    </View>
+                  ) : (
+                    <Button
+                      onPress={this.toggleCoupon(true)}
+                      style={[
+                        styles.billingContainer,
+                        styles.billingRow,
+                        { justifyContent: "flex-start", marginHorizontal: 16, marginVertical: 20 }
+                      ]}>
+                      <Icon
+                        name="brightness-percent"
+                        size={20}
+                        color="#E7BA34"
+                        type="MaterialCommunityIcons"
+                      />
+                      <Text style={{ fontWeight: "700", marginStart: 8 }}>APPLY COUPON</Text>
+                      <Icon
+                        name="ios-arrow-forward"
+                        style={{ fontSize: 20, color: "#E7BA34", marginStart: "auto" }}
+                        size={20}
+                      />
+                    </Button>
+                  )
+                ) : (
+                  Array.isArray(this.state.cartData.coupon) &&
+                  this.state.cartData.coupon.length > 0 &&
+                  this.state.cartData.coupon.map(coupon => (
+                    <View
+                      style={[
+                        styles.billingContainer,
+                        styles.billingRow,
+                        { marginHorizontal: 16, marginVertical: 20 }
+                      ]}
+                      key={coupon.code}>
+                      <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
+                        {coupon.code}
+                      </Text>
+                      <Button
+                        style={{ marginStart: "auto", padding: 5 }}
+                        onPress={this.removeCoupon(coupon.code)}>
+                        <Icon name="md-close" color="#E7BA34" size={20} />
+                      </Button>
+                    </View>
+                  ))
+                )}
 
                 <Button
                   style={{
@@ -683,5 +918,24 @@ class CheckoutBus extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  billingContainer: {
+    elevation: 1,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: { height: 1, width: 0 },
+    padding: 8,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    marginVertical: 8
+  },
+  billingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8
+  }
+});
 
 export default CheckoutBus;

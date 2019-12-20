@@ -7,7 +7,8 @@ import {
   Picker,
   ScrollView,
   Platform,
-  SafeAreaView
+  SafeAreaView,
+  StyleSheet
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -39,9 +40,52 @@ class CheckoutCab extends React.PureComponent {
       dobShow: false,
       loader: false,
       radioDirect: true,
-      cartData: {}
+      cartData: {},
+      inputCoupon: false,
+      coupon_code: ""
     };
   }
+
+  applyCoupon = () => {
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart/coupon", { coupon_code: this.state.coupon_code })
+      .then(({ data }) => {
+        console.log(data);
+        if (data.code && data.code == 201) {
+          Toast.show(data.message.join());
+        }
+        this.toggleCoupon(false)();
+        this.setState({ cartData: data });
+        this.ApiCall();
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  };
+
+  removeCoupon = code => () => {
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart/remove-coupon", {
+        coupon_code: code
+      })
+      .then(({ data }) => {
+        this.toggleCoupon(true)();
+        this.ApiCall();
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  };
+
+  toggleCoupon = show => () => {
+    this.setState({
+      inputCoupon: show
+    });
+  };
 
   componentDidMount() {
     this.ApiCall();
@@ -75,19 +119,19 @@ class CheckoutCab extends React.PureComponent {
 
     console.log(data);
 
-    this.setState({ loading: true });
+    this.setState({ loader: true });
     axios
       .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", data)
       .then(({ data }) => {
-        this.setState({ loading: false });
+        this.setState({ loader: false });
         console.log(data);
         if (data.code == "1") {
           // Toast.show(data.message, Toast.LONG);
-          this.setState({ loading: true });
+          this.setState({ loader: true });
           axios
             .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
             .then(({ data: CartData }) => {
-              this.setState({ loading: false, cartData: CartData });
+              this.setState({ loader: false, cartData: CartData });
               console.log(CartData);
               let param = {
                 params: params,
@@ -98,7 +142,7 @@ class CheckoutCab extends React.PureComponent {
               //  this.props.navigation.navigate("CheckoutCab", param);
             })
             .catch(error => {
-              this.setState({ loading: false });
+              this.setState({ loader: false });
               console.log(error);
             });
         } else {
@@ -106,7 +150,7 @@ class CheckoutCab extends React.PureComponent {
         }
       })
       .catch(error => {
-        this.setState({ loading: false });
+        this.setState({ loader: false });
         console.log(error);
       });
   }
@@ -161,8 +205,8 @@ class CheckoutCab extends React.PureComponent {
       infant_details: []
     };
 
-    const { item, params, cartData } = this.props.navigation.state.params;
-
+    const { item, params } = this.props.navigation.state.params;
+    const { cartData } = this.state;
     let param = {
       TotalFare: cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
       Conveniencefee: item.ConvenienceFee,
@@ -702,6 +746,31 @@ class CheckoutCab extends React.PureComponent {
                   <Text>Convenience Fee </Text>
                   <Text>₹0</Text>
                 </View>
+                {!this.state.inputCoupon && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    {Array.isArray(this.state.cartData.coupon) &&
+                      this.state.cartData.coupon.length > 0 && (
+                        <Text style={{ marginStart: 10 }}>Discount</Text>
+                      )}
+                    {Array.isArray(this.state.cartData.coupon) &&
+                      this.state.cartData.coupon.length > 0 &&
+                      this.state.cartData.coupon.map(coupon => (
+                        <HTML
+                          key={coupon.code}
+                          baseFontStyle={{
+                            color: "green",
+                            fontWeight: "700"
+                          }}
+                          containerStyle={{ marginHorizontal: 10 }}
+                          html={"- " + coupon.discount}
+                        />
+                      ))}
+                  </View>
+                )}
                 <View
                   style={{
                     flexDirection: "row",
@@ -710,7 +779,6 @@ class CheckoutCab extends React.PureComponent {
                     paddingHorizontal: 8
                   }}>
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>You Pay</Text>
-                  {/* <HTML html={cartData.total} /> */}
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>
                     ₹ {this.state.cartData.total_price}
                   </Text>
@@ -769,6 +837,92 @@ class CheckoutCab extends React.PureComponent {
                 </Text>
               </View>
 
+              {this.state.cartData.hasOwnProperty("coupon") &&
+              this.state.cartData.coupon.length == 0 ? (
+                this.state.inputCoupon ? (
+                  <View
+                    style={{
+                      elevation: 1,
+                      backgroundColor: "#fff",
+                      justifyContent: "center",
+                      marginVertical: 20,
+                      paddingVertical: 10,
+                      marginHorizontal: 16,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowColor: "rgba(0,0,0,0.1)",
+                      shadowOpacity: 1,
+                      shadowRadius: 4,
+                      borderRadius: 8
+                    }}>
+                    <TextInput
+                      placeholder="Enter Coupon Code"
+                      value={this.state.coupon_code}
+                      style={{ marginStart: 5 }}
+                      onChangeText={text => this.setState({ coupon_code: text })}
+                    />
+                    <Button
+                      onPress={this.applyCoupon}
+                      style={{
+                        position: "absolute",
+                        backgroundColor: "#222222",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        end: 8,
+                        zIndex: 1,
+                        elevation: 1,
+                        shadowOpacity: 0.2,
+                        shadowRadius: 1,
+                        borderRadius: 8,
+                        shadowOffset: { height: 1, width: 0 }
+                      }}>
+                      <Text style={{ color: "#FFFFFF" }}>Apply</Text>
+                    </Button>
+                  </View>
+                ) : (
+                  <Button
+                    onPress={this.toggleCoupon(true)}
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { justifyContent: "flex-start", marginHorizontal: 16, marginVertical: 20 }
+                    ]}>
+                    <Icon
+                      name="brightness-percent"
+                      size={20}
+                      color="#E7BA34"
+                      type="MaterialCommunityIcons"
+                    />
+                    <Text style={{ fontWeight: "700", marginStart: 8 }}>APPLY COUPON</Text>
+                    <Icon
+                      name="ios-arrow-forward"
+                      style={{ fontSize: 20, color: "#E7BA34", marginStart: "auto" }}
+                      size={20}
+                    />
+                  </Button>
+                )
+              ) : (
+                Array.isArray(this.state.cartData.coupon) &&
+                this.state.cartData.coupon.length > 0 &&
+                this.state.cartData.coupon.map(coupon => (
+                  <View
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { marginHorizontal: 16, marginVertical: 20 }
+                    ]}
+                    key={coupon.code}>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
+                      {coupon.code}
+                    </Text>
+                    <Button
+                      style={{ marginStart: "auto", padding: 5 }}
+                      onPress={this.removeCoupon(coupon.code)}>
+                      <Icon name="md-close" color="#E7BA34" size={20} />
+                    </Button>
+                  </View>
+                ))
+              )}
+
               <Button
                 style={{
                   backgroundColor: "#F68E1D",
@@ -797,6 +951,25 @@ class CheckoutCab extends React.PureComponent {
 
 const mapStateToProps = state => ({
   user: state.user
+});
+
+const styles = StyleSheet.create({
+  billingContainer: {
+    elevation: 1,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: { height: 1, width: 0 },
+    padding: 8,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    marginVertical: 8
+  },
+  billingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 8
+  }
 });
 
 export default connect(mapStateToProps, null)(CheckoutCab);

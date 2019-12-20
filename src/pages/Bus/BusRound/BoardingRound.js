@@ -39,97 +39,12 @@ class BoardingRound extends React.PureComponent {
   }
 
   _bookNow = () => {
-    const {
-      params,
-      paramsRound,
-      sourceName,
-      destinationName,
-      tripType,
-      selectedSheets,
-      selectedSheetsRound
-    } = this.props.navigation.state.params;
-    console.log(params, selectedSheets, selectedSheetsRound);
-
-    let Seats = [...selectedSheets.map(item => item.Number)].join("~");
-    let SeatsRound = [...selectedSheetsRound.map(item => item.Number)].join("~");
-    let param = {
-      id: 273,
-      quantity: 1,
-      bus_item_result_data: params,
-      return_bus_item_result_data: paramsRound,
-      display_name: params.DisplayName,
-      bus_type: params.BusType,
-      departure_time: params.DepartureTime,
-      arrival_time: params.ArrivalTime,
-      source_city: sourceName,
-      source_id: params.SourceId,
-      destination_city: destinationName,
-      destination_id: params.DestinationId,
-      boarding_point: params.SourceId + ";" + sourceName,
-      dropping_point: params.DestinationId + ";" + destinationName,
-      time_duration: params.Duration,
-      select_seat: selectedSheets.length,
-      select_seat_number: Seats,
-      base_fare: params.Fares,
-      service_charge: params.OperatorServiceCharge,
-      service_tax: params.ServiceTax,
-      ConvenienceFee: params.ConvenienceFee,
-      trip_type: tripType,
-      journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY"),
-
-      return_display_name: paramsRound.DisplayName, ////Return
-      return_bus_type: paramsRound.BusType,
-      return_departure_time: paramsRound.DepartureTime,
-      return_arrival_time: params.ArrivalTime,
-      return_source_city: destinationName,
-      return_source_id: paramsRound.SourceId,
-      return_destination_city: destinationName,
-      return_destination_id: paramsRound.DestinationId,
-      return_boarding_point: paramsRound.SourceId + ";" + sourceName,
-      return_dropping_point: paramsRound.DestinationId + ";" + destinationName,
-      return_time_duration: paramsRound.Duration,
-      return_select_seat: selectedSheetsRound.length,
-      return_select_seat_number: SeatsRound,
-      return_base_fare: paramsRound.Fares,
-      return_service_charge: paramsRound.OperatorServiceCharge,
-      return_service_tax: paramsRound.ServiceTax,
-      return_ConvenienceFee: paramsRound.ConvenienceFee,
-      return_trip_type: tripType,
-      return_journey_date: moment(paramsRound.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
-    };
-
-    console.log(param);
-    // this.props.navigation.navigate("CheckoutBus", {
-    //   // cartData: data,
-    //   ...this.props.navigation.state.params,
-    //   BoardingPointReturn: this.state.bp,
-    //   DroppingPointReturn: this.state.dp
-    // });
-    //return;
-
-    domainApi
-      .post("/cart/add", param)
-      .then(({ data }) => {
-        console.log(data);
-        if (data.code == "1") {
-          //Toast.show(data.message, Toast.LONG);
-          domainApi.get("/cart").then(({ data }) => {
-            console.log(data);
-            const { bp, dp } = this.state;
-            this.props.navigation.navigate("CheckoutBus", {
-              cartData: data,
-              ...this.props.navigation.state.params,
-              BoardingPointReturn: bp,
-              DroppingPointReturn: dp
-            });
-          });
-        } else {
-          Toast.show(res.data.message, Toast.LONG);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const { bp, dp } = this.state;
+    this.props.navigation.navigate("CheckoutBus", {
+      ...this.props.navigation.state.params,
+      BoardingPointReturn: bp,
+      DroppingPointReturn: dp
+    });
   };
 
   render() {
