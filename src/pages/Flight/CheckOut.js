@@ -817,7 +817,7 @@ class CheckOut extends React.PureComponent {
                   alignItems: "center",
                   justifyContent: "center",
                   height: 40,
-                  marginTop: 20,
+                  marginVertical: 20,
                   borderRadius: 20
                 }}
                 onPress={this.navigateToScreen("CheckOut1", params)}>
@@ -1276,7 +1276,7 @@ class CheckOut extends React.PureComponent {
                   justifyContent: "center",
                   height: 40,
                   borderRadius: 20,
-                  marginTop: 20
+                  marginVertical: 20
                 }}
                 onPress={this.navigateToScreen("CheckOut1", params)}>
                 <Text style={{ color: "#fff" }}>Next</Text>

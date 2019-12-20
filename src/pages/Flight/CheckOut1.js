@@ -117,7 +117,7 @@ class CheckOut1 extends React.PureComponent {
   onAdultChange = (index, key) => text => {
     let newData = Object.assign([], this.state.adults);
     newData[index][key] = text;
-    if ((key = "dob")) {
+    if (key == "dob") {
       newData[index].age = moment().diff(moment(text), "years");
     }
     if (key == "gender") {
@@ -132,7 +132,7 @@ class CheckOut1 extends React.PureComponent {
   onChildsChange = (index, key) => text => {
     let newData = Object.assign([], this.state.childs);
     newData[index][key] = text;
-    if ((key = "dob")) {
+    if (key == "dob") {
       newData[index].age = moment().diff(moment(text), "years");
     }
     if (key == "gender") {
@@ -147,7 +147,7 @@ class CheckOut1 extends React.PureComponent {
   onInfantChange = (index, key) => text => {
     let newData = Object.assign([], this.state.infants);
     newData[index][key] = text;
-    if ((key = "dob")) {
+    if (key == "dob") {
       newData[index].age = moment().diff(moment(text), "years");
     }
     if (key == "gender") {
@@ -183,6 +183,10 @@ class CheckOut1 extends React.PureComponent {
   _order = async () => {
     const { params } = this.props.navigation.state.params;
     console.log(this.state);
+    if (this.validate()) {
+      Toast.show("Please enter all the fields.", Toast.LONG);
+      return;
+    }
 
     let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
@@ -534,113 +538,107 @@ class CheckOut1 extends React.PureComponent {
       // console.log(JSON.stringify(book));
       // return;
 
-      if (this.validate()) {
-        Toast.show("Please enter all the fields.", Toast.SHORT);
+      if (isEmpty(this.props.user)) {
+        //Toast.show("Please login or signup", Toast.SHORT);
+        this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
-        if (isEmpty(this.props.user)) {
-          //Toast.show("Please login or signup", Toast.SHORT);
-          this.props.navigation.navigate("SignIn", { isCheckout: true });
-        } else {
-          console.log(book, this.state);
-          const { params, data } = this.props.navigation.state.params;
-          console.log(params, data, param);
+        console.log(book, this.state);
+        const { params, data } = this.props.navigation.state.params;
+        console.log(params, data, param);
 
-          this.setState({ loading: true });
-          etravosApi
-            .post("/Flights/BlockFlightTicket", book)
-            .then(blockres => {
-              console.log(blockres.data);
-              if (blockres.data.BookingStatus == 8) {
-                const { user } = this.props;
-                domainApi
-                  .post("/checkout/new-order?user_id=" + user.id, param)
-                  .then(({ data: order }) => {
-                    console.log(order);
+        this.setState({ loading: true });
+        etravosApi
+          .post("/Flights/BlockFlightTicket", book)
+          .then(blockres => {
+            console.log(blockres.data);
+            if (blockres.data.BookingStatus == 8) {
+              const { user } = this.props;
+              domainApi
+                .post("/checkout/new-order?user_id=" + user.id, param)
+                .then(({ data: order }) => {
+                  console.log(order);
 
-                    var options = {
-                      description: "Credits towards consultation",
-                      // image: "https://i.imgur.com/3g7nmJC.png",
-                      currency: "INR",
-                      key: "rzp_test_a3aQYPLYowGvWJ",
-                      amount: parseInt(order.total) * 100,
-                      name: "TripDesire",
-                      prefill: {
-                        email: user.billing.email,
-                        contact: user.billing.phone,
-                        name: "Razorpay Software"
-                      },
-                      theme: { color: "#E5EBF7" }
-                    };
+                  var options = {
+                    description: "Credits towards consultation",
+                    // image: "https://i.imgur.com/3g7nmJC.png",
+                    currency: "INR",
+                    key: "rzp_test_a3aQYPLYowGvWJ",
+                    amount: parseInt(order.total) * 100,
+                    name: "TripDesire",
+                    prefill: {
+                      email: user.billing.email,
+                      contact: user.billing.phone,
+                      name: "Razorpay Software"
+                    },
+                    theme: { color: "#E5EBF7" }
+                  };
 
-                    RazorpayCheckout.open(options)
-                      .then(razorpayRes => {
-                        // handle success
-                        console.log(razorpayRes);
-                        // alert(`Success: ${data.razorpay_payment_id}`);
+                  RazorpayCheckout.open(options)
+                    .then(razorpayRes => {
+                      // handle success
+                      console.log(razorpayRes);
+                      // alert(`Success: ${data.razorpay_payment_id}`);
 
-                        if (
-                          (razorpayRes.razorpay_payment_id &&
-                            razorpayRes.razorpay_payment_id != "") ||
-                          razorpayRes.code == 0
-                        ) {
-                          this.setState({ loading: true });
-                          etravosApi
-                            .get(
-                              "/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo
-                            )
-                            .then(({ data: Response }) => {
-                              console.log(Response);
+                      if (
+                        (razorpayRes.razorpay_payment_id &&
+                          razorpayRes.razorpay_payment_id != "") ||
+                        razorpayRes.code == 0
+                      ) {
+                        this.setState({ loading: true });
+                        etravosApi
+                          .get("/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo)
+                          .then(({ data: Response }) => {
+                            console.log(Response);
 
-                              let paymentData = {
-                                order_id: order.id,
-                                status: "completed",
-                                transaction_id: razorpayRes.razorpay_payment_id,
-                                reference_no: Response // blockres.data.ReferenceNo
-                              };
-                              console.log(paymentData);
+                            let paymentData = {
+                              order_id: order.id,
+                              status: "completed",
+                              transaction_id: razorpayRes.razorpay_payment_id,
+                              reference_no: Response // blockres.data.ReferenceNo
+                            };
+                            console.log(paymentData);
 
-                              this.setState({ loading: true });
-                              domainApi.post("/checkout/update-order", paymentData).then(resp => {
-                                this.setState({ loading: false });
-                                console.log(resp);
-                              });
-                              const { params } = this.props.navigation.state.params;
-                              this.props.navigation.navigate("ThankYou", {
-                                order,
-                                params,
-                                razorpayRes
-                              });
-                            })
-                            .catch(error => {
-                              console.log(error);
+                            this.setState({ loading: true });
+                            domainApi.post("/checkout/update-order", paymentData).then(resp => {
+                              this.setState({ loading: false });
+                              console.log(resp);
                             });
-                        } else {
-                          Toast.show("You have been cancelled the ticket", Toast.LONG);
-                        }
-                      })
-                      .catch(error => {
-                        this.setState({ loading: false });
-                        console.log(error);
-                      })
-                      .catch(error => {
-                        this.setState({ loading: false });
-                        console.log(error);
-                      });
-                  })
-                  .catch(error => {
-                    Toast.show(error, Toast.LONG);
-                    this.setState({ loading: false });
-                  });
-              } else {
-                this.setState({ loading: false });
-                Toast.show("Ticket is not block successfully ", Toast.LONG);
-              }
-            })
-            .catch(error => {
-              Toast.show(error, Toast.LONG);
+                            const { params } = this.props.navigation.state.params;
+                            this.props.navigation.navigate("ThankYou", {
+                              order,
+                              params,
+                              razorpayRes
+                            });
+                          })
+                          .catch(error => {
+                            console.log(error);
+                          });
+                      } else {
+                        Toast.show("You have been cancelled the ticket", Toast.LONG);
+                      }
+                    })
+                    .catch(error => {
+                      this.setState({ loading: false });
+                      console.log(error);
+                    })
+                    .catch(error => {
+                      this.setState({ loading: false });
+                      console.log(error);
+                    });
+                })
+                .catch(error => {
+                  Toast.show(error, Toast.LONG);
+                  this.setState({ loading: false });
+                });
+            } else {
               this.setState({ loading: false });
-            });
-        }
+              Toast.show(blockres.data.Message, Toast.LONG);
+            }
+          })
+          .catch(error => {
+            Toast.show(error, Toast.LONG);
+            this.setState({ loading: false });
+          });
       }
     } catch (e) {
       Toast.show(e.toString());
@@ -687,10 +685,10 @@ class CheckOut1 extends React.PureComponent {
                   {params.checkOutDate
                     ? " - " + moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM") + " "
                     : ""}
-                  |{params.adult > 0 ? " " + params.adult + " Adult" : " "}
+                  {params.adult > 0 ? " | " + params.adult + " Adult" : " "}
                   {params.child > 0 ? " , " + params.child + " Child" : " "}
                   {params.infant > 0 ? " , " + params.infant + " Infant" : " "}
-                  {params.className ? "| " + params.className : ""}
+                  {params.className ? " | " + params.className : ""}
                 </Text>
               </View>
             </View>
@@ -702,6 +700,10 @@ class CheckOut1 extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     borderRadius: 8,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
@@ -728,24 +730,8 @@ class CheckOut1 extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text style={{ flexBasis: "20%" }}>Adult {index + 1}</Text>
-                            {/* <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                marginStart: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.adults[index].den}
-                                style={{ height: 50, width: 60 }}
-                                onValueChange={this.onAdultChange(index, "den")}>
-                                <Picker.Item label="Mr." value="Mr" />
-                                <Picker.Item label="Mrs." value="Mrs" />
-                              </Picker>
-                            </View> */}
+                            <Text style={{ flexBasis: "15%" }}>Adult {index + 1}</Text>
+
                             <TextInput
                               style={{
                                 borderWidth: 1,
@@ -784,11 +770,10 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", flexBasis: "20%" }}>DOB</Text>
+                              <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
-                                  marginStart: 5,
                                   borderWidth: 1,
                                   borderColor: "#F2F2F2",
                                   height: 40,
@@ -812,46 +797,38 @@ class CheckOut1 extends React.PureComponent {
                                   .subtract(18, "years")
                                   .toDate()}
                               />
-                            </View>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1,
-                                paddingHorizontal: 2,
-                                marginHorizontal: 2,
-                                justifyContent: "center"
-                                // alignItems: "center"
-                              }}>
-                              {/* <Picker
-                                selectedValue={this.state.adults[index].gender}
-                                style={{ height: 50, width: 100 }}
-                                onValueChange={this.onAdultChange(index, "gender")}>
-                                <Picker.Item label="Male" value="M" />
-                                <Picker.Item label="Female" value="F" />
-                              </Picker> */}
-                              <RNPickerSelect
-                                useNativeAndroidPickerStyle={false}
-                                placeholder={{}}
-                                selectedValue={this.state.adults[index].gender}
+                              <View
                                 style={{
-                                  inputAndroid: {
-                                    color: "#000",
-                                    padding: 0,
-                                    height: 20,
-                                    paddingStart: 3
-                                  },
-                                  inputIOS: { paddingStart: 3, color: "#000" },
-                                  iconContainer: { marginEnd: 8 }
-                                }}
-                                onValueChange={this.onAdultChange(index, "gender")}
-                                items={[
-                                  { label: "Male", value: "M" },
-                                  { label: "Female", value: "F" }
-                                ]}
-                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
-                              />
+                                  borderWidth: 1,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  flex: 1,
+                                  paddingHorizontal: 2,
+                                  marginHorizontal: 2,
+                                  justifyContent: "center"
+                                }}>
+                                <RNPickerSelect
+                                  useNativeAndroidPickerStyle={false}
+                                  placeholder={{}}
+                                  selectedValue={this.state.adults[index].gender}
+                                  style={{
+                                    inputAndroid: {
+                                      color: "#000",
+                                      padding: 0,
+                                      height: 20,
+                                      paddingStart: 3
+                                    },
+                                    inputIOS: { paddingStart: 3, color: "#000" },
+                                    iconContainer: { marginEnd: 8 }
+                                  }}
+                                  onValueChange={this.onAdultChange(index, "gender")}
+                                  items={[
+                                    { label: "Male", value: "M" },
+                                    { label: "Female", value: "F" }
+                                  ]}
+                                  Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                                />
+                              </View>
                             </View>
                           </View>
                           <Button style={{ marginTop: 10 }} onPress={this._FFN}>
@@ -906,30 +883,15 @@ class CheckOut1 extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text>Child {index + 1}</Text>
-                            {/* <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                marginStart: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.childs[index].den}
-                                style={{ height: 50, width: 60 }}
-                                onValueChange={this.onChildsChange(index, "den")}>
-                                <Picker.Item label="Mr." value="Mr" />
-                                <Picker.Item label="Mrs." value="Mrs" />
-                              </Picker>
-                            </View> */}
+                            <Text style={{ flexBasis: "15%" }}>Child {index + 1}</Text>
+
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 flex: 1,
+                                paddingStart: 5,
                                 marginHorizontal: 2
                               }}
                               placeholder="First Name"
@@ -940,6 +902,7 @@ class CheckOut1 extends React.PureComponent {
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
+                                paddingStart: 5,
                                 flex: 1
                               }}
                               placeholder="Last Name"
@@ -960,11 +923,10 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
-                                  marginStart: 5,
                                   borderWidth: 1,
                                   borderColor: "#F2F2F2",
                                   height: 40,
@@ -989,58 +951,39 @@ class CheckOut1 extends React.PureComponent {
                                   .subtract(2, "years")
                                   .toDate()}
                               />
-                            </View>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1,
-                                paddingHorizontal: 2,
-                                marginHorizontal: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              {/* <Picker
-                                selectedValue={this.state.childs[index].gender}
-                                style={{ height: 50, width: 80 }}
-                                onValueChange={this.onChildsChange(index, "gender")}>
-                                <Picker.Item label="Male" value="M" />
-                                <Picker.Item label="Female" value="F" />
-                              </Picker> */}
-                              <RNPickerSelect
-                                useNativeAndroidPickerStyle={false}
-                                placeholder={{}}
-                                selectedValue={this.state.childs[index].gender}
+                              <View
                                 style={{
-                                  inputAndroid: {
-                                    color: "#000",
-                                    padding: 0,
-                                    height: 20,
-                                    paddingStart: 3
-                                  },
-                                  inputIOS: { paddingStart: 3, color: "#000" },
-                                  iconContainer: { marginEnd: 8 }
-                                }}
-                                onValueChange={this.onChildsChange(index, "gender")}
-                                items={[
-                                  { label: "Male", value: "M" },
-                                  { label: "Female", value: "F" }
-                                ]}
-                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
-                              />
+                                  borderWidth: 1,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  flex: 1,
+                                  paddingHorizontal: 2,
+                                  marginHorizontal: 2,
+                                  justifyContent: "center"
+                                }}>
+                                <RNPickerSelect
+                                  useNativeAndroidPickerStyle={false}
+                                  placeholder={{}}
+                                  selectedValue={this.state.childs[index].gender}
+                                  style={{
+                                    inputAndroid: {
+                                      color: "#000",
+                                      padding: 0,
+                                      height: 20,
+                                      paddingStart: 3
+                                    },
+                                    inputIOS: { paddingStart: 3, color: "#000" },
+                                    iconContainer: { marginEnd: 8 }
+                                  }}
+                                  onValueChange={this.onChildsChange(index, "gender")}
+                                  items={[
+                                    { label: "Male", value: "M" },
+                                    { label: "Female", value: "F" }
+                                  ]}
+                                  Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                                />
+                              </View>
                             </View>
-                            {/* <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1
-                              }}
-                              placeholder="Age"
-                              keyboardType="numeric"
-                              onChangeText={this.onChildsChange(index, "age")}
-                            /> */}
                           </View>
                         </View>
                       ))}
@@ -1055,30 +998,15 @@ class CheckOut1 extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text>Infant {index + 1}</Text>
-                            {/* <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                marginStart: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              <Picker
-                                selectedValue={this.state.infants[index].den}
-                                style={{ height: 50, width: 60 }}
-                                onValueChange={this.onInfantChange(index, "den")}>
-                                <Picker.Item label="Mr." value="Mr" />
-                                <Picker.Item label="Mrs." value="Mrs" />
-                              </Picker>
-                            </View> */}
+                            <Text style={{ flexBasis: "15%" }}>Infant {index + 1}</Text>
+
                             <TextInput
                               style={{
                                 borderWidth: 1,
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 flex: 1,
+                                paddingStart: 5,
                                 marginHorizontal: 2
                               }}
                               placeholder="First Name"
@@ -1087,6 +1015,7 @@ class CheckOut1 extends React.PureComponent {
                             <TextInput
                               style={{
                                 borderWidth: 1,
+                                paddingStart: 5,
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 flex: 1
@@ -1109,11 +1038,10 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
+                              <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
-                                  marginStart: 5,
                                   borderWidth: 1,
                                   borderColor: "#F2F2F2",
                                   height: 40,
@@ -1136,58 +1064,39 @@ class CheckOut1 extends React.PureComponent {
                                   .subtract(2, "years")
                                   .toDate()}
                               />
-                            </View>
-                            <View
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1,
-                                paddingHorizontal: 2,
-                                marginHorizontal: 2,
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
-                              {/* <Picker
-                                selectedValue={this.state.infants[index].gender}
-                                style={{ height: 50, width: 80 }}
-                                onValueChange={this.onInfantChange(index, "gender")}>
-                                <Picker.Item label="Male" value="M" />
-                                <Picker.Item label="Female" value="F" />
-                              </Picker> */}
-                              <RNPickerSelect
-                                useNativeAndroidPickerStyle={false}
-                                placeholder={{}}
-                                selectedValue={this.state.infants[index].gender}
+                              <View
                                 style={{
-                                  inputAndroid: {
-                                    color: "#000",
-                                    padding: 0,
-                                    height: 20,
-                                    paddingStart: 3
-                                  },
-                                  inputIOS: { paddingStart: 3, color: "#000" },
-                                  iconContainer: { marginEnd: 8 }
-                                }}
-                                onValueChange={this.onInfantChange(index, "gender")}
-                                items={[
-                                  { label: "Male", value: "M" },
-                                  { label: "Female", value: "F" }
-                                ]}
-                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
-                              />
+                                  borderWidth: 1,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  flex: 1,
+                                  paddingHorizontal: 2,
+                                  marginHorizontal: 2,
+                                  justifyContent: "center"
+                                }}>
+                                <RNPickerSelect
+                                  useNativeAndroidPickerStyle={false}
+                                  placeholder={{}}
+                                  selectedValue={this.state.infants[index].gender}
+                                  style={{
+                                    inputAndroid: {
+                                      color: "#000",
+                                      padding: 0,
+                                      height: 20,
+                                      paddingStart: 3
+                                    },
+                                    inputIOS: { paddingStart: 3, color: "#000" },
+                                    iconContainer: { marginEnd: 8 }
+                                  }}
+                                  onValueChange={this.onInfantChange(index, "gender")}
+                                  items={[
+                                    { label: "Male", value: "M" },
+                                    { label: "Female", value: "F" }
+                                  ]}
+                                  Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                                />
+                              </View>
                             </View>
-                            {/* <TextInput
-                              style={{
-                                borderWidth: 1,
-                                borderColor: "#F2F2F2",
-                                height: 40,
-                                flex: 1
-                              }}
-                              placeholder="Age"
-                              keyboardType="numeric"
-                              onChangeText={this.onInfantChange(index, "age")}
-                            /> */}
                           </View>
                         </View>
                       ))}
@@ -1197,10 +1106,13 @@ class CheckOut1 extends React.PureComponent {
                 <View
                   style={{
                     elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
                     marginTop: 20,
-                    height: 190,
                     padding: 10,
                     borderRadius: 8
                   }}>
@@ -1252,8 +1164,8 @@ class CheckOut1 extends React.PureComponent {
                     marginVertical: 30,
                     justifyContent: "center",
                     height: 40,
-                    borderRadius: 20,
-                    marginTop: "auto"
+                    borderRadius: 20
+                    // marginTop: "auto"
                   }}
                   onPress={this._order}>
                   <Text style={{ color: "#fff", fontWeight: "700" }}>Book Now</Text>
