@@ -77,9 +77,7 @@ class Order extends React.PureComponent {
           </View>
           {isEmpty(user) ? (
             <View style={styles.loginContainer}>
-              <Text style={{ textAlign: "center" }}>
-                You need to be logged in in order to view trips
-              </Text>
+              <Text style={{ textAlign: "center" }}>Please login to view your bookings</Text>
               <Button onPress={this.navigateToLogin} style={styles.loginButton}>
                 <Text style={{ color: "#FFF" }}>LOGIN</Text>
               </Button>
@@ -125,7 +123,17 @@ function OrderItems({ item, onPress }) {
   };
   const status = value => {
     if (value == "completed")
-      return <Text style={{ color: "green", lineHeight: 18, fontWeight: "700" }}>{value}</Text>;
+      return (
+        <Text
+          style={{
+            color: "green",
+            lineHeight: 18,
+            fontWeight: "700",
+            textTransform: "capitalize"
+          }}>
+          {value}
+        </Text>
+      );
   };
   return (
     <Button
@@ -157,7 +165,7 @@ function OrderItems({ item, onPress }) {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Total : </Text>
-          <Text style={{ lineHeight: 20 }}>{item.order_data.total}</Text>
+          <Text style={{ lineHeight: 20 }}>{"₹" + item.order_data.total}</Text>
         </View>
       </View>
     </Button>

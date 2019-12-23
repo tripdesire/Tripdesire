@@ -221,7 +221,7 @@ class SignIn extends React.PureComponent {
                 <Text style={{ color: "#D2D1D1" }}>Sign In via OTP</Text>
               </Button>
               <Button
-                style={[styles.facebook_google_button, { marginTop: 20 }]}
+                style={[styles.facebook_google_button, { marginTop: 10 }]}
                 onPress={() => this.socialLogin("google")}>
                 <Image source={require("../assets/imgs/google.png")} />
                 <Text style={{ color: "#D2D1D1" }}>Sign In by Google</Text>

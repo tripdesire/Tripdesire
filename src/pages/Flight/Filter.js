@@ -39,7 +39,7 @@ class Filter extends React.Component {
       "Airlines",
       "Connecting Locations",
       "Price",
-      "departure",
+      "Departure",
       "Arrival",
       "Sort by"
     ];

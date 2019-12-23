@@ -703,7 +703,7 @@ class Payment extends React.PureComponent {
                     borderRadius: 20
                   }}
                   onPress={this._order}>
-                  <Text style={{ color: "#fff" }}>Place Order</Text>
+                  <Text style={{ color: "#fff" }}>Bookings</Text>
                 </Button>
               </ScrollView>
             </View>

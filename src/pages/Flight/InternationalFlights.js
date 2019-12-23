@@ -1,10 +1,9 @@
 import React from "react";
 import { View, Image, StyleSheet, Picker, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
-import { Button, Text, AutoCompleteModal } from "../../components";
+import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import Icon from "react-native-vector-icons/Ionicons";
 import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-simple-toast";
 import AddPassengers from "./AddPassengers";
@@ -144,6 +143,29 @@ class InternationalFlights extends React.PureComponent {
     });
   };
 
+  _exchange = () => {
+    const {
+      from,
+      to,
+      sourceName,
+      destinationName,
+      fromCode,
+      ToCode,
+      sourceAirportName,
+      destinationAirportName
+    } = this.state;
+    this.setState({
+      from: to,
+      to: from,
+      sourceName: destinationName,
+      sourceAirportName: destinationAirportName,
+      destinationAirportName: sourceAirportName,
+      destinationName: sourceName,
+      fromCode: ToCode,
+      ToCode: fromCode
+    });
+  };
+
   _search = () => {
     let jd = moment(this.state.Journey_date).format("DD-MM-YYYY");
     let rd = moment(this.state.Return_date).format("DD-MM-YYYY");
@@ -250,6 +272,9 @@ class InternationalFlights extends React.PureComponent {
             <Text style={{ color: "#5D666D" }}>From</Text>
             <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
           </Button>
+          <Button onPress={this._exchange}>
+            <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
+          </Button>
         </View>
 
         <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
@@ -335,14 +360,14 @@ class InternationalFlights extends React.PureComponent {
               style={{
                 inputIOS: {
                   fontSize: 18,
-                  fontWeight: "600",
+                  fontWeight: "700",
                   color: "#5D666D"
                 },
                 inputAndroid: {
                   padding: 0,
                   height: 20,
                   fontSize: 18,
-                  fontWeight: "600",
+                  fontWeight: "700",
                   color: "#5D666D"
                 }
               }}
@@ -351,7 +376,7 @@ class InternationalFlights extends React.PureComponent {
                 this.setState({ class: itemValue, index: index })
               }
               items={this.state.className}
-              Icon={() => <Icon name="ios-arrow-down" size={20} />}
+              Icon={() => <Icon name={Platform.OS == "ios" ? "ios-arrow-down" : ""} size={20} />}
             />
           </View>
         </View>

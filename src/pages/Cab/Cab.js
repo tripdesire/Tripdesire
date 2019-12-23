@@ -494,7 +494,7 @@ class Cab extends React.PureComponent {
                           color: "#5D666D",
                           padding: 0,
                           height: 20,
-                          fontWeight: "600",
+                          fontWeight: "700",
                           fontSize: 18
                         }
                       }}
@@ -519,7 +519,7 @@ class Cab extends React.PureComponent {
                         color: "#5D666D",
                         padding: 0,
                         height: 20,
-                        fontWeight: "600",
+                        fontWeight: "700",
                         fontSize: 18
                       }
                     }}

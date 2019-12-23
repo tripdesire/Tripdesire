@@ -49,11 +49,12 @@ class RenderItems extends React.PureComponent {
   render() {
     const { closeDetails, loading } = this.state;
     return (
-      <View
+      <TouchableOpacity
         style={{
           paddingVertical: 20,
           backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#E5EBF7"
-        }}>
+        }}
+        onPress={this._BookNow(this.props.item)}>
         <View
           style={{
             flexDirection: "row",
@@ -62,16 +63,18 @@ class RenderItems extends React.PureComponent {
             marginHorizontal: 16
           }}>
           <Text style={{ flex: 1, fontWeight: "700", fontSize: 16 }}>{this.props.item.Name}</Text>
-          <Button
+          <Text style={{ fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
+            ₹ {this.props.item.TotalNetAmount}
+          </Text>
+          {/* <Button
             style={{
               backgroundColor: "#5191FB",
               borderRadius: 20,
-              paddingHorizontal: 10,
+              paddingHorizontal: 10,  
               paddingVertical: 5
-            }}
-            onPress={this._BookNow(this.props.item)}>
+            }}>
             <Text style={{ color: "#fff", fontWeight: "600" }}>Book Now</Text>
-          </Button>
+          </Button> */}
         </View>
         <View
           style={{
@@ -112,9 +115,9 @@ class RenderItems extends React.PureComponent {
                   ₹ {this.props.item.PerKm}/km
                 </Text>
               )}
-              <Text style={{ fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
+              {/* <Text style={{ fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
                 ₹ {this.props.item.TotalNetAmount}
-              </Text>
+              </Text> */}
             </View>
           </View>
         </View>
@@ -136,7 +139,7 @@ class RenderItems extends React.PureComponent {
           onRequestClose={this.closeFareDetails}>
           <FareDetails data={this.props.item} onBackPress={this.closeFareDetails} />
         </Modal>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

@@ -663,16 +663,14 @@ class CheckOut1 extends React.PureComponent {
           <View style={{ flex: 1 }}>
             <View
               style={{
-                height: 56,
+                //  height: 56,
                 backgroundColor: "#E5EBF7",
-                flexDirection: "row",
-                paddingHorizontal: 16,
-                paddingVertical: 10
+                flexDirection: "row"
               }}>
-              <Button onPress={() => this.props.navigation.goBack(null)}>
+              <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{ marginHorizontal: 5 }}>
+              <View style={{ marginHorizontal: 5, paddingTop: 16, flex: 1 }}>
                 <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
                 <Text style={{ fontSize: 12, color: "#717984" }}>
                   {params.journey_date} {params.return_date ? " - " + params.return_date : ""}
@@ -1156,7 +1154,7 @@ class CheckOut1 extends React.PureComponent {
                 <Button
                   style={{
                     backgroundColor: "#F68E1D",
-                    marginHorizontal: 140,
+                    marginHorizontal: 120,
                     alignItems: "center",
                     marginVertical: 30,
                     justifyContent: "center",

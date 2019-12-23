@@ -381,44 +381,39 @@ class CheckOut extends React.PureComponent {
         <>
           <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-            <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
+            <View style={{ backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
-                  flexDirection: "row",
-                  marginHorizontal: 16,
-                  marginVertical: 10
+                  flexDirection: "row"
                 }}>
-                <Button onPress={() => this.props.navigation.goBack(null)}>
+                <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                   <Icon name="md-arrow-back" size={24} />
                 </Button>
                 <View
                   style={{
-                    justifyContent: "space-between",
-                    flexDirection: "row",
-                    flex: 1
+                    flex: 1,
+                    paddingTop: 16
                   }}>
-                  <View>
-                    <Text
-                      style={{
-                        fontWeight: "700",
-                        fontSize: 16,
-                        marginHorizontal: 5
-                      }}>
-                      Checkout
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        marginHorizontal: 5,
-                        color: "#717984"
-                      }}>
-                      {params.journey_date} {params.return_date ? "- " + params.return_date : null}{" "}
-                      | {params.adult > 0 ? params.adult + " Adult" : " "}
-                      {params.child > 0 ? " , " + params.child + " Child" : " "}
-                      {params.infant > 0 ? " , " + params.infant + " Infant" : " "} |{" "}
-                      {params.className}
-                    </Text>
-                  </View>
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      marginHorizontal: 5
+                    }}>
+                    Checkout
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      marginHorizontal: 5,
+                      color: "#717984"
+                    }}>
+                    {params.journey_date} {params.return_date ? "- " + params.return_date : null} |{" "}
+                    {params.adult > 0 ? params.adult + " Adult" : " "}
+                    {params.child > 0 ? " , " + params.child + " Child" : " "}
+                    {params.infant > 0 ? " , " + params.infant + " Infant" : " "} |{" "}
+                    {params.className}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -1128,7 +1123,7 @@ class CheckOut extends React.PureComponent {
                     flexDirection: "row",
                     justifyContent: "space-between"
                   }}>
-                  <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
+                  <Text style={{ marginStart: 10 }}>Conv. Fees</Text>
                   <Text style={{ marginEnd: 10 }}>
                     {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
                   </Text>

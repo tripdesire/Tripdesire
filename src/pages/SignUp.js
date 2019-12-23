@@ -132,6 +132,11 @@ class SignUp extends React.PureComponent {
     }
   };
 
+  navigateToScreen = (page, params = {}) => () => {
+    const { onBack } = this.props.navigation.state.params;
+    this.props.navigation.navigate(page, { onBack });
+  };
+
   render() {
     const { loader } = this.state;
     return (
@@ -200,7 +205,7 @@ class SignUp extends React.PureComponent {
               onChangeText={text => this.setState({ password: text })}
             />
             <Button style={styles.button} onPress={this.signUp}>
-              <Text style={{ color: "#fff" }}>Sign Up</Text>
+              <Text style={{ color: "#fff" }}>Submit</Text>
             </Button>
             <View
               style={{
@@ -222,6 +227,11 @@ class SignUp extends React.PureComponent {
             </View>
             <Button
               style={[styles.facebook_google_button, { marginTop: 20 }]}
+              onPress={this.navigateToScreen("OTPScreen")}>
+              <Text style={{ color: "#D2D1D1" }}>Sign Up via OTP</Text>
+            </Button>
+            <Button
+              style={[styles.facebook_google_button, { marginTop: 10 }]}
               onPress={() => this._Social_login("google")}>
               <Image source={require("../assets/imgs/google.png")} />
               <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
@@ -236,22 +246,7 @@ class SignUp extends React.PureComponent {
               />
               <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Sign Up by Facebook</Text>
             </Button>
-            <View>
-              {/* <LoginButton
-                onLoginFinished={(error, result) => {
-                  if (error) {
-                    console.log("login has error: " + result.error);
-                  } else if (result.isCancelled) {
-                    console.log("login is cancelled.");
-                  } else {
-                    AccessToken.getCurrentAccessToken().then(data => {
-                      console.log(data.accessToken.toString());
-                    });
-                  }
-                }}
-                onLogoutFinished={() => console.log("logout.")}
-              /> */}
-            </View>
+            <View></View>
           </View>
         </ScrollView>
         {loader && <ActivityIndicator />}

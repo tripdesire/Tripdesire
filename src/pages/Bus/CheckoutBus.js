@@ -767,7 +767,7 @@ class CheckoutBus extends React.PureComponent {
                       marginHorizontal: 10,
                       justifyContent: "space-between"
                     }}>
-                    <Text>Conv. Fee</Text>
+                    <Text>Conv. Fees</Text>
                     <Text>0</Text>
                   </View>
                   {!this.state.inputCoupon && (

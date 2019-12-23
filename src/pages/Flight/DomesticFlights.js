@@ -329,14 +329,14 @@ class DomesticFlights extends React.PureComponent {
               style={{
                 inputIOS: {
                   fontSize: 18,
-                  fontWeight: "600",
+                  fontWeight: "700",
                   color: "#5D666D"
                 },
                 inputAndroid: {
                   padding: 0,
                   height: 20,
                   fontSize: 18,
-                  fontWeight: "600",
+                  fontWeight: "700",
                   color: "#5D666D"
                 }
               }}
