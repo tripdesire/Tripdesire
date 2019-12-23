@@ -123,6 +123,10 @@ class FlightsInfoRound extends React.PureComponent {
 
   _bookNow = () => {
     console.log("hey");
+    console.log(this.state);
+    if (Array.isArray(this.state.onwardFlights) && this.state.onwardFlights.length == 0) {
+      return;
+    }
     const { returnFlights, onwardFlights, selectedOnward, selectedReturn } = this.state;
     let param = {
       arrivalFlight: returnFlights[selectedReturn],
@@ -518,13 +522,24 @@ class FlightsInfoRound extends React.PureComponent {
               index={index}
               ref={ref => (this.scrollRef = ref)}
               onChangeIndex={this._onChangeIndex}>
-              <FlatList
-                data={onwardFlights}
-                keyExtractor={this._keyExtractorOnward}
-                renderItem={this._renderItemOnward}
-                contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                extraData={this.state.selectedOnward}
-              />
+              {Array.isArray(onwardFlights) && onwardFlights.length == 0 ? (
+                <View
+                  style={{
+                    alignItems: "center",
+                    flex: 1,
+                    justifyContent: "center"
+                  }}>
+                  <Text>Flights are not available</Text>
+                </View>
+              ) : (
+                <FlatList
+                  data={onwardFlights}
+                  keyExtractor={this._keyExtractorOnward}
+                  renderItem={this._renderItemOnward}
+                  contentContainerStyle={{ width, paddingHorizontal: 8 }}
+                  extraData={this.state.selectedOnward}
+                />
+              )}
               <FlatList
                 data={returnFlights}
                 keyExtractor={this._keyExtractorReturn}

@@ -124,10 +124,10 @@ class HotelInfo extends React.PureComponent {
         filteredHotels = orderBy(filteredHotels, "HotelName", "desc");
         break;
       case "Rating Asc":
-        filteredHotels = orderBy(filteredHotels, "Rating", "asc");
+        filteredHotels = orderBy(filteredHotels, "StarRating", "asc");
         break;
       case "Rating Desc":
-        filteredHotels = orderBy(filteredHotels, "Rating", "desc");
+        filteredHotels = orderBy(filteredHotels, "StarRating", "desc");
         break;
     }
     this.setState({

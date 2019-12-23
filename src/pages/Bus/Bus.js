@@ -125,7 +125,7 @@ class Bus extends React.PureComponent {
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>
             <View style={{ backgroundColor: "#E4EAF6", height: 80 }}>
-              <Header firstName="Bus" lastName="Search" />
+              <Header firstName="Buses" lastName="Search" />
             </View>
 
             <View style={{ height: 30, width: "100%" }}>
