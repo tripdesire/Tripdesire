@@ -23,17 +23,17 @@ class Splash extends React.PureComponent {
           alignItems: "center",
           justifyContent: "center"
         }}
-        source={require("../assets/imgs/Bg.png")}>
+        source={require("../assets/imgs/Bg.jpg")}>
         <Image
           resizeMode="contain"
           style={{
             width: width - 100,
             height: height / 5,
             alignItems: "center",
-            marginTop: 100,
+            marginTop: -50,
             justifyContent: "center"
           }}
-          source={require("../assets/imgs/LOGOSplash.png")}
+          source={require("../assets/imgs/td-logo.png")}
         />
       </ImageBackground>
     );
