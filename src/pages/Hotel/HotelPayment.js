@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, TextInput, StyleSheet, Dimensions, SafeAreaView } from "react-native";
+import { View, Platform, TextInput, StyleSheet, Dimensions, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
@@ -242,7 +242,7 @@ class HotelPayment extends React.PureComponent {
                         backgroundColor: "#fff",
                         justifyContent: "center",
                         marginVertical: 20,
-                        paddingVertical: 10,
+                        paddingVertical: Platform.OS == "ios" ? 10 : 0,
                         marginHorizontal: 16,
                         shadowOffset: { width: 0, height: 2 },
                         shadowColor: "rgba(0,0,0,0.1)",

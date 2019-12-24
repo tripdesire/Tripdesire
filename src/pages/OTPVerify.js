@@ -111,9 +111,9 @@ class OTPVerify extends Component {
           </View>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF", alignItems: "center" }}>
             <Text style={{ fontWeight: "700", fontSize: 18, marginTop: 100 }}>
-              We sent you a code for
+              An OTP has been sent to you
             </Text>
-            <Text style={{ fontWeight: "700", fontSize: 18 }}>Verify your Number</Text>
+            <Text style={{ fontWeight: "700", fontSize: 18 }}>on your Mobile Number</Text>
 
             <SmoothPinCodeInput
               value={this.state.code}

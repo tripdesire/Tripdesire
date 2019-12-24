@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TextInput, SafeAreaView } from "react-native";
+import { View, StyleSheet, TextInput, SafeAreaView, Platform } from "react-native";
 import CountryPicker, { getCallingCode, getAllCountries } from "react-native-country-picker-modal";
 import { domainApi } from "../service";
 import Toast from "react-native-simple-toast";
@@ -71,15 +71,20 @@ class OTPScreen extends React.Component {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
-          <View style={styles.header}>
-            <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <Text style={styles.headerTitle}>OTP</Text>
-          </View>
+          <Button
+            onPress={() => this.props.navigation.goBack(null)}
+            style={{ padding: 16, backgroundColor: "#E4EAF6" }}>
+            <Icon name="md-arrow-back" size={24} />
+          </Button>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF", alignItems: "center" }}>
-            <Text style={styles.login_txt}>
-              We will send you the otp to {"\n"}authenticate your account
+            <Text style={styles.login_txt}>Verify your Mobile Number</Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "300",
+                textAlign: "center"
+              }}>
+              We have sent OTP to your mobile
             </Text>
             <View style={styles.rowView}>
               <CountryPicker
@@ -95,7 +100,16 @@ class OTPScreen extends React.Component {
                 keyboardType="phone-pad"
                 value={this.state.phone}
                 onChangeText={this.updateState("phone")}
-                style={{ flex: 1 }}
+                style={{
+                  flex: 1,
+                  elevation: 1,
+                  paddingVertical: Platform.OS == "ios" ? 10 : null,
+                  shadowOpacity: 0.2,
+                  shadowRadius: 1,
+                  shadowOffset: { height: 1, width: 0 },
+                  backgroundColor: "#fff",
+                  paddingStart: 5
+                }}
               />
             </View>
 
@@ -149,7 +163,7 @@ const styles = StyleSheet.create({
   },
   login_txt: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
     textAlign: "center",
     marginTop: "25%"
   },

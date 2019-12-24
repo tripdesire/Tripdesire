@@ -56,7 +56,8 @@ class Cab extends React.PureComponent {
   }
 
   getTimeStops() {
-    var startTime = moment("00:00", "HH:mm");
+    var startTime = moment();
+    startTime.minutes(Math.ceil(startTime.minutes() / 15) * 15);
     var endTime = moment("23:59", "HH:mm");
     if (endTime.isBefore(startTime)) {
       endTime.add(1, "day");
@@ -134,6 +135,17 @@ class Cab extends React.PureComponent {
 
   setModalVisible = (key, visible) => () => {
     this.setState({ [key]: visible });
+  };
+
+  _exchange = () => {
+    this.setState({
+      from: this.state.to,
+      sourceName: this.state.destinationName,
+      destinationName: this.state.sourceName,
+      sourceId: this.state.destinationId,
+      destinationId: this.state.sourceId,
+      to: this.state.from
+    });
   };
 
   _triptype = value => {
@@ -228,7 +240,7 @@ class Cab extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", backgroundColor: "#E4EAF6", height: 80 }}>
-            <Header firstName="Cab" lastName="Search" />
+            <Header firstName="Cabs" lastName="Search" />
           </View>
 
           <View
@@ -367,11 +379,23 @@ class Cab extends React.PureComponent {
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.setModalVisible("modalFrom", true)}>
                 <Text style={{ color: "#5D666D" }}>From</Text>
-                <Text
-                  numberOfLines={1}
-                  style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
-                  {from}
-                </Text>
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                  <Text
+                    numberOfLines={1}
+                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                    {from}
+                  </Text>
+                  {travelType == 1 && (
+                    <Button style={{ justifyContent: "center" }} onPress={this._exchange}>
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="swap-vertical"
+                        color="#5D666D"
+                        size={40}
+                      />
+                    </Button>
+                  )}
+                </View>
               </Button>
             </View>
 

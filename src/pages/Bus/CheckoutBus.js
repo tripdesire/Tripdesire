@@ -1,5 +1,13 @@
 import React, { PureComponent } from "react";
-import { View, Image, TextInput, Picker, ScrollView, SafeAreaView, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+  SafeAreaView,
+  StyleSheet,
+  Platform
+} from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import { etravosApi, domainApi } from "../../service";
 import moment from "moment";
@@ -821,6 +829,7 @@ class CheckoutBus extends React.PureComponent {
                         justifyContent: "center",
                         marginHorizontal: 16,
                         marginTop: 20,
+                        paddingVertical: Platform.OS == "ios" ? 10 : 0,
                         shadowOffset: { width: 0, height: 2 },
                         shadowColor: "rgba(0,0,0,0.1)",
                         shadowOpacity: 1,

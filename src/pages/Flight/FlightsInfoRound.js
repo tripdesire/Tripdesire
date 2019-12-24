@@ -447,76 +447,80 @@ class FlightsInfoRound extends React.PureComponent {
               </Button>
             </HeaderFlights>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                margin: 16,
-                alignItems: "center"
-              }}>
+            {Array.isArray(onwardFlights) && onwardFlights.length > 0 && (
               <View>
-                <Text style={{ color: "#5F6D78" }}>Departure</Text>
-                <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                  ₹ {onwardFare}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    margin: 16,
+                    alignItems: "center"
+                  }}>
+                  <View>
+                    <Text style={{ color: "#5F6D78" }}>Departure</Text>
+                    <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
+                      ₹ {onwardFare}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "#5F6D78" }}>Return</Text>
+                    <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
+                      ₹ {returnFare}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "#5F6D78" }}>Total</Text>
+                    <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
+                      ₹ {onwardFare + returnFare}
+                    </Text>
+                  </View>
+                  <Button
+                    style={{ backgroundColor: "#F68E1F", borderRadius: 15 }}
+                    onPress={this._bookNow}>
+                    <Text style={{ color: "#fff", paddingHorizontal: 10, paddingVertical: 4 }}>
+                      Book Now
+                    </Text>
+                  </Button>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: "#DEDEDE",
+                    height: 1,
+                    marginHorizontal: 16,
+                    marginVertical: 10
+                  }}
+                />
+                <View
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginHorizontal: 16
+                  }}>
+                  <Button
+                    style={[
+                      styles.tabBtn,
+                      { backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff" }
+                    ]}
+                    onPress={this._onPress("Depart")}>
+                    <Text style={{ fontSize: 12, color: swiperIndex == 0 ? "#ffffff" : "#000000" }}>
+                      Depart
+                    </Text>
+                  </Button>
+                  <Button
+                    style={[
+                      styles.tabBtn,
+                      { backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff" }
+                    ]}
+                    onPress={this._onPress("Return")}>
+                    <Text style={{ fontSize: 12, color: swiperIndex == 1 ? "#ffffff" : "#000000" }}>
+                      Return
+                    </Text>
+                  </Button>
+                </View>
               </View>
-              <View>
-                <Text style={{ color: "#5F6D78" }}>Return</Text>
-                <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                  ₹ {returnFare}
-                </Text>
-              </View>
-              <View>
-                <Text style={{ color: "#5F6D78" }}>Total</Text>
-                <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                  ₹ {onwardFare + returnFare}
-                </Text>
-              </View>
-              <Button
-                style={{ backgroundColor: "#F68E1F", borderRadius: 15 }}
-                onPress={this._bookNow}>
-                <Text style={{ color: "#fff", paddingHorizontal: 10, paddingVertical: 4 }}>
-                  Book Now
-                </Text>
-              </Button>
-            </View>
-            <View
-              style={{
-                backgroundColor: "#DEDEDE",
-                height: 1,
-                marginHorizontal: 16,
-                marginVertical: 10
-              }}
-            />
-            <View
-              style={{
-                backgroundColor: "#FFFFFF",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginHorizontal: 16
-              }}>
-              <Button
-                style={[
-                  styles.tabBtn,
-                  { backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff" }
-                ]}
-                onPress={this._onPress("Depart")}>
-                <Text style={{ fontSize: 12, color: swiperIndex == 0 ? "#ffffff" : "#000000" }}>
-                  Depart
-                </Text>
-              </Button>
-              <Button
-                style={[
-                  styles.tabBtn,
-                  { backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff" }
-                ]}
-                onPress={this._onPress("Return")}>
-                <Text style={{ fontSize: 12, color: swiperIndex == 1 ? "#ffffff" : "#000000" }}>
-                  Return
-                </Text>
-              </Button>
-            </View>
+            )}
 
             <SwiperFlatList
               index={index}
@@ -526,10 +530,10 @@ class FlightsInfoRound extends React.PureComponent {
                 <View
                   style={{
                     alignItems: "center",
-                    flex: 1,
+                    width: "100%",
                     justifyContent: "center"
                   }}>
-                  <Text>Flights are not available</Text>
+                  <Text>Data not found</Text>
                 </View>
               ) : (
                 <FlatList

@@ -102,7 +102,7 @@ class Order extends React.PureComponent {
                   justifyContent: "center",
                   backgroundColor: "#FFF"
                 }}>
-                <Text>Orders are not found</Text>
+                <Text>No bookings yet</Text>
               </View>
             )
           )}

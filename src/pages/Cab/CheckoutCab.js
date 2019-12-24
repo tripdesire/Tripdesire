@@ -846,7 +846,7 @@ class CheckoutCab extends React.PureComponent {
                       backgroundColor: "#fff",
                       justifyContent: "center",
                       marginVertical: 20,
-                      paddingVertical: 10,
+                      paddingVertical: Platform.OS == "ios" ? 10 : 0,
                       marginHorizontal: 16,
                       shadowOffset: { width: 0, height: 2 },
                       shadowColor: "rgba(0,0,0,0.1)",

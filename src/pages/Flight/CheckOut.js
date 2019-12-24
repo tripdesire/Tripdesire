@@ -1,5 +1,13 @@
 import React, { PureComponent } from "react";
-import { View, Image, TextInput, ScrollView, SafeAreaView, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+  SafeAreaView,
+  StyleSheet,
+  Platform
+} from "react-native";
 import Toast from "react-native-simple-toast";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -729,7 +737,7 @@ class CheckOut extends React.PureComponent {
                       backgroundColor: "#fff",
                       justifyContent: "center",
                       marginVertical: 20,
-                      paddingVertical: 10,
+                      paddingVertical: Platform.OS == "ios" ? 10 : 0,
                       marginHorizontal: 16,
                       shadowOffset: { width: 0, height: 2 },
                       shadowColor: "rgba(0,0,0,0.1)",
@@ -1187,7 +1195,7 @@ class CheckOut extends React.PureComponent {
                       backgroundColor: "#fff",
                       justifyContent: "center",
                       marginVertical: 20,
-                      paddingVertical: 10,
+                      paddingVertical: Platform.OS == "ios" ? 10 : 0,
                       marginHorizontal: 16,
                       shadowOffset: { width: 0, height: 2 },
                       shadowColor: "rgba(0,0,0,0.1)",

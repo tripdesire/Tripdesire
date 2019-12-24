@@ -128,7 +128,7 @@ class Bus extends React.PureComponent {
               <Header firstName="Buses" lastName="Search" />
             </View>
 
-            <View style={{ height: 30, width: "100%" }}>
+            {/* <View style={{ height: 30, width: "100%" }}>
               <View style={{ flex: 2, backgroundColor: "#E4EAF6" }}></View>
               <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}></View>
               <View
@@ -136,6 +136,17 @@ class Bus extends React.PureComponent {
                   flexDirection: "row",
                   justifyContent: "center",
                   ...StyleSheet.absoluteFill
+                }}>
+               
+              </View>
+            </View> */}
+
+            <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: -15
                 }}>
                 <Button
                   style={{
@@ -172,9 +183,6 @@ class Bus extends React.PureComponent {
                   </Text>
                 </Button>
               </View>
-            </View>
-
-            <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>
               <View
                 style={{
                   marginHorizontal: 16,

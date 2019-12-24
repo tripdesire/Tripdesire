@@ -15,11 +15,11 @@ function MyAccount({ navigation }) {
   const dispatch = useDispatch();
 
   const login = () => {
-    navigation.navigate("LoginStack", { isCheckout: true });
+    navigation.navigate("LoginStack", {});
   };
-  // const signUp = () => {
-  //   navigation.navigate("SignUp", {});
-  // };
+  const signUp = () => {
+    navigation.navigate("SignUp", { backToAccount: true });
+  };
 
   const myTrips = () => {
     // if (isEmpty(user)) {
@@ -90,7 +90,7 @@ function MyAccount({ navigation }) {
                 <Text style={styles.loginButton}>Login</Text>
               </Button>
               <View style={{ width: 3, backgroundColor: "#757575", height: 18 }} />
-              <Button onPress={login}>
+              <Button onPress={signUp}>
                 <Text style={styles.loginButton}>Sign Up</Text>
               </Button>
             </View>
