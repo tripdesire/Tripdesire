@@ -194,13 +194,17 @@ class Hotel extends React.PureComponent {
                 height: 30,
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: -10
+                marginTop: -15
               }}>
               <Button
                 onPress={this.updateHotelType(1)}
                 style={{
                   backgroundColor: hoteltype == 1 ? "#5B89F9" : "#FFF",
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   zIndex: 2,
                   height: 30,
                   justifyContent: "center",
@@ -223,6 +227,10 @@ class Hotel extends React.PureComponent {
                 style={{
                   backgroundColor: hoteltype == 2 ? "#5B89F9" : "#FFF",
                   elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
                   zIndex: 2,
                   height: 30,
                   paddingHorizontal: 30,

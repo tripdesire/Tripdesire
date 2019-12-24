@@ -249,8 +249,13 @@ class Cab extends React.PureComponent {
               marginHorizontal: 16,
               marginTop: -15,
               justifyContent: "center",
-              borderRadius: 10
+              borderRadius: 10,
               //borderWidth: 2
+              elevation: 1,
+              shadowOffset: { width: 0, height: 2 },
+              shadowColor: "rgba(0,0,0,0.1)",
+              shadowOpacity: 1,
+              shadowRadius: 4
             }}>
             <Button
               style={{
@@ -303,7 +308,7 @@ class Cab extends React.PureComponent {
             </Button>
           </View>
 
-          <ScrollView contentContainerStyle={{ backgroundColor: "#FFFFFF" }}>
+          <ScrollView contentContainerStyle={{ backgroundColor: "#FFFFFF", marginTop: 2 }}>
             {travelType == 1 && (
               <View
                 style={{
