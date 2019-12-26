@@ -273,12 +273,12 @@ class CheckOut extends React.PureComponent {
 
     this.setState({ loading: true });
     axios
-      .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param)
+      .post("https://tripdesire.co/wp-json/wc/v2/cart/add", param)
       .then(res => {
         console.log(res);
         // if (res.data.code == 1) {
         axios
-          .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
+          .get("https://tripdesire.co/wp-json/wc/v2/cart")
           .then(({ data }) => {
             console.log(data);
             // this.props.navigation.navigate(page, { params, data });

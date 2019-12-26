@@ -121,7 +121,7 @@ class CheckoutCab extends React.PureComponent {
 
     this.setState({ loader: true });
     axios
-      .post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", data)
+      .post("https://tripdesire.co/wp-json/wc/v2/cart/add", data)
       .then(({ data }) => {
         this.setState({ loader: false });
         console.log(data);
@@ -129,7 +129,7 @@ class CheckoutCab extends React.PureComponent {
           // Toast.show(data.message, Toast.LONG);
           this.setState({ loader: true });
           axios
-            .get("https://demo66.tutiixx.com/wp-json/wc/v2/cart")
+            .get("https://tripdesire.co/wp-json/wc/v2/cart")
             .then(({ data: CartData }) => {
               this.setState({ loader: false, cartData: CartData });
               console.log(CartData);

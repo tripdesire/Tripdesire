@@ -93,11 +93,11 @@ class HotelPayment extends React.PureComponent {
       single_ht_convenience_fee: params.ConvenienceFeeTotal
     };
 
-    axios.post("https://demo66.tutiixx.com/wp-json/wc/v2/cart/add", param).then(res => {
+    axios.post("https://tripdesire.co/wp-json/wc/v2/cart/add", param).then(res => {
       console.log(res);
     });
 
-    axios.get("https://demo66.tutiixx.com/wp-json/wc/v2/cart").then(({ data }) => {
+    axios.get("https://tripdesire.co/wp-json/wc/v2/cart").then(({ data }) => {
       console.log(data);
       this.setState({ data: data, loading: false });
       //this.props.navigation.navigate("Payment", { params, data });
