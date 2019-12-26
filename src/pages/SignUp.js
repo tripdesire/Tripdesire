@@ -38,7 +38,12 @@ class SignUp extends React.PureComponent {
     bodyFormData.append("email", this.state.email);
     bodyFormData.append("password", this.state.password);
     console.log(params);
-    if (this.state.firstname != "" && this.state.email != "" && this.state.password != "") {
+    if (
+      this.state.firstname != "" &&
+      this.state.lastname != "" &&
+      this.state.email != "" &&
+      this.state.password != ""
+    ) {
       if (reg.test(this.state.email) === true) {
         this.setState({ loader: true });
         domainApi
@@ -49,19 +54,21 @@ class SignUp extends React.PureComponent {
             if (response.data.status == 1) {
               console.log(response);
               this.setState({ loader: false });
-              Toast.show("Successful Signup! Login now", Toast.LONG);
+              // Toast.show("Successful Signup! Login now", Toast.LONG);
               this.props.navigation.goBack(null);
             } else {
               this.setState({ loader: false });
-              Toast.show("Something went wrong", Toast.LONG);
+              Toast.show(response.Message, Toast.LONG);
             }
           })
           .catch(() => {
             this.setState({ loader: false });
           });
       } else {
-        Toast.show("Please fill all fields", Toast.LONG);
+        Toast.show("Please enter the correct email address", Toast.LONG);
       }
+    } else {
+      Toast.show("Please fill all the details", Toast.LONG);
     }
   };
 
@@ -78,10 +85,10 @@ class SignUp extends React.PureComponent {
             this.props.Signin(data.details);
             this.props.navigation.goBack(null);
             this.props.navigation.goBack(null);
-            Toast.show("Login successful", Toast.LONG);
+            // Toast.show("Login successful", Toast.LONG);
           } else {
             this.setState({ loader: false });
-            Toast.show("Wrong Email / Password.", Toast.LONG);
+            Toast.show("Username/Password does not match", Toast.LONG);
           }
         });
       });
@@ -110,10 +117,10 @@ class SignUp extends React.PureComponent {
                         this.props.Signin(data.details);
                         this.props.navigation.goBack(null);
                         this.props.navigation.goBack(null);
-                        Toast.show("you are login successfully", Toast.LONG);
+                        // Toast.show("you are signup successfully", Toast.LONG);
                       } else {
                         this.setState({ loader: false });
-                        Toast.show("you are not login successfully", Toast.LONG);
+                        Toast.show("Please try again", Toast.LONG);
                       }
                     });
                   }
@@ -209,6 +216,7 @@ class SignUp extends React.PureComponent {
                   onChangeText={text => this.setState({ email: text })}
                 />
                 <TextInputComponent
+                  secureTextEntry={true}
                   label="Password"
                   placeholder="Enter the password"
                   value={this.state.password}

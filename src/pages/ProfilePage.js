@@ -159,7 +159,7 @@ class ProfilePage extends React.PureComponent {
               />
               <View style={{ alignItems: "center" }}>
                 <Button style={styles.button} onPress={this._Submit}>
-                  <Text style={{ color: "#fff" }}>Sign Up</Text>
+                  <Text style={{ color: "#fff" }}>Submit</Text>
                 </Button>
               </View>
             </ScrollView>

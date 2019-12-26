@@ -44,7 +44,7 @@ class Order extends React.PureComponent {
             allowMoreScroll: data.data.length >= limit
           });
         } else {
-          Toast.show("Orders not found", Toast.SHORT);
+          Toast.show("Orders are not found", Toast.SHORT);
           this.setState({ loading: false });
         }
       })

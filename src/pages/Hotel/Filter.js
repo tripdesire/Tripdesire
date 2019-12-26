@@ -88,7 +88,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                 style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
                 key={"filter_" + item + index}
                 onPress={() => setIndex(i)}>
-                <Text>{item}</Text>
+                <Text>{i == 2 && filters.amenities.length <= 0 ? null : item}</Text>
               </Button>
             ))}
           </View>

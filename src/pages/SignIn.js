@@ -43,7 +43,7 @@ class SignIn extends React.PureComponent {
             Toast.show("Login successful", Toast.LONG);
           } else {
             this.setState({ loader: false });
-            Toast.show("Wrong Email / Password.", Toast.LONG);
+            Toast.show("Username/Password does not match", Toast.LONG);
           }
         })
         .catch(error => {
@@ -51,7 +51,7 @@ class SignIn extends React.PureComponent {
           Toast.show(error, Toast.LONG);
         });
     } else {
-      Toast.show("Please enter the email and password.", Toast.LONG);
+      Toast.show("Please fill all the details.", Toast.LONG);
     }
   };
 
@@ -113,15 +113,15 @@ class SignIn extends React.PureComponent {
                           this.props.Signin(data.details);
                           onBack && onBack();
                           this.goBack();
-                          Toast.show("Login successful", Toast.LONG);
+                          Toast.show("Login successful", Toast.SHORT);
                         } else {
                           this.setState({ loader: false });
-                          Toast.show("Login Failed", Toast.LONG);
+                          Toast.show("Login Failed", Toast.SHORT);
                         }
                       })
                       .catch(err => {
                         this.setState({ loader: false });
-                        Toast.show(err.toString(), Toast.LONG);
+                        Toast.show(err.toString(), Toast.SHORT);
                       });
                   }
                 }
@@ -157,7 +157,7 @@ class SignIn extends React.PureComponent {
               <Icon name="md-arrow-back" size={24} />
             </Button>
             <Text
-              style={{ fontSize: 18, color: "#1E293B", paddingHorizontal: 16, fontWeight: "100" }}>
+              style={{ fontSize: 18, color: "#1E293B", paddingHorizontal: 8, fontWeight: "100" }}>
               Login
             </Text>
           </View>
@@ -181,6 +181,7 @@ class SignIn extends React.PureComponent {
                 onChangeText={text => this.setState({ email: text })}
               />
               <TextInputComponent
+                secureTextEntry={true}
                 label="Password*"
                 placeholder="Enter the password"
                 value={this.state.password}

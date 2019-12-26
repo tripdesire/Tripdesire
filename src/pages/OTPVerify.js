@@ -86,7 +86,7 @@ class OTPVerify extends Component {
           Toast.show("Login successful", Toast.LONG);
         } else {
           this.setState({ loader: false });
-          Toast.show("Wrong Email / Password.", Toast.LONG);
+          Toast.show("Login / Signup Failed.", Toast.LONG);
         }
       })
       .catch(() => {
