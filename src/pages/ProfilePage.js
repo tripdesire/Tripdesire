@@ -54,7 +54,7 @@ class ProfilePage extends React.PureComponent {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!reg.test(this.state.email)) {
-      Toast.show("Your email address should not correctly", Toast.LONG);
+      Toast.show("Your email address is not correct", Toast.LONG);
     } else if (
       !(newPassword === "" && confirmPassword === "" && currentPassword === "") &&
       (newPassword === "" || confirmPassword === "" || currentPassword === "")
@@ -69,7 +69,7 @@ class ProfilePage extends React.PureComponent {
         if (data.status == 1) {
           this.props.UpdateProfile(redux);
         } else {
-          Toast.show("You didn't update your profile deatils", Toast.LONG);
+          Toast.show("Nothing to update", Toast.LONG);
         }
       });
     }

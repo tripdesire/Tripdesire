@@ -405,8 +405,13 @@ class HotelInfo extends React.PureComponent {
                 renderItem={this._renderItemList}
               />
               {filteredHotels && (
-                <View style={{ flex: 5, alignItems: "center", justifyContent: "center" }}>
-                  <Text>Data not found</Text>
+                <View
+                  style={{
+                    flex: 5,
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                  <Text style={{ fontWeight: "700", fontSize: 18 }}>Data not found</Text>
                 </View>
               )}
             </View>

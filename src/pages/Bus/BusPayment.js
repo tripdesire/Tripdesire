@@ -96,7 +96,7 @@ class BusPayment extends React.PureComponent {
             description: "Credits towards consultation",
             // image: "https://i.imgur.com/3g7nmJC.png",
             currency: "INR",
-            key: "rzp_test_a3aQYPLYowGvWJ",
+            key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
             amount: parseInt(order.total) * 100,
             name: "TripDesire",
             prefill: {

@@ -530,10 +530,9 @@ class FlightsInfoRound extends React.PureComponent {
                 <View
                   style={{
                     alignItems: "center",
-                    width: "100%",
                     justifyContent: "center"
                   }}>
-                  <Text>Data not found</Text>
+                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
                 </View>
               ) : (
                 <FlatList

@@ -50,7 +50,7 @@ class CheckoutBus extends React.PureComponent {
         this.toggleCoupon(false)();
         this.setState({ cartData: data });
         this.ApiCall();
-        this.setState({ loader: false });
+        // this.setState({ loader: false });
       })
       .catch(() => {
         this.setState({ loader: false });
@@ -66,7 +66,7 @@ class CheckoutBus extends React.PureComponent {
       .then(({ data }) => {
         this.toggleCoupon(true)();
         this.ApiCall();
-        this.setState({ loader: false });
+        // this.setState({ loader: false });
       })
       .catch(() => {
         this.setState({ loader: false });
@@ -80,10 +80,6 @@ class CheckoutBus extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.ApiCall();
-  }
-
-  ApiCall() {
     console.log(this.props.navigation.state.params);
 
     const {
@@ -155,22 +151,27 @@ class CheckoutBus extends React.PureComponent {
     domainApi
       .post("/cart/add", paramAddToCart)
       .then(({ data }) => {
-        console.log(data);
-        this.setState({ loader: false });
-        if (data.code == "1") {
-          // Toast.show(data.message, Toast.LONG);
-          this.setState({ loader: true });
-          domainApi.get("/cart").then(({ data }) => {
-            console.log(data);
-            this.setState({ cartData: data, loader: false });
-          });
+        if (data.code !== "1") {
+          this.setState({ loader: false });
+          Toast.show(data.message, Toast.LONG);
         } else {
-          Toast.show(res.data.message, Toast.LONG);
+          this.ApiCall();
         }
       })
       .catch(error => {
         this.setState({ loader: false });
         console.log(error);
+      });
+  }
+
+  ApiCall() {
+    domainApi
+      .get("/cart")
+      .then(({ data }) => {
+        this.setState({ cartData: data, loader: false });
+      })
+      .catch(() => {
+        this.setState({ loader: false });
       });
   }
 
@@ -191,7 +192,7 @@ class CheckoutBus extends React.PureComponent {
 
   validate = () => {
     let needToValidateAdults = false;
-    needToValidateAdults = this.state.adults.every(item => item.name == "" || item.age == "");
+    needToValidateAdults = this.state.adults.some(item => item.name == "" || item.age == "");
     return needToValidateAdults;
   };
 

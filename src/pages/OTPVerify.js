@@ -67,7 +67,7 @@ class OTPVerify extends Component {
     const { onBack } = this.props.navigation.state.params;
 
     if (otp.length < 4) {
-      Toast.show("Invalid code");
+      Toast.show("Please Enter OTP");
       return;
     }
     this.setState({ loading: true });

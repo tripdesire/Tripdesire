@@ -42,7 +42,7 @@ class CheckOut extends React.PureComponent {
         this.toggleCoupon(false)();
         this.setState({ data: data });
         this.ApiCall();
-        this.setState({ loading: false });
+        // this.setState({ loading: false });
       })
       .catch(() => {
         this.setState({ loading: false });
@@ -58,7 +58,7 @@ class CheckOut extends React.PureComponent {
       .then(({ data }) => {
         this.toggleCoupon(true)();
         this.ApiCall();
-        this.setState({ loading: false });
+        // this.setState({ loading: false });
       })
       .catch(() => {
         this.setState({ loading: false });
@@ -72,6 +72,17 @@ class CheckOut extends React.PureComponent {
   };
 
   ApiCall() {
+    domainApi
+      .get("/cart")
+      .then(({ data }) => {
+        this.setState({ data: data, loading: false });
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+      });
+  }
+
+  componentDidMount() {
     const { params } = this.props.navigation.state;
     Object.assign(params, {
       itemId: 87
@@ -269,35 +280,20 @@ class CheckOut extends React.PureComponent {
       fl_ctype: params.className
     };
 
-    //  console.log(JSON.stringify(param));
-
     this.setState({ loading: true });
-    axios
-      .post("https://tripdesire.co/wp-json/wc/v2/cart/add", param)
-      .then(res => {
-        console.log(res);
-        // if (res.data.code == 1) {
-        axios
-          .get("https://tripdesire.co/wp-json/wc/v2/cart")
-          .then(({ data }) => {
-            console.log(data);
-            // this.props.navigation.navigate(page, { params, data });
-            this.setState({ data: data, loading: false });
-          })
-          .catch(error => {
-            Toast.show(error, Toast.LONG);
-            this.setState({ loading: false });
-          });
-        // }
+    domainApi
+      .post("/cart/add", param)
+      .then(({ data }) => {
+        if (data.code !== "1") {
+          this.setState({ loading: false });
+          Toast.show(data.message, Toast.LONG);
+        } else {
+          this.ApiCall();
+        }
       })
       .catch(error => {
-        Toast.show(error, Toast.LONG);
         this.setState({ loading: false });
       });
-  }
-
-  componentDidMount() {
-    this.ApiCall();
   }
 
   navigateToScreen = (page, params = {}) => () => {

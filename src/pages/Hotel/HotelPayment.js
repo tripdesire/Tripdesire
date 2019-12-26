@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
 import { View, Platform, TextInput, StyleSheet, Dimensions, SafeAreaView } from "react-native";
+import Toast from "react-native-simple-toast";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
-import axios from "axios";
 import HTML from "react-native-render-html";
-import { etravosApi, domainApi } from "../../service";
+import { domainApi } from "../../service";
 
 class HotelPayment extends React.PureComponent {
   constructor(props) {
@@ -24,7 +24,6 @@ class HotelPayment extends React.PureComponent {
     domainApi
       .get("/cart/coupon", { coupon_code: this.state.coupon_code })
       .then(({ data }) => {
-        console.log(data);
         if (data.code && data.code == 201) {
           Toast.show(data.message.join());
         }
@@ -61,10 +60,6 @@ class HotelPayment extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.ApiCall();
-  }
-
-  ApiCall() {
     const params = { ...this.props.navigation.state.params, itemId: 222 };
 
     let param = {
@@ -92,16 +87,32 @@ class HotelPayment extends React.PureComponent {
       single_ht_tax_amount: params.selectedRoom.etravosApitaxTotal,
       single_ht_convenience_fee: params.ConvenienceFeeTotal
     };
+    this.setState({ loading: true });
+    domainApi
+      .post("/cart/add", param)
+      .then(({ data }) => {
+        if (data.code !== "1") {
+          this.setState({ loading: false });
+          Toast.show(data.message, Toast.LONG);
+        } else {
+          this.ApiCall();
+        }
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  }
 
-    axios.post("https://tripdesire.co/wp-json/wc/v2/cart/add", param).then(res => {
-      console.log(res);
-    });
-
-    axios.get("https://tripdesire.co/wp-json/wc/v2/cart").then(({ data }) => {
-      console.log(data);
-      this.setState({ data: data, loading: false });
-      //this.props.navigation.navigate("Payment", { params, data });
-    });
+  ApiCall() {
+    domainApi
+      .get("/cart")
+      .then(({ data }) => {
+        this.setState({ data: data, loading: false });
+        //this.props.navigation.navigate("Payment", { params, data });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
   }
 
   _payment = () => {

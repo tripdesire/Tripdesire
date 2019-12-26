@@ -533,7 +533,7 @@ class FlightsInfoOneway extends React.PureComponent {
 
             {Array.isArray(flights) && flights.length == 0 ? (
               <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-                <Text>Data not Found</Text>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found</Text>
               </View>
             ) : (
               <FlatList

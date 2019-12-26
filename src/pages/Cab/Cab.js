@@ -46,7 +46,7 @@ class Cab extends React.PureComponent {
       SuggDrop: "",
       selectedTransfer: 1,
       suggItem: "",
-      item: this.getTimeStops()
+      item: this.getTimeStops(new Date())
     };
 
     this.inputRefs = {
@@ -55,13 +55,18 @@ class Cab extends React.PureComponent {
     };
   }
 
-  getTimeStops() {
-    var startTime = moment();
-    startTime.minutes(Math.ceil(startTime.minutes() / 15) * 15);
-    var endTime = moment("23:59", "HH:mm");
-    if (endTime.isBefore(startTime)) {
-      endTime.add(1, "day");
+  getTimeStops(date) {
+    var startTime = moment(date);
+
+    if (startTime.isSameOrBefore(moment())) {
+      startTime.minutes(Math.ceil(startTime.minutes() / 15) * 15);
+    } else {
+      startTime.startOf("day");
     }
+    var endTime = moment(date).endOf("day");
+    // if (endTime.isBefore(startTime)) {
+    //   endTime.add(1, "day");
+    // }
     var timeStops = [];
     while (startTime <= endTime) {
       let newSlot = new moment(startTime).format("h:mma");
@@ -84,6 +89,7 @@ class Cab extends React.PureComponent {
     if (key == "fromDTpicker") {
       data.CheckIn = date;
       data.CheckOut = date;
+      data.item = this.getTimeStops(date);
     } else {
       data.CheckOut = date;
     }
@@ -476,6 +482,7 @@ class Cab extends React.PureComponent {
                   isVisible={fromDTpicker}
                   onConfirm={this.handleDatePicked("fromDTpicker")}
                   onCancel={this.hideDateTimePicker("fromDTpicker")}
+                  date={this.state.CheckIn}
                   minimumDate={new Date()}
                 />
               </Button>
@@ -493,6 +500,7 @@ class Cab extends React.PureComponent {
                     isVisible={toDTpicker}
                     onConfirm={this.handleDatePicked("toDTpicker")}
                     onCancel={this.hideDateTimePicker("toDTpicker")}
+                    date={this.state.CheckOut}
                     minimumDate={this.state.CheckIn}
                   />
                 </Button>
@@ -519,6 +527,13 @@ class Cab extends React.PureComponent {
                       ]}
                       style={{
                         //iconContainer: { paddingEnd: 32 },
+                        inputIOS: {
+                          color: "#5D666D",
+                          padding: 0,
+                          height: 20,
+                          fontWeight: "700",
+                          fontSize: 18
+                        },
                         inputAndroid: {
                           color: "#5D666D",
                           padding: 0,
@@ -536,14 +551,20 @@ class Cab extends React.PureComponent {
               )}
               <View style={{ flex: 1, paddingStart: 20 }}>
                 <Text style={{ color: "#5D666D" }}>Pickup</Text>
-                <View style={{ width: 80 }}>
+                <View style={{ width: 100 }}>
                   <RNPickerSelect
                     placeholder={{}}
                     useNativeAndroidPickerStyle={false}
                     onValueChange={value => this.setState({ pickuptime: value })}
                     items={this.state.item}
                     style={{
-                      //iconContainer: { paddingEnd: 32 },
+                      inputIOS: {
+                        color: "#5D666D",
+                        padding: 0,
+                        height: 20,
+                        fontWeight: "700",
+                        fontSize: 18
+                      },
                       inputAndroid: {
                         color: "#5D666D",
                         padding: 0,

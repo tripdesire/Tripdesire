@@ -120,12 +120,12 @@ class Payment extends React.PureComponent {
   validate = () => {
     let needToValidateAdults = false;
     let needToValidateChilds = false;
-    needToValidateAdults = this.state.adults.every(
+    needToValidateAdults = this.state.adults.some(
       item => item.firstname == "" || item.last_name == "" || item.age == ""
     );
     needToValidateChilds =
       this.state.childs != 0 &&
-      this.state.childs.every(
+      this.state.childs.some(
         item => item.firstname == "" || item.last_name == "" || item.age == ""
       );
     return needToValidateAdults || needToValidateChilds;
@@ -290,7 +290,7 @@ class Payment extends React.PureComponent {
                     description: "Credits towards consultation",
                     //image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
-                    key: "rzp_test_a3aQYPLYowGvWJ",
+                    key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {

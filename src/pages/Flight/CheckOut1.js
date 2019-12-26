@@ -163,15 +163,15 @@ class CheckOut1 extends React.PureComponent {
     let needToValidateAdults = false;
     let needToValidateChilds = false;
     let needToValidateInfants = false;
-    needToValidateAdults = this.state.adults.every(
+    needToValidateAdults = this.state.adults.some(
       item => item.firstname == "" || item.last_name == ""
     );
     needToValidateChilds =
       this.state.childs.length != 0 &&
-      this.state.childs.every(item => item.firstname == "" || item.last_name == "");
+      this.state.childs.some(item => item.firstname == "" || item.last_name == "");
     needToValidateInfants =
       this.state.infants.length != 0 &&
-      this.state.infants.every(item => item.firstname == "" || item.last_name == "");
+      this.state.infants.some(item => item.firstname == "" || item.last_name == "");
 
     return needToValidateAdults || needToValidateChilds || needToValidateInfants;
   };
@@ -179,6 +179,8 @@ class CheckOut1 extends React.PureComponent {
   _order = async () => {
     const { params } = this.props.navigation.state.params;
     console.log(this.state);
+
+    console.log(this.validate());
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.LONG);
@@ -559,7 +561,7 @@ class CheckOut1 extends React.PureComponent {
                     description: "Credits towards consultation",
                     // image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
-                    key: "rzp_test_a3aQYPLYowGvWJ",
+                    key: "rzp_live_IRhvqgmESx60tW" , //"rzp_live_IRhvqgmESx60tW",
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {

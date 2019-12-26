@@ -50,15 +50,15 @@ class SignUp extends React.PureComponent {
           .post("/register", bodyFormData, {
             config: { headers: { "Content-Type": "multipart/form-data" } }
           })
-          .then(response => {
-            if (response.data.status == 1) {
-              console.log(response);
+          .then(({ data }) => {
+            if (data.status == 1) {
+              console.log(data);
               this.setState({ loader: false });
               // Toast.show("Successful Signup! Login now", Toast.LONG);
               this.props.navigation.goBack(null);
             } else {
               this.setState({ loader: false });
-              Toast.show(response.Message, Toast.LONG);
+              Toast.show(data.error, Toast.LONG);
             }
           })
           .catch(() => {
@@ -154,7 +154,6 @@ class SignUp extends React.PureComponent {
 
   render() {
     const { loader } = this.state;
-    console.log(this.props.navigation.state);
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />

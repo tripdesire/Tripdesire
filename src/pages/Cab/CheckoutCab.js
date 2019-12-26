@@ -47,7 +47,7 @@ class CheckoutCab extends React.PureComponent {
   }
 
   applyCoupon = () => {
-    this.setState({ loading: true });
+    this.setState({ loader: true });
     domainApi
       .get("/cart/coupon", { coupon_code: this.state.coupon_code })
       .then(({ data }) => {
@@ -58,15 +58,15 @@ class CheckoutCab extends React.PureComponent {
         this.toggleCoupon(false)();
         this.setState({ cartData: data });
         this.ApiCall();
-        this.setState({ loading: false });
+        // this.setState({ loader: false });
       })
       .catch(() => {
-        this.setState({ loading: false });
+        this.setState({ loader: false });
       });
   };
 
   removeCoupon = code => () => {
-    this.setState({ loading: true });
+    this.setState({ loader: true });
     domainApi
       .get("/cart/remove-coupon", {
         coupon_code: code
@@ -74,10 +74,10 @@ class CheckoutCab extends React.PureComponent {
       .then(({ data }) => {
         this.toggleCoupon(true)();
         this.ApiCall();
-        this.setState({ loading: false });
+        // this.setState({ loader: false });
       })
       .catch(() => {
-        this.setState({ loading: false });
+        this.setState({ loader: false });
       });
   };
 
@@ -88,10 +88,6 @@ class CheckoutCab extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.ApiCall();
-  }
-
-  ApiCall() {
     const { params, item } = this.props.navigation.state.params;
     let data = {
       id: 2238,
@@ -120,34 +116,27 @@ class CheckoutCab extends React.PureComponent {
     console.log(data);
 
     this.setState({ loader: true });
-    axios
-      .post("https://tripdesire.co/wp-json/wc/v2/cart/add", data)
+    domainApi
+      .post("/cart/add", data)
       .then(({ data }) => {
-        this.setState({ loader: false });
-        console.log(data);
-        if (data.code == "1") {
-          // Toast.show(data.message, Toast.LONG);
-          this.setState({ loader: true });
-          axios
-            .get("https://tripdesire.co/wp-json/wc/v2/cart")
-            .then(({ data: CartData }) => {
-              this.setState({ loader: false, cartData: CartData });
-              console.log(CartData);
-              let param = {
-                params: params,
-                item: item,
-                cartData: CartData
-              };
-              console.log(param);
-              //  this.props.navigation.navigate("CheckoutCab", param);
-            })
-            .catch(error => {
-              this.setState({ loader: false });
-              console.log(error);
-            });
-        } else {
+        if (data.code !== "1") {
+          this.setState({ loader: false });
           Toast.show(data.message, Toast.LONG);
+        } else {
+          this.ApiCall();
         }
+      })
+      .catch(error => {
+        this.setState({ loader: false });
+        console.log(error);
+      });
+  }
+
+  ApiCall() {
+    domainApi
+      .get("/cart")
+      .then(({ data: CartData }) => {
+        this.setState({ cartData: CartData, loader: false });
       })
       .catch(error => {
         this.setState({ loader: false });
@@ -276,7 +265,7 @@ class CheckoutCab extends React.PureComponent {
                   description: "Credits towards consultation",
                   //image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
-                  key: "rzp_test_a3aQYPLYowGvWJ",
+                  key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
                   amount: parseInt(order.total) * 100,
                   name: "TripDesire",
                   prefill: {
