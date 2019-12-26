@@ -132,7 +132,7 @@ class Payment extends React.PureComponent {
   };
 
   _order = () => {
-    const { params } = this.props.navigation.state.params;
+    const { params, data } = this.props.navigation.state.params;
 
     let adult_details = this.state.adults.map(item => ({
       "ad-den": item.den,
@@ -226,21 +226,23 @@ class Payment extends React.PureComponent {
     ].join("~");
     age = finalArrAge.join("-");
 
-    let data = {
+    const { user } = this.props;
+
+    let blockData = {
       AdditionalInfo: null,
-      Address: "",
+      Address: user.billing.address_1 != "" ? user.billing.address_1 : "",
       Adults: params.adultDetail,
       Ages: age, ///
       ArrivalDate: params.checkInDate,
       Children: params.childDetail,
       ChildrenAges: params.childAge,
-      City: "",
+      City: user.billing.city != "" ? user.billing.city : "",
       CityName: params.city,
-      Country: "India",
+      Country: user.billing.country != "" ? user.billing.country : "India",
       DepartureDate: params.checkOutDate,
       DestinationId: params.cityid,
-      EmailId: "guru@gmail.com",
-      Fare: null,
+      EmailId: user.billing.email != "" ? user.billing.email : "guru@gmail.com",
+      Fare: data.total_price, //null
       Genders: gender,
       HotelDetail: params,
       HotelId: params.HotelId,
@@ -248,7 +250,7 @@ class Payment extends React.PureComponent {
       HotelPolicy: params.HotelPolicy,
       HotelType: params.hoteltype,
       IsOfflineBooking: false,
-      MobileNo: "9999999999",
+      MobileNo: user.billing.phone != "" ? user.billing.phone : "9999999999",
       Names: name,
       Nationality: params.CountryCode,
       NoOfdays: params.Night,
@@ -263,7 +265,7 @@ class Payment extends React.PureComponent {
       UserType: 5,
       WebsiteUrl: ""
     };
-    console.log("BlockingData", data);
+    console.log("BlockingData", blockData);
     console.log(this.state);
 
     if (this.validate()) {
@@ -273,11 +275,10 @@ class Payment extends React.PureComponent {
         //Toast.show("Please login or signup", Toast.LONG);
         this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
-        console.log(data);
-        let totalData = data;
+        console.log(blockData);
         this.setState({ loading: true });
         etravosApi
-          .post("/Hotels/BlockHotelRoom", data)
+          .post("/Hotels/BlockHotelRoom", blockData)
           .then(blockres => {
             console.log(blockres.data);
             if (blockres.data.BookingStatus == 1) {
