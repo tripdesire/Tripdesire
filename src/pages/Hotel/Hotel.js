@@ -284,7 +284,15 @@ class Hotel extends React.PureComponent {
               />
               <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.modalOpen}>
                 <Text style={{ color: "#5D666D" }}>City</Text>
-                <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{place}</Text>
+                <Text
+                  style={{
+                    color: "#5D666D",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    textTransform: "capitalize"
+                  }}>
+                  {place}
+                </Text>
               </Button>
             </View>
 
@@ -337,7 +345,7 @@ class Hotel extends React.PureComponent {
                 source={require("../../assets/imgs/person.png")}
               />
               <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
-                <Text style={{ color: "#5D666D" }}>Rooms & Guest</Text>
+                <Text style={{ color: "#5D666D" }}>Rooms & Guests</Text>
                 <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
                   {adults_count === "Passengers:" ? adults_count : ""}
                   {adults_count > 0 ? adults_count + " Adults , " : ""}

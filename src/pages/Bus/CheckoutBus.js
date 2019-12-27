@@ -469,7 +469,7 @@ class CheckoutBus extends React.PureComponent {
                       <Text style={{ color: "#5B6974" }}>Journey Date</Text>
                       <Text>{moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")}</Text>
                     </View>
-                    <View style={{ flex: 1, paddingHorizontal: 4 }}>
+                    <View style={{ flex: 1, paddingHorizontal: 2 }}>
                       <Text style={{ color: "#5B6974" }}>Seat(s)</Text>
                       <Text>
                         {Array.isArray(selectedSheets) &&

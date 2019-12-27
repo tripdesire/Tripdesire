@@ -153,7 +153,11 @@ class FlightListInternational extends React.PureComponent {
             alignItems: "center"
           }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Image style={{ width: 40, height: 40, marginEnd: 10 }} source={{ uri: img }} />
+            <Image
+              style={{ width: 40, height: 40, marginEnd: 10 }}
+              resizeMode="contain"
+              source={{ uri: img }}
+            />
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>{dd}</Text>
               <Text
@@ -294,6 +298,7 @@ class FlightListInternational extends React.PureComponent {
                       source={{
                         uri: "http://webapi.i2space.co.in" + itemEach.ImagePath
                       }}
+                      resizeMode="contain"
                     />
                     <View>
                       <Text style={{ fontSize: 20, lineHeight: 22 }}>

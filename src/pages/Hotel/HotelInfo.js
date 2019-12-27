@@ -183,7 +183,7 @@ class HotelInfo extends React.PureComponent {
         />
         <View
           style={{
-            paddingStart: 5,
+            paddingStart: 10,
             flex: 1,
             backgroundColor: index % 2 == 0 ? "#ffffff" : "#E9ECF3"
           }}>
@@ -191,7 +191,7 @@ class HotelInfo extends React.PureComponent {
             <Text style={{ fontSize: 16, flex: 1 }}>{item.HotelName}</Text>
             <View style={{ marginStart: 10 }}>
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                ₹{item.RoomDetails[0].RoomTotal}
+                ₹{item.RoomDetails[0].RoomTotal.toFixed(2)}
               </Text>
             </View>
           </View>
@@ -220,7 +220,7 @@ class HotelInfo extends React.PureComponent {
           <View>
             <View style={{ flexDirection: "row", flex: 2 }}>
               <Image source={require("../../assets/imgs/location.png")} />
-              <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5 }}>
+              <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5, marginEnd: 5 }}>
                 {item.HotelAddress}
               </Text>
             </View>
@@ -404,7 +404,7 @@ class HotelInfo extends React.PureComponent {
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}
               />
-              {filteredHotels && (
+              {filteredHotels.length == 0 && (
                 <View
                   style={{
                     flex: 5,

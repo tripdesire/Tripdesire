@@ -10,6 +10,7 @@ import AutoCompleteModal from "./AutoCompleteModal";
 import Icon from "./IconNB";
 import CheckBox from "./CheckBox";
 import RadioButton from "./RadioButton";
+import RNPicker from "./RNPicker";
 
 export {
   Button,
@@ -23,5 +24,6 @@ export {
   AutoCompleteModal,
   Icon,
   CheckBox,
-  RadioButton
+  RadioButton,
+  RNPicker
 };

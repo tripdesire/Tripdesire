@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image, Modal, Platform } from "react-native";
 import { withNavigation } from "react-navigation";
-import { Button, Text, AutoCompleteModal, Icon } from "../../components";
+import { Button, Text, AutoCompleteModal, Icon, RNPicker } from "../../components";
 import AddPassengers from "./AddPassengers";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
@@ -45,6 +45,10 @@ class DomesticFlights extends React.PureComponent {
       toDTpicker: false
     };
   }
+
+  // getLabel = item => {
+  //   return item.label;
+  // };
 
   showDateTimePicker = key => () => {
     this.setState({ [key]: true });
@@ -234,7 +238,15 @@ class DomesticFlights extends React.PureComponent {
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalFrom", true)}>
             <Text style={{ color: "#5D666D" }}>From </Text>
-            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
+            <Text
+              style={{
+                color: "#5D666D",
+                fontSize: 18,
+                fontWeight: "600",
+                textTransform: "capitalize"
+              }}>
+              {from}
+            </Text>
           </Button>
           <Button onPress={this._exchange}>
             <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
@@ -252,7 +264,15 @@ class DomesticFlights extends React.PureComponent {
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalTo", true)}>
             <Text style={{ color: "#5D666D" }}>To</Text>
-            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{to}</Text>
+            <Text
+              style={{
+                color: "#5D666D",
+                fontSize: 18,
+                fontWeight: "600",
+                textTransform: "capitalize"
+              }}>
+              {to}
+            </Text>
           </Button>
         </View>
 
@@ -299,7 +319,7 @@ class DomesticFlights extends React.PureComponent {
 
         <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
 
-        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "flex-start" }}>
           <Image
             style={{ width: 25, resizeMode: "contain" }}
             source={require("../../assets/imgs/person.png")}
@@ -318,7 +338,15 @@ class DomesticFlights extends React.PureComponent {
               {infants > 0 ? ", " + infants + " Infants" : ""} */}
             </Text>
           </Button>
-          <View style={{ flex: 1, paddingStart: 20 }}>
+        </View>
+        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "flex-start" }}>
+          <Image
+            style={{ width: 25, resizeMode: "contain" }}
+            source={require("../../assets/imgs/person.png")}
+          />
+
+          <View style={{ flex: 1, paddingStart: 20, paddingTop: 0 }}>
             <Text style={{ color: "#5D666D" }}>Class</Text>
             <RNPickerSelect
               useNativeAndroidPickerStyle={false}
@@ -346,6 +374,13 @@ class DomesticFlights extends React.PureComponent {
               items={className}
               Icon={() => <Icon name={Platform.OS == "ios" ? "ios-arrow-down" : ""} size={20} />}
             />
+            {/* <RNPicker
+              value={this.state.class}
+              items={className}
+              getLabel={this.getLabel}
+              fieldContainerStyle={{ paddingStart: 0 }}
+              onItemChange={(itemValue) => this.setState({ class: itemValue, index: index })}
+            /> */}
           </View>
         </View>
         <Button

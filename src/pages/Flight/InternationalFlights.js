@@ -270,7 +270,15 @@ class InternationalFlights extends React.PureComponent {
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalFrom", true)}>
             <Text style={{ color: "#5D666D" }}>From</Text>
-            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{from}</Text>
+            <Text
+              style={{
+                color: "#5D666D",
+                fontSize: 18,
+                fontWeight: "600",
+                textTransform: "capitalize"
+              }}>
+              {from}
+            </Text>
           </Button>
           <Button onPress={this._exchange}>
             <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
@@ -288,7 +296,15 @@ class InternationalFlights extends React.PureComponent {
             style={{ flex: 1, paddingStart: 20 }}
             onPress={this.setModalVisible("modalTo", true)}>
             <Text style={{ color: "#5D666D" }}>To</Text>
-            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>{to}</Text>
+            <Text
+              style={{
+                color: "#5D666D",
+                fontSize: 18,
+                fontWeight: "600",
+                textTransform: "capitalize"
+              }}>
+              {to}
+            </Text>
           </Button>
         </View>
 

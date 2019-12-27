@@ -133,7 +133,7 @@ class RenderDomesticRound extends React.PureComponent {
             <Image
               style={{ width: 40, height: 40, marginEnd: 10 }}
               source={{ uri: img }}
-              resizeMode="cover"
+              resizeMode="contain"
             />
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>{dd}</Text>
@@ -252,7 +252,7 @@ class RenderDomesticRound extends React.PureComponent {
                     <Image
                       style={{ width: 40, height: 40, marginEnd: 4 }}
                       source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
-                      resizeMode="cover"
+                      resizeMode="contain"
                     />
                     <View>
                       <Text style={{ fontSize: 20, lineHeight: 22 }}>

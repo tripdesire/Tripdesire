@@ -7,7 +7,8 @@ import {
   Dimensions,
   ScrollView,
   SafeAreaView,
-  Linking
+  Linking,
+  Modal
 } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -17,6 +18,7 @@ import { etravosApi } from "../../service";
 //import MapView from "react-native-maps";
 import moment from "moment";
 import HTML from "react-native-render-html";
+import { Component } from "react";
 
 class HotelCheckout extends React.Component {
   constructor(props) {
@@ -25,7 +27,9 @@ class HotelCheckout extends React.Component {
     console.log(params);
     this.state = {
       _selectRadio: "1",
-      selectedRoom: params.RoomDetails[0]
+      selectedRoom: params.RoomDetails[0],
+      policy: false,
+      data: ""
     };
     this.SingleHotelData();
   }
@@ -36,6 +40,10 @@ class HotelCheckout extends React.Component {
       _selectRadio: item.RoomIndex,
       selectedRoom: item
     });
+  };
+
+  modalBackPress = () => {
+    this.setState({ policy: false });
   };
 
   SingleHotelData() {
@@ -102,7 +110,7 @@ class HotelCheckout extends React.Component {
     const { params } = this.props.navigation.state;
 
     let Amenities = params.Facilities ? params.Facilities.split(",").map(s => s.trim()) : [];
-    console.log(Amenities);
+    // console.log(Amenities);
 
     let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
@@ -304,7 +312,7 @@ class HotelCheckout extends React.Component {
                             <TouchableOpacity
                               style={{ paddingEnd: 4 }}
                               onPress={this._radioButton(item)}>
-                              <View style={{ flexDirection: "row" }}>
+                              <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                   style={{
                                     height: 18,
@@ -338,7 +346,7 @@ class HotelCheckout extends React.Component {
                                 fontSize: 18,
                                 fontWeight: "700"
                               }}>
-                              ₹ {item.RoomTotal}
+                              ₹ {item.RoomTotal.toFixed(2)}
                             </Text>
                           </View>
                         </View>
@@ -349,19 +357,29 @@ class HotelCheckout extends React.Component {
                               {params.room}:Room(s),{params.Night}:night
                             </Text>
                             <Text style={{ color: "#717A81" }}>
-                              {item.RefundRule ? item.RefundRule : ""}
+                              {item.RefundRule != null && item.RefundRule == "Refundable Fare"
+                                ? "Refundable"
+                                : "Non Refundable"}
                             </Text>
                           </View>
-                          <Text style={{ fontSize: 16 }}>Room Cancellation Policy</Text>
-                          <Text style={{ color: "#717A81" }}>
-                            {item.RoomCancellationPolicy != ""
-                              ? item.RoomCancellationPolicy
-                              : "No room Descriptions"}
-                          </Text>
-                          <Text style={{ fontSize: 16 }}>Inclusions</Text>
-                          <Text style={{ color: "#717A81" }}>
-                            {item.Inclusions != "" ? item.Inclusions : "No room Inclusions"}
-                          </Text>
+
+                          {item.RoomCancellationPolicy !== "" &&
+                            item.RoomCancellationPolicy != null && (
+                              <Button
+                                onPress={() =>
+                                  this.setState({ policy: true, data: item.RoomCancellationPolicy })
+                                }>
+                                <Text style={{ fontSize: 16, color: "#5B89F9" }}>
+                                  Room Cancellation Policy
+                                </Text>
+                              </Button>
+                            )}
+                          {item.Inclusions != null && item.Inclusions != "" && (
+                            <View>
+                              <Text style={{ fontSize: 16 }}>Inclusions</Text>
+                              <Text style={{ color: "#717A81" }}>{item.Inclusions}</Text>
+                            </View>
+                          )}
                         </View>
 
                         <View style={{ height: 1.35, backgroundColor: "#DDDDDD" }}></View>
@@ -410,9 +428,41 @@ class HotelCheckout extends React.Component {
                 </ScrollView>
               </View>
             </View>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.policy}
+              onRequestClose={this.modalBackPress}>
+              <Cancellation data={this.state.data} onBackPress={this.modalBackPress} />
+            </Modal>
           </View>
         </SafeAreaView>
       </>
+    );
+  }
+}
+
+class Cancellation extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    console.log(this.props.data);
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+        <View>
+          <View style={styles.headerContainer}>
+            <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
+              <Icon name="md-arrow-back" size={24} />
+            </Button>
+            <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
+          </View>
+          <Text style={{ marginHorizontal: 16 }}>
+            {this.props.data != "" ? this.props.data : ""}
+          </Text>
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -424,6 +474,12 @@ const styles = StyleSheet.create({
   },
   myEmptyStarStyle: {
     color: "#F68E1F"
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 56,
+    backgroundColor: "#FFFFFF"
   }
 });
 

@@ -88,7 +88,7 @@ class AddPassengers extends React.PureComponent {
                   style={{ alignItems: "center", justifyContent: "center", height: 48, width: 48 }}>
                   <Icon name="md-arrow-back" size={24} />
                 </Button>
-                <Text style={{ fontSize: 18 }}>Choose Passengers</Text>
+                <Text style={{ fontSize: 18 }}>Choose Rooms & Guests</Text>
               </View>
               <View
                 style={{

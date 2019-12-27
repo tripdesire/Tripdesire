@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, SafeAreaView } from "react-native";
-import { Button, Text, Header } from "../../../components";
+import { Button, Text, Header, RNPicker } from "../../../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
@@ -13,28 +13,18 @@ class BoardingOneway extends React.PureComponent {
     this.state = {
       bp: params.BoardingTimes[0],
       dp: params.DroppingTimes[0],
-      boardingpoints: params.BoardingTimes.map(item => {
-        let time = moment()
-          .startOf("day")
-          .add(item.Time, "minutes")
-          .format("hh:mm a");
-        return {
-          value: item,
-          label: item.Location + " (" + item.Landmark + ") " + time //rhours + ":" + rminutes
-        };
-      }),
-      droppingpoints: params.DroppingTimes.map(item => {
-        let time = moment()
-          .startOf("day")
-          .add(item.Time, "minutes")
-          .format("hh:mm a");
-        return {
-          value: item,
-          label: item.Location + " (" + item.Landmark + ") " + time
-        };
-      })
+      boardingpoints: params.BoardingTimes,
+      droppingpoints: params.DroppingTimes
     };
   }
+
+  getLabel = item => {
+    let time = moment()
+      .startOf("day")
+      .add(item.Time, "minutes")
+      .format("hh:mm a");
+    return item.Location + " (" + item.Landmark + ") " + time; //rhours + ":" + rminutes
+  };
 
   _bookNow = () => {
     const {
@@ -69,7 +59,7 @@ class BoardingOneway extends React.PureComponent {
             <View style={{ marginTop: 40 }}>
               <View style={{ marginHorizontal: 16 }}>
                 <Text style={{ color: "#5D666D" }}>--Boarding Points--</Text>
-                <RNPickerSelect
+                {/* <RNPickerSelect
                   useNativeAndroidPickerStyle={false}
                   placeholder={{}}
                   value={bp}
@@ -81,11 +71,18 @@ class BoardingOneway extends React.PureComponent {
                   onValueChange={itemValue => this.setState({ bp: itemValue })}
                   items={boardingpoints}
                   Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                /> */}
+                <RNPicker
+                  value={bp}
+                  items={boardingpoints}
+                  getLabel={this.getLabel}
+                  fieldContainerStyle={{ height: 120 }}
+                  onItemChange={itemValue => this.setState({ bp: itemValue })}
                 />
               </View>
-              <View style={{ marginTop: 40, marginHorizontal: 16 }}>
+              <View style={{ marginTop: 100, marginHorizontal: 16 }}>
                 <Text style={{ color: "#5D666D" }}>--Dropping Points--</Text>
-                <RNPickerSelect
+                {/* <RNPickerSelect
                   useNativeAndroidPickerStyle={false}
                   placeholder={{}}
                   value={dp}
@@ -97,6 +94,13 @@ class BoardingOneway extends React.PureComponent {
                   onValueChange={itemValue => this.setState({ dp: itemValue })}
                   items={droppingpoints}
                   Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                /> */}
+                <RNPicker
+                  value={dp}
+                  items={droppingpoints}
+                  getLabel={this.getLabel}
+                  fieldContainerStyle={{ height: 120 }}
+                  onItemChange={itemValue => this.setState({ dp: itemValue })}
                 />
               </View>
             </View>
@@ -107,7 +111,8 @@ class BoardingOneway extends React.PureComponent {
                 height: 40,
                 justifyContent: "center",
                 borderRadius: 20,
-                marginVertical: 16
+                marginVertical: 16,
+                marginTop: 120
               }}
               onPress={this._bookNow}>
               <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>

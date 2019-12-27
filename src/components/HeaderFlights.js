@@ -20,8 +20,14 @@ class HeaderFlights extends React.PureComponent {
         <Button onPress={this.goBack} style={{ padding: 16 }}>
           <Icon name="md-arrow-back" size={24} />
         </Button>
-        <View style={{ paddingTop: 16, flex: 1 }}>
-          <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+        <View style={{ paddingTop: 16, flex: 1, paddingBottom: 20 }}>
+          <Text
+            style={{
+              fontWeight: "700",
+              fontSize: 16,
+              marginHorizontal: 5,
+              textTransform: "capitalize"
+            }}>
             {this.props.from} To {this.props.to}
           </Text>
           <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
