@@ -263,8 +263,9 @@ class InternationalFlights extends React.PureComponent {
         </View>
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
-            style={{ width: 25, resizeMode: "contain" }}
-            source={require("../../assets/imgs/flights-1.png")}
+            tintColor="#5D666D"
+            style={{ width: 40, resizeMode: "contain" }}
+            source={require("../../assets/imgs/flightSearch.png")}
           />
           <Button
             style={{ flex: 1, paddingStart: 20 }}
@@ -289,8 +290,9 @@ class InternationalFlights extends React.PureComponent {
 
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
-            style={{ width: 25, resizeMode: "contain" }}
-            source={require("../../assets/imgs/flights-1.png")}
+            tintColor="#5D666D"
+            style={{ width: 40, resizeMode: "contain" }}
+            source={require("../../assets/imgs/flightSearch.png")}
           />
           <Button
             style={{ flex: 1, paddingStart: 20 }}
@@ -312,7 +314,7 @@ class InternationalFlights extends React.PureComponent {
 
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
-            style={{ width: 25, resizeMode: "contain" }}
+            style={{ width: 35, resizeMode: "contain" }}
             source={require("../../assets/imgs/cal.png")}
           />
           <Button
@@ -353,7 +355,7 @@ class InternationalFlights extends React.PureComponent {
 
         <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
           <Image
-            style={{ width: 25, resizeMode: "contain" }}
+            style={{ width: 35, resizeMode: "contain" }}
             source={require("../../assets/imgs/person.png")}
           />
           <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
@@ -367,6 +369,11 @@ class InternationalFlights extends React.PureComponent {
               {infants > 0 ? ", " + infants + " Infants" : ""} */}
             </Text>
           </Button>
+        </View>
+        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+          <Icon type="MaterialIcons" name="class" size={36} color="#5D666D" />
+
           <View style={{ flex: 1, paddingStart: 20 }}>
             <Text style={{ color: "#5D666D" }}>Class</Text>
             <RNPickerSelect

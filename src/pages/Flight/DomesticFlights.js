@@ -260,7 +260,7 @@ class DomesticFlights extends React.PureComponent {
           <Image
             tintColor="#5D666D"
             style={{ width: 40, resizeMode: "contain" }}
-            source={require("../../assets/imgs/cal.png")}
+            source={require("../../assets/imgs/flightSearch.png")}
           />
           <Button
             style={{ flex: 1, paddingStart: 20 }}

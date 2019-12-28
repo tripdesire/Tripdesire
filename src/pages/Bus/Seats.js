@@ -98,7 +98,7 @@ class Seats extends React.PureComponent {
             upperColumns: upper ? (lastUpperHasTwoHeight ? upper.Column + 1 : upper.Column) : 0
           });
         } else {
-          Toast.show("Seats not available");
+          Toast.show("No seat available");
           this.setState({ loading: false });
         }
       })

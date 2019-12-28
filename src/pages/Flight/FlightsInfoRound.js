@@ -165,6 +165,8 @@ class FlightsInfoRound extends React.PureComponent {
   };
 
   _onChangeIndex = ({ index }) => {
+    // console.log(index);
+    // console.log("hey");
     this.setState({ swiperIndex: index });
   };
 
@@ -421,7 +423,7 @@ class FlightsInfoRound extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View style={{ backgroundColor: "#FFFFFF" }}>
+          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <HeaderFlights
               from={from}
               to={to}
@@ -528,9 +530,7 @@ class FlightsInfoRound extends React.PureComponent {
               onChangeIndex={this._onChangeIndex}>
               {Array.isArray(onwardFlights) && onwardFlights.length == 0 ? (
                 <View
-                  style={{
-                    alignItems: "center"
-                  }}>
+                  style={{ alignItems: "center", justifyContent: "center", marginHorizontal: 140 }}>
                   <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
                 </View>
               ) : (

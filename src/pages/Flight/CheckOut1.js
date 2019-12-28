@@ -534,7 +534,7 @@ class CheckOut1 extends React.PureComponent {
         UserType: 5
       };
 
-      // console.log(JSON.stringify(book));
+      console.log(JSON.stringify(book));
       // return;
 
       if (isEmpty(this.props.user)) {
@@ -561,7 +561,7 @@ class CheckOut1 extends React.PureComponent {
                     description: "Credits towards consultation",
                     // image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
-                    key: "rzp_live_IRhvqgmESx60tW" , //"rzp_live_IRhvqgmESx60tW",
+                    key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {

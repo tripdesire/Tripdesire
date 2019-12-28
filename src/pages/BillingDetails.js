@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, SafeAreaView, ScrollView } from "react-native"
 import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../service";
 import moment from "moment";
+import { isEmpty } from "lodash";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
 import { Signup, Signin, Billing } from "../store/action";
@@ -70,18 +71,34 @@ class BillingDetails extends React.PureComponent {
     };
 
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    //reg.test(email) === true
-    if (1) {
-      domainApi.post("/checkout/update-billing", param).then(({ data }) => {
-        console.log(data);
-        if (data.status == 1) {
-          this.props.Billing(redux);
-        } else {
-          Toast.show("You didn't update your billing address", Toast.LONG);
-        }
-      });
+    if (
+      firstname === "" &&
+      lastname === "" &&
+      company === "" &&
+      streetAddress === "" &&
+      streetAddress1 === "" &&
+      city === "" &&
+      postcode === "" &&
+      country === "" &&
+      state === "" &&
+      email === "" &&
+      phone === ""
+    ) {
+      Toast.show("Please fill deatils", Toast.LONG);
     } else {
-      Toast.show("Please enter the valid email address", Toast.LONG);
+      if (email != "" && reg.test(email) == false) {
+        Toast.show("Please enter the correct email", Toast.LONG);
+      } else {
+        domainApi.post("/checkout/update-billing", param).then(({ data }) => {
+          console.log(data);
+          if (data.status == 1) {
+            this.props.Billing(redux);
+            Toast.show(data.msg, Toast.LONG);
+          } else {
+            Toast.show("You didn't update your billing address", Toast.LONG);
+          }
+        });
+      }
     }
   };
 
