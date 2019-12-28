@@ -26,7 +26,6 @@ class RenderDomesticRound extends React.PureComponent {
       showModal: false,
       farerule: ""
     };
-    //  console.log(this.props);
   }
 
   fareRules = () => {

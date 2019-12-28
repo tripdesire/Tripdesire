@@ -122,7 +122,6 @@ class FlightsInfoRound extends React.PureComponent {
   };
 
   _bookNow = () => {
-    console.log("hey");
     console.log(this.state);
     if (Array.isArray(this.state.onwardFlights) && this.state.onwardFlights.length == 0) {
       return;
