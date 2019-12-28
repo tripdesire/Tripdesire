@@ -421,7 +421,7 @@ class FlightsInfoRound extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+          <View style={{ backgroundColor: "#FFFFFF" }}>
             <HeaderFlights
               from={from}
               to={to}
@@ -529,27 +529,28 @@ class FlightsInfoRound extends React.PureComponent {
               {Array.isArray(onwardFlights) && onwardFlights.length == 0 ? (
                 <View
                   style={{
-                    alignItems: "center",
-                    justifyContent: "center"
+                    alignItems: "center"
                   }}>
                   <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
                 </View>
               ) : (
-                <FlatList
-                  data={onwardFlights}
-                  keyExtractor={this._keyExtractorOnward}
-                  renderItem={this._renderItemOnward}
-                  contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                  extraData={this.state.selectedOnward}
-                />
+                <>
+                  <FlatList
+                    data={onwardFlights}
+                    keyExtractor={this._keyExtractorOnward}
+                    renderItem={this._renderItemOnward}
+                    contentContainerStyle={{ width, paddingHorizontal: 8 }}
+                    extraData={this.state.selectedOnward}
+                  />
+                  <FlatList
+                    data={returnFlights}
+                    keyExtractor={this._keyExtractorReturn}
+                    renderItem={this._renderItemReturn}
+                    contentContainerStyle={{ width, paddingHorizontal: 8 }}
+                    extraData={this.state.selectedReturn}
+                  />
+                </>
               )}
-              <FlatList
-                data={returnFlights}
-                keyExtractor={this._keyExtractorReturn}
-                renderItem={this._renderItemReturn}
-                contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                extraData={this.state.selectedReturn}
-              />
             </SwiperFlatList>
             <Modal
               animationType="slide"
