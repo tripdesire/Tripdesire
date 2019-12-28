@@ -364,9 +364,6 @@ class InternationalFlights extends React.PureComponent {
               {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
                 ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
                 : parseInt(adult) + parseInt(children) + parseInt(infants)}
-              {/* {adult > 0 ? adult + " Adults" : ""}
-              {children > 0 ? ", " + children + " Children" : ""}
-              {infants > 0 ? ", " + infants + " Infants" : ""} */}
             </Text>
           </Button>
         </View>

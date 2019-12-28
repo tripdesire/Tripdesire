@@ -165,8 +165,6 @@ class FlightsInfoRound extends React.PureComponent {
   };
 
   _onChangeIndex = ({ index }) => {
-    // console.log(index);
-    // console.log("hey");
     this.setState({ swiperIndex: index });
   };
 
