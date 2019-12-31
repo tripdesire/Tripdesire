@@ -35,7 +35,6 @@ class FlightsInfoRound extends React.PureComponent {
       onwardFare: "",
       returnFare: "",
       loader: true,
-      index: 0,
       swiperIndex: 0,
       selectedOnward: 0,
       selectedReturn: 0,
@@ -157,9 +156,11 @@ class FlightsInfoRound extends React.PureComponent {
 
   _onPress = value => () => {
     if (value == "Depart") {
-      this.scrollRef.scrollToIndex({ index: 0 });
+      this.scrollRef.goToFirstIndex();
+      this.setState({ swiperIndex: 0 });
     } else if (value == "Return") {
-      this.scrollRef.scrollToIndex({ index: 1 });
+      this.scrollRef.goToLastIndex();
+      this.setState({ swiperIndex: 1 });
     }
   };
 
@@ -405,7 +406,6 @@ class FlightsInfoRound extends React.PureComponent {
       Child,
       Infant,
       className,
-      index,
       onwardFare,
       returnFare,
       swiperIndex,
@@ -445,7 +445,6 @@ class FlightsInfoRound extends React.PureComponent {
                 </Text>
               </Button>
             </HeaderFlights>
-
             {Array.isArray(onwardFlights) && onwardFlights.length > 0 && (
               <View>
                 <View
@@ -520,34 +519,34 @@ class FlightsInfoRound extends React.PureComponent {
                 </View>
               </View>
             )}
-
+            {Array.isArray(onwardFlights) && onwardFlights.length == 0 && (
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  ...StyleSheet.absoluteFill
+                }}>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
+              </View>
+            )}
             <SwiperFlatList
-              index={index}
+              //index={swiperIndex}
               ref={ref => (this.scrollRef = ref)}
               onChangeIndex={this._onChangeIndex}>
-              {Array.isArray(onwardFlights) && onwardFlights.length == 0 ? (
-                <View
-                  style={{ alignItems: "center", justifyContent: "center", marginHorizontal: 140 }}>
-                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
-                </View>
-              ) : (
-                <>
-                  <FlatList
-                    data={onwardFlights}
-                    keyExtractor={this._keyExtractorOnward}
-                    renderItem={this._renderItemOnward}
-                    contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                    extraData={this.state.selectedOnward}
-                  />
-                  <FlatList
-                    data={returnFlights}
-                    keyExtractor={this._keyExtractorReturn}
-                    renderItem={this._renderItemReturn}
-                    contentContainerStyle={{ width, paddingHorizontal: 8 }}
-                    extraData={this.state.selectedReturn}
-                  />
-                </>
-              )}
+              <FlatList
+                data={onwardFlights}
+                keyExtractor={this._keyExtractorOnward}
+                renderItem={this._renderItemOnward}
+                contentContainerStyle={{ width, paddingHorizontal: 8 }}
+                extraData={this.state.selectedOnward}
+              />
+              <FlatList
+                data={returnFlights}
+                keyExtractor={this._keyExtractorReturn}
+                renderItem={this._renderItemReturn}
+                contentContainerStyle={{ width, paddingHorizontal: 8 }}
+                extraData={this.state.selectedReturn}
+              />
             </SwiperFlatList>
             <Modal
               animationType="slide"
