@@ -325,7 +325,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
             </Modal>
             {flightCount == 0 && (
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Text>Data not found</Text>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
               </View>
             )}
             {loader && <ActivityIndicator />}

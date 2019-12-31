@@ -438,7 +438,7 @@ class CheckOut extends React.PureComponent {
                 <View>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image
-                      source={require("../../assets/imgs/flights-1.png")}
+                      source={require("../../assets/imgs/flightSearch.png")}
                       resizeMode="contain"
                       style={{ width: 40 }}
                     />
@@ -512,7 +512,7 @@ class CheckOut extends React.PureComponent {
                   <View>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                       <Image
-                        source={require("../../assets/imgs/flights-1.png")}
+                        source={require("../../assets/imgs/flightSearch.png")}
                         resizeMode="contain"
                         style={{ width: 40 }}
                       />
