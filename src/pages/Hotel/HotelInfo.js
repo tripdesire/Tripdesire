@@ -137,7 +137,7 @@ class HotelInfo extends React.PureComponent {
   };
 
   _BookNow(param) {
-    // let jd = moment(data.journeyDate, "DD-MM-YYYY").format("DD MMM");
+    //  console.log(JSON.stringify(param));
     Object.assign(param, {
       city: this.state.city,
       Night: this.state.Night,
