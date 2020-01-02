@@ -63,7 +63,6 @@ class FlightsInfoOneway extends React.PureComponent {
       .get("/Flights/AvailableFlights", data)
       .then(({ data }) => {
         this.setState({ loader: false });
-        console.log(data);
         if (this.state.flight_type == 1) {
           console.log(data.DomesticOnwardFlights);
           if (data.DomesticOnwardFlights.length != 0) {
@@ -78,7 +77,6 @@ class FlightsInfoOneway extends React.PureComponent {
           }
         }
         if (this.state.flight_type == 2) {
-          console.log(data.InternationalFlights);
           if (data.InternationalFlights.length != 0) {
             this.setState({
               flights: data.InternationalFlights,
