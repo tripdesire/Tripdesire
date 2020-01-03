@@ -556,7 +556,7 @@ class FlightsInfoOneway extends React.PureComponent {
                 filter={this.filter}
               />
             </Modal>
-            {loader && <ActivityIndicator />}
+            {loader && <ActivityIndicator label={"FETCHING FLIGHTS"} />}
           </View>
         </SafeAreaView>
       </>

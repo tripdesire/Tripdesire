@@ -298,7 +298,7 @@ class BusInfo extends React.PureComponent {
                   <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
                 </View>
               )}
-              {loader && <ActivityIndicator />}
+              {loader && <ActivityIndicator label={"FETCHING BUSES"} />}
             </View>
             <Modal
               animationType="slide"

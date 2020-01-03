@@ -1,16 +1,31 @@
 import React, { PureComponent } from "react";
-import { ActivityIndicator as RNActivityIndicator, StyleSheet, Text, View } from "react-native";
+import propsTypes from "prop-types";
+import {
+  ActivityIndicator as RNActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  Image
+} from "react-native";
 
-class ActivityIndicator extends React.PureComponent {
-  render() {
-    return (
-      <View style={styles.loading}>
-        <RNActivityIndicator size="large" color="#5B89F9" />
-        <Text style={{ color: "#5B89F9" }}>Please Wait...</Text>
-      </View>
-    );
-  }
+function ActivityIndicator({ label }) {
+  return (
+    <View style={styles.loading}>
+      <Image
+        source={require("../assets/gifs/loading.gif")}
+        style={{ width: 70, resizeMode: "contain" }}
+      />
+      <Text style={{ color: label == "" ? "#5B89F9" : "#000000", fontWeight: "700" }}>{label}</Text>
+    </View>
+  );
 }
+
+ActivityIndicator.defaultProps = {
+  label: "Please Wait..."
+};
+ActivityIndicator.prototype = {
+  label: propsTypes.string
+};
 
 const styles = StyleSheet.create({
   loading: {

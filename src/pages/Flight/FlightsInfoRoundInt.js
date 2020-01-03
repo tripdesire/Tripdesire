@@ -328,7 +328,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
                 <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
               </View>
             )}
-            {loader && <ActivityIndicator />}
+            {loader && <ActivityIndicator label={"FETCHING FLIGHTS"} />}
           </View>
         </SafeAreaView>
       </>
