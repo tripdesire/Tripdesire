@@ -137,7 +137,7 @@ class FlightsInfoRound extends React.PureComponent {
       travelClass: this.state.travelClass,
       adult: this.state.Adult,
       child: this.state.Child,
-      infant: this.state.Child,
+      infant: this.state.Infant,
       journey_date: this.state.journey_date,
       return_date: this.state.return_date,
       journeyDate: this.state.journeyDate,

@@ -191,7 +191,7 @@ class HotelPayment extends React.PureComponent {
                     backgroundColor: "#E5EBF7",
                     paddingHorizontal: 16
                   }}>
-                  {"₹ " + this.state.data.total_price}
+                  {this.state.data.total_price ? "₹ " + this.state.data.total_price : "₹ " + 0.0}
                 </Text>
                 {!this.state.inputCoupon && (
                   <View

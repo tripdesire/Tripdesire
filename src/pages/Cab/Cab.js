@@ -157,7 +157,15 @@ class Cab extends React.PureComponent {
   _triptype = value => {
     this.setState({
       tripType: value == "oneway" ? 4 : value == "round" ? 1 : value == "transfer" ? 6 : "",
-      travelType: value == "oneway" ? 2 : value == "round" ? 1 : value == "transfer" ? 3 : ""
+      travelType: value == "oneway" ? 2 : value == "round" ? 1 : value == "transfer" ? 3 : "",
+      destinationName:
+        value == "oneway"
+          ? ""
+          : value == "round"
+          ? this.state.sourceName
+          : value == "transfer"
+          ? ""
+          : ""
     });
   };
 

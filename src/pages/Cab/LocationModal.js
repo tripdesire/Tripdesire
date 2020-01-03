@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Dimensions, TouchableOpacity, SafeAreaView } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import { etravosApi } from "../../service";
@@ -102,41 +102,46 @@ class SuggLoc extends React.PureComponent {
 
   render() {
     return (
-      <View>
-        <Button
-          onPress={this.props.onModalBackPress}
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            height: 48,
-            width: 48,
-            zIndex: 1
-          }}>
-          <Icon name="md-arrow-back" size={24} />
-        </Button>
-        <View style={styles.autocompleteContainer}>
-          <Autocomplete
-            placeholder={this.props.placeholder}
-            inputContainerStyle={{
-              borderWidth: 0,
-              height: 48,
-              paddingStart: 48,
-              justifyContent: "center"
-            }}
-            data={this.state.suggestions}
-            onChangeText={this.filterList}
-            listStyle={{
-              maxHeight: height,
-              margin: 0,
-              paddingHorizontal: 16,
-              borderWidth: 0
-            }}
-            renderItem={this.renderItem}
-            keyExtractor={this.keyExtractor}
-          />
-        </View>
-        {this.state.loader && <ActivityIndicator />}
-      </View>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View>
+            <Button
+              onPress={this.props.onModalBackPress}
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                height: 48,
+                width: 48,
+                zIndex: 1
+              }}>
+              <Icon name="md-arrow-back" size={24} />
+            </Button>
+            <View style={styles.autocompleteContainer}>
+              <Autocomplete
+                placeholder={this.props.placeholder}
+                inputContainerStyle={{
+                  borderWidth: 0,
+                  height: 48,
+                  paddingStart: 48,
+                  justifyContent: "center"
+                }}
+                data={this.state.suggestions}
+                onChangeText={this.filterList}
+                listStyle={{
+                  maxHeight: height,
+                  margin: 0,
+                  paddingHorizontal: 16,
+                  borderWidth: 0
+                }}
+                renderItem={this.renderItem}
+                keyExtractor={this.keyExtractor}
+              />
+            </View>
+            {this.state.loader && <ActivityIndicator />}
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 }

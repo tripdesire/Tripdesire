@@ -90,14 +90,14 @@ class CheckOut extends React.PureComponent {
 
     let dt =
       params.flightType == 1
-        ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("HH:MM")
-        : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format("HH:MM");
+        ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("HH:mm")
+        : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format("HH:mm");
 
     let dtReturn =
       params.flightType == 2 && params.tripType == 2
-        ? moment(params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime).format("HH:MM")
+        ? moment(params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime).format("HH:mm")
         : params.flightType == 1 && params.tripType == 2
-        ? moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format("HH:MM")
+        ? moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format("HH:mm")
         : "";
 
     let at =
@@ -105,12 +105,12 @@ class CheckOut extends React.PureComponent {
         ? moment(
             params.departFlight.FlightSegments[params.departFlight.FlightSegments.length - 1]
               .ArrivalDateTime
-          ).format("HH:MM")
+          ).format("HH:mm")
         : moment(
             params.departFlight.IntOnward.FlightSegments[
               params.departFlight.IntOnward.FlightSegments.length - 1
             ].ArrivalDateTime
-          ).format("HH:MM");
+          ).format("HH:mm");
 
     let atReturn =
       params.flightType == 2 && params.tripType == 2
@@ -118,12 +118,12 @@ class CheckOut extends React.PureComponent {
             params.departFlight.IntReturn.FlightSegments[
               params.departFlight.IntReturn.FlightSegments.length - 1
             ].ArrivalDateTime
-          ).format("HH:MM")
+          ).format("HH:mm")
         : params.flightType == 1 && params.tripType == 2
         ? moment(
             params.arrivalFlight.FlightSegments[params.arrivalFlight.FlightSegments.length - 1]
               .ArrivalDateTime
-          ).format("HH:MM")
+          ).format("HH:mm")
         : "";
     let departureDate =
       params.flightType == 1
@@ -308,12 +308,12 @@ class CheckOut extends React.PureComponent {
         "http://webapi.i2space.co.in" + params.departFlight.IntReturn.FlightSegments[0].ImagePath;
       var ddIntReturn = moment(
         params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime
-      ).format("HH:MM");
+      ).format("HH:mm");
       var adIntReturn = moment(
         params.departFlight.IntReturn.FlightSegments[
           params.departFlight.IntReturn.FlightSegments.length - 1
         ].ArrivalDateTime
-      ).format("HH:MM");
+      ).format("HH:mm");
       var departureDateIntReturn = moment(
         params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime
       ).format("MMM DD");
@@ -327,12 +327,12 @@ class CheckOut extends React.PureComponent {
     if (params.flightType == 1 && params.tripType == 2) {
       var imgRet = "http://webapi.i2space.co.in" + params.arrivalFlight.FlightSegments[0].ImagePath;
       var ddReturn = moment(params.arrivalFlight.FlightSegments[0].DepartureDateTime).format(
-        "HH:MM"
+        "HH:mm"
       );
       var adReturn = moment(
         params.arrivalFlight.FlightSegments[params.arrivalFlight.FlightSegments.length - 1]
           .ArrivalDateTime
-      ).format("HH:MM");
+      ).format("HH:mm");
       var departureDateReturn = moment(
         params.arrivalFlight.FlightSegments[0].DepartureDateTime
       ).format("MMM DD");
@@ -348,19 +348,19 @@ class CheckOut extends React.PureComponent {
         : "http://webapi.i2space.co.in" + params.departFlight.IntOnward.FlightSegments[0].ImagePath;
     var dd =
       params.flightType == 1
-        ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("HH:MM")
-        : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format("HH:MM");
+        ? moment(params.departFlight.FlightSegments[0].DepartureDateTime).format("HH:mm")
+        : moment(params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime).format("HH:mm");
     var ad =
       params.flightType == 1
         ? moment(
             params.departFlight.FlightSegments[params.departFlight.FlightSegments.length - 1]
               .ArrivalDateTime
-          ).format("HH:MM")
+          ).format("HH:mm")
         : moment(
             params.departFlight.IntOnward.FlightSegments[
               params.departFlight.IntOnward.FlightSegments.length - 1
             ].ArrivalDateTime
-          ).format("HH:MM");
+          ).format("HH:mm");
 
     var departureDate =
       params.flightType == 1
@@ -870,14 +870,6 @@ class CheckOut extends React.PureComponent {
                       {params.className}
                     </Text>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start"
-                    }}>
-                    <IconMaterial name="share-variant" size={20} color="#5D89F4" />
-                  </View>
                 </View>
               </View>
             </View>
@@ -898,7 +890,7 @@ class CheckOut extends React.PureComponent {
                 <View>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image
-                      source={require("../../assets/imgs/flights-1.png")}
+                      source={require("../../assets/imgs/flightSearch.png")}
                       resizeMode="contain"
                       style={{ width: 40 }}
                     />
@@ -972,7 +964,7 @@ class CheckOut extends React.PureComponent {
                   <View>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                       <Image
-                        source={require("../../assets/imgs/flights-1.png")}
+                        source={require("../../assets/imgs/flightSearch.png")}
                         resizeMode="contain"
                         style={{ width: 40 }}
                       />

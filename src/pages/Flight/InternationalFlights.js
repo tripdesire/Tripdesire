@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, Picker, Modal } from "react-native";
+import { View, Image, StyleSheet, ScrollView, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import moment from "moment";
@@ -214,7 +214,7 @@ class InternationalFlights extends React.PureComponent {
       selectRound
     } = this.state;
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <View
           style={{
             flexDirection: "row",
@@ -259,157 +259,160 @@ class InternationalFlights extends React.PureComponent {
             </Text>
           </Button>
         </View>
-        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-          <Image
-            tintColor="#5D666D"
-            style={{ width: 40, resizeMode: "contain" }}
-            source={require("../../assets/imgs/flightSearch.png")}
-          />
-          <Button
-            style={{ flex: 1, paddingStart: 20 }}
-            onPress={this.setModalVisible("modalFrom", true)}>
-            <Text style={{ color: "#5D666D" }}>From</Text>
-            <Text
-              style={{
-                color: "#5D666D",
-                fontSize: 18,
-                fontWeight: "600",
-                textTransform: "capitalize"
-              }}>
-              {from}
-            </Text>
-          </Button>
-          <Button onPress={this._exchange}>
-            <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
-          </Button>
-        </View>
 
-        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
-
-        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-          <Image
-            tintColor="#5D666D"
-            style={{ width: 40, resizeMode: "contain" }}
-            source={require("../../assets/imgs/flightSearch.png")}
-          />
-          <Button
-            style={{ flex: 1, paddingStart: 20 }}
-            onPress={this.setModalVisible("modalTo", true)}>
-            <Text style={{ color: "#5D666D" }}>To</Text>
-            <Text
-              style={{
-                color: "#5D666D",
-                fontSize: 18,
-                fontWeight: "600",
-                textTransform: "capitalize"
-              }}>
-              {to}
-            </Text>
-          </Button>
-        </View>
-
-        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
-
-        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-          <Image
-            style={{ width: 35, resizeMode: "contain" }}
-            source={require("../../assets/imgs/cal.png")}
-          />
-          <Button
-            style={{ flex: 1, paddingStart: 20 }}
-            onPress={this.showDateTimePicker("fromDTpicker")}>
-            <Text style={{ color: "#5D666D" }}>Depart </Text>
-            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
-              {moment(Journey_date).format("DD MMM YYYY")}
-            </Text>
-            <DateTimePicker
-              isVisible={fromDTpicker}
-              date={Journey_date}
-              onConfirm={this.handleDatePicked("fromDTpicker")}
-              onCancel={this.hideDateTimePicker("fromDTpicker")}
-              minimumDate={new Date()}
+        <ScrollView>
+          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+            <Image
+              tintColor="#5D666D"
+              style={{ width: 40, resizeMode: "contain" }}
+              source={require("../../assets/imgs/flightSearch.png")}
             />
-          </Button>
-          {selectRound && (
             <Button
               style={{ flex: 1, paddingStart: 20 }}
-              onPress={this.showDateTimePicker("toDTpicker")}>
-              <Text style={{ color: "#5D666D" }}>Return</Text>
+              onPress={this.setModalVisible("modalFrom", true)}>
+              <Text style={{ color: "#5D666D" }}>From</Text>
+              <Text
+                style={{
+                  color: "#5D666D",
+                  fontSize: 18,
+                  fontWeight: "600",
+                  textTransform: "capitalize"
+                }}>
+                {from}
+              </Text>
+            </Button>
+            <Button onPress={this._exchange}>
+              <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
+            </Button>
+          </View>
+
+          <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+
+          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+            <Image
+              tintColor="#5D666D"
+              style={{ width: 40, resizeMode: "contain" }}
+              source={require("../../assets/imgs/flightSearch.png")}
+            />
+            <Button
+              style={{ flex: 1, paddingStart: 20 }}
+              onPress={this.setModalVisible("modalTo", true)}>
+              <Text style={{ color: "#5D666D" }}>To</Text>
+              <Text
+                style={{
+                  color: "#5D666D",
+                  fontSize: 18,
+                  fontWeight: "600",
+                  textTransform: "capitalize"
+                }}>
+                {to}
+              </Text>
+            </Button>
+          </View>
+
+          <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+
+          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+            <Image
+              style={{ width: 35, resizeMode: "contain" }}
+              source={require("../../assets/imgs/cal.png")}
+            />
+            <Button
+              style={{ flex: 1, paddingStart: 20 }}
+              onPress={this.showDateTimePicker("fromDTpicker")}>
+              <Text style={{ color: "#5D666D" }}>Depart </Text>
               <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
-                {moment(Return_date).format("DD MMM YYYY")}
+                {moment(Journey_date).format("DD MMM YYYY")}
               </Text>
               <DateTimePicker
-                isVisible={toDTpicker}
-                date={Return_date}
-                onConfirm={this.handleDatePicked("toDTpicker")}
-                onCancel={this.hideDateTimePicker("toDTpicker")}
-                minimumDate={this.state.Journey_date}
+                isVisible={fromDTpicker}
+                date={Journey_date}
+                onConfirm={this.handleDatePicked("fromDTpicker")}
+                onCancel={this.hideDateTimePicker("fromDTpicker")}
+                minimumDate={new Date()}
               />
             </Button>
-          )}
-        </View>
-
-        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
-
-        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-          <Image
-            style={{ width: 35, resizeMode: "contain" }}
-            source={require("../../assets/imgs/person.png")}
-          />
-          <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
-            <Text style={{ color: "#5D666D" }}>Passengers</Text>
-            <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
-              {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
-                ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
-                : parseInt(adult) + parseInt(children) + parseInt(infants)}
-            </Text>
-          </Button>
-        </View>
-        <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
-        <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-          <Icon type="MaterialIcons" name="class" size={36} color="#5D666D" />
-
-          <View style={{ flex: 1, paddingStart: 20 }}>
-            <Text style={{ color: "#5D666D" }}>Class</Text>
-            <RNPickerSelect
-              useNativeAndroidPickerStyle={false}
-              placeholder={{}}
-              value={this.state.class}
-              style={{
-                inputIOS: {
-                  fontSize: 18,
-                  fontWeight: "700",
-                  color: "#5D666D"
-                },
-                inputAndroid: {
-                  padding: 0,
-                  height: 20,
-                  fontSize: 18,
-                  fontWeight: "700",
-                  color: "#5D666D"
-                }
-              }}
-              pickerProps={{ mode: "dropdown" }}
-              onValueChange={(itemValue, index) =>
-                this.setState({ class: itemValue, index: index })
-              }
-              items={this.state.className}
-              Icon={() => <Icon name={Platform.OS == "ios" ? "ios-arrow-down" : ""} size={20} />}
-            />
+            {selectRound && (
+              <Button
+                style={{ flex: 1, paddingStart: 20 }}
+                onPress={this.showDateTimePicker("toDTpicker")}>
+                <Text style={{ color: "#5D666D" }}>Return</Text>
+                <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                  {moment(Return_date).format("DD MMM YYYY")}
+                </Text>
+                <DateTimePicker
+                  isVisible={toDTpicker}
+                  date={Return_date}
+                  onConfirm={this.handleDatePicked("toDTpicker")}
+                  onCancel={this.hideDateTimePicker("toDTpicker")}
+                  minimumDate={this.state.Journey_date}
+                />
+              </Button>
+            )}
           </View>
-        </View>
-        <Button
-          style={{
-            backgroundColor: "#F68E1F",
-            marginHorizontal: 100,
-            height: 40,
-            justifyContent: "center",
-            borderRadius: 20,
-            marginVertical: 40
-          }}
-          onPress={this._search}>
-          <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
-        </Button>
+
+          <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+
+          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+            <Image
+              style={{ width: 35, resizeMode: "contain" }}
+              source={require("../../assets/imgs/person.png")}
+            />
+            <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
+              <Text style={{ color: "#5D666D" }}>Passengers</Text>
+              <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
+                  ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
+                  : parseInt(adult) + parseInt(children) + parseInt(infants)}
+              </Text>
+            </Button>
+          </View>
+          <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+          <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+            <Icon type="MaterialIcons" name="class" size={36} color="#5D666D" />
+
+            <View style={{ flex: 1, paddingStart: 20 }}>
+              <Text style={{ color: "#5D666D" }}>Class</Text>
+              <RNPickerSelect
+                useNativeAndroidPickerStyle={false}
+                placeholder={{}}
+                value={this.state.class}
+                style={{
+                  inputIOS: {
+                    fontSize: 18,
+                    fontWeight: "700",
+                    color: "#5D666D"
+                  },
+                  inputAndroid: {
+                    padding: 0,
+                    height: 20,
+                    fontSize: 18,
+                    fontWeight: "700",
+                    color: "#5D666D"
+                  }
+                }}
+                pickerProps={{ mode: "dropdown" }}
+                onValueChange={(itemValue, index) =>
+                  this.setState({ class: itemValue, index: index })
+                }
+                items={this.state.className}
+                Icon={() => <Icon name={Platform.OS == "ios" ? "ios-arrow-down" : ""} size={20} />}
+              />
+            </View>
+          </View>
+          <Button
+            style={{
+              backgroundColor: "#F68E1F",
+              marginHorizontal: 100,
+              height: 40,
+              justifyContent: "center",
+              borderRadius: 20,
+              marginVertical: 40
+            }}
+            onPress={this._search}>
+            <Text style={{ color: "#fff", alignSelf: "center" }}>Search</Text>
+          </Button>
+        </ScrollView>
 
         <Modal
           animationType="slide"
