@@ -157,7 +157,8 @@ class Hotel extends React.PureComponent {
       user: "",
       room: this.state.room
     };
-    console.log(params);
+    // console.log(params);
+    //console.log(JSON.stringify(params));
     this.props.navigation.navigate("HotelInfo", params);
   };
 
