@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, SafeAreaView, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { Button, Text, ActivityIndicator } from "../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
@@ -11,13 +10,13 @@ import axios from "axios";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
-import { Signin } from "../../store/action";
 
 class BusPayment extends React.PureComponent {
   constructor(props) {
     super(props);
     console.log(this.props.navigation.state.params);
     this.state = {
+      loader: false,
       gender: "Mr",
       ffn: false,
       radioDirect: true,
@@ -96,7 +95,7 @@ class BusPayment extends React.PureComponent {
             description: "Credits towards consultation",
             // image: "https://i.imgur.com/3g7nmJC.png",
             currency: "INR",
-            key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
+            key: "rzp_test_I66kFrN53lhauw", //"rzp_live_IRhvqgmESx60tW",
             amount: parseInt(order.total) * 100,
             name: "TripDesire",
             prefill: {
@@ -110,9 +109,11 @@ class BusPayment extends React.PureComponent {
           RazorpayCheckout.open(options)
             .then(razorpayRes => {
               if (TripType == 1) {
+                this.setState({ loader: true });
                 etravosApi
                   .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
                   .then(({ data: Response }) => {
+                    this.setState({ loader: false });
                     console.log(Response);
                     if (Response.BookingStatus == 3) {
                       this.props.navigation.navigate("ThankYouBus", {
@@ -130,7 +131,9 @@ class BusPayment extends React.PureComponent {
                       };
                       console.log(paymentData);
 
+                      this.setState({ loader: true });
                       domainApi.post("/checkout/update-order", paymentData).then(res => {
+                        this.setState({ loader: false });
                         console.log(res);
                       });
                     } else {
@@ -387,6 +390,7 @@ class BusPayment extends React.PureComponent {
                 </Button>
               </ScrollView>
             </View>
+            {this.state.loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

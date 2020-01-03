@@ -57,13 +57,13 @@ class ThankYou extends React.PureComponent {
                   }}>
                   <View>
                     <Text style={{ lineHeight: 22 }}>Ref No. : </Text>
-                    <Text style={[styles.Heading, { lineHeight: 16 }]}>
+                    <Text style={[styles.Heading, { lineHeight: 18 }]}>
                       {razorpayRes.razorpay_payment_id}
                     </Text>
                   </View>
                   <View>
                     <Text style={{ lineHeight: 22 }}>Date : </Text>
-                    <Text style={[styles.Heading, { lineHeight: 16 }]}>
+                    <Text style={[styles.Heading, { lineHeight: 18 }]}>
                       {moment(order.date_created).format("DD-MM-YYYY")}
                     </Text>
                   </View>
@@ -71,11 +71,11 @@ class ThankYou extends React.PureComponent {
                 <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
                   <View>
                     <Text style={{ lineHeight: 22 }}>Email : </Text>
-                    <Text style={[styles.Heading, { lineHeight: 16 }]}>kamlesh@webiixx.com</Text>
+                    <Text style={[styles.Heading, { lineHeight: 18 }]}>kamlesh@webiixx.com</Text>
                   </View>
                   <View>
                     <Text style={{ lineHeight: 22 }}>Total : </Text>
-                    <Text style={[styles.Heading, { lineHeight: 16 }]}>{order.total}</Text>
+                    <Text style={[styles.Heading, { lineHeight: 18 }]}>{order.total}</Text>
                   </View>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>

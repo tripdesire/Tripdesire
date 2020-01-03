@@ -134,6 +134,18 @@ class Payment extends React.PureComponent {
   _order = () => {
     const { params, data } = this.props.navigation.state.params;
 
+    const { user } = this.props;
+
+    if (isEmpty(this.props.user)) {
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { needBilling: true });
+      return;
+    }
+    if (user.billing.email === "" || user.billing.phone === "") {
+      this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
+      return;
+    }
+
     let adult_details = this.state.adults.map(item => ({
       "ad-den": item.den,
       "ad-fname": item.firstname,
@@ -226,8 +238,6 @@ class Payment extends React.PureComponent {
     ].join("~");
     age = finalArrAge.join("-");
 
-    const { user } = this.props;
-
     let blockData = {
       AdditionalInfo: null,
       Address: user.billing.address_1 != "" ? user.billing.address_1 : "",
@@ -238,10 +248,10 @@ class Payment extends React.PureComponent {
       ChildrenAges: params.childAge,
       City: user.billing.city != "" ? user.billing.city : "",
       CityName: params.city,
-      Country: user.billing.country != "" ? user.billing.country : "India",
+      Country: user.billing.country != "" ? user.billing.country : "",
       DepartureDate: params.checkOutDate,
       DestinationId: params.cityid,
-      EmailId: user.billing.email != "" ? user.billing.email : "guru@gmail.com",
+      EmailId: user.billing.email != "" ? user.billing.email : "",
       Fare: data.total_price, //null
       Genders: gender,
       HotelDetail: params,
@@ -250,15 +260,15 @@ class Payment extends React.PureComponent {
       HotelPolicy: params.HotelPolicy,
       HotelType: params.hoteltype,
       IsOfflineBooking: false,
-      MobileNo: user.billing.phone != "" ? user.billing.phone : "9999999999",
+      MobileNo: user.billing.phone != "" ? user.billing.phone : "",
       Names: name,
       Nationality: params.CountryCode,
       NoOfdays: params.Night,
-      PinCode: "",
+      PinCode: user.billing.postcode != "" ? user.billing.postcode : "",
       Provider: params.Provider,
       RoomDetails: [params.selectedRoom],
       Rooms: params.room,
-      State: "",
+      State: user.billing.state != "" ? user.billing.state : "",
       Status: 1,
       Titles: null,
       User: "",
@@ -291,7 +301,7 @@ class Payment extends React.PureComponent {
                     description: "Credits towards consultation",
                     //image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
-                    key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
+                    key: "rzp_test_I66kFrN53lhauw", //"rzp_live_IRhvqgmESx60tW",
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {

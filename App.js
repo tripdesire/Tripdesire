@@ -73,6 +73,19 @@ class App extends React.PureComponent {
   }
 }
 
+const LoginStack = createStackNavigator(
+  {
+    SignIn,
+    SignUp,
+    OTPScreen,
+    OTPVerify,
+    ForgetPassword
+  },
+  {
+    headerMode: "none",
+    initialRouteName: "SignIn"
+  }
+);
 const HomeStack = createStackNavigator(
   {
     Home,
@@ -112,25 +125,13 @@ const HomeStack = createStackNavigator(
     SeatRound,
     BoardingOneway,
     BoardingRound,
-    BusRoundReturn
+    BusRoundReturn,
+    LoginStack,
+    BillingDetails
   },
   {
     headerMode: "none",
     initialRouteName: "Home"
-  }
-);
-
-const LoginStack = createStackNavigator(
-  {
-    SignIn,
-    SignUp,
-    OTPScreen,
-    OTPVerify,
-    ForgetPassword
-  },
-  {
-    headerMode: "none",
-    initialRouteName: "SignIn"
   }
 );
 

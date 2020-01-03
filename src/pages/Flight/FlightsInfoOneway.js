@@ -446,7 +446,7 @@ class FlightsInfoOneway extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ paddingBottom: 20, backgroundColor: "#E5EBF7" }}>
+            <View style={{ paddingBottom: 40, backgroundColor: "#E5EBF7" }}>
               <HeaderFlights
                 from={from}
                 to={to}

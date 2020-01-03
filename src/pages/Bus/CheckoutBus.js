@@ -14,6 +14,9 @@ import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-simple-toast";
 import HTML from "react-native-render-html";
+import { connect } from "react-redux";
+import { isEmpty } from "lodash";
+
 class CheckoutBus extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -199,6 +202,18 @@ class CheckoutBus extends React.PureComponent {
   _Next = () => {
     const { IdCardType, IdNumber, IssuedBy, adults } = this.state;
 
+    const { user } = this.props;
+
+    if (isEmpty(this.props.user)) {
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { needBilling: true });
+      return;
+    }
+    if (user.billing.email === "" || user.billing.phone === "") {
+      this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
+      return;
+    }
+
     const {
       params,
       paramsRound,
@@ -247,13 +262,13 @@ class CheckoutBus extends React.PureComponent {
     console.log(name, age, gender, den, Fares, SeatNos);
 
     let param = {
-      Address: "South X",
+      Address: user.billing.address_1 != "" ? user.billing.address_1 : "",
       Ages: age,
       BoardingId: BoardingPoint.PointId,
       BoardingPointDetails: BoardingPoint.Location + "" + BoardingPoint.Landmark,
       BusTypeName: params.BusType,
       CancellationPolicy: params.CancellationPolicy,
-      City: sourceName,
+      City: user.billing.city != "" ? user.billing.city : "",
       ConvenienceFee: params.ConvenienceFee,
       DepartureTime: params.DepartureTime,
       DestinationId: params.DestinationId,
@@ -261,7 +276,7 @@ class CheckoutBus extends React.PureComponent {
       DisplayName: params.DisplayName,
       DroppingId: DroppingPoint.PointId,
       DroppingPointDetails: DroppingPoint.Location + "" + DroppingPoint.Landmark,
-      EmailId: "nadeem@webiixx.com",
+      EmailId: user.billing.email != "" ? user.billing.email : "",
       EmergencyMobileNo: null,
       Fares: Fares,
       Genders: gender,
@@ -269,15 +284,15 @@ class CheckoutBus extends React.PureComponent {
       IdCardType: IdCardType,
       IdCardIssuedBy: IssuedBy,
       JourneyDate: journeyDate,
-      MobileNo: 9999999999,
+      MobileNo: user.billing.phone != "" ? user.billing.phone : "",
       Names: name,
       NoofSeats: selectedSheets.length,
-      Operator: "GDS Demo Test", //////not showing
+      Operator: params.Travels,
       PartialCancellationAllowed: params.PartialCancellationAllowed,
-      PostalCode: "500035", /////
+      PostalCode: user.billing.postcode != "" ? user.billing.postcode : "",
       Provider: params.Provider,
       ReturnDate: null,
-      State: "Telangana",
+      State: user.billing.state != "" ? user.billing.state : "",
       Seatcodes: null,
       SeatNos: SeatNos,
       Servicetax: ServiceTax,
@@ -292,13 +307,13 @@ class CheckoutBus extends React.PureComponent {
 
     if (TripType == 2) {
       let paramRound = {
-        Address: "South X",
+        Address: user.billing.address_1 != "" ? user.billing.address_1 : "",
         Ages: age,
         BoardingId: BoardingPointReturn.PointId,
         BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
         BusTypeName: paramsRound.BusType,
         CancellationPolicy: paramsRound.CancellationPolicy,
-        City: destinationName,
+        City: user.billing.city != "" ? user.billing.city : "",
         ConvenienceFee: paramsRound.ConvenienceFee,
         DepartureTime: paramsRound.DepartureTime,
         DestinationId: paramsRound.DestinationId,
@@ -306,7 +321,7 @@ class CheckoutBus extends React.PureComponent {
         DisplayName: paramsRound.DisplayName,
         DroppingId: DroppingPointReturn.PointId,
         DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
-        EmailId: "nadeem@webiixx.com",
+        EmailId: user.billing.email != "" ? user.billing.email : "",
         EmergencyMobileNo: null,
         Fares: FaresRound,
         Genders: gender,
@@ -314,15 +329,15 @@ class CheckoutBus extends React.PureComponent {
         IdCardType: IdCardType,
         IdCardIssuedBy: IssuedBy,
         JourneyDate: returnDate,
-        MobileNo: 9999999999,
+        MobileNo: user.billing.phone != "" ? user.billing.phone : "",
         Names: name,
         NoofSeats: selectedSheetsRound.length,
         Operator: "GDS Demo Test", //////not showing
         PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
-        PostalCode: "500035", /////
+        PostalCode: user.billing.postcode != "" ? user.billing.postcode : "", /////
         Provider: paramsRound.Provider,
         ReturnDate: null,
-        State: "Telangana",
+        State: user.billing.state != "" ? user.billing.state : "",
         Seatcodes: null,
         SeatNos: SeatNosRound,
         Servicetax: ServiceTaxRound,
@@ -920,7 +935,7 @@ class CheckoutBus extends React.PureComponent {
                   <Text style={{ color: "#fff" }}>Next</Text>
                 </Button>
               </ScrollView>
-              {loader && <ActivityIndicator />}
+              {this.state.loader && <ActivityIndicator />}
             </View>
           </View>
         </SafeAreaView>
@@ -948,4 +963,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CheckoutBus;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, null)(CheckoutBus);

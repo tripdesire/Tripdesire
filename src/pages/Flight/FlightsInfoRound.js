@@ -101,7 +101,7 @@ class FlightsInfoRound extends React.PureComponent {
         });
       })
       .catch(error => {
-        Toast.show(error, Toast.LONG);
+        Toast.show(error.toString(), Toast.LONG);
         this.setState({ loader: false });
       });
   }
@@ -430,7 +430,7 @@ class FlightsInfoRound extends React.PureComponent {
               Child={Child}
               Infant={Infant}
               className={className}
-              style={{ backgroundColor: "#E5EBF7", paddingBottom: 8 }}>
+              style={{ backgroundColor: "#E5EBF7", paddingBottom: 8, zIndex: 1 }}>
               <Button
                 style={{
                   flexDirection: "row",

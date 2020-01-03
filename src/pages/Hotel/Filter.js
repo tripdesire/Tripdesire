@@ -88,7 +88,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
                 style={[styles.filterTabs, i == index ? { backgroundColor: "#FFFFFF" } : null]}
                 key={"filter_" + item + index}
                 onPress={() => setIndex(i)}>
-                <Text>{i == 2 && filters.amenities.length <= 0 ? null : item}</Text>
+                <Text>{item}</Text>
               </Button>
             ))}
           </View>
@@ -138,14 +138,18 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
             )}
             {index == 2 && (
               <ScrollView>
-                {filters.amenities.map((item, index) => (
-                  <CheckBox
-                    label={item}
-                    key={"amenities_" + item + index}
-                    checked={filterValues.amenities.includes(item)}
-                    onPress={updateFilter("amenities", index)}
-                  />
-                ))}
+                {filters.amenities && filters.amenities.length === 0 ? (
+                  <Text style={{ marginHorizontal: 20 }}>There are no amenities available</Text>
+                ) : (
+                  filters.amenities.map((item, index) => (
+                    <CheckBox
+                      label={item}
+                      key={"amenities_" + item + index}
+                      checked={filterValues.amenities.includes(item)}
+                      onPress={updateFilter("amenities", index)}
+                    />
+                  ))
+                )}
               </ScrollView>
             )}
             {index == 3 &&

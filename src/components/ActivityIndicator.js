@@ -15,7 +15,7 @@ function ActivityIndicator({ label }) {
         source={require("../assets/gifs/loading.gif")}
         style={{ width: 70, resizeMode: "contain" }}
       />
-      <Text style={{ color: label == "" ? "#5B89F9" : "#000000", fontWeight: "700" }}>{label}</Text>
+      <Text style={{ fontWeight: "700", fontSize: 18 }}>{label}</Text>
     </View>
   );
 }

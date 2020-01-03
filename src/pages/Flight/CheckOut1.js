@@ -178,9 +178,17 @@ class CheckOut1 extends React.PureComponent {
 
   _order = async () => {
     const { params } = this.props.navigation.state.params;
-    console.log(this.state);
 
-    console.log(this.validate());
+    const { user } = this.props;
+    if (isEmpty(this.props.user)) {
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { needBilling: true });
+      return;
+    }
+    if (user.billing.email === "" || user.billing.phone === "") {
+      this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
+      return;
+    }
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.LONG);
@@ -534,7 +542,7 @@ class CheckOut1 extends React.PureComponent {
         UserType: 5
       };
 
-      console.log(JSON.stringify(book));
+      // console.log(JSON.stringify(book));
       // return;
 
       if (isEmpty(this.props.user)) {
@@ -561,7 +569,7 @@ class CheckOut1 extends React.PureComponent {
                     description: "Credits towards consultation",
                     // image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
-                    key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
+                    key: "rzp_test_I66kFrN53lhauw", //"rzp_live_IRhvqgmESx60tW",
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {

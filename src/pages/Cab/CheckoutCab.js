@@ -169,6 +169,17 @@ class CheckoutCab extends React.PureComponent {
   };
 
   _order = () => {
+    const { user } = this.props;
+    if (isEmpty(this.props.user)) {
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { needBilling: true });
+      return;
+    }
+    if (user.billing.email === "" || user.billing.phone === "") {
+      this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
+      return;
+    }
+
     let name = this.state.firstname.concat(
       this.state.last_name != "" ? "~" + this.state.last_name : ""
     );
@@ -265,7 +276,7 @@ class CheckoutCab extends React.PureComponent {
                   description: "Credits towards consultation",
                   //image: "https://i.imgur.com/3g7nmJC.png",
                   currency: "INR",
-                  key: "rzp_live_IRhvqgmESx60tW", //"rzp_live_IRhvqgmESx60tW",
+                  key: "rzp_test_I66kFrN53lhauw", //"rzp_live_IRhvqgmESx60tW",
                   amount: parseInt(order.total) * 100,
                   name: "TripDesire",
                   prefill: {

@@ -13,7 +13,7 @@ import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
-import axios from "axios";
+import { isArray } from "lodash";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
 
@@ -646,7 +646,7 @@ class CheckOut extends React.PureComponent {
                     {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                   </Text>
                 </View>
-                <View
+                {/* <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between"
@@ -665,17 +665,23 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginEnd: 10 }}>
                     {params.departFlight.FareDetails.ChargeableFares.STax}
                   </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
-                  <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
-                  </Text>
-                </View>
+                </View> */}
+                {this.state.data.cart_data && isArray(this.state.data.cart_data) && (
+                  <View
+                    style={{
+                      marginEnd: 10,
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
+                    <HTML
+                      html={
+                        this.state.data.cart_data[0].custum_product_data.flight_book_item
+                          .ConvenienceFee
+                      }
+                    />
+                  </View>
+                )}
                 <View
                   style={{
                     flexDirection: "row",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Dimensions, StatusBar } from "react-native";
+import { Image, ImageBackground, Dimensions, StatusBar, View } from "react-native";
 
 const { height, width } = Dimensions.get("window");
 
@@ -16,7 +16,27 @@ class Splash extends React.PureComponent {
 
   render() {
     return (
-      <ImageBackground
+      <View
+        style={{
+          height: height,
+          width: width,
+          backgroundColor: "#f2f2f2",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+        <Image
+          resizeMode="contain"
+          style={{
+            width: width - 100,
+            height: height / 5,
+            alignItems: "center",
+            marginTop: -50,
+            justifyContent: "center"
+          }}
+          source={require("../assets/imgs/splashLogo.png")}
+        />
+      </View>
+      /* <ImageBackground
         style={{
           height: height,
           width: width,
@@ -35,7 +55,7 @@ class Splash extends React.PureComponent {
           }}
           source={require("../assets/imgs/td-logo.png")}
         />
-      </ImageBackground>
+      </ImageBackground> */
     );
   }
 }

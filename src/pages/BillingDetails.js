@@ -13,6 +13,7 @@ class BillingDetails extends React.PureComponent {
     super(props);
     const { user } = this.props;
     this.state = {
+      loader: false,
       firstname: user.billing.first_name,
       lastname: user.billing.last_name,
       email: user.billing.email,
@@ -28,6 +29,8 @@ class BillingDetails extends React.PureComponent {
   }
 
   _Submit = () => {
+    const { needBilling, needBillingOnly } = this.props.navigation.state.params;
+
     const {
       firstname,
       lastname,
@@ -89,10 +92,18 @@ class BillingDetails extends React.PureComponent {
       if (email != "" && reg.test(email) == false) {
         Toast.show("Please enter the correct email", Toast.LONG);
       } else {
+        this.setState({ loader: true });
         domainApi.post("/checkout/update-billing", param).then(({ data }) => {
           console.log(data);
+          this.setState({ loader: false });
           if (data.status == 1) {
             this.props.Billing(redux);
+            if (needBilling) {
+              this.props.navigation.goBack(null);
+              this.props.navigation.goBack(null);
+            } else if (needBillingOnly) {
+              this.props.navigation.goBack(null);
+            }
             Toast.show(data.msg, Toast.LONG);
           } else {
             Toast.show("You didn't update your billing address", Toast.LONG);
@@ -114,7 +125,8 @@ class BillingDetails extends React.PureComponent {
       streetAddress1,
       state,
       postcode,
-      country
+      country,
+      loader
     } = this.state;
     return (
       <>
@@ -217,6 +229,7 @@ class BillingDetails extends React.PureComponent {
                 </Button>
               </View>
             </ScrollView>
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

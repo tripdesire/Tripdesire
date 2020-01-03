@@ -54,7 +54,7 @@ class SignUp extends React.PureComponent {
             if (data.status == 1) {
               console.log(data);
               this.setState({ loader: false });
-              // Toast.show("Successful Signup! Login now", Toast.LONG);
+              //Toast.show("Successful Signup! Login now", Toast.LONG);
               this.props.navigation.goBack(null);
             } else {
               this.setState({ loader: false });
@@ -73,6 +73,7 @@ class SignUp extends React.PureComponent {
   };
 
   _Social_login = social => {
+    const { needBilling } = this.props.navigation.state.params;
     if (social == "google") {
       GoogleSignin.signIn().then(user => {
         let details = user.user;
@@ -83,8 +84,17 @@ class SignUp extends React.PureComponent {
           if (data.code == 1) {
             this.setState({ loader: false });
             this.props.Signin(data.details);
-            this.props.navigation.goBack(null);
-            this.props.navigation.goBack(null);
+            if (
+              needBilling &&
+              (data.details.billing.email == "" || data.details.billing.phone == "")
+            ) {
+              this.props.navigation.navigate("BillingDetails", {
+                ...this.props.navigation.state.params
+              });
+            } else {
+              this.props.navigation.goBack(null);
+              this.props.navigation.goBack(null);
+            }
             // Toast.show("Login successful", Toast.LONG);
           } else {
             this.setState({ loader: false });

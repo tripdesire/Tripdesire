@@ -22,7 +22,7 @@ class SignIn extends React.PureComponent {
   }
 
   login = () => {
-    const { onBack } = this.props.navigation.state.params;
+    const { onBack, needBilling } = this.props.navigation.state.params;
     console.log(this.state);
     if (this.state.email != "" && this.state.password != "") {
       this.setState({ loader: true });
@@ -38,8 +38,16 @@ class SignIn extends React.PureComponent {
             this.setState({ loader: false });
             this.props.Signin(data.details);
             onBack && onBack();
-            this.props.navigation.goBack(null);
-
+            if (
+              needBilling &&
+              (data.details.billing.email == "" || data.details.billing.phone == "")
+            ) {
+              this.props.navigation.navigate("BillingDetails", {
+                ...this.props.navigation.state.params
+              });
+            } else {
+              this.goBack();
+            }
             Toast.show("Login successful", Toast.LONG);
           } else {
             this.setState({ loader: false });
@@ -65,7 +73,7 @@ class SignIn extends React.PureComponent {
   };
 
   socialLogin = social => {
-    const { onBack } = this.props.navigation.state.params;
+    const { onBack, needBilling } = this.props.navigation.state.params;
     if (social == "google") {
       GoogleSignin.signIn().then(user => {
         let details = user.user;
@@ -77,7 +85,16 @@ class SignIn extends React.PureComponent {
             this.setState({ loader: false });
             this.props.Signin(data.details);
             onBack && onBack();
-            this.goBack();
+            if (
+              needBilling &&
+              (data.details.billing.email == "" || data.details.billing.phone == "")
+            ) {
+              this.props.navigation.navigate("BillingDetails", {
+                ...this.props.navigation.state.params
+              });
+            } else {
+              this.goBack();
+            }
             Toast.show("Login successful", Toast.LONG);
           } else {
             this.setState({ loader: false });
