@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     borderBottomColor: "#D2D1D1",
     width: "100%",
     fontSize: 16,
-    paddingStart: 5
+    paddingStart: 5,
+    color: "#000"
   },
   text: {
     fontSize: 12,

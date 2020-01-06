@@ -1,13 +1,5 @@
-import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  Picker,
-  ScrollView,
-  SafeAreaView
-} from "react-native";
+import React from "react";
+import { View, Image, TouchableOpacity, TextInput, ScrollView, SafeAreaView } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
@@ -180,12 +172,18 @@ class CheckOut1 extends React.PureComponent {
     const { params } = this.props.navigation.state.params;
 
     const { user } = this.props;
-    if (isEmpty(this.props.user)) {
+    if (isEmpty(user)) {
       //Toast.show("Please login or signup", Toast.LONG);
       this.props.navigation.navigate("SignIn", { needBilling: true });
       return;
     }
-    if (user.billing.email === "" || user.billing.phone === "") {
+    if (
+      user.billing.email === "" ||
+      user.billing.phone === "" ||
+      user.billing.state === "" ||
+      user.billing.city === "" ||
+      user.billing.address_1 === ""
+    ) {
       this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
       return;
     }
@@ -194,8 +192,6 @@ class CheckOut1 extends React.PureComponent {
       Toast.show("Please enter all the fields.", Toast.LONG);
       return;
     }
-
-    let journey_date = moment(params.journey_date, "DD MMM").format("DD-MM-YYYY");
 
     let adult_details = this.state.adults.map(item => ({
       "ad-den": item.den,
@@ -266,13 +262,24 @@ class CheckOut1 extends React.PureComponent {
 
     try {
       console.log(params);
+      this.setState({ loading: true });
+      const { arrivalFlight, departFlight, tripType, flightType } = params;
       let RuleParams = {
-        airlineId: params.departFlight.FlightSegments[0].OperatingAirlineCode,
-        classCode: params.departFlight.FlightSegments[0].BookingClassFare.ClassType,
-        couponFare: params.departFlight.FlightSegments[0].RPH,
-        flightId: params.departFlight.OriginDestinationoptionId.Id,
-        key: params.departFlight.OriginDestinationoptionId.Key,
-        provider: params.departFlight.Provider,
+        airlineId:
+          flightType == 1
+            ? departFlight.FlightSegments[0].OperatingAirlineCode
+            : departFlight.IntOnward.FlightSegments[0].OperatingAirlineCode,
+        classCode:
+          flightType == 1
+            ? departFlight.FlightSegments[0].BookingClassFare.ClassType
+            : departFlight.IntOnward.FlightSegments[0].BookingClassFare.ClassType,
+        couponFare:
+          flightType == 1
+            ? departFlight.FlightSegments[0].RPH
+            : departFlight.IntOnward.FlightSegments[0].RPH,
+        flightId: departFlight.OriginDestinationoptionId.Id,
+        key: departFlight.OriginDestinationoptionId.Key,
+        provider: departFlight.Provider,
         tripType: params.tripType,
         service: params.flightType,
         user: "",
@@ -281,21 +288,22 @@ class CheckOut1 extends React.PureComponent {
       const { data: Rule } = await etravosApi.get("/Flights/GetFareRule", RuleParams);
 
       let taxDetail = {
-        ActualBaseFare: params.departFlight.FareDetails.ChargeableFares.ActualBaseFare,
+        ActualBaseFare: departFlight.FareDetails.ChargeableFares.ActualBaseFare,
         ActualBaseFareRet: 0,
         AdultPax: params.adult,
+        Address: "Abc",
         BookedFrom: "Delhi",
         BookingDate: moment(this.state.date).format("DD-MM-YYYY"),
         ChildPax: params.child,
-        Conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
+        Conveniencefee: departFlight.FareDetails.ChargeableFares.Conveniencefee,
         ConveniencefeeRet: 0,
         Destination: params.destinationCode,
         DestinationName: params.to + ", " + params.destinationCode,
         FareDetails: null, // params.departFlight.FareDetails,
-        FlightId: params.departFlight.OriginDestinationoptionId.Id,
+        FlightId: departFlight.OriginDestinationoptionId.Id,
         FlightIdRet: null,
-        FlightType: params.flightType,
-        GSTDetails: params.departFlight.IsGSTMandatory
+        FlightType: flightType,
+        GSTDetails: departFlight.IsGSTMandatory
           ? {
               GSTCompanyAddress: "Hyderabad",
               GSTCompanyContactNumber: "9234234234",
@@ -307,39 +315,46 @@ class CheckOut1 extends React.PureComponent {
             }
           : null,
         InfantPax: params.infant,
-        IsLCC: params.departFlight.IsLCC,
+        IsLCC: departFlight.IsLCC,
         IsLCCRet: null,
-        IsNonStopFlight: params.departFlight.FlightSegments.length > 1 ? false : true,
+        IsNonStopFlight:
+          flightType == 1
+            ? departFlight.FlightSegments.length > 1
+              ? false
+              : true
+            : departFlight.IntOnward.FlightSegments.length > 1
+            ? false
+            : true,
         JourneyDate: params.journeyDate,
-        Key: params.departFlight.OriginDestinationoptionId.Key,
+        Key: departFlight.OriginDestinationoptionId.Key,
         keyRet: null,
-        OcTax: params.departFlight.FareDetails.OCTax,
+        OcTax: departFlight.FareDetails.OCTax,
         OnwardFlightSegments:
           params.flightType == 1
-            ? params.departFlight.FlightSegments
-            : params.departFlight.IntOnward.FlightSegments,
-        provider: params.departFlight.Provider,
+            ? departFlight.FlightSegments
+            : departFlight.IntOnward.FlightSegments,
+        provider: departFlight.Provider,
         ReturnDate: params.tripType == 2 ? params.returnDate : params.journeyDate,
         ReturnFlightSegments: null,
         Rule,
         RuleRet: "",
-        SCharge: params.departFlight.FareDetails.ChargeableFares.SCharge,
+        SCharge: departFlight.FareDetails.ChargeableFares.SCharge,
         SChargeRet: 0,
         Source: params.sourceCode,
         SourceName: params.from + ", " + params.sourceCode,
-        Tax: params.departFlight.FareDetails.ChargeableFares.Tax,
+        Tax: departFlight.FareDetails.ChargeableFares.Tax,
         TaxRet: 0,
-        TCharge: params.departFlight.FareDetails.NonchargeableFares.TCharge,
+        TCharge: departFlight.FareDetails.NonchargeableFares.TCharge,
         TChargeRet: 0,
-        TDiscount: params.departFlight.FareDetails.ChargeableFares.TDiscount,
+        TDiscount: departFlight.FareDetails.ChargeableFares.TDiscount,
         TDiscountRet: 0,
-        TMarkup: params.departFlight.FareDetails.NonchargeableFares.TMarkup,
+        TMarkup: departFlight.FareDetails.NonchargeableFares.TMarkup,
         TMarkupRet: 0,
-        TPartnerCommission: params.departFlight.FareDetails.ChargeableFares.TPartnerCommission,
+        TPartnerCommission: departFlight.FareDetails.ChargeableFares.TPartnerCommission,
         TPartnerCommissionRet: 0,
         TravelClass: params.travelClass,
         TripType: params.tripType,
-        TSdiscount: params.departFlight.FareDetails.NonchargeableFares.TSdiscount,
+        TSdiscount: departFlight.FareDetails.NonchargeableFares.TSdiscount,
         TSdiscountRet: 0,
         User: "",
         UserType: 5
@@ -347,13 +362,14 @@ class CheckOut1 extends React.PureComponent {
 
       console.log("Onward", taxDetail);
       const { data: TaxDetails } = await etravosApi.post("/Flights/GetTaxDetails", taxDetail);
-      console.log("Onward Response", TaxDetails);
-
+      //console.log("Onward Response", TaxDetails);
       if (TaxDetails.Message != null) {
+        this.setState({ loading: false });
         Toast.show(TaxDetails.Message, Toast.LONG);
         return;
       }
 
+      let RuleRet = "";
       if (params.flightType == 1 && params.tripType == 2) {
         let RuleParams = {
           airlineId: params.arrivalFlight.FlightSegments[0].OperatingAirlineCode,
@@ -367,24 +383,25 @@ class CheckOut1 extends React.PureComponent {
           user: "",
           userType: 5
         };
-        const { data: RuleRet } = await etravosApi.get("/Flights/GetFareRule", RuleParams);
+        const data = await etravosApi.get("/Flights/GetFareRule", RuleParams);
+        RuleRet = data.data;
 
         let taxDetailReturn = {
-          ActualBaseFare: 0,
-          ActualBaseFareRet: params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare,
+          ActualBaseFare: TaxDetails.ChargeableFares.ActualBaseFare,
+          ActualBaseFareRet: arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare,
           AdultPax: params.adult,
           BookedFrom: "Delhi",
           BookingDate: moment(this.state.date).format("DD-MM-YYYY"),
           ChildPax: params.child,
-          Conveniencefee: 0,
-          ConveniencefeeRet: params.arrivalFlight.FareDetails.ChargeableFares.Conveniencefee,
+          Conveniencefee: TaxDetails.ChargeableFares.Conveniencefee,
+          ConveniencefeeRet: arrivalFlight.FareDetails.ChargeableFares.Conveniencefee,
           Destination: params.destinationCode,
           DestinationName: params.to + ", " + params.destinationCode,
-          FareDetails: TaxDetails, // params.departFlight.FareDetails,
-          FlightId: null,
-          FlightIdRet: params.arrivalFlight.OriginDestinationoptionId.Id,
-          FlightType: params.flightType,
-          GSTDetails: params.arrivalFlight.IsGSTMandatory
+          FareDetails: null, // TaxDetails, // params.TaxDetails,
+          FlightId: departFlight.OriginDestinationoptionId.Id,
+          FlightIdRet: arrivalFlight.OriginDestinationoptionId.Id,
+          FlightType: flightType,
+          GSTDetails: arrivalFlight.IsGSTMandatory
             ? {
                 GSTCompanyAddress: "Hyderabad",
                 GSTCompanyContactNumber: "9234234234",
@@ -396,86 +413,85 @@ class CheckOut1 extends React.PureComponent {
               }
             : null,
           InfantPax: params.infant,
-          IsLCC: null,
-          IsLCCRet: params.arrivalFlight.IsLCC,
-          IsNonStopFlight: params.arrivalFlight.FlightSegments.length > 1 ? false : true,
+          IsLCC: departFlight.IsLCC,
+          IsLCCRet: arrivalFlight.IsLCC,
+          IsNonStopFlight: arrivalFlight.FlightSegments.length > 1 ? false : true,
           JourneyDate: params.journeyDate,
-          Key: null,
-          keyRet: params.arrivalFlight.OriginDestinationoptionId.Key,
-          OcTax: params.arrivalFlight.FareDetails.OCTax,
-          OnwardFlightSegments:
-            params.flightType == 1
-              ? params.departFlight.FlightSegments
-              : params.departFlight.IntOnward.FlightSegments,
-          provider: params.arrivalFlight.Provider,
+          Key: departFlight.OriginDestinationoptionId.Key,
+          keyRet: arrivalFlight.OriginDestinationoptionId.Key,
+          OcTax: arrivalFlight.FareDetails.OCTax,
+          OnwardFlightSegments: departFlight.FlightSegments,
+          provider: arrivalFlight.Provider,
           ReturnDate: params.tripType == 2 ? params.returnDate : params.journeyDate,
-          ReturnFlightSegments:
-            params.flightType == 1 && params.tripType == 2
-              ? params.arrivalFlight.FlightSegments
-              : null,
-          Rule: "",
+          ReturnFlightSegments: params.arrivalFlight.FlightSegments,
+          Rule,
           RuleRet,
-          SCharge: 0,
-          SChargeRet: params.arrivalFlight.FareDetails.ChargeableFares.SCharge,
+          SCharge: TaxDetails.ChargeableFares.SCharge,
+          SChargeRet: arrivalFlight.FareDetails.ChargeableFares.SCharge,
           Source: params.sourceCode,
           SourceName: params.from + ", " + params.sourceCode,
-          Tax: 0,
-          TaxRet: params.arrivalFlight.FareDetails.ChargeableFares.Tax,
-          TCharge: 0,
-          TChargeRet: params.arrivalFlight.FareDetails.NonchargeableFares.TCharge,
-          TDiscount: 0,
-          TDiscountRet: params.arrivalFlight.FareDetails.ChargeableFares.TDiscount,
-          TMarkup: 0,
-          TMarkupRet: params.arrivalFlight.FareDetails.NonchargeableFares.TMarkup,
-          TPartnerCommission: 0,
-          TPartnerCommissionRet:
-            params.arrivalFlight.FareDetails.ChargeableFares.TPartnerCommission,
+          Tax: TaxDetails.ChargeableFares.Tax,
+          TaxRet: arrivalFlight.FareDetails.ChargeableFares.Tax,
+          TCharge: TaxDetails.NonchargeableFares.TCharge,
+          TChargeRet: arrivalFlight.FareDetails.NonchargeableFares.TCharge,
+          TDiscount: TaxDetails.ChargeableFares.TDiscount,
+          TDiscountRet: arrivalFlight.FareDetails.ChargeableFares.TDiscount,
+          TMarkup: TaxDetails.NonchargeableFares.TMarkup,
+          TMarkupRet: arrivalFlight.FareDetails.NonchargeableFares.TMarkup,
+          TPartnerCommission: TaxDetails.ChargeableFares.TPartnerCommission,
+          TPartnerCommissionRet: arrivalFlight.FareDetails.ChargeableFares.TPartnerCommission,
           TravelClass: params.travelClass,
           TripType: params.tripType,
-          TSdiscount: 0,
-          TSdiscountRet: params.arrivalFlight.FareDetails.NonchargeableFares.TSdiscount,
+          TSdiscount: TaxDetails.NonchargeableFares.TSdiscount,
+          TSdiscountRet: arrivalFlight.FareDetails.NonchargeableFares.TSdiscount,
           User: "",
           UserType: 5
         };
 
-        console.log(taxDetailReturn);
-
-        const { data: TaxDetailsReturn } = await etravosApi.post(
+        //console.log(taxDetailReturn);
+        var { data: TaxDetailsReturn } = await etravosApi.post(
           "/Flights/GetTaxDetails",
           taxDetailReturn
         );
-        console.log("Return datails", TaxDetailsReturn);
+        //console.log("Return datails", TaxDetailsReturn);
+        if (TaxDetailsReturn.Message != null) {
+          this.setState({ loading: false });
+          Toast.show(TaxDetailsReturn.Message, Toast.LONG);
+          return;
+        }
       }
 
-      return;
+      //return;
 
       let book = {
         ActualBaseFare: TaxDetails.ChargeableFares.ActualBaseFare,
-        ActualBaseFareRet: TaxDetailsReturn.ChargeableFares.ActualBaseFare,
-        Address: "Hyderabad",
+        ActualBaseFareRet:
+          tripType == 2 && flightType == 1 ? TaxDetailsReturn.ChargeableFares.ActualBaseFare : 0,
+        Address: user.billing.address_1,
         AdultPax: params.adult,
         Ages: age,
-        BookedFrom: null,
-        BookingDate: this.state.date,
+        BookedFrom: "Delhi",
+        BookingDate: moment(this.state.date).format("DD-MM-YYYY"),
         ChildPax: params.child,
-        City: "Hyderabad",
+        City: user.billing.city,
         Conveniencefee: TaxDetails.ChargeableFares.Conveniencefee,
-        ConveniencefeeRet: TaxDetailsReturn.ChargeableFares.Conveniencefee,
+        ConveniencefeeRet:
+          tripType == 2 && flightType == 1 ? TaxDetailsReturn.ChargeableFares.Conveniencefee : 0,
         Destination: params.destinationCode,
         DestinationName: params.destinationAirportName,
         dob: dob,
-        EmailId: "guruu@email.com",
-        FareDetails: "",
-        FlightId: params.departFlight.FlightUId,
+        EmailId: user.email || user.billing.email,
+        FareDetails: null,
+        FlightId: departFlight.OriginDestinationoptionId.Id,
         FlightIdRet:
-          params.tripType == 2 && params.flightType == 1
-            ? params.arrivalFlight.FlightUId
-            : params.tripType == 2 && params.flightType == 2
-            ? params.departFlight.FlightUId
+          tripType == 2 && flightType == 1
+            ? arrivalFlight.OriginDestinationoptionId.Id
+            : tripType == 2 && flightType == 2
+            ? departFlight.OriginDestinationoptionId.Id
             : null,
-        FlightType: params.flightType,
+        FlightType: flightType,
         Genders: gender,
-        GSTDetails: params.departFlight.IsGSTMandatory
+        GSTDetails: departFlight.IsGSTMandatory
           ? {
               GSTCompanyAddress: "Hyderabad",
               GSTCompanyContactNumber: "9234234234",
@@ -485,177 +501,153 @@ class CheckOut1 extends React.PureComponent {
               GSTFirstName: "guru",
               GSTLastName: "bharat"
             }
-          : {},
+          : null,
         InfantPax: params.infant,
-        IsLCC: true,
-        IsLCCRet: params.tripType == 2 ? true : null,
-        IsNonStopFlight: false,
+        IsLCC: params.departFlight.IsLCC,
+        IsLCCRet: tripType == 2 && flightType == 1 ? params.arrivalFlight.IsLCC : null,
+        IsNonStopFlight:
+          flightType == 1
+            ? departFlight.FlightSegments.length > 1
+              ? false
+              : true
+            : departFlight.IntOnward.FlightSegments.length > 1
+            ? false
+            : true,
         JourneyDate: params.journeyDate,
         key: params.departFlight.OriginDestinationoptionId.Key,
         keyRet:
-          params.tripType == 2 && params.flightType == 1
+          params.tripType == 2 && flightType == 1
             ? params.arrivalFlight.OriginDestinationoptionId.Key
-            : params.tripType == 2 && params.flightType == 2
-            ? params.departFlight.OriginDestinationoptionId.Key
             : null,
         MobileNo: "9999995999",
         Names: name,
-        OcTax: 0,
+        OcTax: params.departFlight.FareDetails.OCTax,
         OnwardFlightSegments:
           params.flightType == 1
-            ? params.departFlight.FlightSegments
-            : params.departFlight.IntOnward.FlightSegments,
-        PassportDetails: "",
+            ? departFlight.FlightSegments
+            : departFlight.IntOnward.FlightSegments,
+        PassportDetails: "Educational|234234234|hyd|16-05-2002|19-05-2022",
         PostalCode: "500071",
         Provider: params.departFlight.Provider,
         Psgrtype: "",
-        ReturnDate: params.tripType == 2 ? params.returnDate : params.journeyDate,
+        ReturnDate:
+          params.tripType == 2 && flightType == 1 ? params.returnDate : params.journeyDate,
         ReturnFlightSegments:
-          params.tripType == 2 && params.flightType == 1
-            ? params.arrivalFlight.FlightSegments
-            : params.tripType == 2 && params.flightType == 2
-            ? params.departFlight.IntReturn.FlightSegments
-            : [],
-        Rule: " ",
-        RuleRet: null,
+          tripType == 2 && flightType == 1
+            ? arrivalFlight.FlightSegments
+            : tripType == 2 && flightType == 2
+            ? departFlight.IntReturn.FlightSegments
+            : null,
+        Rule,
+        RuleRet: tripType == 2 && flightType == 1 ? RuleRet : null,
         SCharge: TaxDetails.ChargeableFares.SCharge,
-        SChargeRet: TaxDetailsReturn.ChargeableFares.SCharge,
+        SChargeRet: tripType == 2 && flightType == 1 ? TaxDetailsReturn.ChargeableFares.SCharge : 0,
         SMSUsageCount: 0,
         Source: params.sourceCode,
         SourceName: params.sourceAirportName,
-        State: "Telangana",
+        State: user.billing.state,
         STax: TaxDetails.ChargeableFares.STax,
-        STaxRet: TaxDetailsReturn.ChargeableFares.STax,
+        STaxRet: tripType == 2 && flightType == 1 ? TaxDetailsReturn.ChargeableFares.STax : 0,
         Tax: TaxDetails.ChargeableFares.Tax,
-        TaxRet: TaxDetailsReturn.ChargeableFares.Tax,
+        TaxRet: tripType == 2 && flightType == 1 ? TaxDetailsReturn.ChargeableFares.Tax : 0,
         TCharge: TaxDetails.NonchargeableFares.TCharge,
-        TChargeRet: TaxDetailsReturn.NonchargeableFares.TCharge,
+        TChargeRet:
+          tripType == 2 && flightType == 1 ? TaxDetailsReturn.NonchargeableFares.TCharge : 0,
         TDiscount: TaxDetails.ChargeableFares.TDiscount,
-        TDiscountRet: TaxDetailsReturn.ChargeableFares.TDiscount,
+        TDiscountRet:
+          tripType == 2 && flightType == 1 ? TaxDetailsReturn.ChargeableFares.TDiscount : 0,
         telephone: "8888588888",
         TMarkup: TaxDetails.NonchargeableFares.TCharge,
-        TMarkupRet: TaxDetailsReturn.NonchargeableFares.TCharge,
+        TMarkupRet:
+          tripType == 2 && flightType == 1 ? TaxDetailsReturn.NonchargeableFares.TCharge : 0,
         TPartnerCommission: TaxDetails.ChargeableFares.TPartnerCommission,
-        TPartnerCommissionRet: TaxDetailsReturn.ChargeableFares.TPartnerCommission,
+        TPartnerCommissionRet:
+          tripType == 2 && flightType == 1
+            ? TaxDetailsReturn.ChargeableFares.TPartnerCommission
+            : 0,
         TravelClass: params.travelClass,
         TripType: params.tripType,
         TSdiscount: TaxDetails.NonchargeableFares.TSdiscount,
-        TSDiscountRet: TaxDetailsReturn.NonchargeableFares.TSdiscount,
+        TSDiscountRet:
+          tripType == 2 && flightType == 1 ? TaxDetailsReturn.NonchargeableFares.TSdiscount : 0,
         User: "",
         UserType: 5
       };
 
-      // console.log(JSON.stringify(book));
-      // return;
+      console.log(book);
+      const { data: blockres } = await etravosApi.post("/Flights/BlockFlightTicket", book);
+      //console.log(blockres);
+      if (blockres.BookingStatus == 8) {
+        const { data: order } = await domainApi.post(
+          "/checkout/new-order?user_id=" + user.id,
+          param
+        );
+        var options = {
+          description: "Credits towards consultation",
+          // image: "https://i.imgur.com/3g7nmJC.png",
+          currency: "INR",
+          key: "rzp_test_I66kFrN53lhauw", //"rzp_live_IRhvqgmESx60tW",
+          amount: parseInt(order.total) * 100,
+          name: "TripDesire",
+          prefill: {
+            email: user.billing.email,
+            contact: user.billing.phone,
+            name: "Razorpay Software"
+          },
+          theme: { color: "#E5EBF7" }
+        };
 
-      if (isEmpty(this.props.user)) {
-        //Toast.show("Please login or signup", Toast.SHORT);
-        this.props.navigation.navigate("SignIn", { isCheckout: true });
-      } else {
-        console.log(book, this.state);
-        const { params, data } = this.props.navigation.state.params;
-        console.log(params, data, param);
-
-        this.setState({ loading: true });
-        etravosApi
-          .post("/Flights/BlockFlightTicket", book)
-          .then(blockres => {
-            console.log(blockres.data);
-            if (blockres.data.BookingStatus == 8) {
-              const { user } = this.props;
-              domainApi
-                .post("/checkout/new-order?user_id=" + user.id, param)
-                .then(({ data: order }) => {
-                  console.log(order);
-
-                  var options = {
-                    description: "Credits towards consultation",
-                    // image: "https://i.imgur.com/3g7nmJC.png",
-                    currency: "INR",
-                    key: "rzp_test_I66kFrN53lhauw", //"rzp_live_IRhvqgmESx60tW",
-                    amount: parseInt(order.total) * 100,
-                    name: "TripDesire",
-                    prefill: {
-                      email: user.billing.email,
-                      contact: user.billing.phone,
-                      name: "Razorpay Software"
-                    },
-                    theme: { color: "#E5EBF7" }
+        RazorpayCheckout.open(options)
+          .then(razorpayRes => {
+            // handle success
+            console.log(razorpayRes);
+            // alert(`Success: ${data.razorpay_payment_id}`);
+            if (
+              (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
+              razorpayRes.code == 0
+            ) {
+              this.setState({ loading: true });
+              etravosApi
+                .get("/Flights/BookFlightTicket?referenceNo=" + blockres.ReferenceNo)
+                .then(({ data: Response }) => {
+                  let paymentData = {
+                    order_id: order.id,
+                    status: "completed",
+                    transaction_id: razorpayRes.razorpay_payment_id,
+                    reference_no: Response // blockres.data.ReferenceNo
                   };
-
-                  RazorpayCheckout.open(options)
-                    .then(razorpayRes => {
-                      // handle success
-                      console.log(razorpayRes);
-                      // alert(`Success: ${data.razorpay_payment_id}`);
-
-                      if (
-                        (razorpayRes.razorpay_payment_id &&
-                          razorpayRes.razorpay_payment_id != "") ||
-                        razorpayRes.code == 0
-                      ) {
-                        this.setState({ loading: true });
-                        etravosApi
-                          .get("/Flights/BookFlightTicket?referenceNo=" + blockres.data.ReferenceNo)
-                          .then(({ data: Response }) => {
-                            console.log(Response);
-
-                            let paymentData = {
-                              order_id: order.id,
-                              status: "completed",
-                              transaction_id: razorpayRes.razorpay_payment_id,
-                              reference_no: Response // blockres.data.ReferenceNo
-                            };
-                            console.log(paymentData);
-
-                            this.setState({ loading: true });
-                            domainApi.post("/checkout/update-order", paymentData).then(resp => {
-                              this.setState({ loading: false });
-                              console.log(resp);
-                            });
-                            const { params } = this.props.navigation.state.params;
-                            this.props.navigation.navigate("ThankYou", {
-                              order,
-                              params,
-                              razorpayRes
-                            });
-                          })
-                          .catch(error => {
-                            console.log(error);
-                          });
-                      } else {
-                        Toast.show("You have been cancelled the ticket", Toast.LONG);
-                      }
-                    })
-                    .catch(error => {
-                      this.setState({ loading: false });
-                      console.log(error);
-                    })
-                    .catch(error => {
-                      this.setState({ loading: false });
-                      console.log(error);
-                    });
+                  console.log(paymentData);
+                  this.setState({ loading: true });
+                  domainApi.post("/checkout/update-order", paymentData).then(resp => {
+                    this.setState({ loading: false });
+                    console.log(resp);
+                  });
+                  const { params } = this.props.navigation.state.params;
+                  this.props.navigation.navigate("ThankYou", {
+                    order,
+                    params,
+                    razorpayRes
+                  });
                 })
                 .catch(error => {
-                  Toast.show(error, Toast.LONG);
-                  this.setState({ loading: false });
+                  console.log(error);
                 });
             } else {
-              this.setState({ loading: false });
-              Toast.show(blockres.data.Message, Toast.LONG);
+              Toast.show("You have been cancelled the ticket", Toast.LONG);
             }
           })
           .catch(error => {
-            Toast.show(error, Toast.LONG);
             this.setState({ loading: false });
+            console.log(error);
           });
+      } else {
+        this.setState({ loading: false });
+        Toast.show(blockres.Message, Toast.LONG);
       }
-    } catch (e) {
-      Toast.show(e.toString());
+    } catch (error) {
+      this.setState({ loading: false });
+      Toast.show(error.message ? error.message : error.toString(), Toast.LONG);
     }
-
-    //console.log(param);
-    //console.log(this.state);
   };
 
   _radioButton = value => {

@@ -396,7 +396,9 @@ class InternationalFlights extends React.PureComponent {
                   this.setState({ class: itemValue, index: index })
                 }
                 items={this.state.className}
-                Icon={() => <Icon name={Platform.OS == "ios" ? "ios-arrow-down" : ""} size={20} />}
+                Icon={() =>
+                  Platform.OS == "ios" ? <Icon name="ios-arrow-down" size={20} /> : null
+                }
               />
             </View>
           </View>

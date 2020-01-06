@@ -19,13 +19,13 @@ class Service {
   }
 
   handleSuccess(response) {
-    console.log(response);
+    console.log(response.data);
     return response;
   }
 
   handleError = error => {
     console.log(error);
-    Toast.show(e.message ? e.message : e.toString(), Toast.LONG);
+    Toast.show(error.message ? error.message : error.toString(), Toast.LONG);
     // switch (error.response.status) {
     //   case 401:
     //     //this.redirectTo(document, "/");

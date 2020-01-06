@@ -182,8 +182,7 @@ const TabNavigator = createBottomTabNavigator(
           tabBarIcon: ({ tintColor }) => (
             <Image
               source={require("./src/assets/imgs/home.png")}
-              tintColor={tintColor}
-              style={{ width: 26, height: 26 }}
+              style={{ width: 26, height: 26, tintColor }}
             />
           )
         };
@@ -197,8 +196,7 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/my_trips_tab.png")}
-            tintColor={tintColor}
-            style={{ width: 26, height: 26 }}
+            style={{ width: 26, height: 26, tintColor }}
           />
         )
       }
@@ -213,8 +211,7 @@ const TabNavigator = createBottomTabNavigator(
           tabBarIcon: ({ tintColor }) => (
             <Image
               source={require("./src/assets/imgs/my_account.png")}
-              tintColor={tintColor}
-              style={{ width: 26, height: 26 }}
+              style={{ width: 26, height: 26, tintColor }}
             />
           )
         };
@@ -227,8 +224,7 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/help_tab.png")}
-            tintColor={tintColor}
-            style={{ width: 26, height: 26 }}
+            style={{ width: 26, height: 26, tintColor }}
           />
         )
       }
