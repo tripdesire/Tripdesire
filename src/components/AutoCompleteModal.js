@@ -321,6 +321,7 @@ class AutoCompleteModal extends React.PureComponent {
               <View style={styles.autocompleteContainer}>
                 <Autocomplete
                   placeholder={this.props.placeholder}
+                  style={{ color: "#000" }}
                   inputContainerStyle={{
                     borderWidth: 0,
                     height: 48,
