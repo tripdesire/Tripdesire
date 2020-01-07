@@ -165,7 +165,9 @@ class Cab extends React.PureComponent {
           ? this.state.sourceName
           : value == "transfer"
           ? ""
-          : ""
+          : "",
+      to:
+        value == "oneway" ? "" : value == "round" ? this.state.from : value == "transfer" ? "" : ""
     });
   };
 

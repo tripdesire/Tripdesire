@@ -170,12 +170,19 @@ class CheckoutCab extends React.PureComponent {
 
   _order = () => {
     const { user } = this.props;
-    if (isEmpty(this.props.user)) {
+    if (isEmpty(user)) {
       //Toast.show("Please login or signup", Toast.LONG);
       this.props.navigation.navigate("SignIn", { needBilling: true });
       return;
     }
-    if (user.billing.email === "" || user.billing.phone === "") {
+    if (
+      user.billing.email === "" ||
+      user.billing.phone === "" ||
+      user.billing.state === "" ||
+      user.billing.city === "" ||
+      user.billing.address_1 === "" ||
+      user.billing.postcode === ""
+    ) {
       this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
       return;
     }
@@ -208,20 +215,20 @@ class CheckoutCab extends React.PureComponent {
     const { item, params } = this.props.navigation.state.params;
     const { cartData } = this.state;
     let param = {
-      TotalFare: cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
+      TotalFare: item.TotalAmount, //   cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
       Conveniencefee: item.ConvenienceFee,
       NoofPassengers: item.VehicleId,
       Name: name,
-      MobileNo: "9999999999",
-      EmailID: "test@test.gmail.com",
+      MobileNo: user.billing.phone,
+      EmailID: user.billing.email || user.email,
       City: params.sourceName,
-      Address: params.sourceName, ////
-      State: "Telangana",
-      PostalCode: "502032",
-      PickUpLocation: params.travelType == 3 ? params.Pickuplocation : "", ////
+      Address: params.sourceName,
+      State: user.billing.state,
+      PostalCode: user.billing.postcode,
+      PickUpLocation: params.travelType == 3 ? params.Pickuplocation : "",
       DropLocation: params.travelType == 3 ? params.Droplocation : "",
       Provider: item.Provider,
-      Operator: null,
+      Operator: item.Name,
       CancellationPolicy: item.CancellationPolicy,
       VehicleName: item.Name,
       ApproxRoundTripDistance: item.ApproxDistance,
@@ -239,7 +246,7 @@ class CheckoutCab extends React.PureComponent {
       DestinationId: parseInt(params.destinationId) != 0 ? parseInt(params.destinationId) : 0,
       DestinationName: params.destinationName != "" ? params.destinationName : null,
       JourneyDate: params.journeyDate,
-      ReturnDate: params.travelType == 1 ? params.ReturnDate : null,
+      ReturnDate: params.TravelType == 1 ? params.ReturnDate : null,
       TripType: parseInt(params.tripType),
       TravelType: params.travelType,
       OperatorId: null,
@@ -254,6 +261,7 @@ class CheckoutCab extends React.PureComponent {
     };
 
     console.log(param);
+    console.log(JSON.stringify(param));
 
     if (this.state.firstname != "" && this.state.last_name != "") {
       if (isEmpty(this.props.user)) {
@@ -266,83 +274,88 @@ class CheckoutCab extends React.PureComponent {
           .then(response => {
             this.setState({ loader: false });
             console.log(response);
-            const { user } = this.props;
-            domainApi
-              .post("/checkout/new-order?user_id=" + user.id, newOrder)
-              .then(({ data: order }) => {
-                console.log(order);
+            if (response.data.BookingStatus == 1) {
+              const { user } = this.props;
+              domainApi
+                .post("/checkout/new-order?user_id=" + user.id, newOrder)
+                .then(({ data: order }) => {
+                  console.log(order);
 
-                var options = {
-                  description: "Credits towards consultation",
-                  //image: "https://i.imgur.com/3g7nmJC.png",
-                  currency: "INR",
-                  //key: "rzp_test_I66kFrN53lhauw", 
-                  key:"rzp_live_IRhvqgmESx60tW",
-                  amount: parseInt(order.total) * 100,
-                  name: "TripDesire",
-                  prefill: {
-                    email: user.billing.email,
-                    contact: user.billing.phone,
-                    name: "Razorpay Software"
-                  },
-                  theme: { color: "#E5EBF7" }
-                };
+                  var options = {
+                    description: "Credits towards consultation",
+                    //image: "https://i.imgur.com/3g7nmJC.png",
+                    currency: "INR",
+                    //key: "rzp_test_I66kFrN53lhauw",
+                    key: "rzp_live_IRhvqgmESx60tW",
+                    amount: parseInt(order.total) * 100,
+                    name: "TripDesire",
+                    prefill: {
+                      email: user.billing.email,
+                      contact: user.billing.phone,
+                      name: "Razorpay Software"
+                    },
+                    theme: { color: "#E5EBF7" }
+                  };
 
-                RazorpayCheckout.open(options)
-                  .then(razorpayRes => {
-                    // handle success
-                    console.log(razorpayRes);
-                    // alert(`Success: ${razorpayRes.razorpay_payment_id}`);
-                    if (
-                      (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
-                      razorpayRes.code == 0
-                    ) {
-                      this.setState({ loader: true });
-                      etravosApi
-                        .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
-                        .then(({ data: Response }) => {
+                  RazorpayCheckout.open(options)
+                    .then(razorpayRes => {
+                      // handle success
+                      console.log(razorpayRes);
+                      // alert(`Success: ${razorpayRes.razorpay_payment_id}`);
+                      if (
+                        (razorpayRes.razorpay_payment_id &&
+                          razorpayRes.razorpay_payment_id != "") ||
+                        razorpayRes.code == 0
+                      ) {
+                        this.setState({ loader: true });
+                        etravosApi
+                          .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+                          .then(({ data: Response }) => {
+                            this.setState({ loader: false });
+                            console.log(Response);
+                            if (Response.BookingStatus == 3) {
+                              Toast.show(Response.Message, Toast.LONG);
+                            } else {
+                              Toast.show(Response.Message, Toast.LONG);
+                            }
+                          })
+                          .catch(error => {
+                            console.log(error);
+                          });
+                        let paymentData = {
+                          order_id: order.id,
+                          status: "completed",
+                          transaction_id: razorpayRes.razorpay_payment_id,
+                          reference_no: Response // blockres.data.ReferenceNo
+                        };
+                        this.setState({ loader: true });
+                        domainApi.post("/checkout/update-order", paymentData).then(res => {
                           this.setState({ loader: false });
-                          console.log(Response);
-                          if (Response.BookingStatus == 3) {
-                            Toast.show(Response.Message, Toast.LONG);
-                          } else {
-                            Toast.show(Response.Message, Toast.LONG);
-                          }
-                        })
-                        .catch(error => {
-                          console.log(error);
+                          console.log(res);
                         });
-                      let paymentData = {
-                        order_id: order.id,
-                        status: "completed",
-                        transaction_id: razorpayRes.razorpay_payment_id,
-                        reference_no: Response // blockres.data.ReferenceNo
-                      };
-                      this.setState({ loader: true });
-                      domainApi.post("/checkout/update-order", paymentData).then(res => {
-                        this.setState({ loader: false });
-                        console.log(res);
-                      });
-                      const { params } = this.props.navigation.state.params;
-                      this.props.navigation.navigate("ThankYouCab", {
-                        order,
-                        params,
-                        razorpayRes,
-                        item
-                      });
-                    } else {
-                      Toast.show("You have beem cancelled the order.", Toast.LONG);
-                    }
-                  })
-                  .catch(error => {
-                    this.setState({ loader: false });
-                    console.log(error);
-                  });
-              })
-              .catch(error => {
-                this.setState({ loader: false });
-                console.log(error);
-              });
+                        const { params } = this.props.navigation.state.params;
+                        this.props.navigation.navigate("ThankYouCab", {
+                          order,
+                          params,
+                          razorpayRes,
+                          item
+                        });
+                      } else {
+                        Toast.show("You have been cancelled the order.", Toast.LONG);
+                      }
+                    })
+                    .catch(error => {
+                      this.setState({ loader: false });
+                      console.log(error);
+                    });
+                })
+                .catch(error => {
+                  this.setState({ loader: false });
+                  console.log(error);
+                });
+            } else {
+              Toast.show(response.data.Message, Toast.LONG);
+            }
           })
           .catch(error => {
             this.setState({ loader: false });
@@ -938,11 +951,7 @@ class CheckoutCab extends React.PureComponent {
                 <Text style={{ color: "#fff" }}>Book Now</Text>
               </Button>
             </ScrollView>
-            {loader && (
-              <View style={{ justifyContent: "center", flex: 1 }}>
-                <ActivityIndicator />
-              </View>
-            )}
+            {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

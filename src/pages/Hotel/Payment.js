@@ -136,12 +136,19 @@ class Payment extends React.PureComponent {
 
     const { user } = this.props;
 
-    if (isEmpty(this.props.user)) {
+    if (isEmpty(user)) {
       //Toast.show("Please login or signup", Toast.LONG);
       this.props.navigation.navigate("SignIn", { needBilling: true });
       return;
     }
-    if (user.billing.email === "" || user.billing.phone === "") {
+    if (
+      user.billing.email === "" ||
+      user.billing.phone === "" ||
+      user.billing.state === "" ||
+      user.billing.city === "" ||
+      user.billing.address_1 === "" ||
+      user.billing.postcode === ""
+    ) {
       this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
       return;
     }
@@ -165,7 +172,7 @@ class Payment extends React.PureComponent {
     }));
 
     let param = {
-      user_id: "7",
+      user_id: user.id,
       payment_method: "razopay",
       adult_details: adult_details,
       child_details: child_details,
@@ -240,19 +247,19 @@ class Payment extends React.PureComponent {
 
     let blockData = {
       AdditionalInfo: null,
-      Address: user.billing.address_1 != "" ? user.billing.address_1 : "",
+      Address: user.billing.address_1,
       Adults: params.adultDetail,
-      Ages: age, ///
+      Ages: age,
       ArrivalDate: params.checkInDate,
       Children: params.childDetail,
       ChildrenAges: params.childAge,
-      City: user.billing.city != "" ? user.billing.city : "",
+      City: user.billing.city,
       CityName: params.city,
-      Country: user.billing.country != "" ? user.billing.country : "",
+      Country: user.billing.country,
       DepartureDate: params.checkOutDate,
       DestinationId: params.cityid,
-      EmailId: user.billing.email != "" ? user.billing.email : "",
-      Fare: data.total_price, //null
+      EmailId: user.billing.email || user.email,
+      Fare: data.total_price,
       Genders: gender,
       HotelDetail: params,
       HotelId: params.HotelId,
@@ -260,15 +267,15 @@ class Payment extends React.PureComponent {
       HotelPolicy: params.HotelPolicy,
       HotelType: params.hoteltype,
       IsOfflineBooking: false,
-      MobileNo: user.billing.phone != "" ? user.billing.phone : "",
+      MobileNo: user.billing.phone,
       Names: name,
       Nationality: params.CountryCode,
       NoOfdays: params.Night,
-      PinCode: user.billing.postcode != "" ? user.billing.postcode : "",
+      PinCode: user.billing.postcode,
       Provider: params.Provider,
       RoomDetails: [params.selectedRoom],
       Rooms: params.room,
-      State: user.billing.state != "" ? user.billing.state : "",
+      State: user.billing.state,
       Status: 1,
       Titles: null,
       User: "",
@@ -301,8 +308,8 @@ class Payment extends React.PureComponent {
                     description: "Credits towards consultation",
                     //image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
-                    //key: "rzp_test_I66kFrN53lhauw", 
-                    key:"rzp_live_IRhvqgmESx60tW",
+                    //key: "rzp_test_I66kFrN53lhauw",
+                    key: "rzp_live_IRhvqgmESx60tW",
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {

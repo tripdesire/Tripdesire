@@ -97,7 +97,21 @@ class CheckoutBus extends React.PureComponent {
     } = this.props.navigation.state.params;
     console.log(params, selectedSheets);
 
-    let Seats = [...selectedSheets.map(item => item.Number)].join("~");
+    let Seats = selectedSheets.map(item => item.Number).join("~");
+
+    let Fares = selectedSheets.map(item => item.Fare).reduce((a, b) => parseInt(a) + parseInt(b));
+
+    let ServiceCharge = selectedSheets
+      .map(item => item.OperatorServiceCharge)
+      .reduce((a, b) => parseInt(a) + parseInt(b));
+
+    let ServiceTax = selectedSheets
+      .map(item => item.Servicetax)
+      .reduce((a, b) => parseInt(a) + parseInt(b));
+
+    console.log(Seats, Fares, ServiceCharge, ServiceTax);
+    // return;
+
     let paramAddToCart = {
       id: 273,
       quantity: 1,
@@ -115,9 +129,9 @@ class CheckoutBus extends React.PureComponent {
       time_duration: params.Duration,
       select_seat: selectedSheets.length,
       select_seat_number: Seats,
-      base_fare: params.Fares,
-      service_charge: params.etravosApiTax,
-      service_tax: 0,
+      base_fare: Fares,
+      service_charge: ServiceCharge,
+      service_tax: ServiceTax,
       ConvenienceFee: params.ConvenienceFee,
       trip_type: tripType,
       journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
@@ -125,6 +139,19 @@ class CheckoutBus extends React.PureComponent {
 
     if (TripType == 2) {
       let SeatsRound = [...selectedSheetsRound.map(item => item.Number)].join("~");
+
+      let FaresRound = [...selectedSheetsRound.map(item => item.Fare)].reduce(
+        (a, b) => parseInt(a) + parseInt(b)
+      );
+
+      let ServiceChargeRound = [
+        ...selectedSheetsRound.map(item => item.OperatorServiceCharge)
+      ].reduce((a, b) => parseInt(a) + parseInt(b));
+
+      let ServiceTaxRound = [...selectedSheetsRound.map(item => item.Servicetax)].reduce(
+        (a, b) => parseInt(a) + parseInt(b)
+      );
+
       (paramAddToCart.return_display_name = paramsRound.DisplayName), ////Return
         (paramAddToCart.return_bus_type = paramsRound.BusType),
         (paramAddToCart.return_departure_time = paramsRound.DepartureTime),
@@ -138,9 +165,9 @@ class CheckoutBus extends React.PureComponent {
         (paramAddToCart.return_time_duration = paramsRound.Duration),
         (paramAddToCart.return_select_seat = selectedSheetsRound.length),
         (paramAddToCart.return_select_seat_number = SeatsRound),
-        (paramAddToCart.return_base_fare = paramsRound.Fares),
-        (paramAddToCart.return_service_charge = paramsRound.OperatorServiceCharge),
-        (paramAddToCart.return_service_tax = paramsRound.ServiceTax),
+        (paramAddToCart.return_base_fare = FaresRound),
+        (paramAddToCart.return_service_charge = ServiceChargeRound),
+        (paramAddToCart.return_service_tax = ServiceTaxRound),
         (paramAddToCart.return_ConvenienceFee = paramsRound.ConvenienceFee),
         (paramAddToCart.return_trip_type = tripType),
         (paramAddToCart.return_journey_date = moment(paramsRound.Journeydate, "YYYY-MM-DD").format(
@@ -204,12 +231,19 @@ class CheckoutBus extends React.PureComponent {
 
     const { user } = this.props;
 
-    if (isEmpty(this.props.user)) {
+    if (isEmpty(user)) {
       //Toast.show("Please login or signup", Toast.LONG);
       this.props.navigation.navigate("SignIn", { needBilling: true });
       return;
     }
-    if (user.billing.email === "" || user.billing.phone === "") {
+    if (
+      user.billing.email === "" ||
+      user.billing.phone === "" ||
+      user.billing.state === "" ||
+      user.billing.city === "" ||
+      user.billing.address_1 === "" ||
+      user.billing.postcode === ""
+    ) {
       this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
       return;
     }
@@ -262,13 +296,13 @@ class CheckoutBus extends React.PureComponent {
     console.log(name, age, gender, den, Fares, SeatNos);
 
     let param = {
-      Address: user.billing.address_1 != "" ? user.billing.address_1 : "",
+      Address: user.billing.address_1,
       Ages: age,
       BoardingId: BoardingPoint.PointId,
       BoardingPointDetails: BoardingPoint.Location + "" + BoardingPoint.Landmark,
       BusTypeName: params.BusType,
       CancellationPolicy: params.CancellationPolicy,
-      City: user.billing.city != "" ? user.billing.city : "",
+      City: user.billing.city,
       ConvenienceFee: params.ConvenienceFee,
       DepartureTime: params.DepartureTime,
       DestinationId: params.DestinationId,
@@ -276,7 +310,7 @@ class CheckoutBus extends React.PureComponent {
       DisplayName: params.DisplayName,
       DroppingId: DroppingPoint.PointId,
       DroppingPointDetails: DroppingPoint.Location + "" + DroppingPoint.Landmark,
-      EmailId: user.billing.email != "" ? user.billing.email : "",
+      EmailId: user.billing.email || user.email,
       EmergencyMobileNo: null,
       Fares: Fares,
       Genders: gender,
@@ -284,15 +318,15 @@ class CheckoutBus extends React.PureComponent {
       IdCardType: IdCardType,
       IdCardIssuedBy: IssuedBy,
       JourneyDate: journeyDate,
-      MobileNo: user.billing.phone != "" ? user.billing.phone : "",
+      MobileNo: user.billing.phone,
       Names: name,
       NoofSeats: selectedSheets.length,
       Operator: params.Travels,
       PartialCancellationAllowed: params.PartialCancellationAllowed,
-      PostalCode: user.billing.postcode != "" ? user.billing.postcode : "",
+      PostalCode: user.billing.postcode,
       Provider: params.Provider,
       ReturnDate: null,
-      State: user.billing.state != "" ? user.billing.state : "",
+      State: user.billing.state,
       Seatcodes: null,
       SeatNos: SeatNos,
       Servicetax: ServiceTax,
@@ -307,7 +341,7 @@ class CheckoutBus extends React.PureComponent {
 
     if (TripType == 2) {
       let paramRound = {
-        Address: user.billing.address_1 != "" ? user.billing.address_1 : "",
+        Address: user.billing.address_1,
         Ages: age,
         BoardingId: BoardingPointReturn.PointId,
         BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
@@ -321,7 +355,7 @@ class CheckoutBus extends React.PureComponent {
         DisplayName: paramsRound.DisplayName,
         DroppingId: DroppingPointReturn.PointId,
         DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
-        EmailId: user.billing.email != "" ? user.billing.email : "",
+        EmailId: user.billing.email || user.email,
         EmergencyMobileNo: null,
         Fares: FaresRound,
         Genders: gender,
@@ -329,15 +363,15 @@ class CheckoutBus extends React.PureComponent {
         IdCardType: IdCardType,
         IdCardIssuedBy: IssuedBy,
         JourneyDate: returnDate,
-        MobileNo: user.billing.phone != "" ? user.billing.phone : "",
+        MobileNo: user.billing.phone,
         Names: name,
         NoofSeats: selectedSheetsRound.length,
-        Operator: "GDS Demo Test", //////not showing
+        Operator: paramsRound.Travels, //////not showing
         PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
-        PostalCode: user.billing.postcode != "" ? user.billing.postcode : "", /////
+        PostalCode: user.billing.postcode, /////
         Provider: paramsRound.Provider,
         ReturnDate: null,
-        State: user.billing.state != "" ? user.billing.state : "",
+        State: user.billing.state,
         Seatcodes: null,
         SeatNos: SeatNosRound,
         Servicetax: ServiceTaxRound,
@@ -350,11 +384,11 @@ class CheckoutBus extends React.PureComponent {
         UserType: 5
       };
       console.log(paramRound);
-      console.log(JSON.stringify(paramRound));
+      //console.log(JSON.stringify(paramRound));
     }
     console.log(param);
     console.log(JSON.stringify(param));
-    //return;
+    // return;
 
     if (this.state.IdNumber && this.state.IssuedBy && !this.validate()) {
       var adharcard = /^\d{12}$/;

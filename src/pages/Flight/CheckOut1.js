@@ -9,6 +9,7 @@ import RNPickerSelect from "react-native-picker-select";
 import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
 import { connect } from "react-redux";
+import CountryPicker, { getCallingCode, getAllCountries } from "react-native-country-picker-modal";
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -48,7 +49,14 @@ class CheckOut1 extends React.PureComponent {
             "years"
           ),
           gender: "M",
-          show: false
+          countryCode: "IN",
+          visaType: "",
+          passportNo: "",
+          passportIssueDate: new Date(),
+          passportExpiryDate: new Date(),
+          show: false,
+          showIssue: false,
+          showExpiry: false
         };
       }),
       childs: [...Array(parseInt(params.child))].map(item => {
@@ -91,12 +99,35 @@ class CheckOut1 extends React.PureComponent {
       status: "",
       taxDetails: ""
     };
-    //console.log(props.navigation.state.params);
   }
+
+  onCountrySelect = index => val => {
+    let newData = Object.assign([], this.state.adults);
+    newData[index].countryCode = val.cca2;
+    this.setState({
+      adults: newData
+    });
+  };
 
   show = (key, index, isShow) => () => {
     let newData = Object.assign([], this.state[key]);
     newData[index].show = isShow;
+    this.setState({
+      [key]: newData
+    });
+  };
+
+  showIssue = (key, index, isShow) => () => {
+    let newData = Object.assign([], this.state[key]);
+    newData[index].showIssue = isShow;
+    this.setState({
+      [key]: newData
+    });
+  };
+
+  showExpiry = (key, index, isShow) => () => {
+    let newData = Object.assign([], this.state[key]);
+    newData[index].showExpiry = isShow;
     this.setState({
       [key]: newData
     });
@@ -116,6 +147,8 @@ class CheckOut1 extends React.PureComponent {
       newData[index].den = text == "M" ? "Mr" : "Mrs";
     }
     newData[index].show = false;
+    newData[index].showIssue = false;
+    newData[index].showExpiry = false;
     this.setState({
       adults: newData
     });
@@ -152,6 +185,8 @@ class CheckOut1 extends React.PureComponent {
   };
 
   validate = () => {
+    const { params } = this.props.navigation.state.params; //|| (params.flightType == 2 && item.vis
+
     let needToValidateAdults = false;
     let needToValidateChilds = false;
     let needToValidateInfants = false;
@@ -182,7 +217,8 @@ class CheckOut1 extends React.PureComponent {
       user.billing.phone === "" ||
       user.billing.state === "" ||
       user.billing.city === "" ||
-      user.billing.address_1 === ""
+      user.billing.address_1 === "" ||
+      user.billing.postcode === ""
     ) {
       this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
       return;
@@ -223,7 +259,7 @@ class CheckOut1 extends React.PureComponent {
     //console.log(adult_details, child_details, infant_details);
 
     let param = {
-      user_id: "7",
+      user_id: user.id,
       payment_method: "razopay",
       adult_details: adult_details,
       child_details: child_details,
@@ -291,7 +327,6 @@ class CheckOut1 extends React.PureComponent {
         ActualBaseFare: departFlight.FareDetails.ChargeableFares.ActualBaseFare,
         ActualBaseFareRet: 0,
         AdultPax: params.adult,
-        Address: "Abc",
         BookedFrom: "Delhi",
         BookingDate: moment(this.state.date).format("DD-MM-YYYY"),
         ChildPax: params.child,
@@ -363,7 +398,7 @@ class CheckOut1 extends React.PureComponent {
       console.log("Onward", taxDetail);
       const { data: TaxDetails } = await etravosApi.post("/Flights/GetTaxDetails", taxDetail);
       //console.log("Onward Response", TaxDetails);
-      if (TaxDetails.Message != null) {
+      if (TaxDetails.Status == 15 || TaxDetails.Status == 16) {
         this.setState({ loading: false });
         Toast.show(TaxDetails.Message, Toast.LONG);
         return;
@@ -454,7 +489,7 @@ class CheckOut1 extends React.PureComponent {
           taxDetailReturn
         );
         //console.log("Return datails", TaxDetailsReturn);
-        if (TaxDetailsReturn.Message != null) {
+        if (TaxDetails.Status == 15 || TaxDetails.Status == 16) {
           this.setState({ loading: false });
           Toast.show(TaxDetailsReturn.Message, Toast.LONG);
           return;
@@ -480,7 +515,7 @@ class CheckOut1 extends React.PureComponent {
         Destination: params.destinationCode,
         DestinationName: params.destinationAirportName,
         dob: dob,
-        EmailId: user.email || user.billing.email,
+        EmailId: user.billing.email || user.email,
         FareDetails: null,
         FlightId: departFlight.OriginDestinationoptionId.Id,
         FlightIdRet:
@@ -519,7 +554,7 @@ class CheckOut1 extends React.PureComponent {
           params.tripType == 2 && flightType == 1
             ? params.arrivalFlight.OriginDestinationoptionId.Key
             : null,
-        MobileNo: "9999995999",
+        MobileNo: user.billing.phone,
         Names: name,
         OcTax: params.departFlight.FareDetails.OCTax,
         OnwardFlightSegments:
@@ -527,7 +562,7 @@ class CheckOut1 extends React.PureComponent {
             ? departFlight.FlightSegments
             : departFlight.IntOnward.FlightSegments,
         PassportDetails: "Educational|234234234|hyd|16-05-2002|19-05-2022",
-        PostalCode: "500071",
+        PostalCode: user.billing.postcode,
         Provider: params.departFlight.Provider,
         Psgrtype: "",
         ReturnDate:
@@ -574,7 +609,7 @@ class CheckOut1 extends React.PureComponent {
         UserType: 5
       };
 
-      console.log(book);
+      //console.log(JSON.stringify(book));
       const { data: blockres } = await etravosApi.post("/Flights/BlockFlightTicket", book);
       //console.log(blockres);
       if (blockres.BookingStatus == 8) {
@@ -586,8 +621,8 @@ class CheckOut1 extends React.PureComponent {
           description: "Credits towards consultation",
           // image: "https://i.imgur.com/3g7nmJC.png",
           currency: "INR",
-          //key: "rzp_test_I66kFrN53lhauw", 
-          key:"rzp_live_IRhvqgmESx60tW",
+          //key: "rzp_test_I66kFrN53lhauw",
+          key: "rzp_live_IRhvqgmESx60tW",
           amount: parseInt(order.total) * 100,
           name: "TripDesire",
           prefill: {
@@ -721,6 +756,11 @@ class CheckOut1 extends React.PureComponent {
                         Passengers Details
                       </Text>
                     </View>
+                    {params.flightType == 2 && (
+                      <Text style={{ marginTop: 10, fontSize: 12 }}>
+                        NAME SHOULD BE SAME AS MENTIONED IN YOUR PASSPORT.
+                      </Text>
+                    )}
                     {parseInt(params.adult) &&
                       [...Array(parseInt(params.adult))].map((e, index) => (
                         <View key={"adult_" + index}>
@@ -757,6 +797,7 @@ class CheckOut1 extends React.PureComponent {
                               onChangeText={this.onAdultChange(index, "last_name")}
                             />
                           </View>
+
                           <View
                             style={{
                               marginTop: 5,
@@ -805,7 +846,7 @@ class CheckOut1 extends React.PureComponent {
                                   height: 40,
                                   flex: 1,
                                   paddingHorizontal: 2,
-                                  marginHorizontal: 2,
+                                  marginStart: 2,
                                   justifyContent: "center"
                                 }}>
                                 <RNPickerSelect
@@ -832,6 +873,128 @@ class CheckOut1 extends React.PureComponent {
                               </View>
                             </View>
                           </View>
+                          {params.flightType == 2 && (
+                            <Text style={{ marginTop: 5 }}>Passport Details</Text>
+                          )}
+                          {params.flightType == 2 && (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                marginTop: 5,
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                              <TextInput
+                                style={{
+                                  borderWidth: 1,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  flex: 1,
+                                  paddingStart: 5,
+                                  marginHorizontal: 2
+                                }}
+                                onChangeText={this.onAdultChange(index, "visaType")}
+                                placeholder="Visa Type"
+                              />
+                              <TextInput
+                                style={{
+                                  borderWidth: 1,
+                                  paddingStart: 5,
+                                  borderColor: "#F2F2F2",
+                                  height: 40,
+                                  flex: 1
+                                }}
+                                placeholder="Passport No"
+                                onChangeText={this.onAdultChange(index, "passportNo")}
+                              />
+                            </View>
+                          )}
+                          {params.flightType == 2 && (
+                            <CountryPicker
+                              //withCallingCode
+                              //placeholder="Select Country"
+                              withCountryNameButton
+                              countryCode={this.state.adults[index].countryCode}
+                              withFilter
+                              containerButtonStyle={{
+                                backgroundColor: "#FFFFFF",
+                                paddingHorizontal: 10,
+                                paddingVertical: Platform.OS == "ios" ? 0 : 10,
+                                elevation: 1,
+                                marginTop: 5,
+                                shadowOpacity: 0.2,
+                                shadowRadius: 1,
+                                shadowOffset: { height: 1, width: 0 }
+                              }}
+                              onSelect={this.onCountrySelect(index)}
+                            />
+                          )}
+                          {params.flightType == 2 && (
+                            <View
+                              style={{
+                                marginTop: 5,
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                flex: 1
+                              }}>
+                              <View style={{ flex: 1 }}>
+                                <Button
+                                  style={{
+                                    flex: 1,
+                                    borderWidth: 1,
+                                    borderColor: "#F2F2F2",
+                                    height: 40,
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                  }}
+                                  onPress={this.showIssue("adults", index, true)}
+                                  placeholder="Issue Date">
+                                  <Text>
+                                    {this.state.adults[index].passportIssueDate != ""
+                                      ? moment(this.state.adults[index].passportIssueDate).format(
+                                          "DD-MMM-YYYY"
+                                        )
+                                      : "-- Issue Date --"}
+                                  </Text>
+                                </Button>
+                                <DateTimePicker
+                                  date={this.state.adults[index].passportIssueDate}
+                                  isVisible={this.state.adults[index].showIssue}
+                                  onConfirm={this.onAdultChange(index, "passportIssueDate")}
+                                  onCancel={this.showIssue("adults", index, false)}
+                                  // maximumDate={params.journeyDate}
+                                />
+                              </View>
+                              <View style={{ flex: 1, marginStart: 2 }}>
+                                <Button
+                                  style={{
+                                    flex: 1,
+                                    borderWidth: 1,
+                                    borderColor: "#F2F2F2",
+                                    height: 40,
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                  }}
+                                  onPress={this.showExpiry("adults", index, true)}
+                                  placeholder="Expiry Date">
+                                  <Text>
+                                    {this.state.adults[index].passportExpiryDate != ""
+                                      ? moment(this.state.adults[index].passportExpiryDate).format(
+                                          "DD-MMM-YYYY"
+                                        )
+                                      : "-- Expiry Date --"}
+                                  </Text>
+                                </Button>
+                                <DateTimePicker
+                                  date={this.state.adults[index].passportExpiryDate}
+                                  isVisible={this.state.adults[index].showExpiry}
+                                  onConfirm={this.onAdultChange(index, "passportExpiryDate")}
+                                  onCancel={this.showExpiry("adults", index, false)}
+                                  /// minimunDate={params.journeyDate}
+                                />
+                              </View>
+                            </View>
+                          )}
                           <Button style={{ marginTop: 10 }} onPress={this._FFN}>
                             <Text style={{ color: "#5B89F9" }}>
                               Optional (Frequent flyer Number)
