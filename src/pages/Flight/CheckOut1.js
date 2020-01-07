@@ -52,8 +52,8 @@ class CheckOut1 extends React.PureComponent {
           countryCode: "IN",
           visaType: "",
           passportNo: "",
-          passportIssueDate: new Date(),
-          passportExpiryDate: new Date(),
+          passportIssueDate: "",
+          passportExpiryDate: "",
           show: false,
           showIssue: false,
           showExpiry: false
@@ -192,6 +192,7 @@ class CheckOut1 extends React.PureComponent {
     let needToValidateInfants = false;
     needToValidateAdults = this.state.adults.some(
       item => item.firstname == "" || item.last_name == ""
+      // item => (item.firstname == "" || item.last_name == "") || (flightType==2 && (item.visaType=="" || )))
     );
     needToValidateChilds =
       this.state.childs.length != 0 &&
@@ -958,11 +959,11 @@ class CheckOut1 extends React.PureComponent {
                                   </Text>
                                 </Button>
                                 <DateTimePicker
-                                  date={this.state.adults[index].passportIssueDate}
+                                  date={this.state.adults[index].passportIssueDate || new Date()}
                                   isVisible={this.state.adults[index].showIssue}
                                   onConfirm={this.onAdultChange(index, "passportIssueDate")}
                                   onCancel={this.showIssue("adults", index, false)}
-                                  // maximumDate={params.journeyDate}
+                                  maximumDate={new Date()}
                                 />
                               </View>
                               <View style={{ flex: 1, marginStart: 2 }}>
@@ -986,11 +987,14 @@ class CheckOut1 extends React.PureComponent {
                                   </Text>
                                 </Button>
                                 <DateTimePicker
-                                  date={this.state.adults[index].passportExpiryDate}
+                                  date={
+                                    this.state.adults[index].passportExpiryDate ||
+                                    moment(params.journeyDate, "DD-MM-YYYY").toDate()
+                                  }
                                   isVisible={this.state.adults[index].showExpiry}
                                   onConfirm={this.onAdultChange(index, "passportExpiryDate")}
                                   onCancel={this.showExpiry("adults", index, false)}
-                                  /// minimunDate={params.journeyDate}
+                                  minimumDate={moment(params.journeyDate, "DD-MM-YYYY").toDate()}
                                 />
                               </View>
                             </View>
