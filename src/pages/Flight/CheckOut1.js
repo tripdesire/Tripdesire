@@ -185,14 +185,20 @@ class CheckOut1 extends React.PureComponent {
   };
 
   validate = () => {
-    const { params } = this.props.navigation.state.params; //|| (params.flightType == 2 && item.vis
+    const { params } = this.props.navigation.state.params;
 
     let needToValidateAdults = false;
     let needToValidateChilds = false;
     let needToValidateInfants = false;
     needToValidateAdults = this.state.adults.some(
-      item => item.firstname == "" || item.last_name == ""
-      // item => (item.firstname == "" || item.last_name == "") || (flightType==2 && (item.visaType=="" || )))
+      item =>
+        item.firstname == "" ||
+        item.last_name == "" ||
+        (params.flightType == 2 &&
+          (item.visaType == "" ||
+            item.passportNo == "" ||
+            item.passportIssueDate == "" ||
+            item.passportExpiryDate == ""))
     );
     needToValidateChilds =
       this.state.childs.length != 0 &&
@@ -229,6 +235,24 @@ class CheckOut1 extends React.PureComponent {
       Toast.show("Please enter all the fields.", Toast.LONG);
       return;
     }
+
+    // "Educational|234234234|hyd|16-05-2002|19-05-2022",
+
+    let PassportDetails = [
+      ...this.state.adults.map(
+        item =>
+          item.visaType +
+          "|" +
+          item.passportNo +
+          "|" +
+          moment(item.passportIssueDate).format("DD-MM-YYYY") +
+          "|" +
+          moment(item.passportExpiryDate).format("DD-MM-YYYY")
+      )
+    ].join("~");
+
+    // console.log(PassportDetails);
+    //  return;
 
     let adult_details = this.state.adults.map(item => ({
       "ad-den": item.den,
@@ -322,6 +346,7 @@ class CheckOut1 extends React.PureComponent {
         user: "",
         userType: 5
       };
+      console.log(RuleParams);
       const { data: Rule } = await etravosApi.get("/Flights/GetFareRule", RuleParams);
 
       let taxDetail = {
@@ -398,7 +423,7 @@ class CheckOut1 extends React.PureComponent {
 
       console.log("Onward", taxDetail);
       const { data: TaxDetails } = await etravosApi.post("/Flights/GetTaxDetails", taxDetail);
-      //console.log("Onward Response", TaxDetails);
+      console.log("Onward Response", TaxDetails);
       if (TaxDetails.Status == 15 || TaxDetails.Status == 16) {
         this.setState({ loading: false });
         Toast.show(TaxDetails.Message, Toast.LONG);
@@ -562,7 +587,7 @@ class CheckOut1 extends React.PureComponent {
           params.flightType == 1
             ? departFlight.FlightSegments
             : departFlight.IntOnward.FlightSegments,
-        PassportDetails: "Educational|234234234|hyd|16-05-2002|19-05-2022",
+        PassportDetails: params.flightType == 2 ? PassportDetails : null, // "Educational|234234234|hyd|16-05-2002|19-05-2022",
         PostalCode: user.billing.postcode,
         Provider: params.departFlight.Provider,
         Psgrtype: "",
@@ -592,7 +617,7 @@ class CheckOut1 extends React.PureComponent {
         TDiscount: TaxDetails.ChargeableFares.TDiscount,
         TDiscountRet:
           tripType == 2 && flightType == 1 ? TaxDetailsReturn.ChargeableFares.TDiscount : 0,
-        telephone: "8888588888",
+        telephone: user.billing.phone,
         TMarkup: TaxDetails.NonchargeableFares.TCharge,
         TMarkupRet:
           tripType == 2 && flightType == 1 ? TaxDetailsReturn.NonchargeableFares.TCharge : 0,
@@ -772,7 +797,9 @@ class CheckOut1 extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text style={{ flexBasis: "15%" }}>Adult {index + 1}</Text>
+                            <Text style={{ color: "#5D666D", flexBasis: "15%" }}>
+                              Adult {index + 1}
+                            </Text>
 
                             <TextInput
                               style={{

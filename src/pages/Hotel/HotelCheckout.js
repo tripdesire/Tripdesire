@@ -19,6 +19,7 @@ import { etravosApi } from "../../service";
 import moment from "moment";
 import HTML from "react-native-render-html";
 import { Component } from "react";
+import Toast from "react-native-simple-toast";
 
 class HotelCheckout extends React.Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class HotelCheckout extends React.Component {
       _selectRadio: "1",
       selectedRoom: params.RoomDetails[0],
       policy: false,
-      data: ""
+      data: "",
+      loader: false
     };
     this.SingleHotelData();
   }
@@ -68,15 +70,21 @@ class HotelCheckout extends React.Component {
 
     console.log(param);
 
+    this.setState({ loader: true });
     etravosApi
       .get("/Hotels/HotelDetails", param)
       .then(({ data }) => {
-        //console.log(res);
+        this.setState({ loader: false });
         const { params } = this.props.navigation.state;
 
-        let merged = mergeWith({}, params, data, (a, b) => (b === null ? a : undefined));
-        console.log(merged);
-        this.props.navigation.setParams(merged);
+        //let merged = mergeWith({}, params, data, (a, b) => (b === null ? a : undefined));
+        if (data.HotelId == null) {
+          Toast.show("Room data is not available", Toast.LONG);
+        } else {
+          this.props.navigation.setParams({ ...params, ...data });
+          this.setState({ selectedRoom: data.RoomDetails[0] });
+        }
+        //console.log(merged);
       })
       .catch(error => {
         console.log(error);
@@ -101,6 +109,7 @@ class HotelCheckout extends React.Component {
 
   _Next = () => {
     const params = { ...this.props.navigation.state.params, selectedRoom: this.state.selectedRoom };
+
     this.props.navigation.navigate("HotelPayment", params);
   };
 
@@ -109,8 +118,11 @@ class HotelCheckout extends React.Component {
   render() {
     const { params } = this.props.navigation.state;
 
-    let Amenities = params.Facilities ? params.Facilities.split(",").map(s => s.trim()) : [];
-    // console.log(Amenities);
+    const Amenities =
+      params.Facilities && params.Facilities != null
+        ? params.Facilities.split(",").map(s => s.trim())
+        : [];
+    console.log(Amenities);
 
     let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
@@ -435,6 +447,7 @@ class HotelCheckout extends React.Component {
               onRequestClose={this.modalBackPress}>
               <Cancellation data={this.state.data} onBackPress={this.modalBackPress} />
             </Modal>
+            {this.state.loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>
       </>

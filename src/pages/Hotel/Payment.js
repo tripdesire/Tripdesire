@@ -363,7 +363,7 @@ class Payment extends React.PureComponent {
                 });
             } else {
               this.setState({ loading: false });
-              Toast.show("Hotel is not block successfully ", Toast.LONG);
+              Toast.show(blockres.data.Message, Toast.LONG);
             }
           })
           .catch(error => {
