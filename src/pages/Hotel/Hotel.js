@@ -131,8 +131,11 @@ class Hotel extends React.PureComponent {
   };
 
   _search = () => {
-    let Difference_In_Time = this.state.CheckOut - this.state.CheckIn;
-    //let Difference_In_Days =  Math.round(Difference_In_Time / (1000 * 3600 * 24), 1);
+    if (this.state.country === "Select Country" && this.state.hoteltype == 2) {
+      Toast.show("Please select the country", Toast.LONG);
+      return;
+    }
+
     let Difference_In_Days = moment
       .duration(
         moment(this.state.CheckOut)

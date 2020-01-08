@@ -65,7 +65,7 @@ class GstDetails extends React.PureComponent {
                 <Icon name="md-arrow-back" size={24} />
               </Button>
               <Text style={{ fontSize: 18, color: "#1E293B", marginStart: 10, fontWeight: "700" }}>
-                GST Deatils
+                GST Details
               </Text>
             </View>
             <View style={{ marginHorizontal: 16, alignItems: "center" }}>
@@ -76,7 +76,7 @@ class GstDetails extends React.PureComponent {
                 onChangeText={text => this.setState({ GSTCompanyAddress: text })}
               />
               <TextInputComponent
-                label="GST Company Conatct Number"
+                label="GST Company Contact Number"
                 placeholder="Tap to write"
                 value={GSTCompanyContactNumber}
                 onChangeText={text => this.setState({ GSTCompanyContactNumber: text })}
