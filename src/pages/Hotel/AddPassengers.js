@@ -11,7 +11,7 @@ class AddPassengers extends React.PureComponent {
     this.state = {
       room: 1,
       data: [
-        { adults: 0, children: 0, childAge: [-1, -1] },
+        { adults: 1, children: 0, childAge: [-1, -1] },
         { adults: 0, children: 0, childAge: [-1, -1] },
         { adults: 0, children: 0, childAge: [-1, -1] },
         { adults: 0, children: 0, childAge: [-1, -1] }
@@ -149,6 +149,7 @@ class AddPassengers extends React.PureComponent {
                               { value: 4, label: "4" }
                             ]
                           : [
+                              { value: 0, label: "0" },
                               { value: 1, label: "1" },
                               { value: 2, label: "2" },
                               { value: 3, label: "3" },

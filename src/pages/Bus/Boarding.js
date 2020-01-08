@@ -52,24 +52,6 @@ class Boarding extends React.PureComponent {
             <View style={{ marginTop: 40 }}>
               <View style={{ marginHorizontal: 16 }}>
                 <Text style={{ color: "#5D666D" }}>--Boarding Points--</Text>
-                {/* <RNPickerSelect
-                  useNativeAndroidPickerStyle={false}
-                  placeholder={{}}
-                  value={bp}
-                  style={{
-                    inputIOS: { paddingEnd: 32, color: "#000" },
-                    inputAndroid: {
-                      paddingStart: 0,
-                      color: "#000",
-                      height: "auto",
-                      paddingEnd: 32
-                    },
-                    iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
-                  }}
-                  onValueChange={itemValue => this.setState({ bp: itemValue })}
-                  items={boardingpoints}
-                  Icon={() => <Icon name="ios-arrow-down" size={20} />}
-                /> */}
                 <RNPicker
                   value={bp}
                   items={boardingpoints}

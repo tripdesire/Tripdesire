@@ -178,7 +178,8 @@ class BusInfo extends React.PureComponent {
         style={{
           paddingVertical: index % 2 == 0 ? 40 : 20,
           backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#E5EBF7"
-        }}>
+        }}
+        onPress={this._bookNow(item)}>
         <View
           style={{
             flexDirection: "row",

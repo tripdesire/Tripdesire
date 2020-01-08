@@ -215,7 +215,7 @@ class CheckoutCab extends React.PureComponent {
     const { item, params } = this.props.navigation.state.params;
     const { cartData } = this.state;
     let param = {
-      TotalFare: item.TotalAmount, //   cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
+      TotalFare: item.TotalNetAmount, //   cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
       Conveniencefee: item.ConvenienceFee,
       NoofPassengers: item.VehicleId,
       Name: name,

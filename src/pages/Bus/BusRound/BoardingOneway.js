@@ -58,48 +58,24 @@ class BoardingOneway extends React.PureComponent {
             </View>
             <View style={{ marginTop: 40 }}>
               <View style={{ marginHorizontal: 16 }}>
-                <Text style={{ color: "#5D666D" }}>--Boarding Points--</Text>
-                {/* <RNPickerSelect
-                  useNativeAndroidPickerStyle={false}
-                  placeholder={{}}
-                  value={bp}
-                  style={{
-                    inputIOS: { paddingEnd: 32, color: "#000" },
-                    inputAndroid: { paddingStart: 0, color: "#000", paddingEnd: 32 },
-                    iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
-                  }}
-                  onValueChange={itemValue => this.setState({ bp: itemValue })}
-                  items={boardingpoints}
-                  Icon={() => <Icon name="ios-arrow-down" size={20} />}
-                /> */}
+                <Text style={{ color: "#5D666D" }}>-- Boarding Points --</Text>
+
                 <RNPicker
                   value={bp}
                   items={boardingpoints}
                   getLabel={this.getLabel}
-                  fieldContainerStyle={{ height: 120 }}
+                  fieldContainerStyle={{ height: 100 }}
                   onItemChange={itemValue => this.setState({ bp: itemValue })}
                 />
               </View>
-              <View style={{ marginTop: 100, marginHorizontal: 16 }}>
-                <Text style={{ color: "#5D666D" }}>--Dropping Points--</Text>
-                {/* <RNPickerSelect
-                  useNativeAndroidPickerStyle={false}
-                  placeholder={{}}
-                  value={dp}
-                  style={{
-                    inputIOS: { paddingEnd: 32, color: "#000" },
-                    inputAndroid: { paddingStart: 0, color: "#000", paddingEnd: 32 },
-                    iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
-                  }}
-                  onValueChange={itemValue => this.setState({ dp: itemValue })}
-                  items={droppingpoints}
-                  Icon={() => <Icon name="ios-arrow-down" size={20} />}
-                /> */}
+              <View style={{ marginHorizontal: 16 }}>
+                <Text style={{ color: "#5D666D" }}>-- Dropping Points --</Text>
+
                 <RNPicker
                   value={dp}
                   items={droppingpoints}
                   getLabel={this.getLabel}
-                  fieldContainerStyle={{ height: 120 }}
+                  fieldContainerStyle={{ height: 100 }}
                   onItemChange={itemValue => this.setState({ dp: itemValue })}
                 />
               </View>

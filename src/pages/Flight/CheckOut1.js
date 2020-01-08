@@ -754,7 +754,8 @@ class CheckOut1 extends React.PureComponent {
               style={{
                 //  height: 56,
                 backgroundColor: "#E5EBF7",
-                flexDirection: "row"
+                flexDirection: "row",
+                paddingBottom: 10
               }}>
               <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
                 <Icon name="md-arrow-back" size={24} />
@@ -767,12 +768,12 @@ class CheckOut1 extends React.PureComponent {
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
                     : ""}
                   {params.checkOutDate
-                    ? " - " + moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM") + " "
+                    ? " - " + moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM")
                     : ""}
-                  {params.adult > 0 ? " | " + params.adult + " Adult" : " "}
+                  {params.adult > 0 ? "| " + params.adult + " Adult" : " "}
                   {params.child > 0 ? " , " + params.child + " Child" : " "}
                   {params.infant > 0 ? " , " + params.infant + " Infant" : " "}
-                  {params.className ? " | " + params.className : ""}
+                  {params.className ? "| " + params.className : ""}
                 </Text>
               </View>
             </View>
