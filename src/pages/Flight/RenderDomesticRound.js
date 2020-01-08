@@ -30,21 +30,31 @@ class RenderDomesticRound extends React.PureComponent {
 
   fareRules = () => {
     this.setState({ showModal: true });
-    let data = {
-      airlineId: this.props.item.FlightUId,
-      classCode: this.props.item.FlightSegments[0].BookingClassFare.ClassType,
-      couponFare: "",
-      flightId: this.props.item.FlightSegments[0].OperatingAirlineFlightNumber,
-      key: this.props.item.OriginDestinationoptionId.Key,
-      provider: this.props.item.Provider,
-      tripType: this.props.trip_type,
-      service: this.props.flight_type,
+    const { item, flight_type, trip_type } = this.props;
+    let body = {
+      airlineId:
+        flight_type == 1
+          ? item.FlightSegments[0].OperatingAirlineCode
+          : item.IntOnward.FlightSegments[0].OperatingAirlineCode,
+      classCode:
+        flight_type == 1
+          ? item.FlightSegments[0].BookingClassFare.ClassType
+          : item.IntOnward.FlightSegments[0].BookingClassFare.ClassType,
+      couponFare:
+        flight_type == 1 ? item.FlightSegments[0].RPH : item.IntOnward.FlightSegments[0].RPH,
+      flightId:
+        flight_type == 1
+          ? item.FlightSegments[0].OperatingAirlineFlightNumber
+          : item.IntOnward.FlightSegments[0].OperatingAirlineFlightNumber,
+      key: item.OriginDestinationoptionId.Key,
+      provider: item.Provider,
+      tripType: trip_type,
+      service: flight_type,
       user: "",
       userType: 5
     };
-    //  console.log(data);
     etravosApi
-      .get("/Flights/GetFareRule", data)
+      .get("/Flights/GetFareRule", body)
       .then(res => {
         // console.log(res.data);
         this.setState({ farerule: this.convertUnicode(res.data) }); //res.data

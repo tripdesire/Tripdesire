@@ -73,7 +73,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
     });
 
     etravosApi.get("/Flights/AvailableFlights", data).then(({ data }) => {
-      console.log(data);
+      console.log(JSON.stringify(data));
       if (data.InternationalFlights.length != 0) {
         this.setState({
           flights: data.InternationalFlights,

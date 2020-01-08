@@ -22,9 +22,9 @@ class RenderInternationRound extends React.PureComponent {
   fareRules = () => {
     this.setState({ showModal: true });
     let data = {
-      airlineId: this.props.item.FlightUId,
+      airlineId: this.props.item.IntOnward.FlightSegments[0].OperatingAirlineCode,
       classCode: this.props.item.IntOnward.FlightSegments[0].BookingClassFare.ClassType,
-      couponFare: "",
+      couponFare: this.props.item.IntOnward.FlightSegments[0].RPH || "",
       flightId: this.props.item.IntOnward.FlightSegments[0].OperatingAirlineFlightNumber,
       key: this.props.item.OriginDestinationoptionId.Key,
       provider: this.props.item.Provider,
@@ -33,7 +33,7 @@ class RenderInternationRound extends React.PureComponent {
       user: "",
       userType: 5
     };
-    // console.log(data);
+    console.log(data);
     this.setState({ loader: true });
     etravosApi
       .get("/Flights/GetFareRule", data)
@@ -154,9 +154,9 @@ class RenderInternationRound extends React.PureComponent {
               flexDirection: "row",
               justifyContent: "space-between",
               flex: 1,
-              alignItems: "center"
+              alignItems: "flex-start"
             }}>
-            <Text style={{ marginStart: 10 }}>
+            <Text style={{ marginStart: 10, flex: 1 }}>
               {this.props.item.IntOnward.FlightSegments[0].AirLineName}
             </Text>
             <View>
@@ -208,7 +208,11 @@ class RenderInternationRound extends React.PureComponent {
             alignItems: "center"
           }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Image style={{ width: 40, height: 40, marginEnd: 10 }} resizeMode="contain" source={{ uri: img }} />
+            <Image
+              style={{ width: 40, height: 40, marginEnd: 10 }}
+              resizeMode="contain"
+              source={{ uri: img }}
+            />
             <View>
               <Text style={{ fontSize: 18, lineHeight: 22 }}>{dd}</Text>
               <Text
@@ -287,7 +291,7 @@ class RenderInternationRound extends React.PureComponent {
                   color: "#5D666D",
                   fontSize: 12
                 }}>
-                {this.props.item.IntOnward.FlightSegments[0].BookingClassFare.Rule}
+                {this.props.item.IntOnward.FlightSegments[0].BookingClassFare.Rule.trim()}
               </Text>
             </Button>
             <Button onPress={this.fareRules}>
@@ -329,7 +333,8 @@ class RenderInternationRound extends React.PureComponent {
                   }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image
-                      style={{ width: 40, height: 40, marginEnd: 4 }} resizeMode="contain"
+                      style={{ width: 40, height: 40, marginEnd: 4 }}
+                      resizeMode="contain"
                       source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
                     />
                     <View>
