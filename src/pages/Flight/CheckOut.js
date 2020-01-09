@@ -396,7 +396,8 @@ class CheckOut extends React.PureComponent {
                 <View
                   style={{
                     flex: 1,
-                    paddingTop: 16
+                    paddingTop: 16,
+                    paddingBottom: 16
                   }}>
                   <Text
                     style={{
@@ -404,7 +405,7 @@ class CheckOut extends React.PureComponent {
                       fontSize: 16,
                       marginHorizontal: 5
                     }}>
-                    Checkout
+                    Flight Summary
                   </Text>
                   <Text
                     style={{
@@ -440,9 +441,9 @@ class CheckOut extends React.PureComponent {
                     <Image
                       source={require("../../assets/imgs/flightSearch.png")}
                       resizeMode="contain"
-                      style={{ width: 40 }}
+                      style={{ width: 30 }}
                     />
-                    <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
                       Departure
                     </Text>
                   </View>
@@ -514,13 +515,13 @@ class CheckOut extends React.PureComponent {
                       <Image
                         source={require("../../assets/imgs/flightSearch.png")}
                         resizeMode="contain"
-                        style={{ width: 40 }}
+                        style={{ width: 30 }}
                       />
                       <Text
                         style={{
-                          marginStart: 10,
-                          fontWeight: "300",
-                          fontSize: 16
+                          fontSize: 18,
+                          fontWeight: "500",
+                          marginStart: 5
                         }}>
                         Arrival
                       </Text>
@@ -605,7 +606,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <IconSimple name="bag" size={24} />
                   <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
-                    Fare Break up
+                    Price Summary
                   </Text>
                 </View>
                 <View
@@ -723,7 +724,7 @@ class CheckOut extends React.PureComponent {
                     borderBottomRightRadius: 8,
                     backgroundColor: "#F2F3F5"
                   }}>
-                  <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
+                  <Text style={{ marginStart: 10, fontWeight: "700", fontSize: 16 }}>
                     Total Payable
                   </Text>
                   <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
@@ -838,12 +839,12 @@ class CheckOut extends React.PureComponent {
         <>
           <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-            <View style={{ height: 56, backgroundColor: "#E5EBF7" }}>
+            <View style={{ backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
                   flexDirection: "row",
                   marginHorizontal: 16,
-                  marginVertical: 10
+                  marginVertical: 20
                 }}>
                 <Button onPress={() => this.props.navigation.goBack(null)}>
                   <Icon name="md-arrow-back" size={24} />
@@ -859,14 +860,14 @@ class CheckOut extends React.PureComponent {
                       style={{
                         fontWeight: "700",
                         fontSize: 16,
-                        marginHorizontal: 5
+                        marginHorizontal: 20
                       }}>
-                      Checkout
+                      Flight Summary
                     </Text>
                     <Text
                       style={{
                         fontSize: 12,
-                        marginHorizontal: 5,
+                        marginHorizontal: 20,
                         color: "#717984"
                       }}>
                       {params.journey_date} {params.return_date ? "- " + params.return_date : null}{" "}
@@ -898,9 +899,9 @@ class CheckOut extends React.PureComponent {
                     <Image
                       source={require("../../assets/imgs/flightSearch.png")}
                       resizeMode="contain"
-                      style={{ width: 40 }}
+                      style={{ width: 30 }}
                     />
-                    <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 10 }}>
                       Departure
                     </Text>
                   </View>
@@ -972,13 +973,13 @@ class CheckOut extends React.PureComponent {
                       <Image
                         source={require("../../assets/imgs/flightSearch.png")}
                         resizeMode="contain"
-                        style={{ width: 40 }}
+                        style={{ width: 30 }}
                       />
                       <Text
                         style={{
-                          marginStart: 10,
-                          fontWeight: "300",
-                          fontSize: 16
+                          fontSize: 18,
+                          fontWeight: "500",
+                          marginStart: 10
                         }}>
                         Arrival
                       </Text>
@@ -1059,7 +1060,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <IconSimple name="bag" size={24} />
                   <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
-                    Fare Backup
+                    Price Summary
                   </Text>
                 </View>
                 <View

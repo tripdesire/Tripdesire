@@ -799,10 +799,11 @@ class CheckOut1 extends React.PureComponent {
                       <Image
                         source={require("../../assets/imgs/person.png")}
                         resizeMode="contain"
-                        style={{ width: 30 }}
+                        tintColor={"#000000"}
+                        style={{ width: 20 }}
                       />
-                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
-                        Passengers Details
+                      <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 10 }}>
+                        Traveller Details
                       </Text>
                     </View>
                     {params.flightType == 2 && (
@@ -820,9 +821,7 @@ class CheckOut1 extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text style={{ color: "#5D666D", flexBasis: "15%" }}>
-                              Adult {index + 1}
-                            </Text>
+                            <Text style={{ flexBasis: "15%" }}>Adult {index + 1}</Text>
 
                             <TextInput
                               style={{
@@ -1608,7 +1607,9 @@ class CheckOut1 extends React.PureComponent {
                         )}
                       </View>
                     </TouchableOpacity>
-                    <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
+                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                      RazorPay
+                    </Text>
                   </View>
                   <Text
                     style={{

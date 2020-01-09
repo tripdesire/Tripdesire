@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
-import { Button, Text, Header, RNPicker } from "../../components";
+import { Button, Text, Header, RNPicker, Icon } from "../../components";
 import moment from "moment";
 
 class Boarding extends React.PureComponent {
@@ -39,6 +39,10 @@ class Boarding extends React.PureComponent {
     return item.Location + " (" + item.Landmark + ") " + time; //rhours + ":" + rminutes
   };
 
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   render() {
     const { boardingpoints, droppingpoints, bp, dp } = this.state;
     return (
@@ -46,8 +50,28 @@ class Boarding extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>
-            <View style={{ backgroundColor: "#E5EBF7" }}>
-              <Header firstName="Select Boarding and Dropping Point" />
+            <View
+              style={{
+                backgroundColor: "#E5EBF7",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                padding: 16
+              }}>
+              <Button onPress={this.goBack}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 20,
+                  flex: 1,
+                  fontWeight: "700",
+                  lineHeight: 24,
+                  textTransform: "capitalize"
+                }}>
+                Select Boarding and Dropping Point
+              </Text>
             </View>
             <View style={{ marginTop: 40 }}>
               <View style={{ marginHorizontal: 16 }}>

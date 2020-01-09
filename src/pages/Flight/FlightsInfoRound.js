@@ -526,7 +526,7 @@ class FlightsInfoRound extends React.PureComponent {
                   justifyContent: "center",
                   ...StyleSheet.absoluteFill
                 }}>
-                <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
               </View>
             )}
             <SwiperFlatList

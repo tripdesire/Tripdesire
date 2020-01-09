@@ -8,7 +8,8 @@ import {
   ScrollView,
   SafeAreaView,
   Linking,
-  Modal
+  Modal,
+  Platform
 } from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
@@ -91,20 +92,15 @@ class HotelCheckout extends React.Component {
       });
   }
 
-  _viewLocation = (lat, lag) => () => {
-    console.log(lat);
-    console.log(lag);
-    let loc = "geo:" + lat + "," + lag + "?q=" + lat + "," + lag;
-    console.log(loc);
-    Linking.canOpenURL(loc)
-      .then(supported => {
-        if (!supported) {
-          console.log("Can't handle url: ");
-        } else {
-          return Linking.openURL(loc);
-        }
-      })
-      .catch(err => console.error("An error occurred", err));
+  _viewLocation = (lat, lng, lbl) => () => {
+    const scheme = Platform.select({ ios: "maps:0,0?q=", android: "geo:0,0?q=" });
+    const latLng = `${lat},${lng}`;
+    const label = lbl;
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
+    });
+    Linking.openURL(url);
   };
 
   _Next = () => {
@@ -149,12 +145,11 @@ class HotelCheckout extends React.Component {
                     flexDirection: "row",
                     flex: 1
                   }}>
-                  <View style={{ marginHorizontal: 5 }}>
+                  <View style={{ marginHorizontal: 20 }}>
                     <Text
                       style={{
                         fontWeight: "700",
-                        fontSize: 16,
-                        marginHorizontal: 5
+                        fontSize: 16
                       }}>
                       {params.city}
                     </Text>
@@ -232,7 +227,11 @@ class HotelCheckout extends React.Component {
                     />
                     <TouchableOpacity
                       style={{ color: "#717A81", fontSize: 12 }}
-                      onPress={this._viewLocation(params.Latitude, params.Longitude)}>
+                      onPress={this._viewLocation(
+                        params.Latitude,
+                        params.Longitude,
+                        params.HotelName
+                      )}>
                       <Text style={{ color: "#ffffff" }}>View on Map</Text>
                     </TouchableOpacity>
                   </View>

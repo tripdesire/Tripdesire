@@ -63,9 +63,7 @@ class RenderItems extends React.PureComponent {
             marginHorizontal: 16
           }}>
           <Text style={{ flex: 1, fontWeight: "700", fontSize: 16 }}>{this.props.item.Name}</Text>
-          <Text style={{ fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
-            ₹ {this.props.item.TotalNetAmount}
-          </Text>
+
           {/* <Button
             style={{
               backgroundColor: "#5191FB",
@@ -80,10 +78,10 @@ class RenderItems extends React.PureComponent {
           style={{
             flexDirection: "row",
             marginHorizontal: 16,
-            alignItems: "center",
-            marginVertical: 10
+            alignItems: "center"
+            // marginVertical: 5
           }}>
-          <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
+          <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} color="#5D89F4" />
           <View
             style={{
               flexDirection: "row",
@@ -91,7 +89,7 @@ class RenderItems extends React.PureComponent {
               justifyContent: "space-between",
               flex: 1
             }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: "row", alignItems: "center", marginStart: 5 }}>
               <Icon
                 name="seat"
                 type="MaterialCommunityIcons"
@@ -105,7 +103,7 @@ class RenderItems extends React.PureComponent {
                 type="Foundation"
                 size={24}
                 color="#6287F9"
-                style={{ paddingHorizontal: 5 }}
+                style={{ paddingHorizontal: 5, marginStart: 5 }}
               />
               <Text>{this.props.item.AdditionalInfo.BaggageQuantity} bags</Text>
             </View>
@@ -121,8 +119,14 @@ class RenderItems extends React.PureComponent {
             </View>
           </View>
         </View>
-        <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
-          {/* <Text style={{ flex: 1, paddingEnd: 10 }}>Full cancellation policy</Text> */}
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal: 16,
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}>
+          <Text style={{ lineHeight: 22 }}>₹ {this.props.item.TotalNetAmount}</Text>
           <Button
             style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
             onPress={this._onFareDetails}>

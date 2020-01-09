@@ -86,7 +86,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
           loader: false,
           flightCount: 0
         });
-        Toast.show("Data not found", Toast.LONG);
+        // Toast.show("Data not found", Toast.LONG);
       }
     });
   }
@@ -325,7 +325,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
             </Modal>
             {flightCount == 0 && (
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not found</Text>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
               </View>
             )}
             {loader && <ActivityIndicator label={"FETCHING FLIGHTS"} />}

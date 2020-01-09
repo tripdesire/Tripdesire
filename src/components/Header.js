@@ -34,6 +34,7 @@ class Header extends React.PureComponent {
             marginStart: 5,
             fontWeight: "700",
             lineHeight: 24,
+            flex: 1,
             textTransform: "capitalize"
           }}>
           {this.props.lastName}

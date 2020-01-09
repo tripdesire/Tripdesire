@@ -142,7 +142,7 @@ class HotelPayment extends React.PureComponent {
                 <Button onPress={() => this.props.navigation.goBack(null)}>
                   <Icon name="md-arrow-back" size={24} />
                 </Button>
-                <View style={{ marginHorizontal: 5 }}>
+                <View style={{ marginHorizontal: 20 }}>
                   <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
                     Book Your Hotel
                   </Text>

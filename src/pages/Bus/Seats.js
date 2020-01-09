@@ -279,7 +279,7 @@ class Seats extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
           <View style={{ backgroundColor: "#E5EBF7" }}>
-            <Header firstName="Seats" />
+            <Header lastName="Seats" />
           </View>
 
           {seats.lower.length > 0 && seats.upper.length > 0 && (

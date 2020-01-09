@@ -73,7 +73,7 @@ class FlightsInfoOneway extends React.PureComponent {
             });
           } else {
             this.setState({ loader: false, flights: [], filterFlights: [] });
-            Toast.show("Data not Found", Toast.LONG);
+            //Toast.show("Data not Found", Toast.LONG);
           }
         }
         if (this.state.flight_type == 2) {
@@ -85,7 +85,7 @@ class FlightsInfoOneway extends React.PureComponent {
             });
           } else {
             this.setState({ loader: false, flights: [], filterFlights: [] });
-            Toast.show("Data not Found", Toast.LONG);
+            //Toast.show("Data not Found", Toast.LONG);
           }
         }
       })
@@ -446,7 +446,7 @@ class FlightsInfoOneway extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ paddingBottom: 40, backgroundColor: "#E5EBF7" }}>
+            <View style={{ paddingBottom: 60, backgroundColor: "#E5EBF7" }}>
               <HeaderFlights
                 from={from}
                 to={to}
@@ -531,7 +531,7 @@ class FlightsInfoOneway extends React.PureComponent {
 
             {Array.isArray(flights) && flights.length == 0 ? (
               <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-                <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found</Text>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
               </View>
             ) : (
               <FlatList

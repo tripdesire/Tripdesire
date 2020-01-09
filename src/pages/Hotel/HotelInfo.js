@@ -220,7 +220,7 @@ class HotelInfo extends React.PureComponent {
           <View>
             <View style={{ flexDirection: "row", flex: 2 }}>
               <Image source={require("../../assets/imgs/location.png")} />
-              <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5, marginEnd: 5 }}>
+              <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5, marginEnd: 10 }}>
                 {item.HotelAddress}
               </Text>
             </View>
@@ -374,7 +374,7 @@ class HotelInfo extends React.PureComponent {
                 }}>
                 <TextInput
                   placeholder="Hotel Name"
-                  style={{ marginStart: 20, color: "#61666A" }}
+                  style={{ paddingStart: 10, color: "#61666A",flex:1 }}
                   value={hotelName}
                   onChangeText={this.onHotelChange}
                 />

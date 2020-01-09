@@ -55,14 +55,14 @@ class Home extends React.PureComponent {
                 marginTop: 40
               }}>
               <HomeButtonComponent
-                tintColor={"#616A71"}
+                tintColor={"#5789FF"}
                 name="Flights"
                 img_name={require("../assets/imgs/flight.png")}
                 onPress={this.navigateToScreen("FlightSearch")}
               />
               <HomeButtonComponent
                 name="Hotels"
-                tintColor={"#616A71"}
+                tintColor={"#5789FF"}
                 img_name={require("../assets/imgs/Hotel.png")}
                 onPress={this.navigateToScreen("Hotel")}
               />
@@ -75,13 +75,13 @@ class Home extends React.PureComponent {
               }}>
               <HomeButtonComponent
                 name="Buses"
-                tintColor={"#616A71"}
+                tintColor={"#5789FF"}
                 img_name={require("../assets/imgs/bus.png")}
                 onPress={this.navigateToScreen("Bus")}
               />
               <HomeButtonComponent
                 name="Cabs"
-                tintColor={"#616A71"}
+                tintColor={"#5789FF"}
                 img_name={require("../assets/imgs/car.png")}
                 onPress={this.navigateToScreen("Cab")}
               />

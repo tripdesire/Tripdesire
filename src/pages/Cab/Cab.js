@@ -675,7 +675,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     zIndex: 2,
     height: 30,
-    paddingHorizontal: 30,
+    paddingHorizontal: 25,
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "#757575",
     shadowOpacity: 0.2,

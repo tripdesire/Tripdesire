@@ -151,7 +151,7 @@ class CabList extends React.PureComponent {
               />
               {filteredcabs.length == 0 && (
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
-                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+                  <Text style={{ fontSize: 18, fontWeight: "700" }}>No cab found</Text>
                 </View>
               )}
               <Modal

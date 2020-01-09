@@ -188,7 +188,7 @@ class BusInfo extends React.PureComponent {
             marginHorizontal: 16
           }}>
           <Text style={{ flex: 1, fontWeight: "700" }}>{item.BusType}</Text>
-          <Button
+          {/* <Button
             style={{
               backgroundColor: "#5191FB",
               borderRadius: 20,
@@ -197,7 +197,7 @@ class BusInfo extends React.PureComponent {
             }}
             onPress={this._bookNow(item)}>
             <Text style={{ color: "#fff", fontWeight: "600" }}>Select Seats</Text>
-          </Button>
+          </Button> */}
         </View>
         <View
           style={{
@@ -226,7 +226,7 @@ class BusInfo extends React.PureComponent {
             style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
             onPress={this._onCanPolicy}>
             <Icon name="mobile-phone" size={24} color="#6287F9" type="FontAwesome" />
-            <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9" }}>
+            <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9", zIndex: 1 }}>
               Cancellation Policy
             </Text>
           </Button>
@@ -296,7 +296,7 @@ class BusInfo extends React.PureComponent {
               />
               {!loader && filteredBuses.length == 0 && (
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
-                  <Text style={{ fontSize: 18, fontWeight: "700" }}>Data not Found.</Text>
+                  <Text style={{ fontSize: 18, fontWeight: "700" }}>No bus found.</Text>
                 </View>
               )}
               {loader && <ActivityIndicator label={"FETCHING BUSES"} />}

@@ -174,10 +174,12 @@ const TabNavigator = createBottomTabNavigator(
   {
     HomeStack: {
       screen: HomeStack,
+      barStyle: { marginBottom: 10 },
       navigationOptions: ({ navigation }) => {
         let { routeName } = navigation.state.routes[navigation.state.index];
         return {
-          title: "Home",
+          title: "HOME",
+
           tabBarVisible: routeName === "Home" ? true : false,
           tabBarIcon: ({ tintColor }) => (
             <Image
@@ -191,8 +193,7 @@ const TabNavigator = createBottomTabNavigator(
     OrderStack: {
       screen: OrderStack,
       navigationOptions: {
-        title: "My Trips",
-
+        title: "MY TRIPS",
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/my_trips_tab.png")}
@@ -206,7 +207,7 @@ const TabNavigator = createBottomTabNavigator(
       navigationOptions: ({ navigation }) => {
         let { routeName } = navigation.state.routes[navigation.state.index];
         return {
-          title: "My Account",
+          title: "ACCOUNT",
           tabBarVisible: routeName === "MyAccount" ? true : false,
           tabBarIcon: ({ tintColor }) => (
             <Image
@@ -220,7 +221,7 @@ const TabNavigator = createBottomTabNavigator(
     Help: {
       screen: Help,
       navigationOptions: {
-        title: "Help",
+        title: "HELP",
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/help_tab.png")}

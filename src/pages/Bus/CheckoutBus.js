@@ -506,7 +506,7 @@ class CheckoutBus extends React.PureComponent {
                     marginTop: 20,
                     padding: 8
                   }}>
-                  <Text style={{ fontWeight: "700", fontSize: 16, paddingHorizontal: 4 }}>
+                  <Text style={{ fontWeight: "500", fontSize: 18, paddingHorizontal: 4 }}>
                     Departure
                   </Text>
                   <View style={{ flexDirection: "row", marginTop: 10 }}>
@@ -558,7 +558,7 @@ class CheckoutBus extends React.PureComponent {
                       marginTop: 20
                     }}>
                     <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-                      <Text style={{ fontWeight: "300", fontSize: 16 }}>Arrival</Text>
+                      <Text style={{ fontSize: 18, fontWeight: "500" }}>Arrival</Text>
 
                       <View style={{ flexDirection: "row", marginTop: 10 }}>
                         <View style={{ flex: 3, paddingHorizontal: 4 }}>
@@ -798,13 +798,9 @@ class CheckoutBus extends React.PureComponent {
                       marginHorizontal: 10,
                       alignItems: "center"
                     }}>
-                    <Image
-                      source={require("../../assets/imgs/person.png")}
-                      style={{ width: 20, height: 20 }}
-                      resizeMode="cover"
-                    />
-                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
-                      Fare Breakup
+                    <Icon type="Foundation" name="shopping-bag" size={22} />
+                    <Text style={{ marginStart: 10, fontWeight: "500", fontSize: 18 }}>
+                      Price Summary
                     </Text>
                   </View>
                   <View
@@ -860,10 +856,8 @@ class CheckoutBus extends React.PureComponent {
                       marginHorizontal: 10,
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>
-                      Total Payable
-                    </Text>
-                    <Text style={{ fontWeight: "700", fontSize: 16, color: "#5191FB" }}>
+                    <Text style={{ fontWeight: "700", fontSize: 16 }}>Total Payable</Text>
+                    <Text style={{ fontWeight: "700", fontSize: 16 }}>
                       ₹ {cartData.total_price}
                     </Text>
                   </View>

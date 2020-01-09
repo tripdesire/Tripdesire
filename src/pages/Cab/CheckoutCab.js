@@ -386,14 +386,14 @@ class CheckoutCab extends React.PureComponent {
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{ marginHorizontal: 5 }}>
+              <View style={{ marginHorizontal: 20 }}>
                 <Text style={{ fontWeight: "700", fontSize: 16 }}>Payment</Text>
               </View>
             </View>
             <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <View
                 style={{
-                  elevation: 2,
+                  elevation: 1,
                   shadowOffset: { width: 0, height: 2 },
                   shadowColor: "rgba(0,0,0,0.2)",
                   shadowOpacity: 1,
@@ -407,7 +407,7 @@ class CheckoutCab extends React.PureComponent {
                 <View style={{ flexDirection: "row", width: "100%" }}>
                   <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
                   <View style={{ marginStart: 5, flex: 1 }}>
-                    <Text style={{ flex: 1, fontWeight: "700", fontSize: 16, lineHeight: 22 }}>
+                    <Text style={{ flex: 1, fontWeight: "500", fontSize: 18, lineHeight: 22 }}>
                       {item.Name}
                     </Text>
                     <Text style={{ lineHeight: 18, color: "#696969" }}>
@@ -436,12 +436,12 @@ class CheckoutCab extends React.PureComponent {
                       {params.sourceName}{" "}
                       {params.destinationName != "" ? "To " + params.destinationName : ""}
                     </Text>
-                    <View
+                    {/* <View
                       style={{
                         backgroundColor: "#696969",
                         height: 1.35,
                         marginVertical: 5
-                      }}></View>
+                      }}></View> */}
                     <View
                       style={{
                         flexDirection: "row",
@@ -449,13 +449,13 @@ class CheckoutCab extends React.PureComponent {
                         width: "100%"
                       }}>
                       <View>
-                        <Text style={{ fontWeight: "700" }}>Pick-Up</Text>
+                        <Text style={{ fontWeight: "500" }}>Pick-Up</Text>
                         <Text>
                           {params.journeyDate}( {params.pickUpTime})
                         </Text>
                       </View>
                       <View>
-                        <Text style={{ fontWeight: "700" }}>Drop</Text>
+                        <Text style={{ fontWeight: "500" }}>Drop</Text>
                         <Text>{params.journeyDate}</Text>
                       </View>
                     </View>
@@ -464,7 +464,7 @@ class CheckoutCab extends React.PureComponent {
               </View>
               <View
                 style={{
-                  elevation: 2,
+                  elevation: 1,
                   shadowOffset: { width: 0, height: 2 },
                   shadowColor: "rgba(0,0,0,0.2)",
                   shadowOpacity: 1,
@@ -476,159 +476,15 @@ class CheckoutCab extends React.PureComponent {
                 }}>
                 <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Icon name={Platform.OS === "ios" ? "ios-person" : "md-person"} size={22} />
-                    <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
+                    <Image
+                      source={require("../../assets/imgs/person.png")}
+                      style={{ width: 20, height: 20 }}
+                      resizeMode="cover"
+                    />
+                    <Text style={{ marginStart: 10, fontWeight: "500", fontSize: 18 }}>
                       Passengers Details
                     </Text>
                   </View>
-                  {/* <View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        marginTop: 10,
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}>
-                      <Text>Adult</Text>
-                      <View
-                        style={{
-                          borderWidth: 1,
-                          borderColor: "#F2F2F2",
-                          height: 40,
-                          marginStart: 2,
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <Picker
-                          selectedValue={this.state.den}
-                          style={{ height: 50, width: 60 }}
-                          onValueChange={(itemValue, itemIndex) =>
-                            this.setState({ den: itemValue })
-                          }>
-                          <Picker.Item label="Mr." value="Mr" />
-                          <Picker.Item label="Mrs." value="Mrs" />
-                        </Picker>
-                      </View>
-                      <TextInput
-                        style={{
-                          borderWidth: 1,
-                          borderColor: "#F2F2F2",
-                          height: 40,
-                          flex: 1,
-                          marginHorizontal: 2
-                        }}
-                        onChangeText={this.onAdultChange("firstname")}
-                        placeholder="First Name"
-                      />
-                      <TextInput
-                        style={{
-                          borderWidth: 1,
-                          borderColor: "#F2F2F2",
-                          height: 40,
-                          flex: 1
-                        }}
-                        placeholder="Last Name"
-                        onChangeText={this.onAdultChange("last_name")}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        marginTop: 5,
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}>
-                      <View
-                        style={{
-                          flex: 2,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center"
-                        }}>
-                        <Text style={{ color: "#5D666D", marginStart: 5 }}>DOB</Text>
-                        <Button
-                          style={{
-                            flex: 1,
-                            marginStart: 5,
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}
-                          onPress={this.showDatePicker}
-                          placeholder="DOB">
-                          <Text>{moment(this.state.dob).format("DD-MMM-YYYY")}</Text>
-                        </Button>
-                        <DateTimePicker
-                          date={this.state.dob}
-                          isVisible={this.state.dobShow}
-                          onConfirm={this.onAdultChange("dob")}
-                          onCancel={this.handleDtPickerCancel}
-                          maximumDate={moment()
-                            .subtract(12, "years")
-                            .toDate()}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          borderWidth: 1,
-                          borderColor: "#F2F2F2",
-                          height: 40,
-                          flex: 1,
-                          marginHorizontal: 2,
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
-                        <Picker
-                          selectedValue={this.state.gender}
-                          style={{ height: 50, width: 90 }}
-                          onValueChange={(itemValue, itemIndex) =>
-                            this.setState({ gender: itemValue })
-                          }>
-                          <Picker.Item label="Male" value="M" />
-                          <Picker.Item label="Female" value="F" />
-                        </Picker>
-                      </View>
-                    </View>
-                    <Button style={{ marginTop: 10 }}>
-                      <Text style={{ color: "#5B89F9" }}>Optional (Frequent flyer Number)</Text>
-                    </Button>
-
-                    <View>
-                      <Text>Frequent Flyer Details</Text>
-                      <Text>
-                        Please verify the credit of your frequent flyer miles at the airport checkin
-                        counter.
-                      </Text>
-                      <View style={{ flexDirection: "row" }}>
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            backgroundColor: "#F2F2F2",
-                            height: 40,
-                            paddingHorizontal: 10,
-                            marginEnd: 1,
-                            flex: 1
-                          }}
-                          placeholder="Indigo-5031"
-                        />
-                        <TextInput
-                          style={{
-                            borderWidth: 1,
-                            borderColor: "#F2F2F2",
-                            height: 40,
-                            paddingHorizontal: 10,
-                            flex: 1,
-                            marginStart: 1
-                          }}
-                          placeholder="Enter FNN"
-                        />
-                      </View>
-                    </View>
-                  </View> */}
-
                   <View>
                     <View
                       style={{
@@ -670,7 +526,7 @@ class CheckoutCab extends React.PureComponent {
                         justifyContent: "center",
                         alignItems: "center"
                       }}>
-                      <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
+                      <Text style={{ flexBasis: "15%" }}>DOB</Text>
                       <Button
                         style={{
                           flex: 1,
@@ -732,7 +588,7 @@ class CheckoutCab extends React.PureComponent {
               </View>
               <View
                 style={{
-                  elevation: 2,
+                  elevation: 1,
                   shadowOffset: { width: 0, height: 2 },
                   shadowColor: "rgba(0,0,0,0.2)",
                   shadowOpacity: 1,
@@ -745,8 +601,8 @@ class CheckoutCab extends React.PureComponent {
                 }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Icon type="Foundation" name="shopping-bag" size={22} />
-                  <Text style={{ marginStart: 10, fontWeight: "600", fontSize: 16 }}>
-                    Fare Break up
+                  <Text style={{ marginStart: 10, fontWeight: "500", fontSize: 18 }}>
+                    Price Summary
                   </Text>
                 </View>
                 <View
@@ -800,7 +656,7 @@ class CheckoutCab extends React.PureComponent {
               </View>
               <View
                 style={{
-                  elevation: 2,
+                  elevation: 1,
                   shadowOffset: { width: 0, height: 2 },
                   shadowColor: "rgba(0,0,0,0.2)",
                   shadowOpacity: 1,
@@ -835,7 +691,7 @@ class CheckoutCab extends React.PureComponent {
                       )}
                     </View>
                   </TouchableOpacity>
-                  <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
+                  <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>RazorPay</Text>
                 </View>
                 <Text
                   style={{
@@ -884,10 +740,10 @@ class CheckoutCab extends React.PureComponent {
                         end: 8,
                         zIndex: 1,
                         elevation: 1,
-                        shadowOpacity: 0.2,
+                        shadowOpacity: 0.5,
                         shadowRadius: 1,
                         borderRadius: 8,
-                        shadowOffset: { height: 1, width: 0 }
+                        shadowOffset: { height: 2, width: 0 }
                       }}>
                       <Text style={{ color: "#FFFFFF" }}>Apply</Text>
                     </Button>

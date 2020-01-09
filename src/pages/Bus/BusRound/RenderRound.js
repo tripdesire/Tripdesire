@@ -1,13 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-  Modal
-} from "react-native";
+import { View, SafeAreaView, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import { Button, Text, ActivityIndicator, DomesticFlights, Icon } from "../../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
@@ -18,7 +10,9 @@ import Toast from "react-native-simple-toast";
 class RenderRound extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      CancellationPolicy: false
+    };
   }
 
   _SelectedSeat = (item, index) => () => {
@@ -28,7 +22,13 @@ class RenderRound extends React.PureComponent {
     });
   };
 
-  _onCanPolicy = () => {};
+  _onCanPolicy = () => {
+    this.setState({ CancellationPolicy: true });
+  };
+
+  closePolicy = () => {
+    this.setState({ CancellationPolicy: false });
+  };
 
   render() {
     const { item, index } = this.props;
@@ -85,14 +85,75 @@ class RenderRound extends React.PureComponent {
             style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
             onPress={this._onCanPolicy}>
             <Icon type="FontAwesome" name="mobile-phone" size={24} color="#6287F9" />
-            <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9" }}>
+            <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9", zIndex: 1 }}>
               Cancellation Policy
             </Text>
           </Button>
         </View>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.CancellationPolicy}
+          onRequestClose={this.closePolicy}>
+          <CanPolicy onBackPress={this.closePolicy} />
+        </Modal>
       </TouchableOpacity>
     );
   }
 }
+
+class CanPolicy extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View>
+            <View style={styles.headerContainer}>
+              <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
+            </View>
+            <View style={{ marginHorizontal: 16 }}>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ fontWeight: "700", flex: 3 }}>Cancellation Time</Text>
+                <Text style={{ fontWeight: "700", flex: 1 }}>Cancellation Charge</Text>
+              </View>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ flex: 3 }}>
+                  Between 0 days 5 hours and 0 hours before journey time
+                </Text>
+                <Text style={{ flex: 1 }}>100.0%</Text>
+              </View>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ flex: 3 }}>Between 24 hours and 0 days before journey time</Text>
+                <Text style={{ flex: 1 }}>10.0%</Text>
+              </View>
+              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <Text style={{ flex: 3 }}>24 hours before journey time</Text>
+                <Text style={{ flex: 1 }}>10.0%</Text>
+              </View>
+              <Text style={{ color: "red" }}>*Partial cancellation not allowed</Text>
+            </View>
+          </View>
+        </SafeAreaView>
+      </>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 56,
+    backgroundColor: "#FFFFFF"
+  }
+});
 
 export default withNavigation(RenderRound);

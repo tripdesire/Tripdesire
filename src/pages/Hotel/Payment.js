@@ -404,7 +404,7 @@ class Payment extends React.PureComponent {
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{ marginHorizontal: 5 }}>
+              <View style={{ marginHorizontal: 20 }}>
                 <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
                 <Text style={{ fontSize: 12, color: "#717984" }}>
                   {params.checkInDate
@@ -442,9 +442,9 @@ class Payment extends React.PureComponent {
                       <Image
                         source={require("../../assets/imgs/person.png")}
                         resizeMode="contain"
-                        style={{ width: 30 }}
+                        style={{ width: 20 }}
                       />
-                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
+                      <Text style={{ marginStart: 10, fontSize: 18, fontWeight: "500" }}>
                         Guest Details
                       </Text>
                     </View>
@@ -695,7 +695,9 @@ class Payment extends React.PureComponent {
                         )}
                       </View>
                     </TouchableOpacity>
-                    <Text style={{ marginStart: 5, fontSize: 18 }}>RazorPay</Text>
+                    <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>
+                      RazorPay
+                    </Text>
                   </View>
                   <Text
                     style={{

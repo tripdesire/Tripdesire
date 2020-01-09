@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView, Platform } from "react-native";
 import { Button, Icon, Text, CheckBox, RadioButton } from "../../components";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { uniq, max, min } from "lodash";
@@ -94,12 +94,20 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
           </View>
           <View style={{ flex: 3, backgroundColor: "#FFFFFF" }} onLayout={e => getSizeSeekBar(e)}>
             {index == 0 && (
-              <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
+              <View
+                style={{
+                  alignItems: "center",
+                  padding: 8,
+                  marginHorizontal: Platform.OS == "ios" ? 10 : 0
+                }}>
                 <MultiSlider
+                  containerStyle={{ marginHorizontal: Platform.OS == "ios" ? 10 : 0 }}
                   trackStyle={{ height: 4 }}
-                  selectedStyle={{ backgroundColor: "#F68E1F" }}
-                  markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
-                  sliderLength={widthSeekBar - 32}
+                  selectedStyle={{
+                    backgroundColor: "#F68E1F"
+                  }}
+                  markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F", height: 20, width: 20 }}
+                  sliderLength={widthSeekBar - 52}
                   min={filters.price[0]}
                   max={filters.price[1]}
                   values={
