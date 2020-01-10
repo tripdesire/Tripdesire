@@ -1,6 +1,13 @@
 import React, { PureComponent } from "react";
 import { Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator, HeaderFlights, Icon } from "../../components";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  HeaderFlights,
+  Icon,
+  DataNotFound
+} from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
 import { withNavigation } from "react-navigation";
@@ -395,6 +402,10 @@ class FlightsInfoRound extends React.PureComponent {
 
   _keyExtractorReturn = (item, index) => "ReturnFlights_" + index;
 
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   render() {
     const {
       from,
@@ -520,14 +531,15 @@ class FlightsInfoRound extends React.PureComponent {
               </View>
             )}
             {Array.isArray(onwardFlights) && onwardFlights.length == 0 && (
-              <View
+              <DataNotFound title="No flights found" onPress={this.goBack} />
+              /* <View
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
                   ...StyleSheet.absoluteFill
                 }}>
                 <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
-              </View>
+              </View>  */
             )}
             <SwiperFlatList
               //index={swiperIndex}

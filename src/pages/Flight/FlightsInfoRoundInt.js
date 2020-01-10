@@ -1,7 +1,14 @@
 import React from "react";
 import { Dimensions, View, FlatList, SafeAreaView, Modal } from "react-native";
 import { orderBy } from "lodash";
-import { Button, Text, ActivityIndicator, Icon, HeaderFlights } from "../../components";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  Icon,
+  HeaderFlights,
+  DataNotFound
+} from "../../components";
 import RenderInternationRound from "./RenderInternationRound";
 import Filter from "./Filter";
 import { etravosApi } from "../../service";
@@ -255,6 +262,10 @@ class FlightsInfoRoundInt extends React.PureComponent {
 
   _keyExtractor = (item, index) => "key" + index;
 
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   render() {
     const {
       flights,
@@ -324,9 +335,10 @@ class FlightsInfoRoundInt extends React.PureComponent {
               />
             </Modal>
             {flightCount == 0 && (
-              <View style={{ flex: 1, alignItems: "center" }}>
+              <DataNotFound title="No flights found" onPress={this.goBack} />
+              /* <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
-              </View>
+              </View>*/
             )}
             {loader && <ActivityIndicator label={"FETCHING FLIGHTS"} />}
           </View>

@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   TouchableOpacity
 } from "react-native";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, DataNotFound } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import { orderBy } from "lodash";
@@ -294,6 +294,10 @@ class HotelInfo extends React.PureComponent {
 
   _keyExtractoritems = (item, index) => "key" + index;
 
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   render() {
     //console.log(this.state);
     const {
@@ -316,7 +320,7 @@ class HotelInfo extends React.PureComponent {
                 flexDirection: "row",
                 backgroundColor: "#E5EBF7"
               }}>
-              <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+              <Button onPress={this.goBack} style={{ padding: 16 }}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
               <View
@@ -374,7 +378,7 @@ class HotelInfo extends React.PureComponent {
                 }}>
                 <TextInput
                   placeholder="Hotel Name"
-                  style={{ paddingStart: 10, color: "#61666A",flex:1 }}
+                  style={{ paddingStart: 10, color: "#61666A", flex: 1 }}
                   value={hotelName}
                   onChangeText={this.onHotelChange}
                 />
@@ -405,14 +409,15 @@ class HotelInfo extends React.PureComponent {
                 renderItem={this._renderItemList}
               />
               {filteredHotels.length == 0 && (
-                <View
+                <DataNotFound title="No hotels found" onPress={this.goBack} />
+                /* <View
                   style={{
                     flex: 5,
                     alignItems: "center",
                     justifyContent: "center"
                   }}>
                   <Text style={{ fontWeight: "700", fontSize: 18 }}>Data not found</Text>
-                </View>
+                </View>*/
               )}
             </View>
             <Modal

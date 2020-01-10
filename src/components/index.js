@@ -11,7 +11,7 @@ import Icon from "./IconNB";
 import CheckBox from "./CheckBox";
 import RadioButton from "./RadioButton";
 import RNPicker from "./RNPicker";
-
+import DataNotFound from "./DataNotFound";
 export {
   Button,
   HomeButtonComponent,
@@ -25,5 +25,6 @@ export {
   Icon,
   CheckBox,
   RadioButton,
-  RNPicker
+  RNPicker,
+  DataNotFound
 };

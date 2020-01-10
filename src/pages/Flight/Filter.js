@@ -274,12 +274,23 @@ class Filter extends React.Component {
                 </ScrollView>
               )}
               {index == 4 && (
-                <View style={{ width: "100%", alignItems: "center", padding: 8 }}>
+                <View
+                  style={{
+                    marginHorizontal: Platform.OS == "ios" ? 10 : 0,
+                    alignItems: "center",
+                    padding: 8
+                  }}>
                   <MultiSlider
+                    containerStyle={{ marginHorizontal: Platform.OS == "ios" ? 10 : 0 }}
                     trackStyle={{ height: 4 }}
                     selectedStyle={{ backgroundColor: "#F68E1F" }}
-                    markerStyle={{ marginTop: 4, backgroundColor: "#F68E1F" }}
-                    sliderLength={this.state.widthSeekBar - 32}
+                    markerStyle={{
+                      marginTop: 4,
+                      backgroundColor: "#F68E1F",
+                      height: 20,
+                      width: 20
+                    }}
+                    sliderLength={this.state.widthSeekBar - 52}
                     min={filters.price[0]}
                     max={filters.price[1]}
                     values={

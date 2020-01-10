@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, FlatList, Modal, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, DataNotFound } from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
 import moment from "moment";
@@ -100,6 +100,10 @@ class CabList extends React.PureComponent {
     return <RenderItems item={item} index={index} params={params} />;
   };
 
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   _keyExtractoritems = (item, index) => "key" + index;
 
   render() {
@@ -113,7 +117,7 @@ class CabList extends React.PureComponent {
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>
             <View style={{ backgroundColor: "#E5EBF7", flexDirection: "row", width: "100%" }}>
-              <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+              <Button onPress={this.goBack} style={{ padding: 16 }}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
               <View style={{ flex: 1, paddingTop: 16, paddingBottom: 8 }}>
@@ -150,9 +154,10 @@ class CabList extends React.PureComponent {
                 renderItem={this._renderItemList}
               />
               {filteredcabs.length == 0 && (
-                <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
+                <DataNotFound title="No cabs found" onPress={this.goBack} />
+                /* <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
                   <Text style={{ fontSize: 18, fontWeight: "700" }}>No cab found</Text>
-                </View>
+                </View> */
               )}
               <Modal
                 animationType="slide"

@@ -1,8 +1,7 @@
 import React from "react";
 import { View, Modal, StyleSheet, FlatList, SafeAreaView } from "react-native";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, DataNotFound } from "../../components";
 import { orderBy } from "lodash";
-import Toast from "react-native-simple-toast";
 import moment from "moment";
 import { etravosApi } from "../../service";
 import Filter from "./Filter";
@@ -39,9 +38,7 @@ class BusInfo extends React.PureComponent {
       .get("/Buses/AvailableBuses", params)
       .then(({ data }) => {
         console.log(data.AvailableTrips);
-        if (data.AvailableTrips.length == 0) {
-          Toast.show("Data not found.", Toast.LONG);
-        }
+
         this.setState({
           buses: data.AvailableTrips,
           filteredBuses: data.AvailableTrips,
@@ -235,6 +232,10 @@ class BusInfo extends React.PureComponent {
     );
   };
 
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   _keyExtractoritems = (item, index) => "key" + index;
 
   render() {
@@ -259,7 +260,7 @@ class BusInfo extends React.PureComponent {
                   flexDirection: "row",
                   width: "100%"
                 }}>
-                <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>
+                <Button onPress={this.goBack} style={{ padding: 16 }}>
                   <Icon name="md-arrow-back" size={24} />
                 </Button>
                 <View style={{ flex: 1, paddingTop: 16, paddingBottom: 8 }}>
@@ -295,9 +296,10 @@ class BusInfo extends React.PureComponent {
                 renderItem={this._renderItemList}
               />
               {!loader && filteredBuses.length == 0 && (
-                <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
+                <DataNotFound title="No buses found" onPress={this.goBack} />
+                /* <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
                   <Text style={{ fontSize: 18, fontWeight: "700" }}>No bus found.</Text>
-                </View>
+                </View> */
               )}
               {loader && <ActivityIndicator label={"FETCHING BUSES"} />}
             </View>

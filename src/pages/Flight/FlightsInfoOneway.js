@@ -1,6 +1,13 @@
 import React from "react";
 import { View, Image, FlatList, Modal, SafeAreaView, SectionList } from "react-native";
-import { Button, Text, ActivityIndicator, Icon, HeaderFlights } from "../../components";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  Icon,
+  HeaderFlights,
+  DataNotFound
+} from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
 import FlightListRender from "./FlightListRender";
@@ -375,6 +382,10 @@ class FlightsInfoOneway extends React.PureComponent {
   // );
   _keyExtractor = (item, index) => "dates_" + item + index;
 
+  goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   _renderItemList = ({ item, index }) => {
     if (this.state.flight_type == 1) {
       return (
@@ -530,10 +541,11 @@ class FlightsInfoOneway extends React.PureComponent {
             </View>
 
             {Array.isArray(flights) && flights.length == 0 ? (
-              <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-                <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
-              </View>
+              <DataNotFound title="No flights found" onPress={this.goBack} />
             ) : (
+              /* <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
+              </View>*/
               <FlatList
                 nestedScrollEnabled={true}
                 vertical={true}
