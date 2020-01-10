@@ -21,6 +21,8 @@ import moment from "moment";
 import HTML from "react-native-render-html";
 import { Component } from "react";
 import Toast from "react-native-simple-toast";
+import ImageFull from "./ImageFull";
+const { width } = Dimensions.get("window");
 
 class HotelCheckout extends React.Component {
   constructor(props) {
@@ -29,10 +31,17 @@ class HotelCheckout extends React.Component {
     console.log(params);
     this.state = {
       _selectRadio: "1",
+      imageShow: false,
       selectedRoom: params.RoomDetails[0],
       policy: false,
       data: "",
-      loader: false
+      loader: false,
+      items: [
+        { uri: "https://via.placeholder.com/150" },
+        { uri: "https://via.placeholder.com/150" },
+        { uri: "https://via.placeholder.com/150" },
+        { uri: "https://via.placeholder.com/150" }
+      ]
     };
     this.SingleHotelData();
   }
@@ -47,6 +56,14 @@ class HotelCheckout extends React.Component {
 
   modalBackPress = () => {
     this.setState({ policy: false });
+  };
+
+  modalClose = () => {
+    this.setState({ imageShow: false });
+  };
+
+  showImage = () => {
+    this.setState({ imageShow: true });
   };
 
   SingleHotelData() {
@@ -111,6 +128,8 @@ class HotelCheckout extends React.Component {
 
   _keyExtractor = (item, index) => "key" + index;
 
+  renderItem = ({ item, index }) => <Image style={styles.image} source={{ uri: item.uri }} />;
+
   render() {
     const { params } = this.props.navigation.state;
 
@@ -127,7 +146,7 @@ class HotelCheckout extends React.Component {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#5B89F9" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, flexDirection: "column" }}>
-            <View style={{ backgroundColor: "#5B89F9", paddingBottom: 40 }}>
+            <View style={{ backgroundColor: "#5B89F9", paddingBottom: 30 }}>
               <View
                 style={{
                   height: 56,
@@ -137,7 +156,7 @@ class HotelCheckout extends React.Component {
                   marginTop: 10
                 }}>
                 <Button onPress={() => this.props.navigation.goBack(null)}>
-                  <Icon name="md-arrow-back" size={24} />
+                  <Icon name="md-arrow-back" size={24} color="#fff" />
                 </Button>
                 <View
                   style={{
@@ -149,7 +168,8 @@ class HotelCheckout extends React.Component {
                     <Text
                       style={{
                         fontWeight: "700",
-                        fontSize: 16
+                        fontSize: 16,
+                        color: "#fff"
                       }}>
                       {params.city}
                     </Text>
@@ -172,72 +192,44 @@ class HotelCheckout extends React.Component {
                   </View>
                 </View>
               </View>
+
               <View
                 style={{
                   marginHorizontal: 16,
-                  marginTop: 20,
-                  padding: 10
+                  flexDirection: "row",
+                  marginTop: 10,
+                  alignItems: "flex-start"
                 }}>
-                <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      flex: 1,
-                      color: "#ffffff",
-                      fontWeight: "700"
-                    }}>
-                    {params.HotelName}
-                  </Text>
-                  <Text style={{ alignSelf: "flex-end", color: "#ffffff" }}>
-                    {params.room}:Room(s),{params.Night}:Night
-                  </Text>
-                </View>
-                <View
+                <Text
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginVertical: 15
+                    fontSize: 18,
+                    flex: 1,
+                    color: "#ffffff",
+                    fontWeight: "700"
                   }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{ color: "#ffffff" }}>({params.city})</Text>
-                    <View style={{ alignItems: "flex-start", marginStart: 10 }}>
-                      <Stars
-                        default={parseInt(params.StarRating)}
-                        count={5}
-                        half={true}
-                        starSize={80}
-                        fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}
-                        emptyStar={
-                          <IconMaterial
-                            name={"star-outline"}
-                            style={[styles.myStarStyle, styles.myEmptyStarStyle]}
-                          />
-                        }
-                        halfStar={<IconMaterial name={"star-half"} style={[styles.myStarStyle]} />}
+                  {params.HotelName}
+                </Text>
+                <View style={{ marginStart: 5, marginTop: 8 }}>
+                  <Stars
+                    default={parseInt(params.StarRating)}
+                    count={5}
+                    half={true}
+                    starSize={80}
+                    fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}
+                    emptyStar={
+                      <IconMaterial
+                        name={"star-outline"}
+                        style={[styles.myStarStyle, styles.myEmptyStarStyle]}
                       />
-                    </View>
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-                    <Icon
-                      name="location-pin"
-                      type="SimpleLineIcons"
-                      size={16}
-                      style={{ marginEnd: 5 }}
-                      color="#fff"
-                    />
-                    <TouchableOpacity
-                      style={{ color: "#717A81", fontSize: 12 }}
-                      onPress={this._viewLocation(
-                        params.Latitude,
-                        params.Longitude,
-                        params.HotelName
-                      )}>
-                      <Text style={{ color: "#ffffff" }}>View on Map</Text>
-                    </TouchableOpacity>
-                  </View>
+                    }
+                    halfStar={<IconMaterial name={"star-half"} style={[styles.myStarStyle]} />}
+                  />
                 </View>
-                <Text style={{ color: "#ffffff" }}>{params.HotelAddress}</Text>
-                <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
+              </View>
+
+              <Text style={{ color: "#ffffff", marginHorizontal: 16 }}>{params.HotelAddress}</Text>
+
+              {/* <View style={{ flexDirection: "row", width: "100%" }}>
                   {Amenities.map(item => (
                     <View key={item}>
                       {item.toLowerCase() == "housekeeping - daily" && (
@@ -275,169 +267,263 @@ class HotelCheckout extends React.Component {
                       )}
                     </View>
                   ))}
-                </View>
-              </View>
+                </View> */}
             </View>
             <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-              <View
-                style={{
-                  elevation: 2,
-                  backgroundColor: "#ffffff",
-                  marginHorizontal: 16,
-                  marginTop: -40,
-                  paddingHorizontal: 10,
-                  marginBottom: 16,
-                  borderRadius: 8
-                }}>
-                <ScrollView
-                  contentContainerStyle={{ backgroundColor: "#ffffff" }}
-                  showsVerticalScrollIndicator={false}>
-                  <Text style={{ fontSize: 18, flex: 1, marginTop: 10 }}>Book your Hotels</Text>
-
-                  {params.RoomDetails.map(item => {
-                    const { width } = Dimensions.get("window");
-                    const { params } = this.props.navigation.state;
-                    const { _selectRadio } = this.state;
-                    var str = params.HotelImages[0].Imagepath;
-                    var res = str.replace(
-                      "https://cdn.grnconnect.com/",
-                      "https://images.grnconnect.com/"
-                    );
-                    return (
-                      <View key={item.RoomIndex}>
-                        <View style={{ marginVertical: 20, flexDirection: "row" }}>
-                          <Image
-                            style={{
-                              width: width / 4,
-                              height: width / 5,
-                              borderRadius: 5
-                            }}
-                            source={{ uri: res || "https://via.placeholder.com/150" }}
-                          />
-
-                          <View
-                            style={{
-                              marginHorizontal: 10,
-                              flex: 1
-                            }}>
-                            <TouchableOpacity
-                              style={{ paddingEnd: 4 }}
-                              onPress={this._radioButton(item)}>
-                              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <TouchableOpacity
-                                  style={{
-                                    height: 18,
-                                    width: 18,
-                                    borderRadius: 12,
-                                    borderWidth: 2,
-                                    borderColor: "#000",
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                  }}
-                                  onPress={this._radioButton(item)}>
-                                  {_selectRadio === item.RoomIndex && (
-                                    <View
-                                      style={{
-                                        height: 10,
-                                        width: 10,
-                                        borderRadius: 6,
-                                        backgroundColor: "#000"
-                                      }}
-                                    />
-                                  )}
-                                </TouchableOpacity>
-                                <Text style={{ fontSize: 16, marginStart: 5 }}>
-                                  {item.RoomType}
-                                </Text>
-                              </View>
-                            </TouchableOpacity>
-
-                            <Text
-                              style={{
-                                fontSize: 18,
-                                fontWeight: "700"
-                              }}>
-                              ₹ {item.RoomTotal.toFixed(2)}
-                            </Text>
-                          </View>
-                        </View>
-
-                        <View style={{ marginBottom: 10 }}>
-                          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text style={{ color: "#717A81" }}>
-                              {params.room}:Room(s),{params.Night}:night
-                            </Text>
-                            <Text style={{ color: "#717A81" }}>
-                              {item.RefundRule != null && item.RefundRule == "Refundable Fare"
-                                ? "Refundable"
-                                : "Non Refundable"}
-                            </Text>
-                          </View>
-
-                          {item.RoomCancellationPolicy !== "" &&
-                            item.RoomCancellationPolicy != null && (
-                              <Button
-                                onPress={() =>
-                                  this.setState({ policy: true, data: item.RoomCancellationPolicy })
-                                }>
-                                <Text style={{ fontSize: 16, color: "#5B89F9" }}>
-                                  Room Cancellation Policy
-                                </Text>
-                              </Button>
-                            )}
-                          {item.Inclusions != null && item.Inclusions != "" && (
-                            <View>
-                              <Text style={{ fontSize: 16 }}>Inclusions</Text>
-                              <Text style={{ color: "#717A81" }}>{item.Inclusions}</Text>
-                            </View>
-                          )}
-                        </View>
-
-                        <View style={{ height: 1.35, backgroundColor: "#DDDDDD" }}></View>
-                      </View>
-                    );
-                  })}
-
-                  <View style={{ marginTop: 20 }}>
-                    <Text style={{ fontWeight: "700", fontSize: 18 }}>Description</Text>
-                    <View>
-                      <Text style={{ flex: 3, fontSize: 16, marginTop: 20 }}>
-                        Property Location
-                      </Text>
-                      <HTML
-                        baseFontStyle={{ color: "#717A81", fontFamily: "Poppins-Regular" }}
-                        html={params.Description}
-                      />
-                    </View>
-                    {params.RoomChain != null && (
-                      <View style={{ marginTop: 10 }}>
-                        <Text style={{ flex: 3, fontSize: 16 }}>Room</Text>
-                        <Text style={{ color: "#717A81", flex: 4 }}>{params.RoomChain}</Text>
-                      </View>
-                    )}
-                    {params.Facilities != null && (
-                      <View style={{ marginTop: 10 }}>
-                        <Text style={{ flex: 3, fontSize: 16 }}>Facilities</Text>
-                        <Text style={{ color: "#717A81" }}>{Amenities.join(", ")}</Text>
-                      </View>
-                    )}
-                  </View>
-
-                  <Button
-                    style={{
-                      backgroundColor: "#F68E1D",
-                      marginHorizontal: 100,
-                      alignItems: "center",
-                      marginVertical: 30,
-                      justifyContent: "center",
-                      height: 40,
-                      borderRadius: 20
-                    }}
-                    onPress={this._Next}>
-                    <Text style={{ color: "#fff" }}>Next</Text>
+              <ScrollView
+                contentContainerStyle={{ backgroundColor: "#ffffff", marginHorizontal: 16 }}
+                showsVerticalScrollIndicator={false}>
+                {/* <View>
+                  <GridList
+                    showSeparator
+                    data={this.state.items}
+                    numColumns={3}
+                    renderItem={this.renderItem}
+                  />
+                  <GridList
+                    showSeparator
+                    data={this.state.items}
+                    numColumns={3}
+                    renderItem={this.renderItem}
+                  />
+                </View> */}
+                <View style={{ flexDirection: "row", marginTop: 16, width: "100%" }}>
+                  <Button style={{ flex: 1 }} onPress={this.showImage}>
+                    <Image
+                      style={{
+                        height: 260,
+                        borderRadius: 5
+                      }}
+                      source={{
+                        uri: params.HotelImages[0]
+                          ? params.HotelImages[0].Imagepath
+                          : "https://via.placeholder.com/150"
+                      }}
+                    />
                   </Button>
-                </ScrollView>
-              </View>
+                  <View style={{ marginStart: 10 }}>
+                    <Button onPress={this.showImage}>
+                      <Image
+                        style={{
+                          width: 80,
+                          height: 80,
+                          borderRadius: 5
+                        }}
+                        source={{
+                          uri: params.HotelImages[1]
+                            ? params.HotelImages[1].Imagepath
+                            : "https://via.placeholder.com/150"
+                        }}
+                      />
+                    </Button>
+                    <Button onPress={this.showImage}>
+                      <Image
+                        style={{
+                          width: 80,
+                          height: 80,
+                          marginTop: 10,
+                          borderRadius: 5
+                        }}
+                        source={{
+                          uri:
+                            params.HotelImages[2] != null
+                              ? params.HotelImages[2].Imagepath
+                              : "https://via.placeholder.com/150"
+                        }}
+                      />
+                    </Button>
+                    <Button
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                      onPress={this.showImage}>
+                      <Image
+                        style={{
+                          width: 80,
+                          height: 80,
+                          marginTop: 10,
+                          borderRadius: 5
+                        }}
+                        source={{
+                          uri:
+                            params.HotelImages[3] != null
+                              ? params.HotelImages[3].Imagepath
+                              : "https://via.placeholder.com/150"
+                        }}
+                      />
+                      <Text
+                        style={{
+                          position: "absolute",
+                          fontWeight: "700",
+                          fontSize: 16,
+                          color: "#fff",
+                          backgroundColor: "#00000080"
+                        }}>
+                        {params.HotelImages.length + "+"}
+                      </Text>
+                    </Button>
+                  </View>
+                </View>
+                <View style={{ flexDirection: "row", marginTop: 16 }}>
+                  <Text style={{ fontSize: 14 }}> {params.city}</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginStart: 5 }}>
+                    <TouchableOpacity
+                      style={{ color: "#717A81" }}
+                      onPress={this._viewLocation(
+                        params.Latitude,
+                        params.Longitude,
+                        params.HotelName
+                      )}>
+                      <Text style={{ color: "#5B89F9", fontSize: 14 }}>View on Map</Text>
+                    </TouchableOpacity>
+                    <Icon
+                      name="location-pin"
+                      type="SimpleLineIcons"
+                      size={16}
+                      style={{ marginStart: 5 }}
+                      color="#5B89F9"
+                    />
+                  </View>
+                </View>
+                <Text style={{ fontSize: 18, flex: 1, marginTop: 10 }}>Book your Hotels</Text>
+
+                {params.RoomDetails.map(item => {
+                  const { params } = this.props.navigation.state;
+                  const { _selectRadio } = this.state;
+                  var str = params.HotelImages[0].Imagepath;
+                  var res = str.replace(
+                    "https://cdn.grnconnect.com/",
+                    "https://images.grnconnect.com/"
+                  );
+                  return (
+                    <View key={item.RoomIndex}>
+                      <View style={{ marginVertical: 20, flexDirection: "row" }}>
+                        <Image
+                          style={{
+                            width: 80,
+                            height: 80,
+                            borderRadius: 5
+                          }}
+                          source={{ uri: res || "https://via.placeholder.com/150" }}
+                        />
+
+                        <View
+                          style={{
+                            marginHorizontal: 10,
+                            flex: 1
+                          }}>
+                          <TouchableOpacity
+                            style={{ paddingEnd: 4 }}
+                            onPress={this._radioButton(item)}>
+                            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                              <TouchableOpacity
+                                style={{
+                                  height: 18,
+                                  width: 18,
+                                  borderRadius: 12,
+                                  borderWidth: 2,
+                                  borderColor: "#000",
+                                  alignItems: "center",
+                                  justifyContent: "center"
+                                }}
+                                onPress={this._radioButton(item)}>
+                                {_selectRadio === item.RoomIndex && (
+                                  <View
+                                    style={{
+                                      height: 10,
+                                      width: 10,
+                                      borderRadius: 6,
+                                      backgroundColor: "#000"
+                                    }}
+                                  />
+                                )}
+                              </TouchableOpacity>
+                              <Text style={{ fontSize: 16, marginStart: 5, marginTop: -2 }}>
+                                {item.RoomType}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontWeight: "700"
+                            }}>
+                            ₹ {item.RoomTotal.toFixed(2)}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={{ marginBottom: 10 }}>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                          <Text style={{ color: "#717A81" }}>
+                            {params.room}:Room(s),{params.Night}:night
+                          </Text>
+                          <Text style={{ color: "#717A81" }}>
+                            {item.RefundRule != null && item.RefundRule == "Refundable Fare"
+                              ? "Refundable"
+                              : "Non Refundable"}
+                          </Text>
+                        </View>
+
+                        {item.RoomCancellationPolicy !== "" && item.RoomCancellationPolicy != null && (
+                          <Button
+                            onPress={() =>
+                              this.setState({ policy: true, data: item.RoomCancellationPolicy })
+                            }>
+                            <Text style={{ fontSize: 16, color: "#5B89F9" }}>
+                              Room Cancellation Policy
+                            </Text>
+                          </Button>
+                        )}
+                        {item.Inclusions != null && item.Inclusions != "" && (
+                          <View>
+                            <Text style={{ fontSize: 16 }}>Inclusions</Text>
+                            <Text style={{ color: "#717A81" }}>{item.Inclusions}</Text>
+                          </View>
+                        )}
+                      </View>
+
+                      <View style={{ height: 1.35, backgroundColor: "#DDDDDD" }}></View>
+                    </View>
+                  );
+                })}
+
+                <View style={{ marginTop: 20 }}>
+                  <Text style={{ fontWeight: "500", fontSize: 18 }}>Description</Text>
+                  <View>
+                    <Text style={{ flex: 3, fontSize: 16, marginTop: 20 }}>Property Location</Text>
+                    <HTML
+                      baseFontStyle={{ color: "#717A81", fontFamily: "Poppins-Regular" }}
+                      html={params.Description}
+                    />
+                  </View>
+                  {params.RoomChain != null && (
+                    <View style={{ marginTop: 10 }}>
+                      <Text style={{ flex: 3, fontSize: 16 }}>Room</Text>
+                      <Text style={{ color: "#717A81", flex: 4 }}>{params.RoomChain}</Text>
+                    </View>
+                  )}
+                  {params.Facilities != null && (
+                    <View style={{ marginTop: 10 }}>
+                      <Text style={{ flex: 3, fontSize: 16 }}>Facilities</Text>
+                      <Text style={{ color: "#717A81" }}>{Amenities.join(", ")}</Text>
+                    </View>
+                  )}
+                </View>
+
+                <Button
+                  style={{
+                    backgroundColor: "#F68E1D",
+                    marginHorizontal: 100,
+                    alignItems: "center",
+                    marginVertical: 30,
+                    justifyContent: "center",
+                    height: 40,
+                    borderRadius: 20
+                  }}
+                  onPress={this._Next}>
+                  <Text style={{ color: "#fff" }}>Next</Text>
+                </Button>
+              </ScrollView>
             </View>
             <Modal
               animationType="slide"
@@ -445,6 +531,13 @@ class HotelCheckout extends React.Component {
               visible={this.state.policy}
               onRequestClose={this.modalBackPress}>
               <Cancellation data={this.state.data} onBackPress={this.modalBackPress} />
+            </Modal>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.imageShow}
+              onRequestClose={this.modalClose}>
+              <ImageFull params={params} onBackPress={this.modalClose} />
             </Modal>
             {this.state.loader && <ActivityIndicator />}
           </View>
@@ -492,6 +585,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 56,
     backgroundColor: "#FFFFFF"
+  },
+  image: {
+    width: 40,
+    height: 40,
+    borderRadius: 10
   }
 });
 

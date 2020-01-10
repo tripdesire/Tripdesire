@@ -174,12 +174,12 @@ const TabNavigator = createBottomTabNavigator(
   {
     HomeStack: {
       screen: HomeStack,
-      barStyle: { marginBottom: 10 },
+      //barStyle: { marginBottom: 10 },
+
       navigationOptions: ({ navigation }) => {
         let { routeName } = navigation.state.routes[navigation.state.index];
         return {
           title: "HOME",
-
           tabBarVisible: routeName === "Home" ? true : false,
           tabBarIcon: ({ tintColor }) => (
             <Image
@@ -237,11 +237,15 @@ const TabNavigator = createBottomTabNavigator(
       //inactiveBackgroundColor: "#1E2A48",
       activeTintColor: "#FFFFFF",
       inactiveTintColor: "#828E99",
+      labelStyle: {
+        fontSize: 8
+      },
       // tabBarComponent: TabBarComponent
       style: {
         backgroundColor: "#1E2A48",
         //paddingVertical: 12,
-        height: 55
+        height: 60,
+        paddingVertical: 10
       }
     }
     //contentComponent: CustomDrawer

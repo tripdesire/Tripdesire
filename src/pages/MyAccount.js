@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Image, Linking } from "react-native";
+import { View, StyleSheet, SafeAreaView, Image, Linking, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty } from "lodash";
 import { GoogleSignin } from "@react-native-community/google-signin";
@@ -79,6 +79,9 @@ function MyAccount({ navigation }) {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>My Account</Text>
         </View>
+        {/* <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ backgroundColor: "#fff" }}> */}
         <View style={styles.container}>
           <Image
             source={require("../assets/imgs/profile_tab.png")}
@@ -163,6 +166,7 @@ function MyAccount({ navigation }) {
             </Button>
           )}
         </View>
+        {/* </ScrollView> */}
       </SafeAreaView>
     </>
   );

@@ -175,65 +175,116 @@ class SignIn extends React.PureComponent {
             </Button>
             <Text
               style={{ fontSize: 18, color: "#1E293B", paddingHorizontal: 8, fontWeight: "100" }}>
-              Login
+              Sign In
             </Text>
           </View>
 
           <ScrollView style={{ flex: 1 }}>
             <View style={{ marginTop: 20, marginHorizontal: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>Welcome To</Text>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>TripDesire</Text>
+              <Text style={{ fontSize: 18, fontWeight: "500" }}>Welcome Back</Text>
+              <Text style={{ fontSize: 10, color: "#A4A5AA" }}>Sign In to Continue</Text>
             </View>
             <View
               style={{
                 justifyContent: "center",
-                alignItems: "center",
+                // alignItems: "center",
                 marginVertical: 20,
                 marginHorizontal: 20
               }}>
               <TextInputComponent
-                label="Email*"
-                placeholder="Enter the email"
+                label="Email Address*"
+                // placeholder="Enter the email"
                 value={this.state.email}
                 onChangeText={text => this.setState({ email: text })}
               />
               <TextInputComponent
                 secureTextEntry={true}
                 label="Password*"
-                placeholder="Enter the password"
+                // placeholder="Enter the password"
                 value={this.state.password}
                 onChangeText={text => this.setState({ password: text })}
               />
-              <Button style={styles.button} onPress={this.login}>
-                <Text style={{ color: "#fff" }}>Login</Text>
+              <Button style={{ marginTop: 30 }} onPress={this.navigateToScreen("ForgetPassword")}>
+                <Text style={{ color: "#A4A5AA", fontSize: 12 }}>Forget Password ?</Text>
               </Button>
-              <View style={{ flexDirection: "row", justifyContent: "center", marginVertical: 20 }}>
-                <Button style={{ marginEnd: 5 }} onPress={this.navigateToScreen("ForgetPassword")}>
-                  <Text style={{ color: "#000" }}>Forget Password ?</Text>
+              <Button style={styles.button} onPress={this.login}>
+                <Text style={{ color: "#fff" }}> SIGN IN</Text>
+              </Button>
+              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                <Button style={{ marginEnd: 5 }} onPress={this.navigateToScreen("SignUp")}>
+                  <Text style={{ color: "#A4A5AA", fontSize: 12 }}>Don't have an account ?</Text>
                 </Button>
                 <Button style={{ marginStart: 5 }} onPress={this.navigateToScreen("SignUp")}>
-                  <Text style={{ color: "#000" }}>Register here ?</Text>
+                  <Text style={{ color: "#5B89F9", fontSize: 12 }}>Sign Up</Text>
                 </Button>
               </View>
+
               <View
                 style={{
-                  height: 1.35,
-                  backgroundColor: "#D2D1D1",
-                  width: "30%"
-                }}></View>
-              <View
-                style={{
-                  backgroundColor: "#E6E6E6",
-                  height: 30,
-                  width: 30,
-                  marginTop: -21,
-                  borderRadius: 15,
+                  flexDirection: "row",
                   alignItems: "center",
+                  marginTop: 20,
                   justifyContent: "center"
                 }}>
-                <Text>Or</Text>
+                <View
+                  style={{
+                    height: 1.35,
+                    backgroundColor: "#A4A5AA",
+                    width: "10%"
+                  }}></View>
+                <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#A4A5AA" }}>
+                  Or Sign In with
+                </Text>
+                <View
+                  style={{
+                    height: 1.35,
+                    backgroundColor: "#A4A5AA",
+                    width: "10%"
+                  }}></View>
               </View>
-              <Button
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: 20
+                }}>
+                <View style={{ alignItems: "center" }}>
+                  <Button
+                    style={[styles.facebook_google_button]}
+                    onPress={this.navigateToScreen("OTPScreen")}>
+                    <Image
+                      style={{ width: 30, height: 30 }}
+                      source={require("../assets/imgs/mobileIconNew.png")}
+                    />
+                  </Button>
+                  <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>OTP</Text>
+                </View>
+                <View style={{ alignItems: "center" }}>
+                  <Button
+                    style={[styles.facebook_google_button, { marginHorizontal: 30 }]}
+                    onPress={() => this.socialLogin("google")}>
+                    <Image
+                      style={{ width: 30, height: 30 }}
+                      source={require("../assets/imgs/google.png")}
+                    />
+                  </Button>
+                  <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Google</Text>
+                </View>
+                <View style={{ alignItems: "center" }}>
+                  <Button
+                    style={[styles.facebook_google_button]}
+                    onPress={() => this.socialLogin("facebook")}>
+                    <Image
+                      style={{ width: 30, height: 30 }}
+                      source={require("../assets/imgs/facebookNew.png")}
+                    />
+                  </Button>
+                  <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Facebook</Text>
+                </View>
+              </View>
+              {/* <Button
                 style={[styles.facebook_google_button, { marginTop: 20 }]}
                 onPress={this.navigateToScreen("OTPScreen")}>
                 <Text style={{ color: "#D2D1D1" }}>Login via OTP</Text>
@@ -253,7 +304,7 @@ class SignIn extends React.PureComponent {
                   source={require("../assets/imgs/facebook.png")}
                 />
                 <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Login by Facebook</Text>
-              </Button>
+              </Button> */}
             </View>
           </ScrollView>
           {this.state.loader && <ActivityIndicator />}
@@ -265,28 +316,31 @@ class SignIn extends React.PureComponent {
 
 const styles = StyleSheet.create({
   button: {
+    width: "100%",
     backgroundColor: "#F68E1F",
-    height: 48,
-    marginTop: 40,
-    width: 200,
+    height: 36,
+    alignSelf: "center",
+    marginVertical: 30,
     marginHorizontal: 50,
-    paddingHorizontal: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25
   },
   facebook_google_button: {
-    flexDirection: "row",
     backgroundColor: "#Fff",
-    height: 48,
-    width: 200,
-    borderWidth: 1,
-    borderColor: "#D2D1D1",
-    marginHorizontal: 50,
+    height: 40,
+    width: 40,
+    //borderWidth: 1,
+    // borderColor: "#D2D1D1",
     paddingHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 25
+    borderRadius: 20,
+    elevation: 2,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: "rgba(0,0,0,0.2)",
+    shadowOpacity: 1,
+    shadowRadius: 4
   }
 });
 

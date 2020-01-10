@@ -162,6 +162,15 @@ class SignUp extends React.PureComponent {
     }
   };
 
+  navigateToScreen = (page, params = {}) => () => {
+    if (page == "OTPScreen") {
+      const { onBack } = this.props.navigation.state.params;
+      this.props.navigation.navigate(page, { onBack });
+    } else {
+      this.props.navigation.navigate(page, params);
+    }
+  };
+
   render() {
     const { loader } = this.state;
     return (
@@ -190,10 +199,10 @@ class SignUp extends React.PureComponent {
                 Sign Up
               </Text>
             </View>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginTop: 20, marginHorizontal: 20 }}>
-                <Text style={{ fontSize: 20, fontWeight: "600" }}>Welcome To</Text>
-                <Text style={{ fontSize: 20, fontWeight: "600" }}>TripDesire</Text>
+                <Text style={{ fontSize: 18, fontWeight: "500" }}>Welcome To Trip Desire</Text>
+                <Text style={{ fontSize: 10, color: "#A4A5AA" }}>Sign Up to Continue</Text>
               </View>
               <View
                 style={{
@@ -204,77 +213,107 @@ class SignUp extends React.PureComponent {
                   borderRadius: 10
                 }}>
                 <TextInputComponent
-                  label="FirstName"
-                  placeholder="Enter the firstName"
+                  label="First Name"
+                  //  placeholder="Enter the firstName"
                   value={this.state.firstname}
-                  imgpath={require("../assets/imgs/profile.png")}
+                  //imgpath={require("../assets/imgs/profile.png")}
                   onChangeText={text => this.setState({ firstname: text })}
                 />
                 <TextInputComponent
-                  label="LastName"
-                  placeholder="Enter the lastName"
+                  label="Last Name"
+                  // placeholder="Enter the lastName"
                   value={this.state.lastname}
-                  imgpath={require("../assets/imgs/profile.png")}
+                  // imgpath={require("../assets/imgs/profile.png")}
                   onChangeText={text => this.setState({ lastname: text })}
                 />
                 <TextInputComponent
                   label="Email"
-                  placeholder="Enter the email"
+                  //  placeholder="Enter the email"
                   value={this.state.email}
-                  imgpath={require("../assets/imgs/email.png")}
+                  //imgpath={require("../assets/imgs/email.png")}
                   onChangeText={text => this.setState({ email: text })}
                 />
                 <TextInputComponent
                   secureTextEntry={true}
                   label="Password"
-                  placeholder="Enter the password"
+                  //   placeholder="Enter the password"
                   value={this.state.password}
-                  imgpath={require("../assets/imgs/password.png")}
+                  // imgpath={require("../assets/imgs/password.png")}
                   onChangeText={text => this.setState({ password: text })}
                 />
                 <Button style={styles.button} onPress={this.signUp}>
                   <Text style={{ color: "#fff" }}>Sign Up</Text>
                 </Button>
-                <View
-                  style={{
-                    height: 1.35,
-                    backgroundColor: "#D2D1D1",
-                    width: "30%"
-                  }}></View>
-                <View
-                  style={{
-                    backgroundColor: "#E6E6E6",
-                    height: 30,
-                    width: 30,
-                    marginTop: -21,
-                    borderRadius: 15,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}>
-                  <Text>Or</Text>
+
+                <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                  <Button style={{ marginEnd: 5 }} onPress={this.navigateToScreen("SignIn")}>
+                    <Text style={{ color: "#A4A5AA", fontSize: 12 }}>
+                      Already have an account ?
+                    </Text>
+                  </Button>
+                  <Button style={{ marginStart: 5 }} onPress={this.navigateToScreen("SignIn")}>
+                    <Text style={{ color: "#5B89F9", fontSize: 12 }}>Sign In</Text>
+                  </Button>
                 </View>
-                <Button
-                  style={[styles.facebook_google_button, { marginTop: 20 }]}
-                  onPress={this.navigateToScreen("OTPScreen")}>
-                  <Text style={{ color: "#D2D1D1" }}>Sign Up via OTP</Text>
-                </Button>
-                <Button
-                  style={[styles.facebook_google_button, { marginTop: 10 }]}
-                  onPress={() => this._Social_login("google")}>
-                  <Image source={require("../assets/imgs/google.png")} />
-                  <Text style={{ color: "#D2D1D1" }}>Sign Up by Google</Text>
-                </Button>
-                <Button
-                  style={[styles.facebook_google_button, { marginTop: 10, marginBottom: 60 }]}
-                  onPress={() => this._Social_login("facebook")}>
-                  <Image
-                    style={{ width: 40, height: 40 }}
-                    resizeMode="contain"
-                    source={require("../assets/imgs/facebook.png")}
-                  />
-                  <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Sign Up by Facebook</Text>
-                </Button>
-                <View></View>
+
+                <View style={{ flexDirection: "row", alignItems: "center", marginTop: 20 }}>
+                  <View
+                    style={{
+                      height: 1.35,
+                      backgroundColor: "#A4A5AA",
+                      width: "10%"
+                    }}></View>
+                  <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#A4A5AA" }}>
+                    Or Sign Up with
+                  </Text>
+                  <View
+                    style={{
+                      height: 1.35,
+                      backgroundColor: "#A4A5AA",
+                      width: "10%"
+                    }}></View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flex: 1,
+                    justifyContent: "space-around",
+                    marginTop: 20
+                  }}>
+                  <View style={{ alignItems: "center" }}>
+                    <Button
+                      style={[styles.facebook_google_button]}
+                      onPress={this.navigateToScreen("OTPScreen")}>
+                      <Image
+                        style={{ width: 30, height: 30 }}
+                        source={require("../assets/imgs/mobileIconNew.png")}
+                      />
+                    </Button>
+                    <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>OTP</Text>
+                  </View>
+                  <View style={{ alignItems: "center" }}>
+                    <Button
+                      style={[styles.facebook_google_button]}
+                      onPress={() => this._Social_login("google")}>
+                      <Image
+                        style={{ width: 30, height: 30 }}
+                        source={require("../assets/imgs/google.png")}
+                      />
+                    </Button>
+                    <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Google</Text>
+                  </View>
+                  <View style={{ alignItems: "center" }}>
+                    <Button
+                      style={[styles.facebook_google_button]}
+                      onPress={() => this._Social_login("facebook")}>
+                      <Image
+                        style={{ width: 30, height: 30 }}
+                        source={require("../assets/imgs/facebookNew.png")}
+                      />
+                    </Button>
+                    <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Facebook</Text>
+                  </View>
+                </View>
               </View>
             </ScrollView>
             {loader && <ActivityIndicator />}
@@ -287,12 +326,11 @@ class SignUp extends React.PureComponent {
 
 const styles = StyleSheet.create({
   button: {
+    width: "100%",
     backgroundColor: "#F68E1F",
-    height: 48,
-    width: 200,
-    marginVertical: 40,
+    height: 36,
+    marginVertical: 30,
     marginHorizontal: 50,
-    paddingHorizontal: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25
@@ -300,15 +338,20 @@ const styles = StyleSheet.create({
   facebook_google_button: {
     flexDirection: "row",
     backgroundColor: "#Fff",
-    height: 48,
-    width: 200,
-    borderWidth: 1,
-    borderColor: "#D2D1D1",
-    marginHorizontal: 50,
+    height: 40,
+    width: 40,
+    // borderWidth: 1,
+    // borderColor: "#D2D1D1",
+    marginHorizontal: 20,
     paddingHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 25
+    borderRadius: 20,
+    elevation: 2,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: "rgba(0,0,0,0.2)",
+    shadowOpacity: 1,
+    shadowRadius: 4
   },
   textinput: {
     borderBottomColor: "#D2D1D1",

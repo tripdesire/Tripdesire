@@ -1092,6 +1092,11 @@ class OrderDetails extends React.PureComponent {
 
             <View
               style={{
+                elevation: 2,
+                shadowOffset: { width: 0, height: 2 },
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
                 marginHorizontal: 8,
                 marginVertical: 10,
                 backgroundColor: "#EEF1F8",
@@ -1128,7 +1133,7 @@ class OrderDetails extends React.PureComponent {
             <View
               style={{
                 marginHorizontal: 8,
-                elevation: 1,
+                elevation: 2,
                 shadowOffset: { width: 0, height: 2 },
                 shadowColor: "rgba(0,0,0,0.1)",
                 shadowOpacity: 1,
@@ -1183,7 +1188,11 @@ class OrderDetails extends React.PureComponent {
             <View
               style={{
                 marginHorizontal: 8,
-                elevation: 1,
+                elevation: 2,
+                shadowOffset: { width: 0, height: 2 },
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
                 borderRadius: 5,
                 marginTop: 10
               }}>

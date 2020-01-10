@@ -90,21 +90,21 @@ class RenderItems extends React.PureComponent {
               flex: 1
             }}>
             <View style={{ flexDirection: "row", alignItems: "center", marginStart: 5 }}>
-              <Icon
+              {/* <Icon
                 name="seat"
                 type="MaterialCommunityIcons"
                 size={24}
                 color="#6287F9"
                 style={{ paddingHorizontal: 5 }}
-              />
-              <Text>{this.props.item.SeatingCapacity} Seats</Text>
-              <Icon
+              /> */}
+              <Text>{this.props.item.SeatingCapacity} Seats | </Text>
+              {/* <Icon
                 name="shopping-bag"
                 type="Foundation"
                 size={24}
                 color="#6287F9"
                 style={{ paddingHorizontal: 5, marginStart: 5 }}
-              />
+              /> */}
               <Text>{this.props.item.AdditionalInfo.BaggageQuantity} bags</Text>
             </View>
             <View style={{ alignItems: "flex-end" }}>

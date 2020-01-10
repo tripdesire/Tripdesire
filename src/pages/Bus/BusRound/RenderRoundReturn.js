@@ -44,7 +44,7 @@ class RenderRoundReturn extends React.PureComponent {
             marginHorizontal: 16
           }}>
           <Text style={{ flex: 1, fontWeight: "700" }}>{item.BusType}</Text>
-          <Button
+          {/* <Button
             style={{
               backgroundColor: "#5191FB",
               borderRadius: 20,
@@ -53,7 +53,7 @@ class RenderRoundReturn extends React.PureComponent {
             }}
             onPress={this._SelectedSeat(item)}>
             <Text style={{ color: "#fff", fontWeight: "600" }}>Select Seats</Text>
-          </Button>
+          </Button> */}
         </View>
         <View
           style={{

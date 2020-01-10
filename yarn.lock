@@ -5661,6 +5661,13 @@ react-native-gesture-handler@^1.5.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-grid-list@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-grid-list/-/react-native-grid-list-1.1.0.tgz#accacca7b6c387704ab4f7edc735a484547dd3c2"
+  integrity sha512-sMyYIcKyEb4zyXpaisEIB3OWvgC9xXkw4XQGKEsFKMsPUQMD5IEG0qvnyy9NxJk/zaEy0aSV4u9x03iwtvM+jg==
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-modal-datetime-picker@^7.6.0:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-7.6.0.tgz#6818f221010d0f61a6396a956b303fee65726fee"

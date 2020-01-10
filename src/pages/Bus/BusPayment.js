@@ -95,8 +95,8 @@ class BusPayment extends React.PureComponent {
             description: "Credits towards consultation",
             // image: "https://i.imgur.com/3g7nmJC.png",
             currency: "INR",
-            //key: "rzp_test_I66kFrN53lhauw", 
-            key:"rzp_live_IRhvqgmESx60tW",
+            //key: "rzp_test_I66kFrN53lhauw",
+            key: "rzp_live_IRhvqgmESx60tW",
             amount: parseInt(order.total) * 100,
             name: "TripDesire",
             prefill: {
@@ -203,7 +203,7 @@ class BusPayment extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ flex: 1, height: 56, backgroundColor: "#E5EBF7" }}>
+            <View style={{ height: 72, backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -215,10 +215,10 @@ class BusPayment extends React.PureComponent {
                 </Button>
                 <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
                   <View>
-                    <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
+                    <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 20 }}>
                       Payment
                     </Text>
-                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
+                    <Text style={{ fontSize: 12, marginHorizontal: 20, color: "#717984" }}>
                       {moment(params.Journeydate, "YYYY-MM-DD").format("DD MMM")} |{" "}
                       {moment(params.Journeydate, "YYYY-MM-DD").format("dddd")}
                     </Text>
@@ -245,12 +245,12 @@ class BusPayment extends React.PureComponent {
                   <View style={{ marginVertical: 10 }}>
                     <View
                       style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 10 }}>
-                      <IconSimple name="bag" size={30} />
-                      <Text style={{ marginStart: 10, fontWeight: "300", fontSize: 16 }}>
-                        Fare Break up
+                      <IconSimple name="bag" size={24} />
+                      <Text style={{ marginStart: 10, fontWeight: "500", fontSize: 18 }}>
+                        Price Summary
                       </Text>
                     </View>
-                    <View
+                    {/* <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
@@ -259,14 +259,15 @@ class BusPayment extends React.PureComponent {
                       }}>
                       <Text>Onward Fare</Text>
                       <Text></Text>
-                    </View>
+                    </View> */}
                     <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
                         backgroundColor: "#F2F3F5",
                         paddingHorizontal: 10,
-                        paddingVertical: 5
+                        paddingVertical: 5,
+                        marginTop: 5
                       }}>
                       <Text>Fare</Text>
                       <Text>0.00</Text>
@@ -290,7 +291,7 @@ class BusPayment extends React.PureComponent {
                         marginBottom: 10,
                         paddingVertical: 5
                       }}>
-                      <Text style={{ fontSize: 16 }}>TOTAL PAYABLE</Text>
+                      <Text style={{ fontSize: 16, fontWeight: "600" }}>Total Payable</Text>
                       <Text style={{ fontSize: 16, fontWeight: "700" }}>
                         ₹ {cartData.total_price}
                       </Text>
@@ -367,7 +368,9 @@ class BusPayment extends React.PureComponent {
                         )}
                       </View>
                     </TouchableOpacity>
-                    <Text style={{ marginStart: 5, fontSize: 16 }}>RazorPay</Text>
+                    <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>
+                      RazorPay
+                    </Text>
                   </View>
                   <Text style={{ flex: 1, fontSize: 12, color: "#696969", marginHorizontal: 20 }}>
                     Make your payment direct into our bank account.Please use your order ID as the

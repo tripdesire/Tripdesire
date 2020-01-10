@@ -228,7 +228,7 @@ class HotelInfo extends React.PureComponent {
               {this.state.room} : Room , {this.state.Night} : Night
             </Text>
           </View>
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -286,7 +286,7 @@ class HotelInfo extends React.PureComponent {
               onPress={() => this._BookNow(item, index)}>
               <Text style={{ color: "#fff" }}>Book Now</Text>
             </Button>
-          </View>
+          </View> */}
         </View>
       </Button>
     );
@@ -410,14 +410,6 @@ class HotelInfo extends React.PureComponent {
               />
               {filteredHotels.length == 0 && (
                 <DataNotFound title="No hotels found" onPress={this.goBack} />
-                /* <View
-                  style={{
-                    flex: 5,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}>
-                  <Text style={{ fontWeight: "700", fontSize: 18 }}>Data not found</Text>
-                </View>*/
               )}
             </View>
             <Modal

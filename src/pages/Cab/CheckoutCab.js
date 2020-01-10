@@ -387,7 +387,7 @@ class CheckoutCab extends React.PureComponent {
                 <Icon name="md-arrow-back" size={24} />
               </Button>
               <View style={{ marginHorizontal: 20 }}>
-                <Text style={{ fontWeight: "700", fontSize: 16 }}>Payment</Text>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>Cab Summary</Text>
               </View>
             </View>
             <ScrollView style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
@@ -405,37 +405,49 @@ class CheckoutCab extends React.PureComponent {
                   padding: 8
                 }}>
                 <View style={{ flexDirection: "row", width: "100%" }}>
-                  <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
-                  <View style={{ marginStart: 5, flex: 1 }}>
-                    <Text style={{ flex: 1, fontWeight: "500", fontSize: 18, lineHeight: 22 }}>
-                      {item.Name}
-                    </Text>
-                    <Text style={{ lineHeight: 18, color: "#696969" }}>
-                      {params.travelType == 2
-                        ? "Local"
-                        : params.travelType == 1
-                        ? "Outstation"
-                        : params.travelType == 3
-                        ? "Transfer"
-                        : ""}
-                      {params.tripType == 1
-                        ? " (One Way)"
-                        : params.tripType == 2
-                        ? " (Round)"
-                        : params.tripType == 4
-                        ? " ( " + params.tripType + " hrs )"
-                        : params.tripType == 8
-                        ? " ( " + params.tripType + " hrs )"
-                        : params.tripType == 12
-                        ? " ( " + params.tripType + " hrs )"
-                        : params.tripType == 24
-                        ? " ( " + params.tripType + " hrs )"
-                        : ""}
-                    </Text>
-                    <Text style={{ lineHeight: 18, color: "#696969" }}>
-                      {params.sourceName}{" "}
-                      {params.destinationName != "" ? "To " + params.destinationName : ""}
-                    </Text>
+                  {/* <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} /> */}
+                  <View style={{ flex: 1 }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "100%"
+                      }}>
+                      <View style={{ flex: 4 }}>
+                        <Text style={{ color: "#5B6974" }}>Name</Text>
+                        <Text>{item.Name}</Text>
+                      </View>
+                      <View style={{ flex: 2 }}>
+                        <Text style={{ color: "#5B6974" }}>Location</Text>
+                        {/* <Text style={{ lineHeight: 18, color: "#696969" }}>
+                          {params.travelType == 2
+                            ? "Local"
+                            : params.travelType == 1
+                            ? "Outstation"
+                            : params.travelType == 3
+                            ? "Transfer"
+                            : ""}
+                          {params.tripType == 1
+                            ? " ( One Way )"
+                            : params.tripType == 2
+                            ? " ( Round )"
+                            : params.tripType == 4
+                            ? " ( " + params.tripType + " hrs )"
+                            : params.tripType == 8
+                            ? " ( " + params.tripType + " hrs )"
+                            : params.tripType == 12
+                            ? " ( " + params.tripType + " hrs )"
+                            : params.tripType == 24
+                            ? " ( " + params.tripType + " hrs )"
+                            : ""}
+                        </Text> */}
+                        <Text>
+                          {params.sourceName}{" "}
+                          {params.destinationName != "" ? "To " + params.destinationName : ""}
+                        </Text>
+                      </View>
+                    </View>
+
                     {/* <View
                       style={{
                         backgroundColor: "#696969",
@@ -448,14 +460,14 @@ class CheckoutCab extends React.PureComponent {
                         justifyContent: "space-between",
                         width: "100%"
                       }}>
-                      <View>
-                        <Text style={{ fontWeight: "500" }}>Pick-Up</Text>
+                      <View style={{ flex: 4 }}>
+                        <Text style={{ color: "#5B6974" }}>Pick-Up</Text>
                         <Text>
-                          {params.journeyDate}( {params.pickUpTime})
+                          {params.journeyDate} ( {params.pickUpTime} )
                         </Text>
                       </View>
-                      <View>
-                        <Text style={{ fontWeight: "500" }}>Drop</Text>
+                      <View style={{ flex: 2 }}>
+                        <Text style={{ color: "#5B6974" }}>Drop</Text>
                         <Text>{params.journeyDate}</Text>
                       </View>
                     </View>
@@ -648,7 +660,7 @@ class CheckoutCab extends React.PureComponent {
                     flex: 1,
                     paddingHorizontal: 8
                   }}>
-                  <Text style={{ fontSize: 16, fontWeight: "700" }}>You Pay</Text>
+                  <Text style={{ fontSize: 16, fontWeight: "700" }}>Total Payable</Text>
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>
                     ₹ {this.state.cartData.total_price}
                   </Text>
