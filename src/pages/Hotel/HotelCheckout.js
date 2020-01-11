@@ -383,7 +383,7 @@ class HotelCheckout extends React.Component {
                     />
                   </View>
                 </View>
-                <Text style={{ fontSize: 18, flex: 1, marginTop: 10 }}>Book your Hotels</Text>
+                <Text style={{ fontSize: 18, flex: 1, marginTop: 10 }}>Book your Hotel</Text>
 
                 {params.RoomDetails.map(item => {
                   const { params } = this.props.navigation.state;
@@ -555,19 +555,22 @@ class Cancellation extends Component {
   render() {
     console.log(this.props.data);
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-        <View>
-          <View style={styles.headerContainer}>
-            <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
-              <Icon name="md-arrow-back" size={24} />
-            </Button>
-            <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
+      <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <View>
+            <View style={styles.headerContainer}>
+              <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
+            </View>
+            <Text style={{ marginHorizontal: 16, marginTop: 16 }}>
+              {this.props.data != "" ? this.props.data : ""}
+            </Text>
           </View>
-          <Text style={{ marginHorizontal: 16 }}>
-            {this.props.data != "" ? this.props.data : ""}
-          </Text>
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
+      </>
     );
   }
 }
@@ -584,7 +587,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 56,
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#E5EBF7"
   },
   image: {
     width: 40,

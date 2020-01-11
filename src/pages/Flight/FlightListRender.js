@@ -133,8 +133,18 @@ class FlightListRender extends React.PureComponent {
     return (
       <TouchableOpacity
         style={{
-          paddingVertical: index % 2 == 0 ? 30 : 10,
-          backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
+          marginHorizontal: 16,
+          elevation: 2,
+          shadowOffset: { width: 0, height: 2 },
+          shadowColor: "rgba(0,0,0,0.1)",
+          shadowOpacity: 1,
+          shadowRadius: 4,
+          marginTop: 16,
+          borderRadius: 8,
+          paddingTop: 10,
+          // paddingVertical: index % 2 == 0 ? 30 : 10,
+          backgroundColor: "#fff"
+          //  backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
         }}
         onPress={this.bookNow}>
         <View
@@ -281,7 +291,7 @@ class FlightListRender extends React.PureComponent {
                     justifyContent: "space-between",
                     alignItems: "center"
                   }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                     <Image
                       style={{ width: 40, height: 40, marginEnd: 4 }}
                       source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}

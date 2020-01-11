@@ -139,8 +139,18 @@ class FlightListInternational extends React.PureComponent {
     return (
       <TouchableOpacity
         style={{
-          paddingVertical: this.props.index % 2 == 0 ? 30 : 10,
-          backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
+          marginHorizontal: 16,
+          elevation: 2,
+          shadowOffset: { width: 0, height: 2 },
+          shadowColor: "rgba(0,0,0,0.1)",
+          shadowOpacity: 1,
+          shadowRadius: 4,
+          marginTop: 16,
+          borderRadius: 8,
+          paddingTop: 10,
+          // paddingVertical: index % 2 == 0 ? 30 : 10,
+          backgroundColor: "#fff"
+          //  backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
         }}
         onPress={() => this.bookNow(this.props.item)}>
         <View
@@ -303,7 +313,7 @@ class FlightListInternational extends React.PureComponent {
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}>
-                  <View style={{ alignItems: "center", flexDirection: "row" }}>
+                  <View style={{ alignItems: "flex-start", flexDirection: "row" }}>
                     <Image
                       style={{ width: 40, height: 40, marginEnd: 4 }}
                       source={{

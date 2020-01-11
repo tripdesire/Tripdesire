@@ -22,6 +22,7 @@ class FlightsInfoOneway extends React.PureComponent {
     super(props);
     let data = this.props.navigation.state.params;
     this.state = {
+      index: "",
       from: data.sourceName,
       to: data.destinationName,
       className: data.className,
@@ -325,8 +326,8 @@ class FlightsInfoOneway extends React.PureComponent {
     this.setState({ filterFlights, showFilter: false });
   };
 
-  _ChangeDate = item => () => {
-    this.setState({ journeyDate: item.fullDate });
+  _ChangeDate = (item, index) => () => {
+    this.setState({ journeyDate: item.fullDate, index: index });
     let data = Object.assign({}, this.props.navigation.state.params);
     data.journeyDate = item.fullDate;
     this.ApiCall(data);
@@ -347,7 +348,7 @@ class FlightsInfoOneway extends React.PureComponent {
     this.setState({ showCalender: false });
   };
 
-  _renderItem = ({ item }) => (
+  _renderItem = ({ item, index }) => (
     <Button
       style={{
         paddingHorizontal: 15,
@@ -355,11 +356,21 @@ class FlightsInfoOneway extends React.PureComponent {
         alignItems: "center",
         borderEndWidth: 1,
         borderColor: "#717984",
-        justifyContent: "center"
+        justifyContent: "center",
+        backgroundColor: this.state.index === index ? "#5B89F9" : "#fff"
       }}
-      onPress={this._ChangeDate(item)}>
-      <Text style={{ fontSize: 12, color: "#717984" }}>{item.day}</Text>
-      <Text style={{ fontSize: 20, fontWeight: "700" }}>{item.date}</Text>
+      onPress={this._ChangeDate(item, index)}>
+      <Text style={{ fontSize: 12, color: this.state.index === index ? "#fff" : "#717984" }}>
+        {item.day}
+      </Text>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "700",
+          color: this.state.index === index ? "#fff" : "#000"
+        }}>
+        {item.date}
+      </Text>
       {/* <Text style={{ fontSize: 12, color: "#717984" }}>{item.month}</Text> */}
     </Button>
   );
@@ -541,7 +552,11 @@ class FlightsInfoOneway extends React.PureComponent {
             </View>
 
             {Array.isArray(flights) && flights.length == 0 ? (
-              <DataNotFound title="No flights found" onPress={this.goBack} />
+              <DataNotFound
+                style={{ marginTop: 110 }}
+                title="No flights found"
+                onPress={this.goBack}
+              />
             ) : (
               /* <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                 <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>

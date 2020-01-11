@@ -462,19 +462,22 @@ class CheckoutCab extends React.PureComponent {
                     <View
                       style={{
                         flexDirection: "row",
+                        marginTop: 10,
                         justifyContent: "space-between",
                         width: "100%"
                       }}>
                       <View style={{ flex: 4 }}>
-                        <Text style={{ color: "#5B6974" }}>Pick-Up</Text>
+                        <Text style={{ color: "#5B6974" }}>Departure</Text>
                         <Text>
                           {params.journeyDate} ( {params.pickUpTime} )
                         </Text>
                       </View>
-                      <View style={{ flex: 2 }}>
-                        <Text style={{ color: "#5B6974" }}>Drop</Text>
-                        <Text>{params.journeyDate}</Text>
-                      </View>
+                      {params.returnDate != "" && (
+                        <View style={{ flex: 2 }}>
+                          <Text style={{ color: "#5B6974" }}>Return</Text>
+                          <Text>{params.returnDate != "" ? params.returnDate : null}</Text>
+                        </View>
+                      )}
                     </View>
                   </View>
                 </View>

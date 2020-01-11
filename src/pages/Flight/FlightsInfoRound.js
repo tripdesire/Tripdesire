@@ -495,8 +495,8 @@ class FlightsInfoRound extends React.PureComponent {
                   style={{
                     backgroundColor: "#DEDEDE",
                     height: 1,
-                    marginHorizontal: 16,
-                    marginVertical: 10
+                    marginHorizontal: 16
+                    // marginTop: 10
                   }}
                 />
                 <View
@@ -505,7 +505,8 @@ class FlightsInfoRound extends React.PureComponent {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    marginHorizontal: 16
+                    marginHorizontal: 16,
+                    marginVertical: 10
                   }}>
                   <Button
                     style={[
@@ -531,7 +532,11 @@ class FlightsInfoRound extends React.PureComponent {
               </View>
             )}
             {Array.isArray(onwardFlights) && onwardFlights.length == 0 && (
-              <DataNotFound title="No flights found" onPress={this.goBack} />
+              <DataNotFound
+                style={{ marginTop: 100 }}
+                title="No flights found"
+                onPress={this.goBack}
+              />
               /* <View
                 style={{
                   alignItems: "center",

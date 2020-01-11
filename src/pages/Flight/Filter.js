@@ -422,10 +422,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   applyButton: {
-    padding: 16,
-    backgroundColor: "#F68E1F",
-    borderRadius: 8,
+    // padding: 16,
     flex: 1,
+    height: 40,
+    justifyContent: "center",
+    backgroundColor: "#F68E1F",
+    borderRadius: 24,
     alignItems: "center"
   }
 });

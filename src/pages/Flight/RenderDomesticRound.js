@@ -116,7 +116,7 @@ class RenderDomesticRound extends React.PureComponent {
         style={{
           borderColor: "#EEF1F8",
           borderWidth: 1,
-          paddingVertical: 10,
+          paddingTop: 10,
           borderRadius: 5,
           marginVertical: 5,
           backgroundColor: selected ? "#EEF1F8" : "#FFFFFF"
@@ -257,9 +257,9 @@ class RenderDomesticRound extends React.PureComponent {
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}>
-                  <View style={{ alignItems: "center", flexDirection: "row" }}>
+                  <View style={{ alignItems: "flex-start", flexDirection: "row" }}>
                     <Image
-                      style={{ width: 40, height: 40, marginEnd: 4 }}
+                      style={{ width: 40, height: 40, marginEnd: 6 }}
                       source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
                       resizeMode="contain"
                     />
@@ -400,7 +400,7 @@ class RenderDomesticRound extends React.PureComponent {
                 )}
 
                 {this.props.item.FlightSegments.length - 1 == index && (
-                  <View style={{ flex: 1, marginStart: 3, alignItems: "flex-start", marginTop: 5 }}>
+                  <View style={{ flex: 1, marginStart: 8, alignItems: "flex-start", marginTop: 5 }}>
                     <Text
                       style={{
                         fontSize: 12,

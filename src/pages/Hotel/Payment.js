@@ -459,9 +459,7 @@ class Payment extends React.PureComponent {
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text style={{ flexBasis: "20%", color: "#5D666D" }}>
-                              Adult {index + 1}
-                            </Text>
+                            <Text style={{ flexBasis: "20%" }}>Adult {index + 1}</Text>
 
                             <TextInput
                               style={{
@@ -490,11 +488,12 @@ class Payment extends React.PureComponent {
                           <View
                             style={{
                               marginTop: 5,
+
                               flexDirection: "row",
                               justifyContent: "center",
                               alignItems: "center"
                             }}>
-                            <Text style={{ color: "#5D666D", flexBasis: "20%" }}>DOB</Text>
+                            <Text style={{ flexBasis: "20%" }}>DOB</Text>
                             <Button
                               style={{
                                 flex: 1,
@@ -502,7 +501,7 @@ class Payment extends React.PureComponent {
                                 borderColor: "#F2F2F2",
                                 height: 40,
                                 justifyContent: "center",
-                                paddingStart: 2
+                                paddingStart: 5
                               }}
                               onPress={this.show("adults", index, true)}
                               placeholder="DOB">

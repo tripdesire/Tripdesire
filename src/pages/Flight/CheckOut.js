@@ -523,7 +523,7 @@ class CheckOut extends React.PureComponent {
                           fontWeight: "500",
                           marginStart: 5
                         }}>
-                        Arrival
+                        Return
                       </Text>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 10 }}>
@@ -981,7 +981,7 @@ class CheckOut extends React.PureComponent {
                           fontWeight: "500",
                           marginStart: 10
                         }}>
-                        Arrival
+                        Return
                       </Text>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 10 }}>

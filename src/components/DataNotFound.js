@@ -4,12 +4,19 @@ import React from "react";
 import Button from "./Button";
 import PropTypes from "prop-types";
 
-function DataNotFound({ title, onPress }) {
+function DataNotFound({ title, onPress, style, subtitle }) {
   return (
-    <View style={{ alignItems: "center", justifyContent: "center", flex: 4, marginBottom: "50%" }}>
+    <View
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 4,
+        marginBottom: "50%",
+        ...style
+      }}>
       <Text style={{ fontSize: 22, fontWeight: "500" }}>{title}</Text>
       <Text style={{ color: "#b8b4b0", fontSize: 14 }}>
-        Try searching for a different route or date.
+        {subtitle ? subtitle : "Try searching for a different route or date."}
       </Text>
       <Button style={{ alignItems: "center", marginTop: 25 }} onPress={onPress}>
         <Text style={{ color: "#5B89F9", fontWeight: "500", fontSize: 16 }}>Go Back</Text>

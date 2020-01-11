@@ -284,6 +284,8 @@ class CheckOut1 extends React.PureComponent {
           "|" +
           item.passportNo +
           "|" +
+          item.countryCode +
+          "|" +
           moment(item.passportIssueDate).format("DD-MM-YYYY") +
           "|" +
           moment(item.passportExpiryDate).format("DD-MM-YYYY")
@@ -291,7 +293,7 @@ class CheckOut1 extends React.PureComponent {
     ].join("~");
 
     // console.log(PassportDetails);
-    //  return;
+    // return;
 
     let adult_details = this.state.adults.map(item => ({
       "ad-den": item.den,
@@ -455,7 +457,7 @@ class CheckOut1 extends React.PureComponent {
 
       console.log("Onward", taxDetail);
       //console.log(JSON.stringify(taxDetail));
-      return;
+      //return;
       const { data: TaxDetails } = await etravosApi.post("/Flights/GetTaxDetails", taxDetail);
       //console.log("Onward Response", TaxDetails);
       if (
@@ -657,7 +659,7 @@ class CheckOut1 extends React.PureComponent {
         UserType: 5
       };
 
-      //console.log(JSON.stringify(book));
+      console.log(book);
       const { data: blockres } = await etravosApi.post("/Flights/BlockFlightTicket", book);
       //console.log(blockres);
       if (blockres.BookingStatus == 8) {
@@ -862,7 +864,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
+                              <Text style={{  flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -1140,7 +1142,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
+                              <Text style={{ flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -1380,7 +1382,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{ color: "#5D666D", flexBasis: "15%" }}>DOB</Text>
+                              <Text style={{  flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,

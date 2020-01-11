@@ -409,7 +409,11 @@ class HotelInfo extends React.PureComponent {
                 renderItem={this._renderItemList}
               />
               {filteredHotels.length == 0 && (
-                <DataNotFound title="No hotels found" onPress={this.goBack} />
+                <DataNotFound
+                  title="No hotels found"
+                  subtitle="Try searching for a different city or date."
+                  onPress={this.goBack}
+                />
               )}
             </View>
             <Modal

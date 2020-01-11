@@ -42,7 +42,7 @@ function MyAccount({ navigation }) {
   };
 
   const privacyPolicy = () => {
-    let url = "https://demo66.tutiixx.com/privacy-policy/";
+    let url = "http://tripdesire.co/privacy-policy/";
     Linking.canOpenURL(url)
       .then(supported => {
         if (!supported) {
@@ -55,7 +55,7 @@ function MyAccount({ navigation }) {
   };
 
   const termsCondition = () => {
-    let url = "https://demo66.tutiixx.com/terms-and-conditions/";
+    let url = "http://tripdesire.co/terms-and-conditions/";
     Linking.canOpenURL(url)
       .then(supported => {
         if (!supported) {

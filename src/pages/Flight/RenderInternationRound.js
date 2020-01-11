@@ -138,8 +138,20 @@ class RenderInternationRound extends React.PureComponent {
     return (
       <TouchableOpacity
         style={{
-          paddingVertical: 10,
-          backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
+          marginHorizontal: 16,
+          elevation: 2,
+          shadowOffset: { width: 0, height: 2 },
+          shadowColor: "rgba(0,0,0,0.1)",
+          shadowOpacity: 1,
+          shadowRadius: 4,
+          marginTop: 16,
+          borderRadius: 8,
+          paddingTop: 10,
+          // paddingVertical: index % 2 == 0 ? 30 : 10,
+          backgroundColor: "#fff"
+          //  backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
+          // paddingVertical: 10,
+          // backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
         }}
         onPress={() => this._BookNow(this.props.item)}>
         <View
@@ -331,7 +343,7 @@ class RenderInternationRound extends React.PureComponent {
                     justifyContent: "space-between",
                     alignItems: "center"
                   }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                     <Image
                       style={{ width: 40, height: 40, marginEnd: 4 }}
                       resizeMode="contain"
@@ -652,7 +664,7 @@ class RenderInternationRound extends React.PureComponent {
                       alignItems: "center",
                       justifyContent: "space-between"
                     }}>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                       <Image
                         style={{
                           width: 40,

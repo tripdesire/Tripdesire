@@ -51,91 +51,98 @@ class RenderItems extends React.PureComponent {
     return (
       <TouchableOpacity
         style={{
-          paddingVertical: 20,
-          backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#E5EBF7"
+          borderRadius: 8,
+          elevation: 2,
+          shadowOffset: { width: 0, height: 2 },
+          shadowColor: "rgba(0,0,0,0.1)",
+          shadowOpacity: 1,
+          shadowRadius: 4,
+          marginHorizontal: 16,
+          marginTop: 10,
+          backgroundColor: "#ffffff"
         }}
         onPress={this._BookNow(this.props.item)}>
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginHorizontal: 16
-          }}>
-          <Text style={{ flex: 1, fontWeight: "700", fontSize: 16 }}>{this.props.item.Name}</Text>
-
-          {/* <Button
-            style={{
-              backgroundColor: "#5191FB",
-              borderRadius: 20,
-              paddingHorizontal: 10,  
-              paddingVertical: 5
-            }}>
-            <Text style={{ color: "#fff", fontWeight: "600" }}>Book Now</Text>
-          </Button> */}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
+            marginEnd: 8,
             alignItems: "center"
-            // marginVertical: 5
           }}>
-          <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} color="#5D89F4" />
+          <Image
+            style={{ width: 80, height: 80, alignItems: "flex-start" }}
+            resizeMode="cover"
+            source={require("../../assets/imgs/carNew.png")}
+          />
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flex: 1
+              flex: 1,
+              marginStart: 2
             }}>
-            <View style={{ flexDirection: "row", alignItems: "center", marginStart: 5 }}>
-              {/* <Icon
-                name="seat"
-                type="MaterialCommunityIcons"
-                size={24}
-                color="#6287F9"
-                style={{ paddingHorizontal: 5 }}
-              /> */}
-              <Text>{this.props.item.SeatingCapacity} Seats | </Text>
-              {/* <Icon
-                name="shopping-bag"
-                type="Foundation"
-                size={24}
-                color="#6287F9"
-                style={{ paddingHorizontal: 5, marginStart: 5 }}
-              /> */}
-              <Text>{this.props.item.AdditionalInfo.BaggageQuantity} bags</Text>
-            </View>
-            <View style={{ alignItems: "flex-end" }}>
-              {this.props.item.PerKm > 0 && (
-                <Text style={{ fontSize: 16, fontWeight: "600", lineHeight: 20 }}>
-                  ₹ {this.props.item.PerKm}/km
-                </Text>
-              )}
-              {/* <Text style={{ fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "space-between"
+              }}>
+              <Text style={{ fontWeight: "600", fontSize: 14, flex: 1 }}>
+                {this.props.item.Name}
+              </Text>
+              <Text style={{ lineHeight: 22, fontSize: 18, fontWeight: "400" }}>
                 ₹ {this.props.item.TotalNetAmount}
-              </Text> */}
+              </Text>
+              {/* <View style={{ alignItems: "flex-end" }}>
+                {this.props.item.PerKm > 0 && (
+                  <Text style={{ fontSize: 16, fontWeight: "600", lineHeight: 20 }}>
+                    ₹ {this.props.item.PerKm}/km
+                  </Text>
+                )}
+              </View> */}
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "space-between"
+              }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={{ fontWeight: "300", fontSize: 12 }}>
+                  {this.props.item.SeatingCapacity} Seats |{" "}
+                </Text>
+
+                <Text style={{ fontWeight: "300", fontSize: 12 }}>
+                  {this.props.item.AdditionalInfo.BaggageQuantity} bags
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: 60,
+                  borderStyle: "dashed",
+                  borderWidth: 1,
+                  height: 1,
+                  marginHorizontal: 8,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderColor: "#8894A8",
+                  borderRadius: 1
+                }}>
+                <Image
+                  tintColor={"#000"}
+                  style={{ width: 24, height: 24, position: "absolute" }}
+                  source={require("../../assets/imgs/carNew.png")}
+                />
+              </View>
+              <Button>
+                <Text
+                  style={{ paddingStart: 5, fontSize: 12, fontWeight: "400", color: "#6287F9" }}>
+                  Fare Details
+                </Text>
+              </Button>
             </View>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>
-          <Text style={{ lineHeight: 22 }}>₹ {this.props.item.TotalNetAmount}</Text>
-          <Button
-            style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
-            onPress={this._onFareDetails}>
-            <Icon type="FontAwesome" name="mobile-phone" size={24} color="#6287F9" />
-            <Text style={{ paddingStart: 5, fontWeight: "700", color: "#6287F9" }}>
-              Fare Details
-            </Text>
-          </Button>
-        </View>
+
         <Modal
           animationType="slide"
           transparent={false}
@@ -158,7 +165,7 @@ class FareDetails extends React.PureComponent {
     const { data } = this.props;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>
             <View style={styles.headerContainer}>
@@ -167,7 +174,7 @@ class FareDetails extends React.PureComponent {
               </Button>
               <Text style={{ fontWeight: "700", fontSize: 18 }}>Fare Details</Text>
             </View>
-            <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16 }}>
+            <Text style={{ marginHorizontal: 16, marginTop: 16, fontWeight: "700", fontSize: 16 }}>
               Fare Details
             </Text>
             <Text style={{ marginHorizontal: 16 }}>
@@ -213,7 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 56,
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#E5EBF7"
   }
 });
 
