@@ -258,10 +258,9 @@ class Hotel extends React.PureComponent {
               <>
                 <View
                   style={{ margin: 16, marginTop: 54, flexDirection: "row", alignItems: "center" }}>
-                  <Icon
-                    name="location"
-                    type="Entypo"
-                    style={{ color: "#858585", fontSize: 24, marginTop: 5 }}
+                  <Image
+                    style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                    source={require("../../assets/imgs/locationList.png")}
                   />
 
                   <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.countryOpen}>
@@ -281,10 +280,9 @@ class Hotel extends React.PureComponent {
                 flexDirection: "row",
                 alignItems: "center"
               }}>
-              <Icon
-                name="location"
-                type="Entypo"
-                style={{ color: "#858585", fontSize: 24, marginTop: 5 }}
+              <Image
+                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                source={require("../../assets/imgs/locationList.png")}
               />
               <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.modalOpen}>
                 <Text style={{ color: "#5D666D" }}>City</Text>
@@ -304,8 +302,8 @@ class Hotel extends React.PureComponent {
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 25, resizeMode: "contain" }}
-                source={require("../../assets/imgs/cal.png")}
+                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                source={require("../../assets/imgs/calender.png")}
               />
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
@@ -345,8 +343,8 @@ class Hotel extends React.PureComponent {
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 25, resizeMode: "contain" }}
-                source={require("../../assets/imgs/person.png")}
+                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                source={require("../../assets/imgs/Passenger.png")}
               />
               <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
                 <Text style={{ color: "#5D666D" }}>Rooms & Guests</Text>

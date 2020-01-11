@@ -232,8 +232,7 @@ class DomesticFlights extends React.PureComponent {
         <ScrollView>
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              tintColor="#5D666D"
-              style={{ width: 40, resizeMode: "contain" }}
+              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
               source={require("../../assets/imgs/flightSearch.png")}
             />
             <Button
@@ -259,8 +258,7 @@ class DomesticFlights extends React.PureComponent {
 
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              tintColor="#5D666D"
-              style={{ width: 40, resizeMode: "contain" }}
+              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
               source={require("../../assets/imgs/flightSearch.png")}
             />
             <Button
@@ -283,8 +281,8 @@ class DomesticFlights extends React.PureComponent {
 
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 35, resizeMode: "contain" }}
-              source={require("../../assets/imgs/cal.png")}
+              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              source={require("../../assets/imgs/calender.png")}
             />
             <Button
               style={{ flex: 1, paddingStart: 20 }}
@@ -324,8 +322,8 @@ class DomesticFlights extends React.PureComponent {
 
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 35, resizeMode: "contain" }}
-              source={require("../../assets/imgs/person.png")}
+              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              source={require("../../assets/imgs/Passenger.png")}
             />
             <Button
               style={{ flex: 1, paddingStart: 20 }}
@@ -344,11 +342,10 @@ class DomesticFlights extends React.PureComponent {
           </View>
           <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-            {/* <Image
-            style={{ width: 25, resizeMode: "contain" }}
-            source={require("../../assets/imgs/person.png")}
-          /> */}
-            <Icon type="MaterialIcons" name="class" size={36} color="#5D666D" />
+            <Image
+              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              source={require("../../assets/imgs/class.png")}
+            />
 
             <View style={{ flex: 1, paddingStart: 20, paddingTop: 0 }}>
               <Text style={{ color: "#5D666D" }}>Class</Text>

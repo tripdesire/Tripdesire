@@ -174,9 +174,13 @@ class Bus extends React.PureComponent {
                 style={{
                   marginHorizontal: 16,
                   marginVertical: 20,
-                  flexDirection: "row"
+                  flexDirection: "row",
+                  alignItems: "center"
                 }}>
-                <IconMaterial name="bus" size={40} color="#A5A9AC" />
+                <Image
+                  style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                  source={require("../../assets/imgs/busNew.png")}
+                />
                 <View
                   style={{
                     flexDirection: "row",
@@ -203,9 +207,13 @@ class Bus extends React.PureComponent {
                 style={{
                   marginHorizontal: 16,
                   marginVertical: 20,
-                  flexDirection: "row"
+                  flexDirection: "row",
+                  alignItems: "center"
                 }}>
-                <IconMaterial name="bus" size={40} color="#A5A9AC" />
+                <Image
+                  style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                  source={require("../../assets/imgs/busNew.png")}
+                />
                 <View style={{ marginStart: 20, flex: 1 }}>
                   <Text style={{ color: "#5D666D" }}>To</Text>
                   <Text
@@ -226,8 +234,8 @@ class Bus extends React.PureComponent {
                   alignItems: "center"
                 }}>
                 <Image
-                  style={{ width: 25, resizeMode: "contain", marginStart: 10 }}
-                  source={require("../../assets/imgs/cal.png")}
+                  style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                  source={require("../../assets/imgs/calender.png")}
                 />
                 <Button
                   style={{

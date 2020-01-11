@@ -395,7 +395,10 @@ class Cab extends React.PureComponent {
             )}
 
             <View style={{ margin: 16, marginTop: 40, flexDirection: "row", alignItems: "center" }}>
-              <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={40} color="#5D666D" />
+              <Image
+                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                source={require("../../assets/imgs/cabSearch.png")}
+              />
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.setModalVisible("modalFrom", true)}>
@@ -424,10 +427,9 @@ class Cab extends React.PureComponent {
               <>
                 <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
                 <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-                  <Icon
-                    name={Platform.OS == "ios" ? "ios-car" : "md-car"}
-                    size={40}
-                    color="#5D666D"
+                  <Image
+                    style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                    source={require("../../assets/imgs/cabSearch.png")}
                   />
 
                   <Button
@@ -449,7 +451,10 @@ class Cab extends React.PureComponent {
                 <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
 
                 <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-                  <SimpleLineIcons name="location-pin" size={25} color="#A5A9AC" />
+                  <Image
+                    style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                    source={require("../../assets/imgs/locationList.png")}
+                  />
                   <Button
                     style={{ flex: 1, paddingStart: 20 }}
                     onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
@@ -478,8 +483,8 @@ class Cab extends React.PureComponent {
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 25, resizeMode: "contain" }}
-                source={require("../../assets/imgs/cal.png")}
+                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                source={require("../../assets/imgs/calender.png")}
               />
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
@@ -520,7 +525,10 @@ class Cab extends React.PureComponent {
             <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-              <SimpleLineIcons name="location-pin" size={25} color="#A5A9AC" />
+              <Image
+                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                source={require("../../assets/imgs/locationList.png")}
+              />
               {travelType == 2 && (
                 <View style={{ flex: 1, paddingStart: 20 }}>
                   <Text style={{ color: "#5D666D" }}>Select Trip</Text>
