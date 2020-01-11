@@ -46,6 +46,7 @@ import MyAccount from "./MyAccount";
 import Help from "./Help";
 import OTPScreen from "./OTPScreen";
 import OTPVerify from "./OTPVerify";
+import PaymentCab from "./Cab/PaymentCab";
 
 export {
   Home,
@@ -95,5 +96,6 @@ export {
   MyAccount,
   Help,
   OTPScreen,
-  OTPVerify
+  OTPVerify,
+  PaymentCab
 };

@@ -56,7 +56,8 @@ import {
   MyAccount,
   Help,
   OTPScreen,
-  OTPVerify
+  OTPVerify,
+  PaymentCab
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -127,7 +128,7 @@ const HomeStack = createStackNavigator(
     BoardingRound,
     BusRoundReturn,
     LoginStack,
-    BillingDetails
+    BillingDetails,PaymentCab
   },
   {
     headerMode: "none",

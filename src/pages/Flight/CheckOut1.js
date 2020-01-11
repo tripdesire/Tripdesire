@@ -455,7 +455,7 @@ class CheckOut1 extends React.PureComponent {
 
       console.log("Onward", taxDetail);
       //console.log(JSON.stringify(taxDetail));
-
+      return;
       const { data: TaxDetails } = await etravosApi.post("/Flights/GetTaxDetails", taxDetail);
       //console.log("Onward Response", TaxDetails);
       if (

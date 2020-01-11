@@ -48,7 +48,7 @@ class SignIn extends React.PureComponent {
             } else {
               this.goBack();
             }
-            Toast.show("Login successful", Toast.LONG);
+            Toast.show("Login successfully", Toast.SHORT);
           } else {
             this.setState({ loader: false });
             Toast.show("Username/Password does not match", Toast.LONG);

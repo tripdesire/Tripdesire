@@ -11,7 +11,7 @@ class Splash extends React.PureComponent {
   componentDidMount() {
     setTimeout(() => {
       this.props.navigation.navigate("TabNavigator");
-    }, 2000);
+    }, 2230);
   }
 
   render() {
@@ -27,13 +27,13 @@ class Splash extends React.PureComponent {
         <Image
           resizeMode="contain"
           style={{
-            width: width - 100,
-            height: height / 5,
+            width: width,
+            height: height / 1.5,
             alignItems: "center",
             marginTop: -50,
             justifyContent: "center"
           }}
-          source={require("../assets/imgs/splashLogo.png")}
+          source={require("../assets/gifs/splashLogo.gif")}
         />
       </View>
       /* <ImageBackground

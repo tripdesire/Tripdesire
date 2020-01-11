@@ -81,11 +81,10 @@ class ForgetPassword extends React.PureComponent {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#F68E1F",
-    height: 48,
-    width: 200,
+    height: 40,
+    width: "100%",
     marginVertical: 40,
-    marginHorizontal: 50,
-    paddingHorizontal: 50,
+    marginHorizontal: 16,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25

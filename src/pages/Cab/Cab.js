@@ -262,7 +262,7 @@ class Cab extends React.PureComponent {
           <View
             style={{
               flexDirection: "row",
-              marginHorizontal: 16,
+              marginHorizontal: 32,
               marginTop: -15,
               justifyContent: "center",
               borderRadius: 10,
