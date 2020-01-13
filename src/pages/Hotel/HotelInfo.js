@@ -10,7 +10,14 @@ import {
   SafeAreaView,
   TouchableOpacity
 } from "react-native";
-import { Button, Text, ActivityIndicator, Icon, DataNotFound } from "../../components";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  Icon,
+  DataNotFound,
+  LinearGradient
+} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import { orderBy } from "lodash";
@@ -382,23 +389,31 @@ class HotelInfo extends React.PureComponent {
                   value={hotelName}
                   onChangeText={this.onHotelChange}
                 />
-                <Button
+                <LinearGradient
+                  colors={["#53b2fe", "#065af3"]}
                   style={{
-                    backgroundColor: "#5B89F9",
                     justifyContent: "center",
                     borderBottomRightRadius: 3,
                     borderTopRightRadius: 3
                   }}>
-                  <Image
+                  <Button
                     style={{
-                      width: 20,
-                      resizeMode: "contain",
-                      alignSelf: "center",
-                      marginHorizontal: 8
-                    }}
-                    source={require("../../assets/imgs/search.png")}
-                  />
-                </Button>
+                      // backgroundColor: "#5B89F9",
+                      justifyContent: "center",
+                      borderBottomRightRadius: 3,
+                      borderTopRightRadius: 3
+                    }}>
+                    <Image
+                      style={{
+                        width: 20,
+                        resizeMode: "contain",
+                        alignSelf: "center",
+                        marginHorizontal: 8
+                      }}
+                      source={require("../../assets/imgs/search.png")}
+                    />
+                  </Button>
+                </LinearGradient>
               </View>
             </View>
 

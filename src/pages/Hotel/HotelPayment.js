@@ -1,7 +1,15 @@
 import React, { PureComponent } from "react";
-import { View, Platform, TextInput, StyleSheet, Dimensions, SafeAreaView } from "react-native";
+import {
+  View,
+  Platform,
+  TextInput,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  StatusBar
+} from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, LinearGradient } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import HTML from "react-native-render-html";
@@ -127,40 +135,48 @@ class HotelPayment extends React.PureComponent {
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#5B89F9" }} />
+        <StatusBar backgroundColor="#000000" barStyle="light-content" />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, flexDirection: "column" }}>
-            <View style={{ flex: 4, backgroundColor: "#5B89F9" }}>
-              <View
-                style={{
-                  height: 56,
-                  backgroundColor: "#5B89F9",
-                  flexDirection: "row",
-                  marginHorizontal: 16,
-                  marginTop: 10
-                }}>
-                <Button onPress={() => this.props.navigation.goBack(null)}>
-                  <Icon name="md-arrow-back" size={24} color="#fff" />
-                </Button>
-                <View style={{ marginHorizontal: 20 }}>
-                  <Text
-                    style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5, color: "#fff" }}>
-                    Hotel Summary
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start"
-                    }}>
-                    <IconMaterial name="calendar-month" size={18} color="#ffffff" />
-                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
-                      {checkInDate} - {checkOutDate}
+            <LinearGradient colors={["#53b2fe", "#065af3"]} style={{ flex: 4 }}>
+              <View style={{ flex: 4 }}>
+                <View
+                  style={{
+                    height: 56,
+                    //  backgroundColor: "#5B89F9",
+                    flexDirection: "row",
+                    marginHorizontal: 16,
+                    marginTop: 10
+                  }}>
+                  <Button onPress={() => this.props.navigation.goBack(null)}>
+                    <Icon name="md-arrow-back" size={24} color="#fff" />
+                  </Button>
+                  <View style={{ marginHorizontal: 20 }}>
+                    <Text
+                      style={{
+                        fontWeight: "700",
+                        fontSize: 16,
+                        marginHorizontal: 5,
+                        color: "#fff"
+                      }}>
+                      Hotel Summary
                     </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start"
+                      }}>
+                      <IconMaterial name="calendar-month" size={18} color="#ffffff" />
+                      <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
+                        {checkInDate} - {checkOutDate}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
+            </LinearGradient>
             <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
               <View
                 style={{

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
-import { Button, Text, Header, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, Header, ActivityIndicator, Icon, LinearGradient } from "../../components";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../../service";
@@ -429,26 +429,38 @@ class Seats extends React.PureComponent {
             </View>
             {seats.lower.length > 0 && seats.upper.length > 0 && (
               <View style={styles.tabContainer}>
-                <Button
-                  onPress={() => this.setState({ selectedTab: "lower" })}
-                  style={[
-                    selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null,
-                    styles.tab
-                  ]}>
-                  <Text style={[selectedTab == "lower" ? { color: "#FFF" } : null]}>
-                    Lower Birth
-                  </Text>
-                </Button>
-                <Button
-                  onPress={() => this.setState({ selectedTab: "upper" })}
-                  style={[
-                    selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null,
-                    styles.tab
-                  ]}>
-                  <Text style={[selectedTab == "upper" ? { color: "#FFF" } : null]}>
-                    Upper Birth
-                  </Text>
-                </Button>
+                <LinearGradient
+                  colors={selectedTab == "lower" ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                  style={styles.tab}>
+                  <Button
+                    onPress={() => this.setState({ selectedTab: "lower" })}
+                    style={
+                      [
+                        //  selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null,
+                        // styles.tab
+                      ]
+                    }>
+                    <Text style={[selectedTab == "lower" ? { color: "#FFF" } : { color: "#000" }]}>
+                      Lower Birth
+                    </Text>
+                  </Button>
+                </LinearGradient>
+                <LinearGradient
+                  colors={selectedTab == "upper" ? ["#53b2fe", "#065af3"] : ["#FFFFFF", "#ffffff"]}
+                  style={styles.tab}>
+                  <Button
+                    onPress={() => this.setState({ selectedTab: "upper" })}
+                    style={
+                      [
+                        //selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null,
+                        //styles.tab
+                      ]
+                    }>
+                    <Text style={[selectedTab == "upper" ? { color: "#FFF" } : { color: "#000" }]}>
+                      Upper Birth
+                    </Text>
+                  </Button>
+                </LinearGradient>
               </View>
             )}
           </View>
@@ -562,6 +574,11 @@ const styles = StyleSheet.create({
     padding: 16
   },
   tab: {
+    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "rgba(0,0,0,0.1)",
+    shadowOpacity: 1,
+    shadowRadius: 4,
     flex: 1,
     marginHorizontal: 32,
     paddingVertical: 6,

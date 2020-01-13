@@ -9,9 +9,10 @@ import {
   SafeAreaView,
   Linking,
   Modal,
-  Platform
+  Platform,
+  StatusBar
 } from "react-native";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, LinearGradient } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import { mergeWith } from "lodash";
@@ -143,93 +144,97 @@ class HotelCheckout extends React.Component {
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#5B89F9" }} />
+        <StatusBar backgroundColor="#000000" barStyle={"light-content"} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, flexDirection: "column" }}>
-            <View style={{ backgroundColor: "#5B89F9", paddingBottom: 30 }}>
-              <View
-                style={{
-                  height: 56,
-                  backgroundColor: "#5B89F9",
-                  flexDirection: "row",
-                  marginHorizontal: 16,
-                  marginTop: 10
-                }}>
-                <Button onPress={() => this.props.navigation.goBack(null)}>
-                  <Icon name="md-arrow-back" size={24} color="#fff" />
-                </Button>
+            <LinearGradient colors={["#53b2fe", "#065af3"]} style={{}}>
+              <View style={{ paddingBottom: 30 }}>
                 <View
                   style={{
-                    justifyContent: "space-between",
+                    height: 56,
+                    //  backgroundColor: "#5B89F9",
                     flexDirection: "row",
-                    flex: 1
+                    marginHorizontal: 16,
+                    marginTop: 10
                   }}>
-                  <View style={{ marginHorizontal: 20 }}>
-                    <Text
-                      style={{
-                        fontWeight: "700",
-                        fontSize: 16,
-                        color: "#fff"
-                      }}>
-                      {params.city}
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "flex-start"
-                      }}>
-                      <IconMaterial name="calendar-month" size={18} color="#ffffff" />
+                  <Button onPress={() => this.props.navigation.goBack(null)}>
+                    <Icon name="md-arrow-back" size={24} color="#fff" />
+                  </Button>
+                  <View
+                    style={{
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      flex: 1
+                    }}>
+                    <View style={{ marginHorizontal: 20 }}>
                       <Text
                         style={{
-                          fontSize: 12,
-                          marginHorizontal: 5,
-                          color: "#ffffff"
+                          fontWeight: "700",
+                          fontSize: 16,
+                          color: "#fff"
                         }}>
-                        {checkInDate} - {checkOutDate}
+                        {params.city}
                       </Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "flex-start"
+                        }}>
+                        <IconMaterial name="calendar-month" size={18} color="#ffffff" />
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            marginHorizontal: 5,
+                            color: "#ffffff"
+                          }}>
+                          {checkInDate} - {checkOutDate}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
 
-              <View
-                style={{
-                  marginHorizontal: 16,
-                  flexDirection: "row",
-                  marginTop: 10,
-                  alignItems: "flex-start"
-                }}>
-                <Text
+                <View
                   style={{
-                    fontSize: 18,
-                    flex: 1,
-                    color: "#ffffff",
-                    fontWeight: "700"
+                    marginHorizontal: 16,
+                    flexDirection: "row",
+                    marginTop: 10,
+                    alignItems: "flex-start"
                   }}>
-                  {params.HotelName}
-                </Text>
-                <View style={{ marginStart: 5, marginTop: 8 }}>
-                  <Stars
-                    default={parseInt(params.StarRating)}
-                    count={5}
-                    half={true}
-                    starSize={80}
-                    fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}
-                    emptyStar={
-                      <IconMaterial
-                        name={"star-outline"}
-                        style={[styles.myStarStyle, styles.myEmptyStarStyle]}
-                      />
-                    }
-                    halfStar={<IconMaterial name={"star-half"} style={[styles.myStarStyle]} />}
-                  />
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      flex: 1,
+                      color: "#ffffff",
+                      fontWeight: "700"
+                    }}>
+                    {params.HotelName}
+                  </Text>
+                  <View style={{ marginStart: 5, marginTop: 8 }}>
+                    <Stars
+                      default={parseInt(params.StarRating)}
+                      count={5}
+                      half={true}
+                      starSize={80}
+                      fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}
+                      emptyStar={
+                        <IconMaterial
+                          name={"star-outline"}
+                          style={[styles.myStarStyle, styles.myEmptyStarStyle]}
+                        />
+                      }
+                      halfStar={<IconMaterial name={"star-half"} style={[styles.myStarStyle]} />}
+                    />
+                  </View>
                 </View>
-              </View>
 
-              <Text style={{ color: "#ffffff", marginHorizontal: 16 }}>{params.HotelAddress}</Text>
+                <Text style={{ color: "#ffffff", marginHorizontal: 16 }}>
+                  {params.HotelAddress}
+                </Text>
 
-              {/* <View style={{ flexDirection: "row", width: "100%" }}>
+                {/* <View style={{ flexDirection: "row", width: "100%" }}>
                   {Amenities.map(item => (
                     <View key={item}>
                       {item.toLowerCase() == "housekeeping - daily" && (
@@ -268,7 +273,8 @@ class HotelCheckout extends React.Component {
                     </View>
                   ))}
                 </View> */}
-            </View>
+              </View>
+            </LinearGradient>
             <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
               <ScrollView
                 contentContainerStyle={{ backgroundColor: "#ffffff", marginHorizontal: 16 }}

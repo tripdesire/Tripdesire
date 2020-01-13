@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { View, Image, StyleSheet, ScrollView, SafeAreaView, TextInput } from "react-native";
 import Toast from "react-native-simple-toast";
 import { domainApi } from "../service";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
@@ -20,9 +20,14 @@ class SignUp extends React.PureComponent {
       firstname: "",
       lastname: "",
       email: "",
-      password: ""
+      password: "",
+      showPassword: true
     };
   }
+
+  _showPassword = () => {
+    this.setState({ showPassword: this.state.showPassword == true ? false : true });
+  };
 
   signUp = () => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -193,8 +198,7 @@ class SignUp extends React.PureComponent {
                 style={{
                   fontSize: 18,
                   color: "#1E293B",
-                  paddingHorizontal: 16,
-                  fontWeight: "100"
+                  paddingHorizontal: 16
                 }}>
                 Sign Up
               </Text>
@@ -233,14 +237,52 @@ class SignUp extends React.PureComponent {
                   //imgpath={require("../assets/imgs/email.png")}
                   onChangeText={text => this.setState({ email: text })}
                 />
-                <TextInputComponent
-                  secureTextEntry={true}
-                  label="Password"
-                  //   placeholder="Enter the password"
-                  value={this.state.password}
-                  // imgpath={require("../assets/imgs/password.png")}
-                  onChangeText={text => this.setState({ password: text })}
-                />
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    paddingTop: 14,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#EAEBEF"
+                  }}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.text}>Password</Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        flex: 1,
+                        alignItems: "center",
+                        marginEnd: 16
+                      }}>
+                      <TextInput
+                        secureTextEntry={this.state.showPassword}
+                        style={[
+                          styles.textinput,
+                          Platform.OS == "ios" ? { paddingVertical: 8 } : null
+                        ]}
+                        onChangeText={text => this.setState({ password: text })}
+                        placeholderTextColor={"#D9D8DD"}></TextInput>
+                      <Button onPress={this._showPassword}>
+                        <Icon
+                          name={
+                            this.state.showPassword == true && Platform.OS != "ios"
+                              ? "md-eye-off"
+                              : this.state.showPassword == true && Platform.OS == "ios"
+                              ? "ios-eye-off"
+                              : this.state.showPassword == false && Platform.OS == "ios"
+                              ? "ios-eye"
+                              : "md-eye"
+                          }
+                          color="#5D666D"
+                          size={20}
+                        />
+                      </Button>
+                    </View>
+                  </View>
+                </View>
+
                 <Button style={styles.button} onPress={this.signUp}>
                   <Text style={{ color: "#fff" }}>Sign Up</Text>
                 </Button>

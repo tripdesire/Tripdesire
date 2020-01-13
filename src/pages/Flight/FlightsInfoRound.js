@@ -6,7 +6,8 @@ import {
   ActivityIndicator,
   HeaderFlights,
   Icon,
-  DataNotFound
+  DataNotFound,
+  LinearGradient
 } from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
@@ -508,26 +509,36 @@ class FlightsInfoRound extends React.PureComponent {
                     marginHorizontal: 16,
                     marginVertical: 10
                   }}>
-                  <Button
-                    style={[
-                      styles.tabBtn,
-                      { backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff" }
-                    ]}
-                    onPress={this._onPress("Depart")}>
-                    <Text style={{ fontSize: 12, color: swiperIndex == 0 ? "#ffffff" : "#000000" }}>
-                      Depart
-                    </Text>
-                  </Button>
-                  <Button
-                    style={[
-                      styles.tabBtn,
-                      { backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff" }
-                    ]}
-                    onPress={this._onPress("Return")}>
-                    <Text style={{ fontSize: 12, color: swiperIndex == 1 ? "#ffffff" : "#000000" }}>
-                      Return
-                    </Text>
-                  </Button>
+                  <LinearGradient
+                    colors={swiperIndex == 0 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                    style={{ borderRadius: 20 }}>
+                    <Button
+                      style={[
+                        styles.tabBtn
+                        //{ backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff" }
+                      ]}
+                      onPress={this._onPress("Depart")}>
+                      <Text
+                        style={{ fontSize: 12, color: swiperIndex == 0 ? "#ffffff" : "#000000" }}>
+                        Depart
+                      </Text>
+                    </Button>
+                  </LinearGradient>
+                  <LinearGradient
+                    colors={swiperIndex == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                    style={{ borderRadius: 20 }}>
+                    <Button
+                      style={[
+                        styles.tabBtn
+                        //  { backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff" }
+                      ]}
+                      onPress={this._onPress("Return")}>
+                      <Text
+                        style={{ fontSize: 12, color: swiperIndex == 1 ? "#ffffff" : "#000000" }}>
+                        Return
+                      </Text>
+                    </Button>
+                  </LinearGradient>
                 </View>
               </View>
             )}

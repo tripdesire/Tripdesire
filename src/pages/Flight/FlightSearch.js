@@ -1,9 +1,10 @@
 import React from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
-import { Button, Text } from "../../components";
+import { Button, Text, LinearGradient } from "../../components";
 import DomesticFlights from "./DomesticFlights";
 import InternationalFlights from "./InternationalFlights";
 import { Header } from "../../components";
+//import LinearGradient from "react-native-linear-gradient";
 
 class FlightSearch extends React.PureComponent {
   constructor(props) {
@@ -40,40 +41,50 @@ class FlightSearch extends React.PureComponent {
                   justifyContent: "center",
                   ...StyleSheet.absoluteFill
                 }}>
-                <Button
-                  style={{
-                    backgroundColor: flightType == 1 ? "#5B89F9" : "#FFFFFF",
-                    borderBottomStartRadius: 5,
-                    borderTopStartRadius: 5,
-                    ...styles.tabButtons
-                  }}
-                  onPress={this.setDomesticActive}>
-                  <Text
+                <LinearGradient
+                  colors={flightType == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                  style={{ borderBottomStartRadius: 5, borderTopStartRadius: 5 }}>
+                  <Button
                     style={{
-                      color: flightType == 1 ? "#FFFFFF" : "#5D666D",
-                      fontSize: 16,
-                      fontWeight: "600"
-                    }}>
-                    Domestic
-                  </Text>
-                </Button>
-                <Button
+                      borderBottomStartRadius: 5,
+                      borderTopStartRadius: 5,
+                      ...styles.tabButtons
+                    }}
+                    onPress={this.setDomesticActive}>
+                    <Text
+                      style={{
+                        color: flightType == 1 ? "#FFFFFF" : "#5D666D",
+                        fontSize: 16,
+                        fontWeight: "600"
+                      }}>
+                      Domestic
+                    </Text>
+                  </Button>
+                </LinearGradient>
+                <LinearGradient
+                  colors={flightType == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
                   style={{
                     borderBottomEndRadius: 5,
-                    borderTopEndRadius: 5,
-                    backgroundColor: flightType == 2 ? "#5B89F9" : "#FFFFFF",
-                    ...styles.tabButtons
-                  }}
-                  onPress={this.setInternationalActive}>
-                  <Text
+                    borderTopEndRadius: 5
+                  }}>
+                  <Button
                     style={{
-                      color: flightType == 2 ? "#FFFFFF" : "#5D666D",
-                      fontSize: 16,
-                      fontWeight: "600"
-                    }}>
-                    International
-                  </Text>
-                </Button>
+                      borderBottomEndRadius: 5,
+                      borderTopEndRadius: 5,
+
+                      ...styles.tabButtons
+                    }}
+                    onPress={this.setInternationalActive}>
+                    <Text
+                      style={{
+                        color: flightType == 2 ? "#FFFFFF" : "#5D666D",
+                        fontSize: 16,
+                        fontWeight: "600"
+                      }}>
+                      International
+                    </Text>
+                  </Button>
+                </LinearGradient>
               </View>
             </View>
             <View style={{ backgroundColor: "#FFFFFF", flex: 4 }}>

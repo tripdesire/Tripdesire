@@ -12,6 +12,7 @@ import CheckBox from "./CheckBox";
 import RadioButton from "./RadioButton";
 import RNPicker from "./RNPicker";
 import DataNotFound from "./DataNotFound";
+import LinearGradient from "./LinearGradient";
 export {
   Button,
   HomeButtonComponent,
@@ -26,5 +27,6 @@ export {
   CheckBox,
   RadioButton,
   RNPicker,
-  DataNotFound
+  DataNotFound,
+  LinearGradient
 };

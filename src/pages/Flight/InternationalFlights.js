@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, ScrollView, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import moment from "moment";
+import Animated, { Easing } from "react-native-reanimated";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-simple-toast";
@@ -11,6 +12,7 @@ import AddPassengers from "./AddPassengers";
 class InternationalFlights extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.animatedValue = new Animated.Value(0);
     this.state = {
       class: "E",
       index: 0,
@@ -49,7 +51,8 @@ class InternationalFlights extends React.PureComponent {
       backgroundColor_international: "#FFFFFF",
       selectRound: false,
       fromDTpicker: false,
-      toDTpicker: false
+      toDTpicker: false,
+      rotateVal: 1
     };
   }
 
@@ -154,6 +157,13 @@ class InternationalFlights extends React.PureComponent {
       sourceAirportName,
       destinationAirportName
     } = this.state;
+
+    Animated.timing(this.animatedValue, {
+      toValue: this.state.rotateVal,
+      duration: 300,
+      easing: Easing.inOut(Easing.ease)
+    }).start();
+
     this.setState({
       from: to,
       to: from,
@@ -162,7 +172,8 @@ class InternationalFlights extends React.PureComponent {
       destinationAirportName: sourceAirportName,
       destinationName: sourceName,
       fromCode: ToCode,
-      ToCode: fromCode
+      ToCode: fromCode,
+      rotateVal: this.state.rotateVal == 1 ? 0 : 1
     });
   };
 
@@ -213,6 +224,24 @@ class InternationalFlights extends React.PureComponent {
       tripType,
       selectRound
     } = this.state;
+
+    const imageStyle = {
+      height: 30,
+      width: 30,
+      transform: [
+        {
+          rotate: Animated.concat(
+            this.animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [90, 270]
+            }),
+            "deg"
+          )
+        }
+      ]
+      // transform: [{ rotate: "90deg" }]}
+    };
+
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -281,7 +310,11 @@ class InternationalFlights extends React.PureComponent {
               </Text>
             </Button>
             <Button onPress={this._exchange}>
-              <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
+              <Animated.Image
+                style={imageStyle}
+                source={require("../../assets/imgs/exchange.png")}
+              />
+              {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} /> */}
             </Button>
           </View>
 

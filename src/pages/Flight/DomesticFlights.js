@@ -1,16 +1,19 @@
 import React from "react";
-import { View, Image, Modal, Platform, ScrollView } from "react-native";
+import { View, Image, Modal, Platform, ScrollView, StyleSheet } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, AutoCompleteModal, Icon, RNPicker } from "../../components";
 import AddPassengers from "./AddPassengers";
+import Animated, { Easing } from "react-native-reanimated";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
+import LinearGradient from "react-native-linear-gradient";
 
 class DomesticFlights extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.animatedValue = new Animated.Value(0);
     this.state = {
       class: "E",
       index: 0,
@@ -42,7 +45,8 @@ class DomesticFlights extends React.PureComponent {
       Return_date: new Date(),
       selectRound: false,
       fromDTpicker: false,
-      toDTpicker: false
+      toDTpicker: false,
+      rotateVal: 1
     };
   }
 
@@ -121,6 +125,13 @@ class DomesticFlights extends React.PureComponent {
       sourceAirportName,
       destinationAirportName
     } = this.state;
+
+    Animated.timing(this.animatedValue, {
+      toValue: this.state.rotateVal,
+      duration: 300,
+      easing: Easing.inOut(Easing.ease)
+    }).start();
+
     this.setState({
       from: to,
       to: from,
@@ -129,7 +140,8 @@ class DomesticFlights extends React.PureComponent {
       destinationAirportName: sourceAirportName,
       destinationName: sourceName,
       fromCode: ToCode,
-      ToCode: fromCode
+      ToCode: fromCode,
+      rotateVal: this.state.rotateVal == 1 ? 0 : 1
     });
   };
 
@@ -181,6 +193,23 @@ class DomesticFlights extends React.PureComponent {
       children,
       infants
     } = this.state;
+
+    const imageStyle = {
+      height: 30,
+      width: 30,
+      transform: [
+        {
+          rotate: Animated.concat(
+            this.animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [90, 270]
+            }),
+            "deg"
+          )
+        }
+      ]
+      // transform: [{ rotate: "90deg" }]}
+    };
 
     return (
       <View style={{ flex: 1 }}>
@@ -238,7 +267,7 @@ class DomesticFlights extends React.PureComponent {
             <Button
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalFrom", true)}>
-              <Text style={{ color: "#5D666D" }}>From </Text>
+              <Text style={{ color: "#5D666D" }}>From</Text>
               <Text
                 style={{
                   color: "#5D666D",
@@ -250,7 +279,11 @@ class DomesticFlights extends React.PureComponent {
               </Text>
             </Button>
             <Button onPress={this._exchange}>
-              <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} />
+              <Animated.Image
+                style={imageStyle}
+                source={require("../../assets/imgs/exchange.png")}
+              />
+              {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} /> */}
             </Button>
           </View>
 
@@ -445,5 +478,7 @@ class DomesticFlights extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({});
 
 export default withNavigation(DomesticFlights);

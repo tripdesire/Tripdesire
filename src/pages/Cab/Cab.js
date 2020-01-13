@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, Modal, StyleSheet, SafeAreaView, Platform, ScrollView } from "react-native";
-import { Button, Text, AutoCompleteModal, Icon } from "../../components";
+import { Button, Text, AutoCompleteModal, Icon, LinearGradient } from "../../components";
 import Toast from "react-native-simple-toast";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -273,55 +273,69 @@ class Cab extends React.PureComponent {
               shadowOpacity: 1,
               shadowRadius: 4
             }}>
-            <Button
-              style={{
-                backgroundColor: travelType == 2 ? "#5B89F9" : "#FFFFFF",
-                borderTopStartRadius: 6,
-                borderBottomStartRadius: 6,
-                ...styles.tabButtons
-              }}
-              onPress={() => this._triptype("oneway")}>
-              <Text
+            <LinearGradient
+              colors={travelType == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+              style={{ borderTopStartRadius: 6, borderBottomStartRadius: 6 }}>
+              <Button
                 style={{
-                  color: travelType == 2 ? "#ffffff" : "#5D666D",
-                  fontSize: 16,
-                  fontWeight: "600"
-                }}>
-                Local
-              </Text>
-            </Button>
-            <Button
-              style={{
-                backgroundColor: travelType == 1 ? "#5B89F9" : "#FFFFFF",
-                ...styles.tabButtons
-              }}
-              onPress={() => this._triptype("round")}>
-              <Text
+                  // backgroundColor: travelType == 2 ? "#5B89F9" : "#FFFFFF",
+                  borderTopStartRadius: 6,
+                  borderBottomStartRadius: 6,
+                  ...styles.tabButtons
+                }}
+                onPress={() => this._triptype("oneway")}>
+                <Text
+                  style={{
+                    color: travelType == 2 ? "#ffffff" : "#5D666D",
+                    fontSize: 16,
+                    fontWeight: "600"
+                  }}>
+                  Local
+                </Text>
+              </Button>
+            </LinearGradient>
+
+            <LinearGradient
+              colors={travelType == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+              style={{}}>
+              <Button
                 style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  color: travelType == 1 ? "#ffffff" : "#5D666D"
-                }}>
-                Outstation
-              </Text>
-            </Button>
-            <Button
-              style={{
-                backgroundColor: travelType == 3 ? "#5B89F9" : "#FFFFFF",
-                borderTopEndRadius: 6,
-                borderBottomEndRadius: 6,
-                ...styles.tabButtons
-              }}
-              onPress={() => this._triptype("transfer")}>
-              <Text
+                  //  backgroundColor: travelType == 1 ? "#5B89F9" : "#FFFFFF",
+                  ...styles.tabButtons
+                }}
+                onPress={() => this._triptype("round")}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "600",
+                    color: travelType == 1 ? "#ffffff" : "#5D666D"
+                  }}>
+                  Outstation
+                </Text>
+              </Button>
+            </LinearGradient>
+
+            <LinearGradient
+              colors={travelType == 3 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+              style={{ borderTopEndRadius: 6, borderBottomEndRadius: 6 }}>
+              <Button
                 style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  color: travelType == 3 ? "#ffffff" : "#5D666D"
-                }}>
-                Transfer
-              </Text>
-            </Button>
+                  // backgroundColor: travelType == 3 ? "#5B89F9" : "#FFFFFF",
+                  borderTopEndRadius: 6,
+                  borderBottomEndRadius: 6,
+                  ...styles.tabButtons
+                }}
+                onPress={() => this._triptype("transfer")}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "600",
+                    color: travelType == 3 ? "#ffffff" : "#5D666D"
+                  }}>
+                  Transfer
+                </Text>
+              </Button>
+            </LinearGradient>
           </View>
 
           <ScrollView contentContainerStyle={{ backgroundColor: "#FFFFFF", marginTop: 2 }}>

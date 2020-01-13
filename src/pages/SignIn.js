@@ -17,9 +17,14 @@ class SignIn extends React.PureComponent {
     this.state = {
       email: "",
       password: "",
-      loader: false
+      loader: false,
+      showPassword: true
     };
   }
+
+  _showPassword = () => {
+    this.setState({ showPassword: this.state.showPassword == true ? false : true });
+  };
 
   login = () => {
     const { onBack, needBilling } = this.props.navigation.state.params;
@@ -173,10 +178,7 @@ class SignIn extends React.PureComponent {
             <Button onPress={this.goBack} style={{ padding: 16 }}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <Text
-              style={{ fontSize: 18, color: "#1E293B", paddingHorizontal: 8, fontWeight: "100" }}>
-              Sign In
-            </Text>
+            <Text style={{ fontSize: 18, color: "#1E293B", paddingHorizontal: 8 }}>Sign In</Text>
           </View>
 
           <ScrollView style={{ flex: 1 }}>
@@ -212,14 +214,18 @@ class SignIn extends React.PureComponent {
                   borderBottomWidth: 1,
                   borderBottomColor: "#EAEBEF"
                 }}>
-                {/* {this.props.imgpath && (
-          <Image style={{ width: 18, resizeMode: "contain" }} source={this.props.imgpath} />
-        )} */}
                 <View style={{ flex: 1 }}>
                   <Text style={styles.text}>Password*</Text>
-                  <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      flex: 1,
+                      alignItems: "center",
+                      marginEnd: 16
+                    }}>
                     <TextInput
-                      secureTextEntry={true}
+                      secureTextEntry={this.state.showPassword}
                       //  {...this.props}
                       style={[
                         styles.textinput,
@@ -228,10 +234,21 @@ class SignIn extends React.PureComponent {
                       //  placeholder={this.props.placeholder}
                       placeholderTextColor={"#D9D8DD"}
                       onChangeText={text => this.setState({ password: text })}></TextInput>
-                    <Image
-                      style={{ width: 20, height: 20 }}
-                      source={require("../assets/imgs/eye.png")}
-                    />
+                    <Button onPress={this._showPassword}>
+                      <Icon
+                        name={
+                          this.state.showPassword == true && Platform.OS != "ios"
+                            ? "md-eye-off"
+                            : this.state.showPassword == true && Platform.OS == "ios"
+                            ? "ios-eye-off"
+                            : this.state.showPassword == false && Platform.OS == "ios"
+                            ? "ios-eye"
+                            : "md-eye"
+                        }
+                        color="#5D666D"
+                        size={20}
+                      />
+                    </Button>
                   </View>
                 </View>
               </View>

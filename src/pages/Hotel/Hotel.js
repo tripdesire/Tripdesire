@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
-import { Button, Text, AutoCompleteModal, Icon } from "../../components";
+import { Button, Text, AutoCompleteModal, LinearGradient } from "../../components";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -200,58 +200,70 @@ class Hotel extends React.PureComponent {
                 justifyContent: "center",
                 marginTop: -15
               }}>
-              <Button
-                onPress={this.updateHotelType(1)}
-                style={{
-                  backgroundColor: hoteltype == 1 ? "#5B89F9" : "#FFF",
-                  elevation: 2,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  zIndex: 2,
-                  height: 30,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  paddingHorizontal: 30,
-                  borderBottomStartRadius: 5,
-                  borderTopStartRadius: 5
-                }}>
-                <Text
+              <LinearGradient
+                colors={hoteltype == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                style={{ borderBottomStartRadius: 5, borderTopStartRadius: 5 }}>
+                <Button
+                  onPress={this.updateHotelType(1)}
                   style={{
-                    color: hoteltype == 1 ? "#FFF" : "#5D666D",
-                    fontSize: 16,
-                    fontWeight: "600"
+                    // backgroundColor: hoteltype == 1 ? "#5B89F9" : "#FFF",
+                    elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
+                    zIndex: 2,
+                    height: 30,
+                    borderWidth: 1,
+                    borderColor: "#DDDDDD",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingHorizontal: 30,
+                    borderBottomStartRadius: 5,
+                    borderTopStartRadius: 5
                   }}>
-                  Domestic
-                </Text>
-              </Button>
-              <Button
-                onPress={this.updateHotelType(2)}
-                style={{
-                  backgroundColor: hoteltype == 2 ? "#5B89F9" : "#FFF",
-                  elevation: 2,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  zIndex: 2,
-                  height: 30,
-                  paddingHorizontal: 30,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomEndRadius: 5,
-                  borderTopEndRadius: 5
-                }}>
-                <Text
+                  <Text
+                    style={{
+                      color: hoteltype == 1 ? "#FFF" : "#5D666D",
+                      fontSize: 16,
+                      fontWeight: "600"
+                    }}>
+                    Domestic
+                  </Text>
+                </Button>
+              </LinearGradient>
+              <LinearGradient
+                colors={hoteltype == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                style={{ borderBottomEndRadius: 5, borderTopEndRadius: 5 }}>
+                <Button
+                  onPress={this.updateHotelType(2)}
                   style={{
-                    color: hoteltype == 2 ? "#FFF" : "#5D666D",
-                    fontSize: 16,
-                    fontWeight: "600"
+                    // backgroundColor: hoteltype == 2 ? "#5B89F9" : "#FFF",
+                    elevation: 2,
+                    borderWidth: 1,
+                    borderColor: "#DDDDDD",
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
+                    zIndex: 2,
+                    height: 30,
+                    paddingHorizontal: 30,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderBottomEndRadius: 5,
+                    borderTopEndRadius: 5
                   }}>
-                  International
-                </Text>
-              </Button>
+                  <Text
+                    style={{
+                      color: hoteltype == 2 ? "#FFF" : "#5D666D",
+                      fontSize: 16,
+                      fontWeight: "600"
+                    }}>
+                    International
+                  </Text>
+                </Button>
+              </LinearGradient>
             </View>
 
             {hoteltype == 2 && (

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
-import { Button, Text, AutoCompleteModal } from "../../components";
+import { Button, Text, AutoCompleteModal, LinearGradient } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -135,40 +135,48 @@ class Bus extends React.PureComponent {
                   justifyContent: "center",
                   marginTop: -15
                 }}>
-                <Button
-                  style={{
-                    backgroundColor: TripType == 1 ? "#5B89F9" : "#FFFFFF",
-                    borderBottomStartRadius: 5,
-                    borderTopStartRadius: 5,
-                    ...styles.tabButton
-                  }}
-                  onPress={() => this._triptype("onewway")}>
-                  <Text
+                <LinearGradient
+                  colors={TripType == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                  style={{ borderBottomStartRadius: 5, borderTopStartRadius: 5 }}>
+                  <Button
                     style={{
-                      color: TripType == 1 ? "#ffffff" : "#5D666D",
-                      fontSize: 16,
-                      fontWeight: "600"
-                    }}>
-                    One Way
-                  </Text>
-                </Button>
-                <Button
-                  style={{
-                    backgroundColor: TripType == 2 ? "#5B89F9" : "#FFFFFF",
-                    borderBottomEndRadius: 5,
-                    borderTopEndRadius: 5,
-                    ...styles.tabButton
-                  }}
-                  onPress={() => this._triptype("round")}>
-                  <Text
+                      // backgroundColor: TripType == 1 ? "#5B89F9" : "#FFFFFF",
+                      borderBottomStartRadius: 5,
+                      borderTopStartRadius: 5,
+                      ...styles.tabButton
+                    }}
+                    onPress={() => this._triptype("onewway")}>
+                    <Text
+                      style={{
+                        color: TripType == 1 ? "#ffffff" : "#5D666D",
+                        fontSize: 16,
+                        fontWeight: "600"
+                      }}>
+                      One Way
+                    </Text>
+                  </Button>
+                </LinearGradient>
+                <LinearGradient
+                  colors={TripType == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+                  style={{ borderBottomEndRadius: 5, borderTopEndRadius: 5 }}>
+                  <Button
                     style={{
-                      fontSize: 16,
-                      fontWeight: "600",
-                      color: TripType == 2 ? "#ffffff" : "#5D666D"
-                    }}>
-                    Round
-                  </Text>
-                </Button>
+                      //backgroundColor: TripType == 2 ? "#5B89F9" : "#FFFFFF",
+                      borderBottomEndRadius: 5,
+                      borderTopEndRadius: 5,
+                      ...styles.tabButton
+                    }}
+                    onPress={() => this._triptype("round")}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "600",
+                        color: TripType == 2 ? "#ffffff" : "#5D666D"
+                      }}>
+                      Round
+                    </Text>
+                  </Button>
+                </LinearGradient>
               </View>
               <View
                 style={{
@@ -331,6 +339,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.1)",
     shadowOpacity: 1,
+    borderWidth: 1,
+    borderColor: "#DDDDDD",
     shadowRadius: 4,
     justifyContent: "center",
     paddingHorizontal: 45

@@ -6,7 +6,8 @@ import {
   ActivityIndicator,
   Icon,
   HeaderFlights,
-  DataNotFound
+  DataNotFound,
+  LinearGradient
 } from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
@@ -349,30 +350,34 @@ class FlightsInfoOneway extends React.PureComponent {
   };
 
   _renderItem = ({ item, index }) => (
-    <Button
-      style={{
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        alignItems: "center",
-        borderEndWidth: 1,
-        borderColor: "#717984",
-        justifyContent: "center",
-        backgroundColor: this.state.index === index ? "#5B89F9" : "#fff"
-      }}
-      onPress={this._ChangeDate(item, index)}>
-      <Text style={{ fontSize: 12, color: this.state.index === index ? "#fff" : "#717984" }}>
-        {item.day}
-      </Text>
-      <Text
+    <LinearGradient
+      colors={this.state.index === index ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+      style={{}}>
+      <Button
         style={{
-          fontSize: 20,
-          fontWeight: "700",
-          color: this.state.index === index ? "#fff" : "#000"
-        }}>
-        {item.date}
-      </Text>
-      {/* <Text style={{ fontSize: 12, color: "#717984" }}>{item.month}</Text> */}
-    </Button>
+          paddingHorizontal: 15,
+          paddingVertical: 10,
+          alignItems: "center",
+          borderEndWidth: 1,
+          borderColor: "#717984",
+          justifyContent: "center"
+          // backgroundColor: this.state.index === index ? "#5B89F9" : "#fff"
+        }}
+        onPress={this._ChangeDate(item, index)}>
+        <Text style={{ fontSize: 12, color: this.state.index === index ? "#fff" : "#717984" }}>
+          {item.day}
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "700",
+            color: this.state.index === index ? "#fff" : "#000"
+          }}>
+          {item.date}
+        </Text>
+        {/* <Text style={{ fontSize: 12, color: "#717984" }}>{item.month}</Text> */}
+      </Button>
+    </LinearGradient>
   );
   // itemSeparator = () => (
   //   <View
@@ -529,26 +534,39 @@ class FlightsInfoOneway extends React.PureComponent {
                   </Text>
                 )}
               />
-              <Button
+              <LinearGradient
+                colors={["#53b2fe", "#065af3"]}
                 style={{
-                  backgroundColor: "#5B89F9",
-                  justifyContent: "center",
                   borderBottomRightRadius: 5,
-                  borderTopRightRadius: 5
-                }}
-                onPress={this._openCalenderShow}>
-                <Icon name="md-calendar" size={24} color="#fff" style={{ paddingHorizontal: 10 }} />
-                <DateTimePicker
-                  isVisible={showCalender}
-                  date={moment(journeyDate, "DD-MM-YYYY").toDate()}
-                  maximumDate={moment()
-                    .add(1, "years")
-                    .toDate()}
-                  onConfirm={this.handleDatePicked}
-                  onCancel={this.hideDateTimePicker}
-                  minimumDate={new Date()}
-                />
-              </Button>
+                  borderTopRightRadius: 5,
+                  justifyContent: "center"
+                }}>
+                <Button
+                  style={{
+                    // backgroundColor: "#5B89F9",
+                    justifyContent: "center",
+                    borderBottomRightRadius: 5,
+                    borderTopRightRadius: 5
+                  }}
+                  onPress={this._openCalenderShow}>
+                  <Icon
+                    name="md-calendar"
+                    size={24}
+                    color="#fff"
+                    style={{ paddingHorizontal: 10 }}
+                  />
+                  <DateTimePicker
+                    isVisible={showCalender}
+                    date={moment(journeyDate, "DD-MM-YYYY").toDate()}
+                    maximumDate={moment()
+                      .add(1, "years")
+                      .toDate()}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
+                    minimumDate={new Date()}
+                  />
+                </Button>
+              </LinearGradient>
             </View>
 
             {Array.isArray(flights) && flights.length == 0 ? (
