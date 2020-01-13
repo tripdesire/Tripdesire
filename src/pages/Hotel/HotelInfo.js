@@ -187,7 +187,7 @@ class HotelInfo extends React.PureComponent {
             flex: 1,
             backgroundColor: index % 2 == 0 ? "#ffffff" : "#E9ECF3"
           }}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Text style={{ fontSize: 16, flex: 1 }}>{item.HotelName}</Text>
             <View style={{ marginStart: 10 }}>
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
@@ -220,12 +220,12 @@ class HotelInfo extends React.PureComponent {
           <View>
             <View style={{ flexDirection: "row", flex: 2 }}>
               <Image source={require("../../assets/imgs/location.png")} />
-              <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5, marginEnd: 10 }}>
+              <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5, marginEnd: 15 }}>
                 {item.HotelAddress}
               </Text>
             </View>
-            <Text style={{ color: "#636C73", flex: 1, marginStart: 10 }}>
-              {this.state.room} : Room , {this.state.Night} : Night
+            <Text style={{ color: "#636C73", flex: 1 }}>
+              {this.state.room} : Room, {this.state.Night} : Night
             </Text>
           </View>
           {/* <View

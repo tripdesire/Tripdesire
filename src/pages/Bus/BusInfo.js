@@ -239,7 +239,7 @@ class BusInfo extends React.PureComponent {
             flex: 1,
             justifyContent: "space-between"
           }}>
-          <Button style={{ flexDirection: "row" }} onPress={this._onCanPolicy}>
+          <Button style={{ flexDirection: "row", flex: 1 }} onPress={this._onCanPolicy}>
             {/* <Icon name="mobile-phone" size={24} color="#6287F9" type="FontAwesome" /> */}
             <Text
               style={{
@@ -252,7 +252,7 @@ class BusInfo extends React.PureComponent {
               Cancellation Policy
             </Text>
           </Button>
-          <Text>Rs. {item.Fares}</Text>
+          <Text style={{ flex: 1 }}>Rs. {item.Fares}</Text>
         </View>
       </Button>
     );

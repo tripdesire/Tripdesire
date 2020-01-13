@@ -455,7 +455,7 @@ class HotelCheckout extends React.Component {
                       <View style={{ marginBottom: 10 }}>
                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                           <Text style={{ color: "#717A81" }}>
-                            {params.room}:Room(s),{params.Night}:night
+                            {params.room}:Room(s), {params.Night}:night
                           </Text>
                           <Text style={{ color: "#717A81" }}>
                             {item.RefundRule != null && item.RefundRule == "Refundable Fare"

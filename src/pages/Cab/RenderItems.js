@@ -85,7 +85,7 @@ class RenderItems extends React.PureComponent {
                 alignItems: "center",
                 justifyContent: "space-between"
               }}>
-              <Text style={{ fontWeight: "600", fontSize: 14, flex: 1 }}>
+              <Text style={{ fontWeight: "400", fontSize: 14, flex: 1 }}>
                 {this.props.item.Name}
               </Text>
               <Text style={{ lineHeight: 22, fontSize: 18, fontWeight: "400" }}>
