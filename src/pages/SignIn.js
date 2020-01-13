@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import { View, Image, StyleSheet, SafeAreaView, ScrollView, TextInput } from "react-native";
 import Toast from "react-native-simple-toast";
 import { domainApi } from "../service";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
@@ -48,7 +48,7 @@ class SignIn extends React.PureComponent {
             } else {
               this.goBack();
             }
-            Toast.show("Login successfully", Toast.SHORT);
+            //  Toast.show("Login successfully", Toast.SHORT);
           } else {
             this.setState({ loader: false });
             Toast.show("Username/Password does not match", Toast.LONG);
@@ -197,13 +197,44 @@ class SignIn extends React.PureComponent {
                 value={this.state.email}
                 onChangeText={text => this.setState({ email: text })}
               />
-              <TextInputComponent
+              {/* <TextInputComponent
                 secureTextEntry={true}
                 label="Password*"
                 // placeholder="Enter the password"
                 value={this.state.password}
                 onChangeText={text => this.setState({ password: text })}
-              />
+              /> */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  paddingTop: 14,
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#EAEBEF"
+                }}>
+                {/* {this.props.imgpath && (
+          <Image style={{ width: 18, resizeMode: "contain" }} source={this.props.imgpath} />
+        )} */}
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.text}>Password*</Text>
+                  <View>
+                    <TextInput
+                      secureTextEntry={true}
+                      //  {...this.props}
+                      style={[
+                        styles.textinput,
+                        Platform.OS == "ios" ? { paddingVertical: 8 } : null
+                      ]}
+                      //  placeholder={this.props.placeholder}
+                      placeholderTextColor={"#D9D8DD"}
+                      onChangeText={text => this.setState({ password: text })}></TextInput>
+                    <Image
+                      style={{ width: 20, height: 20 }}
+                      source={require("../assets/imgs/eye.png")}
+                    />
+                  </View>
+                </View>
+              </View>
               <Button style={{ marginTop: 30 }} onPress={this.navigateToScreen("ForgetPassword")}>
                 <Text style={{ color: "#A4A5AA", fontSize: 12 }}>Forget Password ?</Text>
               </Button>
@@ -267,7 +298,7 @@ class SignIn extends React.PureComponent {
                     onPress={() => this.socialLogin("google")}>
                     <Image
                       style={{ width: 30, height: 30 }}
-                      source={require("../assets/imgs/google.png")}
+                      source={require("../assets/imgs/googleNew.png")}
                     />
                   </Button>
                   <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Google</Text>
@@ -341,9 +372,20 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0,0,0,0.2)",
     shadowOpacity: 1,
     shadowRadius: 4
+  },
+  textinput: {
+    borderBottomColor: "#D2D1D1",
+    width: "100%",
+    fontSize: 16,
+    paddingStart: 5,
+    color: "#000"
+  },
+  text: {
+    fontSize: 12,
+    paddingStart: 5,
+    color: "#A4A5AA"
   }
 });
-
 const mapDispatchToProps = {
   Signin
 };

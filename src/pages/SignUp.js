@@ -297,7 +297,7 @@ class SignUp extends React.PureComponent {
                       onPress={() => this._Social_login("google")}>
                       <Image
                         style={{ width: 30, height: 30 }}
-                        source={require("../assets/imgs/google.png")}
+                        source={require("../assets/imgs/googleNew.png")}
                       />
                     </Button>
                     <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Google</Text>

@@ -96,12 +96,17 @@ class RenderRound extends React.PureComponent {
         <View
           style={{
             flexDirection: "row",
-            marginHorizontal: 8,
+            // marginHorizontal: 8,
             justifyContent: "space-between",
             flex: 1
           }}>
           <Button
-            style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              flex: 1
+            }}
             onPress={this._onCanPolicy}>
             {/* <Icon type="FontAwesome" name="mobile-phone" size={24} color="#6287F9" /> */}
             <Text
@@ -109,13 +114,14 @@ class RenderRound extends React.PureComponent {
                 paddingStart: 5,
                 fontSize: 14,
                 fontWeight: "400",
+
                 color: "#6287F9",
                 zIndex: 1
               }}>
               Cancellation Policy
             </Text>
           </Button>
-          <Text>Rs. {item.Fares}</Text>
+          <Text style={{ flex: 1 }}>Rs. {item.Fares}</Text>
         </View>
         <Modal
           animationType="slide"

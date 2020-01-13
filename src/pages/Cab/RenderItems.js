@@ -133,7 +133,7 @@ class RenderItems extends React.PureComponent {
                   source={require("../../assets/imgs/carNew.png")}
                 />
               </View>
-              <Button>
+              <Button onPress={this._onFareDetails}>
                 <Text
                   style={{ paddingStart: 5, fontSize: 12, fontWeight: "400", color: "#6287F9" }}>
                   Fare Details

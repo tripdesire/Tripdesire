@@ -57,7 +57,8 @@ import {
   Help,
   OTPScreen,
   OTPVerify,
-  PaymentCab
+  PaymentCab,
+  Wallet
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -128,7 +129,9 @@ const HomeStack = createStackNavigator(
     BoardingRound,
     BusRoundReturn,
     LoginStack,
-    BillingDetails,PaymentCab
+    BillingDetails,
+    PaymentCab,
+    Wallet
   },
   {
     headerMode: "none",
@@ -184,7 +187,7 @@ const TabNavigator = createBottomTabNavigator(
           tabBarVisible: routeName === "Home" ? true : false,
           tabBarIcon: ({ tintColor }) => (
             <Image
-              source={require("./src/assets/imgs/home.png")}
+              source={require("./src/assets/imgs/HomeNew.png")}
               style={{ width: 26, height: 26, tintColor }}
             />
           )
@@ -197,7 +200,7 @@ const TabNavigator = createBottomTabNavigator(
         title: "MY TRIPS",
         tabBarIcon: ({ tintColor }) => (
           <Image
-            source={require("./src/assets/imgs/my_trips_tab.png")}
+            source={require("./src/assets/imgs/bagNew.png")}
             style={{ width: 26, height: 26, tintColor }}
           />
         )
@@ -225,7 +228,7 @@ const TabNavigator = createBottomTabNavigator(
         title: "HELP",
         tabBarIcon: ({ tintColor }) => (
           <Image
-            source={require("./src/assets/imgs/help_tab.png")}
+            source={require("./src/assets/imgs/HelpNew.png")}
             style={{ width: 26, height: 26, tintColor }}
           />
         )

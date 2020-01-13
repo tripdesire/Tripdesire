@@ -492,7 +492,7 @@ class CheckOut1 extends React.PureComponent {
           ActualBaseFare: TaxDetails.ChargeableFares.ActualBaseFare,
           ActualBaseFareRet: arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare,
           AdultPax: params.adult,
-          BookedFrom: "Delhi",
+          BookedFrom: user.username ? user.username : null,
           BookingDate: moment(this.state.date).format("DD-MM-YYYY"),
           ChildPax: params.child,
           Conveniencefee: TaxDetails.ChargeableFares.Conveniencefee,
@@ -565,7 +565,7 @@ class CheckOut1 extends React.PureComponent {
         Address: user.billing.address_1,
         AdultPax: params.adult,
         Ages: age,
-        BookedFrom: "Delhi",
+        BookedFrom: user.username ? user.username : null,
         BookingDate: moment(this.state.date).format("DD-MM-YYYY"),
         ChildPax: params.child,
         City: user.billing.city,
@@ -672,7 +672,7 @@ class CheckOut1 extends React.PureComponent {
           // image: "https://i.imgur.com/3g7nmJC.png",
           currency: "INR",
           key: "rzp_test_I66kFrN53lhauw",
-         // key: "rzp_live_IRhvqgmESx60tW",
+          // key: "rzp_live_IRhvqgmESx60tW",
           amount: parseInt(order.total) * 100,
           name: "TripDesire",
           prefill: {
@@ -864,7 +864,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{  flexBasis: "15%" }}>DOB</Text>
+                              <Text style={{ flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,
@@ -1382,7 +1382,7 @@ class CheckOut1 extends React.PureComponent {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                               }}>
-                              <Text style={{  flexBasis: "15%" }}>DOB</Text>
+                              <Text style={{ flexBasis: "15%" }}>DOB</Text>
                               <Button
                                 style={{
                                   flex: 1,

@@ -29,6 +29,10 @@ function MyAccount({ navigation }) {
     // }
   };
 
+  const wallet = () => {
+    navigation.navigate("Wallet");
+  };
+
   const help = () => {
     navigation.navigate("Help");
   };
@@ -75,14 +79,14 @@ function MyAccount({ navigation }) {
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>My Account</Text>
         </View>
-        {/* <ScrollView
+        <ScrollView
+          bounces={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ backgroundColor: "#fff" }}> */}
-        <View style={styles.container}>
+          contentContainerStyle={styles.content}>
           <Image
             source={require("../assets/imgs/profile_tab.png")}
             style={{ width: 112, height: 112 }}
@@ -129,6 +133,16 @@ function MyAccount({ navigation }) {
           </Button>
 
           {!isEmpty(user) && (
+            <Button style={styles.rowView} onPress={wallet}>
+              <Image
+                source={require("../assets/imgs/my_account.png")}
+                style={{ width: 28, height: 28 }}
+              />
+              <Text style={styles.rowText}>Wallet</Text>
+            </Button>
+          )}
+
+          {!isEmpty(user) && (
             <Button style={styles.rowView} onPress={editAddress}>
               <Image
                 source={require("../assets/imgs/edit_address.png")}
@@ -165,8 +179,7 @@ function MyAccount({ navigation }) {
               <Text style={styles.rowText}>Logout</Text>
             </Button>
           )}
-        </View>
-        {/* </ScrollView> */}
+        </ScrollView>
       </SafeAreaView>
     </>
   );
@@ -174,9 +187,7 @@ function MyAccount({ navigation }) {
 export default MyAccount;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
+  content: {
     alignItems: "center",
     padding: 16
   },

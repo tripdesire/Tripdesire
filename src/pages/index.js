@@ -47,6 +47,7 @@ import Help from "./Help";
 import OTPScreen from "./OTPScreen";
 import OTPVerify from "./OTPVerify";
 import PaymentCab from "./Cab/PaymentCab";
+import Wallet from "./Wallet";
 
 export {
   Home,
@@ -97,5 +98,6 @@ export {
   Help,
   OTPScreen,
   OTPVerify,
-  PaymentCab
+  PaymentCab,
+  Wallet
 };
