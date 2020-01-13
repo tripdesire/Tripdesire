@@ -87,15 +87,20 @@ class SeatOneway extends React.PureComponent {
               ? seats.upper.some(val => upper.Column == val.Column && val.Length == 2)
               : undefined;
 
+          const isRowZeroLower = seats.lower.some(val => val.Row == 0);
+          const isRowZeroUpper = seats.upper.some(val => val.Row == 0);
+
           this.setState({
             loading: false,
             seats,
             data: data.Seats,
             selectedTab: seats.lower.length == 0 && seats.upper.length > 0 ? "upper" : "lower",
-            lowerRows: lower ? lower.Row : 0,
-            upperRows: upper ? upper.Row : 0,
-            lowerColumns: lower ? (lastHasTwoHeight ? lower.Column + 1 : lower.Column) : 0,
-            upperColumns: upper ? (lastUpperHasTwoHeight ? upper.Column + 1 : upper.Column) : 0
+            lowerRows: lower ? lower.Row + 1 : 0,
+            upperRows: upper ? upper.Row + 1 : 0,
+            lowerColumns: lower ? (lastHasTwoHeight ? lower.Column + 2 : lower.Column + 1) : 0,
+            upperColumns: upper ? (lastUpperHasTwoHeight ? upper.Column + 2 : upper.Column + 1) : 0,
+            isRowZeroLower,
+            isRowZeroUpper
           });
         } else {
           Toast.show("Seats not available");
@@ -167,7 +172,13 @@ class SeatOneway extends React.PureComponent {
               height: 80,
               width: 40
             }}>
-            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                flex: 1,
+                textAlignVertical: "center",
+                transform: [{ rotateY: "180deg" }]
+              }}>
               {item.Number}
             </Text>
             <View
@@ -204,7 +215,13 @@ class SeatOneway extends React.PureComponent {
               backgroundColor,
               flexDirection: "row"
             }}>
-            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                flex: 1,
+                textAlignVertical: "center",
+                transform: [{ rotateY: "180deg" }]
+              }}>
               {item.Number}
             </Text>
             <View
@@ -253,7 +270,13 @@ class SeatOneway extends React.PureComponent {
                 marginBottom: -3
               }}
             />
-            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                flex: 1,
+                textAlignVertical: "center",
+                transform: [{ rotateY: "180deg" }]
+              }}>
               {item.Number}
             </Text>
           </View>
@@ -270,7 +293,9 @@ class SeatOneway extends React.PureComponent {
       lowerRows,
       lowerColumns,
       upperRows,
-      upperColumns
+      upperColumns,
+      isRowZeroLower,
+      isRowZeroUpper
     } = this.state;
     //console.log(lowerColumns);
 
@@ -433,14 +458,18 @@ class SeatOneway extends React.PureComponent {
                   paddingHorizontal: lowerRows < 5 ? 48 : 24,
                   flexDirection: "column",
                   flexWrap: "wrap",
+                  width: "100%",
+                  transform: [{ rotateY: "180deg" }],
                   height: 50 * lowerColumns
                 }}>
                 {[...Array(lowerRows)].map((c, row) => {
                   return [...Array(lowerColumns)].map((r, column) => {
-                    let item = seats.lower.find(v => v.Row == row + 1 && v.Column == column + 1);
-                    let rowSpan = seats.lower.find(v => v.Row == row + 1 && v.Column == column);
+                    let item = seats.lower.find(v => v.Row == row && v.Column == column);
+                    let rowSpan = seats.lower.find(v => v.Row == row && v.Column == column - 1);
                     //let colSpan = seats.lower.find(v => v.Row == row && v.Column == column + 1);
-                    if (item) {
+                    if (row == 0 && !isRowZeroLower) {
+                      return;
+                    } else if (item) {
                       return this.renderSeat(item);
                     } else if (rowSpan && rowSpan.Length == 2) {
                       return (
@@ -468,14 +497,18 @@ class SeatOneway extends React.PureComponent {
                   paddingHorizontal: upperRows < 5 ? 48 : 24,
                   flexDirection: "column",
                   flexWrap: "wrap",
+                  width: "100%",
+                  transform: [{ rotateY: "180deg" }],
                   height: 50 * upperColumns
                 }}>
                 {[...Array(upperRows)].map((c, row) => {
                   return [...Array(upperColumns)].map((r, column) => {
-                    let item = seats.upper.find(v => v.Row == row + 1 && v.Column == column + 1);
-                    let rowSpan = seats.upper.find(v => v.Row == row + 1 && v.Column == column);
+                    let item = seats.upper.find(v => v.Row == row && v.Column == column);
+                    let rowSpan = seats.upper.find(v => v.Row == row && v.Column == column - 1);
                     //let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
-                    if (item) {
+                    if (row == 0 && !isRowZeroLower) {
+                      return;
+                    } else if (item) {
                       return this.renderSeat(item);
                     } else if (rowSpan && rowSpan.Length == 2) {
                       return (
@@ -496,18 +529,20 @@ class SeatOneway extends React.PureComponent {
                 })}
               </View>
             )}
-            <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                marginHorizontal: 100,
-                height: 40,
-                justifyContent: "center",
-                borderRadius: 20,
-                marginVertical: 16
-              }}
-              onPress={this._bookNow}>
-              <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>
-            </Button>
+            {Array.isArray(this.state.data) && this.state.data && (
+              <Button
+                style={{
+                  backgroundColor: "#F68E1F",
+                  marginHorizontal: 100,
+                  height: 40,
+                  justifyContent: "center",
+                  borderRadius: 20,
+                  marginVertical: 16
+                }}
+                onPress={this._bookNow}>
+                <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>
+              </Button>
+            )}
           </ScrollView>
           {loading && <ActivityIndicator />}
         </SafeAreaView>

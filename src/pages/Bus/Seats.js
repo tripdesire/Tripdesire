@@ -57,6 +57,8 @@ class Seats extends React.PureComponent {
                 break;
             }
           }
+          // console.log(seats.lower);
+          //console.log(seats.upper);
 
           const lower =
             seats.lower.length > 0
@@ -87,15 +89,20 @@ class Seats extends React.PureComponent {
               ? seats.upper.some(val => upper.Column == val.Column && val.Length == 2)
               : undefined;
 
+          const isRowZeroLower = seats.lower.some(val => val.Row == 0);
+          const isRowZeroUpper = seats.upper.some(val => val.Row == 0);
+
           this.setState({
             loading: false,
             seats,
             data: data.Seats,
             selectedTab: seats.lower.length == 0 && seats.upper.length > 0 ? "upper" : "lower",
-            lowerRows: lower ? lower.Row : 0,
-            upperRows: upper ? upper.Row : 0,
-            lowerColumns: lower ? (lastHasTwoHeight ? lower.Column + 1 : lower.Column) : 0,
-            upperColumns: upper ? (lastUpperHasTwoHeight ? upper.Column + 1 : upper.Column) : 0
+            lowerRows: lower ? lower.Row + 1 : 0,
+            upperRows: upper ? upper.Row + 1 : 0,
+            lowerColumns: lower ? (lastHasTwoHeight ? lower.Column + 2 : lower.Column + 1) : 0,
+            upperColumns: upper ? (lastUpperHasTwoHeight ? upper.Column + 2 : upper.Column + 1) : 0,
+            isRowZeroLower,
+            isRowZeroUpper
           });
         } else {
           Toast.show("No seat available");
@@ -167,7 +174,13 @@ class Seats extends React.PureComponent {
               height: 80,
               width: 40
             }}>
-            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                flex: 1,
+                textAlignVertical: "center",
+                transform: [{ rotateY: "180deg" }]
+              }}>
               {item.Number}
             </Text>
             <View
@@ -204,7 +217,13 @@ class Seats extends React.PureComponent {
               backgroundColor,
               flexDirection: "row"
             }}>
-            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                flex: 1,
+                textAlignVertical: "center",
+                transform: [{ rotateY: "180deg" }]
+              }}>
               {item.Number}
             </Text>
             <View
@@ -253,7 +272,13 @@ class Seats extends React.PureComponent {
                 marginBottom: -3
               }}
             />
-            <Text style={{ textAlign: "center", flex: 1, textAlignVertical: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                flex: 1,
+                textAlignVertical: "center",
+                transform: [{ rotateY: "180deg" }]
+              }}>
               {item.Number}
             </Text>
           </View>
@@ -270,7 +295,9 @@ class Seats extends React.PureComponent {
       lowerRows,
       lowerColumns,
       upperRows,
-      upperColumns
+      upperColumns,
+      isRowZeroLower,
+      isRowZeroUpper
     } = this.state;
     //console.log(lowerColumns);
 
@@ -430,17 +457,22 @@ class Seats extends React.PureComponent {
             {selectedTab == "lower" && lowerRows > 0 && lowerColumns > 0 && (
               <View
                 style={{
-                  paddingHorizontal: lowerRows < 5 ? 48 : 24,
+                  paddingHorizontal: 24,
                   flexDirection: "column",
                   flexWrap: "wrap",
-                  height: 50 * (lowerColumns + 1)
+                  width: "100%",
+                  transform: [{ rotateY: "180deg" }],
+                  height: 50 * lowerColumns
                 }}>
                 {[...Array(lowerRows)].map((c, row) => {
                   return [...Array(lowerColumns)].map((r, column) => {
-                    let item = seats.lower.find(v => v.Row == row + 1 && v.Column == column);
-                    let rowSpan = seats.lower.find(v => v.Row == row + 1 && v.Column == column - 1);
+                    let item = seats.lower.find(v => v.Row == row && v.Column == column);
+                    //console.log(row);
+                    let rowSpan = seats.lower.find(v => v.Row == row && v.Column == column - 1);
                     //let colSpan = seats.lower.find(v => v.Row == row && v.Column == column + 1);
-                    if (item) {
+                    if (row == 0 && !isRowZeroLower) {
+                      return;
+                    } else if (item) {
                       return this.renderSeat(item);
                     } else if (rowSpan && rowSpan.Length == 2) {
                       return (
@@ -465,17 +497,21 @@ class Seats extends React.PureComponent {
             {selectedTab == "upper" && upperRows > 0 && upperColumns > 0 && (
               <View
                 style={{
-                  paddingHorizontal: upperRows < 5 ? 48 : 24,
+                  paddingHorizontal: 24,
                   flexDirection: "column",
                   flexWrap: "wrap",
-                  height: 50 * (upperColumns + 1)
+                  width: "100%",
+                  height: 50 * upperColumns,
+                  transform: [{ rotateY: "180deg" }]
                 }}>
                 {[...Array(upperRows)].map((c, row) => {
                   return [...Array(upperColumns)].map((r, column) => {
-                    let item = seats.upper.find(v => v.Row == row + 1 && v.Column == column);
-                    let rowSpan = seats.upper.find(v => v.Row == row + 1 && v.Column == column - 1);
+                    let item = seats.upper.find(v => v.Row == row && v.Column == column);
+                    let rowSpan = seats.upper.find(v => v.Row == row && v.Column == column - 1);
                     //let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
-                    if (item) {
+                    if (row == 0 && !isRowZeroUpper) {
+                      return;
+                    } else if (item) {
                       return this.renderSeat(item);
                     } else if (rowSpan && rowSpan.Length == 2) {
                       return (
