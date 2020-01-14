@@ -472,7 +472,7 @@ class CheckoutCab extends React.PureComponent {
                           {params.journeyDate} ( {params.pickUpTime} )
                         </Text>
                       </View>
-                      {params.returnDate != "" && (
+                      {params.returnDate && params.returnDate != "" && (
                         <View style={{ flex: 2 }}>
                           <Text style={{ color: "#5B6974" }}>Return</Text>
                           <Text>{params.returnDate != "" ? params.returnDate : null}</Text>

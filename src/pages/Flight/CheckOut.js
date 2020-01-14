@@ -167,7 +167,13 @@ class CheckOut extends React.PureComponent {
     let param = {
       id: 87,
       quantity: "1",
-      is_Air_Asia: params.departFlight.FlightSegments[0].AirLineName == "Air Asia" ? true : false,
+      is_Air_Asia:
+        params.flightType == 1 && params.departFlight.FlightSegments[0].AirLineName == "Air Asia"
+          ? true
+          : params.flightType == 2 &&
+            params.departFlight.IntOnward.FlightSegments[0].AirLineName == "Air Asia"
+          ? true
+          : false,
       int_fl_item_result_data: params.flightType == 2 ? params.departFlight : {},
       onward_item_result_data: params.flightType == 1 ? params.departFlight : {},
       single_fl_name:
@@ -656,29 +662,10 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Base Fare</Text>
                   <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                    {"₹" + params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                   </Text>
                 </View>
-                {/* <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
-                  <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.ChargeableFares.SCharge}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>GST</Text>
-                  <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.ChargeableFares.STax}
-                  </Text>
-                </View> */}
+
                 {this.state.data.cart_data && isArray(this.state.data.cart_data) && (
                   <View
                     style={{
@@ -686,7 +673,7 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Conve. Fee</Text>
+                    <Text style={{ marginStart: 10 }}>Conve. Fees</Text>
                     <HTML
                       html={
                         this.state.data.cart_data[0].custum_product_data.flight_book_item
@@ -702,7 +689,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Tax</Text>
                   <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.ChargeableFares.Tax}
+                    {"₹" + params.departFlight.FareDetails.ChargeableFares.Tax}
                   </Text>
                 </View>
                 {!this.state.inputCoupon && (
@@ -711,7 +698,9 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Discount</Text>
+                    {Array.isArray(this.state.data.coupon) && this.state.data.coupon.length > 0 && (
+                      <Text style={{ marginStart: 10 }}>Discount</Text>
+                    )}
                     {Array.isArray(this.state.data.coupon) &&
                       this.state.data.coupon.length > 0 &&
                       this.state.data.coupon.map(coupon => (
@@ -1113,36 +1102,23 @@ class CheckOut extends React.PureComponent {
                     ₹ {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
-                  <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.ChargeableFares.SCharge}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>GST</Text>
-                  <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.IsGSTMandatory == false ? 0 : 0}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>Conv. Fees</Text>
-                  <Text style={{ marginEnd: 10 }}>
-                    {params.departFlight.FareDetails.ChargeableFares.Conveniencefee}
-                  </Text>
-                </View>
+
+                {this.state.data.cart_data && isArray(this.state.data.cart_data) && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginEnd: 10,
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={{ marginStart: 10 }}>Conv. Fees</Text>
+                    <HTML
+                      html={
+                        this.state.data.cart_data[0].custum_product_data.flight_book_item
+                          .ConvenienceFee
+                      }
+                    />
+                  </View>
+                )}
                 <View
                   style={{
                     flexDirection: "row",
@@ -1161,7 +1137,9 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Discount</Text>
+                    {Array.isArray(this.state.data.coupon) && this.state.data.coupon.length > 0 && (
+                      <Text style={{ marginStart: 10 }}>Discount</Text>
+                    )}
                     {Array.isArray(this.state.data.coupon) &&
                       this.state.data.coupon.length > 0 &&
                       this.state.data.coupon.map(coupon => (

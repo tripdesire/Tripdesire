@@ -144,7 +144,8 @@ const AuthStack = createStackNavigator(
     MyAccount,
     LoginStack,
     ProfilePage,
-    BillingDetails
+    BillingDetails,
+    Wallet
   },
   {
     headerMode: "none",

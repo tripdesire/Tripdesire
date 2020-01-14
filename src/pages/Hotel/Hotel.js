@@ -202,12 +202,15 @@ class Hotel extends React.PureComponent {
               }}>
               <LinearGradient
                 colors={hoteltype == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-                style={{ borderBottomStartRadius: 5, borderTopStartRadius: 5 }}>
+                style={{
+                  borderBottomLeftRadius: 5,
+                  borderTopLeftRadius: 5
+                }}>
                 <Button
                   onPress={this.updateHotelType(1)}
                   style={{
                     // backgroundColor: hoteltype == 1 ? "#5B89F9" : "#FFF",
-                    elevation: 2,
+                    elevation: 1,
                     shadowOffset: { width: 0, height: 2 },
                     shadowColor: "rgba(0,0,0,0.1)",
                     shadowOpacity: 1,
@@ -234,12 +237,15 @@ class Hotel extends React.PureComponent {
               </LinearGradient>
               <LinearGradient
                 colors={hoteltype == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-                style={{ borderBottomEndRadius: 5, borderTopEndRadius: 5 }}>
+                style={{
+                  borderBottomRightRadius: 5,
+                  borderTopRightRadius: 5
+                }}>
                 <Button
                   onPress={this.updateHotelType(2)}
                   style={{
                     // backgroundColor: hoteltype == 2 ? "#5B89F9" : "#FFF",
-                    elevation: 2,
+                    elevation: 1,
                     borderWidth: 1,
                     borderColor: "#DDDDDD",
                     shadowOffset: { width: 0, height: 2 },

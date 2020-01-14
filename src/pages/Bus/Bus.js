@@ -161,12 +161,12 @@ class Bus extends React.PureComponent {
                 }}>
                 <LinearGradient
                   colors={TripType == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-                  style={{ borderBottomStartRadius: 5, borderTopStartRadius: 5 }}>
+                  style={{ borderBottomLeftRadius: 5, borderTopLeftRadius: 5 }}>
                   <Button
                     style={{
                       // backgroundColor: TripType == 1 ? "#5B89F9" : "#FFFFFF",
-                      borderBottomStartRadius: 5,
-                      borderTopStartRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      borderTopLeftRadius: 5,
                       ...styles.tabButton
                     }}
                     onPress={() => this._triptype("onewway")}>
@@ -182,12 +182,12 @@ class Bus extends React.PureComponent {
                 </LinearGradient>
                 <LinearGradient
                   colors={TripType == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-                  style={{ borderBottomEndRadius: 5, borderTopEndRadius: 5 }}>
+                  style={{ borderBottomRightRadius: 5, borderTopRightRadius: 5 }}>
                   <Button
                     style={{
                       //backgroundColor: TripType == 2 ? "#5B89F9" : "#FFFFFF",
-                      borderBottomEndRadius: 5,
-                      borderTopEndRadius: 5,
+                      borderBottomRightRadius: 5,
+                      borderTopRightRadius: 5,
                       ...styles.tabButton
                     }}
                     onPress={() => this._triptype("round")}>

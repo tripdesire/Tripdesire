@@ -125,7 +125,22 @@ class HotelPayment extends React.PureComponent {
 
   _payment = () => {
     const params = { ...this.props.navigation.state.params, itemId: 222 };
-    this.props.navigation.navigate("Payment", { params, data: this.state.data });
+
+    let data = {
+      ...this.state.data,
+      payment_method: [
+        {
+          id: "razorpay",
+          title: "razorPay"
+        },
+        {
+          id: "wallet",
+          title: "Wallet"
+        }
+      ]
+    };
+
+    this.props.navigation.navigate("Payment", { params, data });
   };
 
   render() {

@@ -12,16 +12,16 @@ class AddPassengers extends React.PureComponent {
       room: 1,
       data: [
         { adults: 1, children: 0, childAge: [-1, -1] },
-        { adults: 0, children: 0, childAge: [-1, -1] },
-        { adults: 0, children: 0, childAge: [-1, -1] },
-        { adults: 0, children: 0, childAge: [-1, -1] }
+        { adults: 1, children: 0, childAge: [-1, -1] },
+        { adults: 1, children: 0, childAge: [-1, -1] },
+        { adults: 1, children: 0, childAge: [-1, -1] }
       ]
     };
   }
   onRoomChange = (itemValue, index) => {
     let newData = Object.assign([], this.state.data);
-    for (let i = index + 1; i < this.state.data.length; i++) {
-      newData[i] = { adults: 0, children: 0, childAge: [-1, -1] };
+    for (let i = 0; i <= index; i++) {
+      newData[i] = { adults: 1, children: 0, childAge: [-1, -1] };
     }
     this.setState({
       room: itemValue,
@@ -69,7 +69,11 @@ class AddPassengers extends React.PureComponent {
 
   _submit = () => {
     if (!this.validate()) {
-      this.props.submit && this.props.submit(this.state);
+      let newData = Object.assign({}, this.state);
+      for (let i = newData.room; i < this.state.data.length; i++) {
+        newData.data[i] = { adults: 0, children: 0, childAge: [-1, -1] };
+      }
+      this.props.submit && this.props.submit(newData);
     } else {
       Toast.show("Children age can't empty");
     }
@@ -140,22 +144,12 @@ class AddPassengers extends React.PureComponent {
                         iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                       }}
                       onValueChange={this.onAdultsChange(index)}
-                      items={
-                        index == 0
-                          ? [
-                              { value: 1, label: "1" },
-                              { value: 2, label: "2" },
-                              { value: 3, label: "3" },
-                              { value: 4, label: "4" }
-                            ]
-                          : [
-                              { value: 0, label: "0" },
-                              { value: 1, label: "1" },
-                              { value: 2, label: "2" },
-                              { value: 3, label: "3" },
-                              { value: 4, label: "4" }
-                            ]
-                      }
+                      items={[
+                        { value: 1, label: "1" },
+                        { value: 2, label: "2" },
+                        { value: 3, label: "3" },
+                        { value: 4, label: "4" }
+                      ]}
                       Icon={() => <Icon name="ios-arrow-down" size={20} />}
                     />
                   </View>

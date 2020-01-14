@@ -65,14 +65,25 @@ class ThankYouHotel extends React.PureComponent {
                     </Text>
                   </View>
                 </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
-                  <View style={{ flexDirection: "row" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    alignItems: "flex-start"
+                  }}>
+                  <View>
                     <Text>Email : </Text>
-                    <Text style={styles.Heading}>kamlesh@webiixx.com</Text>
+                    <Text style={styles.Heading}>
+                      {order.billing.email ? order.billing.email : null}
+                    </Text>
                   </View>
-                  <View style={{ flexDirection: "row" }}>
+                  <View>
                     <Text>Total : </Text>
-                    <Text style={styles.Heading}>{order.total}</Text>
+                    <Text style={styles.Heading}>
+                      {order.currency_symbol}
+                      {order.total}
+                    </Text>
                   </View>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -84,7 +95,7 @@ class ThankYouHotel extends React.PureComponent {
                 <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
                   <View>
                     <Text style={{ lineHeight: 20 }}>Booking Reference Number : </Text>
-                    <Text style={[styles.Heading, { lineHeight: 16 }]}>
+                    <Text style={[styles.Heading, { lineHeight: 18 }]}>
                       {razorpayRes.razorpay_payment_id}
                     </Text>
                   </View>
@@ -107,8 +118,8 @@ class ThankYouHotel extends React.PureComponent {
                   source={{ uri: res || "https://via.placeholder.com/150" }}
                 />
                 <View style={{ marginStart: 10, flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: "700" }}>{params.HotelName}</Text>
-                  <Text style={{ flex: 1 }}>{params.selectedRoom.RoomType}</Text>
+                  <Text style={{ fontSize: 16, fontWeight: "500" }}>{params.HotelName}</Text>
+                  <Text>{params.selectedRoom.RoomType}</Text>
                   <View
                     style={{
                       flexDirection: "row",
@@ -116,11 +127,11 @@ class ThankYouHotel extends React.PureComponent {
                       flex: 1
                     }}>
                     <View>
-                      <Text style={{ fontWeight: "700" }}>Check-In</Text>
+                      <Text style={{ fontWeight: "500" }}>Check-In</Text>
                       <Text>{params.checkInDate}</Text>
                     </View>
                     <View>
-                      <Text style={{ fontWeight: "700" }}>Check-Out</Text>
+                      <Text style={{ fontWeight: "500" }}>Check-Out</Text>
                       <Text>{params.checkOutDate}</Text>
                     </View>
                   </View>
@@ -136,7 +147,7 @@ class ThankYouHotel extends React.PureComponent {
               }}>
               <Text
                 style={{
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: 18,
                   paddingVertical: 10,
                   backgroundColor: "#EEF1F8",
@@ -155,7 +166,7 @@ class ThankYouHotel extends React.PureComponent {
                 <View style={{ flex: 2 }}>
                   <Text
                     style={{
-                      fontWeight: "700",
+                      fontWeight: "600",
                       fontSize: 16
                     }}>
                     Passenger
@@ -169,7 +180,7 @@ class ThankYouHotel extends React.PureComponent {
                     })}
                 </View>
                 <View style={{ flex: 1, marginHorizontal: 10 }}>
-                  <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
+                  <Text style={{ fontWeight: "600", fontSize: 16 }}>Age</Text>
                   {order.adult_details.map((item, index) => {
                     return <Text key={item.index}>{item.age}</Text>;
                   })}
@@ -179,7 +190,7 @@ class ThankYouHotel extends React.PureComponent {
                     })}
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
+                  <Text style={{ fontWeight: "600", fontSize: 16 }}>Gender</Text>
                   {order.adult_details.map((item, index) => {
                     return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
                   })}
@@ -199,7 +210,7 @@ class ThankYouHotel extends React.PureComponent {
               }}>
               <Text
                 style={{
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: 18,
                   borderTopLeftRadius: 5,
                   borderTopRightRadius: 5,
@@ -226,8 +237,8 @@ class ThankYouHotel extends React.PureComponent {
                 <Text>0.00</Text>
               </View>
               <View style={styles.summaryView}>
-                <Text style={{ fontWeight: "700", fontSize: 18 }}>Total Price</Text>
-                <Text style={{ fontWeight: "700", fontSize: 18 }}>{order.total}</Text>
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>Total Price</Text>
+                <Text style={{ fontWeight: "500", fontSize: 18 }}>{order.total}</Text>
               </View>
               <View style={styles.summaryView}>
                 <Text style={{ flex: 1 }}>Payment Method</Text>
@@ -260,7 +271,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 10
   },
-  Heading: { fontSize: 16, fontWeight: "700" }
+  Heading: { fontSize: 16, fontWeight: "500" }
 });
 
 export default ThankYouHotel;

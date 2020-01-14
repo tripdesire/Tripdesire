@@ -135,8 +135,8 @@ function MyAccount({ navigation }) {
           {!isEmpty(user) && (
             <Button style={styles.rowView} onPress={wallet}>
               <Image
-                source={require("../assets/imgs/my_account.png")}
-                style={{ width: 28, height: 28 }}
+                source={require("../assets/imgs/wallet.png")}
+                style={{ width: 28, height: 28, tintColor: "#999DA0" }}
               />
               <Text style={styles.rowText}>Wallet</Text>
             </Button>

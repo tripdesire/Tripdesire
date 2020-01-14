@@ -275,12 +275,24 @@ class Cab extends React.PureComponent {
             }}>
             <LinearGradient
               colors={travelType == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-              style={{ borderTopStartRadius: 6, borderBottomStartRadius: 6 }}>
+              style={{
+                shadowOffset: { width: 0, height: 2 },
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
+                elevation: 2,
+                borderTopLeftRadius: 6,
+                borderBottomLeftRadius: 6
+              }}>
               <Button
                 style={{
-                  // backgroundColor: travelType == 2 ? "#5B89F9" : "#FFFFFF",
-                  borderTopStartRadius: 6,
-                  borderBottomStartRadius: 6,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  elevation: 1,
+                  borderTopLeftRadius: 6,
+                  borderBottomLeftRadius: 6,
                   ...styles.tabButtons
                 }}
                 onPress={() => this._triptype("oneway")}>
@@ -297,10 +309,20 @@ class Cab extends React.PureComponent {
 
             <LinearGradient
               colors={travelType == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-              style={{}}>
+              style={{
+                shadowOffset: { width: 0, height: 2 },
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
+                elevation: 2
+              }}>
               <Button
                 style={{
-                  //  backgroundColor: travelType == 1 ? "#5B89F9" : "#FFFFFF",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  elevation: 1,
                   ...styles.tabButtons
                 }}
                 onPress={() => this._triptype("round")}>
@@ -317,12 +339,24 @@ class Cab extends React.PureComponent {
 
             <LinearGradient
               colors={travelType == 3 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-              style={{ borderTopEndRadius: 6, borderBottomEndRadius: 6 }}>
+              style={{
+                shadowOffset: { width: 0, height: 2 },
+                shadowColor: "rgba(0,0,0,0.1)",
+                shadowOpacity: 1,
+                shadowRadius: 4,
+                elevation: 2,
+                borderTopRightRadius: 6,
+                borderBottomRightRadius: 6
+              }}>
               <Button
                 style={{
-                  // backgroundColor: travelType == 3 ? "#5B89F9" : "#FFFFFF",
-                  borderTopEndRadius: 6,
-                  borderBottomEndRadius: 6,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  elevation: 1,
+                  borderTopRightRadius: 6,
+                  borderBottomRightRadius: 6,
                   ...styles.tabButtons
                 }}
                 onPress={() => this._triptype("transfer")}>
@@ -694,14 +728,16 @@ class Cab extends React.PureComponent {
 
 const styles = StyleSheet.create({
   tabButtons: {
-    elevation: 2,
+    // elevation: 2,
     zIndex: 2,
     height: 30,
+    borderWidth: 1,
+    borderColor: "#DDDDDD",
     paddingHorizontal: 25,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: "#757575",
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowColor: "#757575",
+    // shadowOpacity: 0.2,
+    // shadowRadius: 2,
     justifyContent: "center",
     alignItems: "center"
   }

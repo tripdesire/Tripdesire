@@ -6,7 +6,7 @@ const { height, width } = Dimensions.get("window");
 
 class Splash extends React.PureComponent {
   constructor(props) {
-    changeNavigationBarColor("#1E2A48");
+    // changeNavigationBarColor("#1E2A48");
     super(props);
   }
 

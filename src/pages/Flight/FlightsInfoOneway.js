@@ -571,7 +571,7 @@ class FlightsInfoOneway extends React.PureComponent {
 
             {Array.isArray(flights) && flights.length == 0 ? (
               <DataNotFound
-                style={{ marginTop: 110 }}
+                style={{ marginTop: 100 }}
                 title="No flights found"
                 onPress={this.goBack}
               />
