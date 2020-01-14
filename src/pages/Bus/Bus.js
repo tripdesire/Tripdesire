@@ -1,14 +1,15 @@
 import React from "react";
 import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal, LinearGradient } from "../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { Header } from "../../components";
+import Animated, { Easing } from "react-native-reanimated";
 
 class Bus extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.animatedValue = new Animated.Value(0);
     this.state = {
       sourceName: "Hyderabad",
       destinationName: "Bangalore",
@@ -27,7 +28,8 @@ class Bus extends React.PureComponent {
       _select_round: false,
       fromDTpicker: false,
       toDTpicker: false,
-      TripType: 1
+      TripType: 1,
+      rotateVal: 1
     };
   }
 
@@ -78,13 +80,19 @@ class Bus extends React.PureComponent {
   };
 
   _exchange = () => {
+    Animated.timing(this.animatedValue, {
+      toValue: this.state.rotateVal,
+      duration: 300,
+      easing: Easing.inOut(Easing.ease)
+    }).start();
     this.setState({
       from: this.state.to,
       sourceName: this.state.destinationName,
       destinationName: this.state.sourceName,
       sourceId: this.state.destinationId,
       destinationId: this.state.sourceId,
-      to: this.state.from
+      to: this.state.from,
+      rotateVal: this.state.rotateVal == 1 ? 0 : 1
     });
   };
 
@@ -119,6 +127,22 @@ class Bus extends React.PureComponent {
 
   render() {
     const { from, to, _select_round, fromDTpicker, toDTpicker, TripType } = this.state;
+    const imageStyle = {
+      height: 30,
+      width: 30,
+      transform: [
+        {
+          rotate: Animated.concat(
+            this.animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [90, 270]
+            }),
+            "deg"
+          )
+        }
+      ]
+      // transform: [{ rotate: "90deg" }]}
+    };
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
@@ -193,6 +217,7 @@ class Bus extends React.PureComponent {
                   style={{
                     flexDirection: "row",
                     marginStart: 20,
+                    alignItems: "center",
                     justifyContent: "space-between",
                     flex: 1
                   }}>
@@ -204,8 +229,12 @@ class Bus extends React.PureComponent {
                       {from}
                     </Text>
                   </View>
-                  <Button style={{ justifyContent: "center" }} onPress={this._exchange}>
-                    <IconMaterial name="swap-vertical" color="#5D666D" size={40} />
+                  <Button onPress={this._exchange}>
+                    <Animated.Image
+                      style={[imageStyle, { marginTop: 10 }]}
+                      source={require("../../assets/imgs/exchange.png")}
+                    />
+                    {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} /> */}
                   </Button>
                 </View>
               </View>

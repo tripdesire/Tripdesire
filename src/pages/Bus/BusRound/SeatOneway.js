@@ -429,7 +429,17 @@ class SeatOneway extends React.PureComponent {
               <View style={styles.tabContainer}>
                 <LinearGradient
                   colors={selectedTab == "lower" ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-                  style={styles.tab}>
+                  style={{
+                    ...styles.tab,
+                    elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
+                    backgroundColor: "#ffffff",
+                    borderTopLeftRadius: 5,
+                    borderBottomLeftRadius: 5
+                  }}>
                   <Button
                     onPress={() => this.setState({ selectedTab: "lower" })}
                     style={
@@ -445,7 +455,17 @@ class SeatOneway extends React.PureComponent {
                 </LinearGradient>
                 <LinearGradient
                   colors={selectedTab == "upper" ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-                  style={styles.tab}>
+                  style={{
+                    ...styles.tab,
+                    elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
+                    backgroundColor: "#ffffff",
+                    borderTopRightRadius: 5,
+                    borderBottomRightRadius: 5
+                  }}>
                   <Button
                     onPress={() => this.setState({ selectedTab: "upper" })}
                     style={
@@ -518,7 +538,7 @@ class SeatOneway extends React.PureComponent {
                     let item = seats.upper.find(v => v.Row == row && v.Column == column);
                     let rowSpan = seats.upper.find(v => v.Row == row && v.Column == column - 1);
                     //let colSpan = seats.upper.find(v => v.Row == row && v.Column == column + 1);
-                    if (row == 0 && !isRowZeroLower) {
+                    if (row == 0 && !isRowZeroUpper) {
                       return;
                     } else if (item) {
                       return this.renderSeat(item);
@@ -567,16 +587,22 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-around",
-    padding: 16
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "rgba(0,0,0,0.1)",
+    shadowOpacity: 1,
+    shadowRadius: 4
   },
   tab: {
-    flex: 1,
-    marginHorizontal: 32,
-    paddingVertical: 6,
+    backgroundColor: "#ffffff",
+    borderWidth: 5,
+    borderColor: "#d2d2d2",
+    paddingHorizontal: 6,
     alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 4
+    justifyContent: "center"
   }
 });
 

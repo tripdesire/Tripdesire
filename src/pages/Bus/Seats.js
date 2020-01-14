@@ -431,15 +431,23 @@ class Seats extends React.PureComponent {
               <View style={styles.tabContainer}>
                 <LinearGradient
                   colors={selectedTab == "lower" ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
-                  style={styles.tab}>
+                  style={{
+                    ...styles.tab,
+                    elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
+                    backgroundColor: "#ffffff",
+                    borderTopLeftRadius: 5,
+                    borderBottomLeftRadius: 5
+                  }}>
                   <Button
                     onPress={() => this.setState({ selectedTab: "lower" })}
-                    style={
-                      [
-                        //  selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null,
-                        // styles.tab
-                      ]
-                    }>
+                    style={{
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5
+                    }}>
                     <Text style={[selectedTab == "lower" ? { color: "#FFF" } : { color: "#000" }]}>
                       Lower Birth
                     </Text>
@@ -447,15 +455,23 @@ class Seats extends React.PureComponent {
                 </LinearGradient>
                 <LinearGradient
                   colors={selectedTab == "upper" ? ["#53b2fe", "#065af3"] : ["#FFFFFF", "#ffffff"]}
-                  style={styles.tab}>
+                  style={{
+                    ...styles.tab,
+                    elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
+                    backgroundColor: "#ffffff",
+                    borderTopRightRadius: 5,
+                    borderBottomRightRadius: 5
+                  }}>
                   <Button
                     onPress={() => this.setState({ selectedTab: "upper" })}
-                    style={
-                      [
-                        //selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null,
-                        //styles.tab
-                      ]
-                    }>
+                    style={{
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5
+                    }}>
                     <Text style={[selectedTab == "upper" ? { color: "#FFF" } : { color: "#000" }]}>
                       Upper Birth
                     </Text>
@@ -544,7 +560,7 @@ class Seats extends React.PureComponent {
                 })}
               </View>
             )}
-            {Array.isArray(this.state.data) && this.state.data && (
+            {Array.isArray(this.state.data) && this.state.data.length != 0 && (
               <Button
                 style={{
                   backgroundColor: "#F68E1F",
@@ -570,21 +586,23 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-around",
-    padding: 16
-  },
-  tab: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
     elevation: 2,
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.1)",
     shadowOpacity: 1,
-    shadowRadius: 4,
-    flex: 1,
-    marginHorizontal: 32,
-    paddingVertical: 6,
+    shadowRadius: 4
+  },
+  tab: {
+    backgroundColor: "#ffffff",
+    borderWidth: 5,
+    borderColor: "#d2d2d2",
+
+    paddingHorizontal: 6,
     alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 4
+    justifyContent: "center"
   }
 });
 

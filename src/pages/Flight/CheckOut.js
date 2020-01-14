@@ -167,6 +167,7 @@ class CheckOut extends React.PureComponent {
     let param = {
       id: 87,
       quantity: "1",
+      is_Air_Asia: params.departFlight.FlightSegments[0].AirLineName == "Air Asia" ? true : false,
       int_fl_item_result_data: params.flightType == 2 ? params.departFlight : {},
       onward_item_result_data: params.flightType == 1 ? params.departFlight : {},
       single_fl_name:
@@ -199,6 +200,16 @@ class CheckOut extends React.PureComponent {
           : params.departFlight.FareDetails.IsGSTMandatory,
       return_item_result_data:
         params.flightType == 1 && params.tripType == 2 ? params.arrivalFlight : {},
+      return_is_Air_Asia:
+        params.flightType == 2 &&
+        params.tripType == 2 &&
+        params.departFlight.IntReturn.FlightSegments[0].AirLineName == "Air Asia"
+          ? true
+          : params.flightType == 1 &&
+            params.tripType == 2 &&
+            params.arrivalFlight.FlightSegments[0].AirLineName == "Air Asia"
+          ? true
+          : false,
       return_fl_name:
         params.flightType == 2 && params.tripType == 2
           ? params.departFlight.IntReturn.FlightSegments[0].AirLineName
@@ -280,6 +291,7 @@ class CheckOut extends React.PureComponent {
       fl_ctype: params.className
     };
 
+    console.log(param);
     this.setState({ loading: true });
     domainApi
       .post("/cart/add", param)

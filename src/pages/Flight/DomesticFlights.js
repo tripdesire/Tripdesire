@@ -280,7 +280,7 @@ class DomesticFlights extends React.PureComponent {
             </Button>
             <Button onPress={this._exchange}>
               <Animated.Image
-                style={imageStyle}
+                style={[imageStyle, { marginTop: 10 }]}
                 source={require("../../assets/imgs/exchange.png")}
               />
               {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} /> */}
