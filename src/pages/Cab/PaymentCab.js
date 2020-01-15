@@ -177,7 +177,10 @@ class PaymentCab extends React.PureComponent {
             if (response.data.BookingStatus == 1) {
               const { user } = this.props;
               domainApi
-                .post("/checkout/new-order?user_id=" + user.id, newOrder)
+                .post(
+                  "/checkout/new-order?user_id=" + user.id + "&payment_method=razorpay",
+                  newOrder
+                )
                 .then(({ data: order }) => {
                   console.log(order);
 
@@ -186,7 +189,7 @@ class PaymentCab extends React.PureComponent {
                     //image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
                     key: "rzp_test_I66kFrN53lhauw",
-                  //  key: "rzp_live_IRhvqgmESx60tW",
+                    //  key: "rzp_live_IRhvqgmESx60tW",
                     amount: parseInt(order.total) * 100,
                     name: "TripDesire",
                     prefill: {
@@ -477,6 +480,7 @@ class PaymentCab extends React.PureComponent {
               <Text style={{ color: "#fff" }}>Order</Text>
             </Button>
           </View>
+          {this.state.loader && <ActivityIndicator />}
         </SafeAreaView>
       </>
     );

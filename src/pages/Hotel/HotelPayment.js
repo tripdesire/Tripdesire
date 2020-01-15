@@ -131,12 +131,12 @@ class HotelPayment extends React.PureComponent {
       payment_method: [
         {
           id: "razorpay",
-          title: "razorPay"
-        },
-        {
-          id: "wallet",
-          title: "Wallet"
+          title: "RazorPay"
         }
+        // {
+        //   id: "wallet",
+        //   title: "Wallet"
+        // }
       ]
     };
 

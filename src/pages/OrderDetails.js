@@ -2,12 +2,20 @@ import React, { PureComponent } from "react";
 import { Text, Button, Icon } from "../components";
 import { View, StyleSheet, SafeAreaView, Dimensions, Image, ScrollView } from "react-native";
 import moment from "moment";
+import { isObject } from "lodash";
 
 const { width, height } = Dimensions.get("window");
 class OrderDetails extends React.PureComponent {
   constructor(props) {
     super(props);
-    console.log(props.navigation.state.params);
+    const { params } = props.navigation.state;
+    console.log(params);
+    console.log(
+      "hello",
+      this.hasJsonStructure(params.reference_no)
+        ? JSON.parse(params.reference_no)
+        : params.reference_no
+    );
   }
 
   _goBack = () => {
@@ -281,15 +289,36 @@ class OrderDetails extends React.PureComponent {
                       }}>
                       Passenger
                     </Text>
-                    <Text>Kamal Gangwar</Text>
+                    {adult_details &&
+                      adult_details.map((item, index) => {
+                        return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
+                      })}
+                    {child_details.length > 0 &&
+                      child_details.map((item, index) => {
+                        return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
+                      })}
                   </View>
                   <View>
                     <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
-                    <Text>22</Text>
+                    {adult_details.map((item, index) => {
+                      return <Text key={item.index}>{item.age}</Text>;
+                    })}
+                    {child_details &&
+                      child_details.map((item, index) => {
+                        return <Text key={item.index}>{item.age}</Text>;
+                      })}
                   </View>
                   <View>
                     <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
-                    <Text>Male</Text>
+                    {adult_details.map((item, index) => {
+                      return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
+                    })}
+                    {child_details.length > 0 &&
+                      child_details.map((item, index) => {
+                        return (
+                          <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>
+                        );
+                      })}
                   </View>
                 </View>
               </View>
@@ -1414,23 +1443,26 @@ class OrderDetails extends React.PureComponent {
                         }}>
                         Passenger
                       </Text>
-                      {adult_details.map((item, index) => {
-                        return <Text key={"Sap_".index}>{item.fname}</Text>;
-                      })}
+                      {(adult_details != "" || adult_details.length > 0) &&
+                        adult_details.map((item, index) => {
+                          return <Text key={"Sap_".index}>{item.fname}</Text>;
+                        })}
                     </View>
                     <View>
                       <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
-                      {adult_details.map((item, index) => {
-                        return <Text key={"Sap_".index}>{item.age}</Text>;
-                      })}
+                      {(adult_details != "" || adult_details.length > 0) &&
+                        adult_details.map((item, index) => {
+                          return <Text key={"Sap_".index}>{item.age}</Text>;
+                        })}
                     </View>
                     <View>
                       <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
-                      {adult_details.map((item, index) => {
-                        return (
-                          <Text key={"Sap_".index}>{item.gender == "M" ? "Male" : "Female"}</Text>
-                        );
-                      })}
+                      {(adult_details != "" || adult_details.length > 0) &&
+                        adult_details.map((item, index) => {
+                          return (
+                            <Text key={"Sap_".index}>{item.gender == "M" ? "Male" : "Female"}</Text>
+                          );
+                        })}
                     </View>
                   </View>
                 </View>

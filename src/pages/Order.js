@@ -3,7 +3,7 @@ import { Text, Button } from "../components";
 import { SafeAreaView, ActivityIndicator } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import Toast from "react-native-simple-toast";
-import { isEmpty } from "lodash";
+import { isEmpty, isArray } from "lodash";
 import { connect } from "react-redux";
 import { domainApi } from "../service";
 import moment from "moment";
@@ -36,6 +36,7 @@ class Order extends React.PureComponent {
     domainApi
       .post("/nutri-user/" + user.id + "/order-list", { offset, limit })
       .then(({ data }) => {
+        console.log(data);
         if (data.status == 1) {
           this.setState({
             orders: [...this.state.orders, ...data.data],
@@ -68,6 +69,7 @@ class Order extends React.PureComponent {
   render() {
     const { loading, orders } = this.state;
     const { user } = this.props;
+
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
@@ -85,6 +87,8 @@ class Order extends React.PureComponent {
           ) : orders.length > 0 ? (
             <View style={{ flex: 5 }}>
               <FlatList
+                showsVerticalScrollIndicator={false}
+                bounces={false}
                 data={orders}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
@@ -122,19 +126,82 @@ function OrderItems({ item, onPress }) {
     onPress && onPress(item);
   };
   const status = value => {
-    if (value == "completed")
+    if (value == "completed") {
       return (
         <Text
           style={{
             color: "green",
             lineHeight: 18,
-            fontWeight: "700",
+            fontWeight: "500",
             textTransform: "capitalize"
           }}>
           {value}
         </Text>
       );
+    } else if (value == "cancelled") {
+      return (
+        <Text
+          style={{
+            color: "red",
+            lineHeight: 18,
+            fontWeight: "500",
+            textTransform: "capitalize"
+          }}>
+          {value}
+        </Text>
+      );
+    } else if (value == "pending") {
+      return (
+        <Text
+          style={{
+            color: "yellow",
+            lineHeight: 18,
+            fontWeight: "500",
+            textTransform: "capitalize"
+          }}>
+          {value}
+        </Text>
+      );
+    }
   };
+
+  const hasJsonStructure = str => {
+    if (typeof str !== "string") return false;
+    try {
+      const result = JSON.parse(str);
+      const type = Object.prototype.toString.call(result);
+      return type === "[object Object]" || type === "[object Array]";
+    } catch (err) {
+      return false;
+    }
+  };
+
+  const ticketData = hasJsonStructure(item.reference_no)
+    ? JSON.parse(item.reference_no)
+    : item.reference_no;
+
+  //console.log(ticketData);
+
+  const isFlight =
+    isArray(item.order_data.line_items) &&
+    item.order_data.line_items.length > 0 &&
+    item.order_data.line_items[0].product_id == 87;
+
+  const isHotel =
+    isArray(item.order_data.line_items) &&
+    item.order_data.line_items.length > 0 &&
+    item.order_data.line_items[0].product_id == 222;
+
+  const isBus =
+    isArray(item.order_data.line_items) &&
+    item.order_data.line_items.length > 0 &&
+    item.order_data.line_items[0].product_id == 273;
+
+  const isCab =
+    isArray(item.order_data.line_items) &&
+    item.order_data.line_items.length > 0 &&
+    item.order_data.line_items[0].product_id == 2238;
+
   return (
     <Button
       style={{
@@ -142,10 +209,11 @@ function OrderItems({ item, onPress }) {
         borderRadius: 8,
         padding: 12,
         backgroundColor: "#FFFFFF",
-        elevation: 3,
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-        shadowOffset: { height: 1, width: 0 }
+        elevation: 1,
+        shadowColor: "rgba(0,0,0,0.1)",
+        shadowOpacity: 1,
+        shadowRadius: 4,
+        shadowOffset: { height: 0, width: 2 }
       }}
       onPress={_onPress}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -168,6 +236,74 @@ function OrderItems({ item, onPress }) {
           <Text style={{ lineHeight: 20 }}>{"₹" + item.order_data.total}</Text>
         </View>
       </View>
+
+      {isFlight && (
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          {item.reference_no != "" && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>PNR No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.GDFPNRNo}</Text>
+            </View>
+          )}
+          {item.reference_no != "" && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>Reference No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.ReferenceNo}</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {isHotel && (
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          {(item.reference_no != "" || item.reference_no != '""""') && ticketData.GDFPNRNo != null && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>PNR No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.GDFPNRNo}</Text>
+            </View>
+          )}
+          {(item.reference_no != "" || item.reference_no != '""') && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>Reference No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.ReferenceNo}</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {isBus && (
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          {item.reference_no != "" && ticketData.OperatorPNR != null && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>PNR No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.OperatorPNR}</Text>
+            </View>
+          )}
+          {item.reference_no != "" && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>Reference No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.APIReferenceNo}</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {isCab && (
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          {item.reference_no != "" && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>PNR No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.GDFPNRNo}</Text>
+            </View>
+          )}
+          {item.reference_no != "" && (
+            <View>
+              <Text style={[styles.Heading, { lineHeight: 20 }]}>Reference No</Text>
+              <Text style={{ lineHeight: 20 }}>{ticketData.ReferenceNo}</Text>
+            </View>
+          )}
+        </View>
+      )}
     </Button>
   );
 }
@@ -175,7 +311,7 @@ function OrderItems({ item, onPress }) {
 const styles = StyleSheet.create({
   Heading: {
     fontSize: 16,
-    fontWeight: "700"
+    fontWeight: "500"
   },
   header: {
     flexDirection: "row",
@@ -186,7 +322,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     color: "#1E293B",
-    fontWeight: "700",
+    fontWeight: "500",
     fontSize: 18
   },
   loginContainer: {

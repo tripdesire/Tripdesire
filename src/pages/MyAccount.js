@@ -132,7 +132,7 @@ function MyAccount({ navigation }) {
             <Text style={styles.rowText}>My Trips</Text>
           </Button>
 
-          {!isEmpty(user) && (
+          {/* {!isEmpty(user) && (
             <Button style={styles.rowView} onPress={wallet}>
               <Image
                 source={require("../assets/imgs/wallet.png")}
@@ -140,7 +140,7 @@ function MyAccount({ navigation }) {
               />
               <Text style={styles.rowText}>Wallet</Text>
             </Button>
-          )}
+          )} */}
 
           {!isEmpty(user) && (
             <Button style={styles.rowView} onPress={editAddress}>

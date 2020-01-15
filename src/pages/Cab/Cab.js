@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Modal, StyleSheet, SafeAreaView, Platform, ScrollView } from "react-native";
 import { Button, Text, AutoCompleteModal, Icon, LinearGradient } from "../../components";
 import Toast from "react-native-simple-toast";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import Animated, { Easing } from "react-native-reanimated";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
@@ -12,6 +12,7 @@ import SuggLoc from "./LocationModal";
 class Cab extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.animatedValue = new Animated.Value(0);
     this.state = {
       sourceName: "Agra",
       destinationName: "Bangalore",
@@ -46,7 +47,8 @@ class Cab extends React.PureComponent {
       SuggDrop: "",
       selectedTransfer: 1,
       suggItem: "",
-      item: this.getTimeStops(new Date())
+      item: this.getTimeStops(new Date()),
+      rotateVal: 1
     };
 
     this.inputRefs = {
@@ -144,13 +146,20 @@ class Cab extends React.PureComponent {
   };
 
   _exchange = () => {
+    Animated.timing(this.animatedValue, {
+      toValue: this.state.rotateVal,
+      duration: 300,
+      easing: Easing.inOut(Easing.ease)
+    }).start();
+
     this.setState({
       from: this.state.to,
       sourceName: this.state.destinationName,
       destinationName: this.state.sourceName,
       sourceId: this.state.destinationId,
       destinationId: this.state.sourceId,
-      to: this.state.from
+      to: this.state.from,
+      rotateVal: this.state.rotateVal == 1 ? 0 : 1
     });
   };
 
@@ -250,6 +259,23 @@ class Cab extends React.PureComponent {
       droplocation,
       travelType
     } = this.state;
+
+    const imageStyle = {
+      height: 30,
+      width: 30,
+      transform: [
+        {
+          rotate: Animated.concat(
+            this.animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [90, 270]
+            }),
+            "deg"
+          )
+        }
+      ]
+      // transform: [{ rotate: "90deg" }]}
+    };
 
     return (
       <>
@@ -459,12 +485,16 @@ class Cab extends React.PureComponent {
                   </Text>
                   {travelType == 1 && (
                     <Button style={{ justifyContent: "center" }} onPress={this._exchange}>
-                      <Icon
+                      <Animated.Image
+                        style={[imageStyle]}
+                        source={require("../../assets/imgs/exchange.png")}
+                      />
+                      {/* <Icon
                         type="MaterialCommunityIcons"
                         name="swap-vertical"
                         color="#5D666D"
                         size={40}
-                      />
+                      /> */}
                     </Button>
                   )}
                 </View>

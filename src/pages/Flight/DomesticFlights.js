@@ -1,14 +1,13 @@
 import React from "react";
 import { View, Image, Modal, Platform, ScrollView, StyleSheet } from "react-native";
 import { withNavigation } from "react-navigation";
-import { Button, Text, AutoCompleteModal, Icon, RNPicker } from "../../components";
+import { Button, Text, AutoCompleteModal, Icon } from "../../components";
 import AddPassengers from "./AddPassengers";
 import Animated, { Easing } from "react-native-reanimated";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
-import LinearGradient from "react-native-linear-gradient";
 
 class DomesticFlights extends React.PureComponent {
   constructor(props) {
