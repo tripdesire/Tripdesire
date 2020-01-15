@@ -473,7 +473,7 @@ class FlightsInfoOneway extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ paddingBottom: 60, backgroundColor: "#E5EBF7" }}>
+            <View style={{ paddingBottom: 40, backgroundColor: "#E5EBF7" }}>
               <HeaderFlights
                 from={from}
                 to={to}
@@ -491,6 +491,7 @@ class FlightsInfoOneway extends React.PureComponent {
                   }}
                   onPress={this.openFilter}>
                   <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+
                   <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
                     Sort & Filter
                   </Text>

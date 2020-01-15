@@ -206,7 +206,7 @@ class SignUp extends React.PureComponent {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginTop: 20, marginHorizontal: 20 }}>
                 <Text style={{ fontSize: 18, fontWeight: "500" }}>Welcome To Trip Desire</Text>
-                <Text style={{ fontSize: 10, color: "#A4A5AA" }}>Sign Up to Continue</Text>
+                <Text style={{ fontSize: 10, color: "#757575" }}>Sign Up to Continue</Text>
               </View>
               <View
                 style={{
@@ -289,7 +289,7 @@ class SignUp extends React.PureComponent {
 
                 <View style={{ flexDirection: "row", justifyContent: "center" }}>
                   <Button style={{ marginEnd: 5 }} onPress={this.navigateToScreen("SignIn")}>
-                    <Text style={{ color: "#A4A5AA", fontSize: 12 }}>
+                    <Text style={{ color: "#757575", fontSize: 12 }}>
                       Already have an account ?
                     </Text>
                   </Button>
@@ -302,16 +302,16 @@ class SignUp extends React.PureComponent {
                   <View
                     style={{
                       height: 1.35,
-                      backgroundColor: "#A4A5AA",
+                      backgroundColor: "#757575",
                       width: "10%"
                     }}></View>
-                  <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#A4A5AA" }}>
+                  <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#757575" }}>
                     Or Sign Up with
                   </Text>
                   <View
                     style={{
                       height: 1.35,
-                      backgroundColor: "#A4A5AA",
+                      backgroundColor: "#757575",
                       width: "10%"
                     }}></View>
                 </View>
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     paddingStart: 5,
-    color: "#A4A5AA"
+    color: "#757575"
   }
 });
 

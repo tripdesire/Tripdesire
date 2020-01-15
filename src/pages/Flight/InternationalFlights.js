@@ -289,7 +289,7 @@ class InternationalFlights extends React.PureComponent {
           </Button>
         </View>
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
               style={{ width: 40, height: 40, tintColor: "#5D666D" }}
@@ -440,7 +440,7 @@ class InternationalFlights extends React.PureComponent {
             style={{
               backgroundColor: "#F68E1F",
               marginHorizontal: 100,
-              height: 40,
+              height: 36,
               justifyContent: "center",
               borderRadius: 20,
               marginVertical: 40

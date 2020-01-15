@@ -185,25 +185,6 @@ class BusInfo extends React.PureComponent {
           backgroundColor: "#FFFFFF"
         }}
         onPress={this._bookNow(item)}>
-        {/* <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginHorizontal: 16
-          }}>
-          <Text style={{ flex: 1, fontWeight: "700" }}>{item.BusType}</Text>
-          {/* <Button
-            style={{
-              backgroundColor: "#5191FB",
-              borderRadius: 20,
-              paddingHorizontal: 10,
-              paddingVertical: 5
-            }}
-            onPress={this._bookNow(item)}>
-            <Text style={{ color: "#fff", fontWeight: "600" }}>Select Seats</Text>
-          </Button>
-        </View> */}
         <View
           style={{
             flexDirection: "row",
@@ -212,22 +193,22 @@ class BusInfo extends React.PureComponent {
             // marginVertical: 10
           }}>
           <Image
-            style={{ width: 70, height: 70 }}
+            style={{ width: 45, height: 45, marginEnd: 5 }}
             source={require("../../assets/imgs/busNew.png")}
           />
-          <View style={{ flexShrink: 1, marginTop: 5 }}>
-            <Text style={{ fontSize: 14, lineHeight: 20, fontWeight: "400" }}>
-              {item.DisplayName}
-            </Text>
-            <Text style={{ fontWeight: "300", fontSize: 10, lineHeight: 16 }}>{item.BusType}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}>{item.DepartureTime}</Text>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}> | </Text>
-              <Text style={{ color: "#ADADAF", alignSelf: "center", lineHeight: 16, fontSize: 10 }}>
-                {item.Duration}
-              </Text>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}> | </Text>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}>{item.ArrivalTime}</Text>
+          <View style={{ flexShrink: 1 }}>
+            <Text>{item.DisplayName}</Text>
+            <Text style={{ fontSize: 12, color: "#5D666D" }}>{item.BusType}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "space-between"
+              }}>
+              <Text style={{ fontSize: 18 }}>{item.DepartureTime}</Text>
+              <Text style={{ color: "#5D666D", fontSize: 16 }}>{item.Duration}</Text>
+              <Text style={{ fontSize: 18 }}>{item.ArrivalTime}</Text>
             </View>
           </View>
         </View>
@@ -235,24 +216,28 @@ class BusInfo extends React.PureComponent {
           style={{
             flexDirection: "row",
             marginHorizontal: 8,
+            paddingTop: 8,
+            marginTop: 8,
+            borderTopWidth: 0.5,
+            borderTopColor: "#d2d2d2",
             alignItems: "center",
             flex: 1,
             justifyContent: "space-between"
           }}>
-          <Button style={{ flexDirection: "row", flex: 1 }} onPress={this._onCanPolicy}>
+          <Button onPress={this._onCanPolicy}>
             {/* <Icon name="mobile-phone" size={24} color="#6287F9" type="FontAwesome" /> */}
             <Text
               style={{
-                paddingStart: 5,
-                fontSize: 14,
-                fontWeight: "400",
+                fontSize: 12,
                 color: "#6287F9",
                 zIndex: 1
               }}>
               Cancellation Policy
             </Text>
           </Button>
-          <Text style={{ flex: 1 }}>Rs. {item.Fares}</Text>
+          <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
+            ₹ {item.Fares}
+          </Text>
         </View>
       </Button>
     );
@@ -280,43 +265,40 @@ class BusInfo extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>
-            <View style={{ backgroundColor: "#E5EBF7" }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "100%"
-                }}>
-                <Button onPress={this.goBack} style={{ padding: 16 }}>
-                  <Icon name="md-arrow-back" size={24} />
-                </Button>
-                <View style={{ flex: 1, paddingTop: 16, paddingBottom: 8 }}>
-                  <View>
-                    <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 5 }}>
-                      {sourceName} to {destinationName}
-                    </Text>
-                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#717984" }}>
-                      {journeyDate}, {day ? day + " " : ""}
-                      {!loader ? filteredBuses.length + " Buses Found" : ""}
-                    </Text>
-                  </View>
-                </View>
-                <Button
-                  style={{
-                    flexDirection: "row",
-                    marginStart: "auto",
-                    paddingEnd: 8,
-                    paddingVertical: 16
-                  }}
-                  onPress={this.openFilter}>
-                  <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
-                  <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
-                    Sort & Filter
+            <View style={{ backgroundColor: "#E5EBF7", flexDirection: "row", paddingBottom: 10 }}>
+              <Button onPress={this.goBack} style={{ padding: 16 }}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+
+              <View style={{ flex: 1 }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={{ fontWeight: "700", fontSize: 16, paddingTop: 16, flex: 1 }}>
+                    {sourceName} to {destinationName}
                   </Text>
-                </Button>
+
+                  <Button
+                    style={{
+                      flexDirection: "row",
+                      //marginStart: "auto",
+                      paddingEnd: 8,
+                      paddingTop: 16
+                    }}
+                    onPress={this.openFilter}>
+                    <Icon name="filter" size={20} color="#5D89F4" type="MaterialCommunityIcons" />
+                    <Text style={{ fontSize: 14, marginHorizontal: 5, color: "#717984" }}>
+                      Sort & Filter
+                    </Text>
+                  </Button>
+                </View>
+                <Text style={{ fontSize: 12, color: "#717984" }}>
+                  {journeyDate}, {day ? day + " " : ""}
+                  {!loader ? filteredBuses.length + " Buses Found" : ""}
+                </Text>
               </View>
             </View>
             <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
               <FlatList
+                showsVerticalScrollIndicator={false}
                 data={filteredBuses}
                 keyExtractor={this._keyExtractoritems}
                 renderItem={this._renderItemList}

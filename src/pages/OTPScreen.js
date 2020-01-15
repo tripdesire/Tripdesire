@@ -119,7 +119,7 @@ class OTPScreen extends React.Component {
             </View>
 
             <Button onPress={this.sendOTP} style={styles.button}>
-              <Text style={{ fontWeight: "800", fontSize: 16, color: "#ffffff" }}>Next</Text>
+              <Text style={{ fontSize: 16, color: "#ffffff" }}>Next</Text>
             </Button>
           </View>
           {this.state.loading && <ActivityIndicator />}
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
   },
   login_txt: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "500",
     textAlign: "center",
     marginTop: "25%"
   },
   button: {
     backgroundColor: "#F68E1F",
-    height: 48,
+    height: 36,
     marginTop: 40,
     width: 200,
     marginHorizontal: 50,

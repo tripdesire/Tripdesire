@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     paddingStart: 5,
-    color: "#A4A5AA"
+    color: "#757575"
   }
 });
 export default TextInputComponent;

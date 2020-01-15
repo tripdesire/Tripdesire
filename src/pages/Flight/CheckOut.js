@@ -1262,7 +1262,7 @@ class CheckOut extends React.PureComponent {
                   marginHorizontal: 100,
                   alignItems: "center",
                   justifyContent: "center",
-                  height: 40,
+                  height: 36,
                   borderRadius: 20,
                   marginVertical: 20
                 }}

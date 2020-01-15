@@ -151,10 +151,9 @@ class FlightListRender extends React.PureComponent {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            marginHorizontal: 8,
-            marginBottom: 6
+            marginHorizontal: 8
           }}>
-          <Text style={{ color: "#636C73", fontSize: 12 }}>
+          <Text style={{ color: "#5D666D", fontSize: 12 }}>
             {item.FlightSegments[0].AirLineName} | {item.FlightUId}
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
@@ -176,7 +175,7 @@ class FlightListRender extends React.PureComponent {
             />
             <View>
               <Text style={{ fontSize: 18, lineHeight: 20 }}>{dd}</Text>
-              <Text style={{ fontSize: 12, lineHeight: 14, color: "#5D646A" }}>{from}</Text>
+              <Text style={{ fontSize: 12, lineHeight: 14, color: "#5D666D" }}>{from}</Text>
             </View>
           </View>
 
@@ -186,7 +185,7 @@ class FlightListRender extends React.PureComponent {
                 ? item.FlightSegments[0].Duration
                 : item.FlightSegments[item.FlightSegments.length - 1].AccumulatedDuration}
             </Text>
-            <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
+            <Text style={{ fontSize: 12, color: "#5D666D", lineHeight: 14 }}>
               {item.FlightSegments.length - 1 == 0
                 ? "Non Stop"
                 : item.FlightSegments.length - 1 + " Stop(s)"}
@@ -195,28 +194,8 @@ class FlightListRender extends React.PureComponent {
 
           <View>
             <Text style={{ fontSize: 18, lineHeight: 20, textAlign: "right" }}>{ad}</Text>
-            <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>{to}</Text>
+            <Text style={{ fontSize: 12, color: "#5D666D", lineHeight: 14 }}>{to}</Text>
           </View>
-          {/* <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                borderRadius: 14,
-                height: 28,
-                marginStart: 4,
-                alignSelf: "center", 
-                justifyContent: "center"
-              }}
-              onPress={this.bookNow}>
-              <Text
-                style={{
-                  color: "#fff",
-                  alignSelf: "center",
-                  paddingHorizontal: 6,
-                  fontSize: 12
-                }}>
-                Book Now
-              </Text>
-            </Button> */}
         </View>
         <View
           style={{

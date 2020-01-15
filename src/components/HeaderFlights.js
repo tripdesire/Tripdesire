@@ -20,7 +20,7 @@ class HeaderFlights extends React.PureComponent {
         <Button onPress={this.goBack} style={{ padding: 16 }}>
           <Icon name="md-arrow-back" size={24} />
         </Button>
-        <View style={{ paddingTop: 16, flex: 1, paddingBottom: 20 }}>
+        <View style={{ paddingTop: 16, paddingBottom: 20, flex: 1 }}>
           <Text
             style={{
               fontWeight: "700",

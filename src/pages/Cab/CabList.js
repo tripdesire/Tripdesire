@@ -80,7 +80,7 @@ class CabList extends React.PureComponent {
         console.log(data);
         if (data.AvailableCabs == null) {
           this.setState({ loader: false });
-          Toast.show("Data not found.", Toast.LONG);
+          //Toast.show("Data not found.", Toast.LONG);
         } else {
           this.setState({
             filteredcabs: data.AvailableCabs,

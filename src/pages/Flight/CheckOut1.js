@@ -1634,12 +1634,12 @@ class CheckOut1 extends React.PureComponent {
                     alignItems: "center",
                     marginVertical: 30,
                     justifyContent: "center",
-                    height: 40,
+                    height: 36,
                     borderRadius: 20
                     // marginTop: "auto"
                   }}
                   onPress={this._order}>
-                  <Text style={{ color: "#fff", fontWeight: "700" }}>Book Now</Text>
+                  <Text style={{ color: "#fff" }}>Book Now</Text>
                 </Button>
               </ScrollView>
               <Modal

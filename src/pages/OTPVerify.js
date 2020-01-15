@@ -110,10 +110,10 @@ class OTPVerify extends Component {
             <Text style={styles.headerTitle}>OTP Verify</Text>
           </View>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF", alignItems: "center" }}>
-            <Text style={{ fontWeight: "700", fontSize: 18, marginTop: 100 }}>
+            <Text style={{ fontWeight: "500", fontSize: 18, marginTop: 100 }}>
               An OTP has been sent to you
             </Text>
-            <Text style={{ fontWeight: "700", fontSize: 18 }}>on your Mobile Number</Text>
+            <Text style={{ fontWeight: "500", fontSize: 18 }}>on your Mobile Number</Text>
 
             <SmoothPinCodeInput
               value={this.state.code}
@@ -154,7 +154,7 @@ class OTPVerify extends Component {
             </View>
 
             <Button onPress={this.verifyOTP} style={styles.button}>
-              <Text style={{ fontWeight: "800", fontSize: 16, color: "#ffffff" }}>Continue</Text>
+              <Text style={{ fontSize: 16, color: "#ffffff" }}>Continue</Text>
             </Button>
           </View>
           {this.state.loading && <ActivityIndicator />}
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     paddingEnd: 16,
-    height: 48,
+    // height: 48,
     alignItems: "center",
     backgroundColor: "#E4EAF6"
   },
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#F68E1F",
-    height: 48,
+    height: 36,
     marginTop: 40,
     width: 200,
     marginHorizontal: 50,

@@ -378,7 +378,7 @@ class Hotel extends React.PureComponent {
               style={{
                 backgroundColor: "#F68E1F",
                 marginHorizontal: 100,
-                height: 40,
+                height: 36,
                 justifyContent: "center",
                 borderRadius: 20,
                 marginVertical: 40

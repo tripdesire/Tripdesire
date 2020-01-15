@@ -184,7 +184,7 @@ class SignIn extends React.PureComponent {
           <ScrollView style={{ flex: 1 }}>
             <View style={{ marginTop: 20, marginHorizontal: 20 }}>
               <Text style={{ fontSize: 18, fontWeight: "500" }}>Welcome Back</Text>
-              <Text style={{ fontSize: 10, color: "#A4A5AA" }}>Sign In to Continue</Text>
+              <Text style={{ fontSize: 10, color: "#757575" }}>Sign In to Continue</Text>
             </View>
             <View
               style={{
@@ -199,13 +199,7 @@ class SignIn extends React.PureComponent {
                 value={this.state.email}
                 onChangeText={text => this.setState({ email: text })}
               />
-              {/* <TextInputComponent
-                secureTextEntry={true}
-                label="Password*"
-                // placeholder="Enter the password"
-                value={this.state.password}
-                onChangeText={text => this.setState({ password: text })}
-              /> */}
+
               <View
                 style={{
                   flexDirection: "row",
@@ -253,14 +247,14 @@ class SignIn extends React.PureComponent {
                 </View>
               </View>
               <Button style={{ marginTop: 30 }} onPress={this.navigateToScreen("ForgetPassword")}>
-                <Text style={{ color: "#A4A5AA", fontSize: 12 }}>Forget Password ?</Text>
+                <Text style={{ color: "#757575", fontSize: 12 }}>Forget Password ?</Text>
               </Button>
               <Button style={styles.button} onPress={this.login}>
                 <Text style={{ color: "#fff" }}> SIGN IN</Text>
               </Button>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
                 <Button style={{ marginEnd: 5 }} onPress={this.navigateToScreen("SignUp")}>
-                  <Text style={{ color: "#A4A5AA", fontSize: 12 }}>Don't have an account ?</Text>
+                  <Text style={{ color: "#757575", fontSize: 12 }}>Don't have an account ?</Text>
                 </Button>
                 <Button style={{ marginStart: 5 }} onPress={this.navigateToScreen("SignUp")}>
                   <Text style={{ color: "#5B89F9", fontSize: 12 }}>Sign Up</Text>
@@ -277,16 +271,16 @@ class SignIn extends React.PureComponent {
                 <View
                   style={{
                     height: 1.35,
-                    backgroundColor: "#A4A5AA",
+                    backgroundColor: "#757575",
                     width: "10%"
                   }}></View>
-                <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#A4A5AA" }}>
+                <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#757575" }}>
                   Or Sign In with
                 </Text>
                 <View
                   style={{
                     height: 1.35,
-                    backgroundColor: "#A4A5AA",
+                    backgroundColor: "#757575",
                     width: "10%"
                   }}></View>
               </View>
@@ -400,7 +394,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     paddingStart: 5,
-    color: "#A4A5AA"
+    color: "#757575"
   }
 });
 const mapDispatchToProps = {

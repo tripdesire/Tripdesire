@@ -74,54 +74,51 @@ class RenderRound extends React.PureComponent {
             // marginVertical: 10
           }}>
           <Image
-            style={{ width: 70, height: 70 }}
+            style={{ width: 45, height: 45, marginEnd: 5 }}
             source={require("../../../assets/imgs/busNew.png")}
           />
-          <View style={{ flexShrink: 1, marginTop: 5 }}>
-            <Text style={{ fontSize: 14, lineHeight: 20, fontWeight: "400" }}>
-              {item.DisplayName}
-            </Text>
-            <Text style={{ fontWeight: "300", fontSize: 10, lineHeight: 16 }}>{item.BusType}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}>{item.DepartureTime}</Text>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}> | </Text>
-              <Text style={{ color: "#ADADAF", alignSelf: "center", lineHeight: 16, fontSize: 10 }}>
-                {item.Duration}
-              </Text>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}> | </Text>
-              <Text style={{ fontSize: 12, lineHeight: 16 }}>{item.ArrivalTime}</Text>
+          <View style={{ flexShrink: 1 }}>
+            <Text>{item.DisplayName}</Text>
+            <Text style={{ fontSize: 12, color: "#5D666D" }}>{item.BusType}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "space-between"
+              }}>
+              <Text style={{ fontSize: 18 }}>{item.DepartureTime}</Text>
+              <Text style={{ color: "#5D666D", fontSize: 16 }}>{item.Duration}</Text>
+              <Text style={{ fontSize: 18 }}>{item.ArrivalTime}</Text>
             </View>
           </View>
         </View>
         <View
           style={{
             flexDirection: "row",
-            // marginHorizontal: 8,
-            justifyContent: "space-between",
-            flex: 1
+            marginHorizontal: 8,
+            paddingTop: 8,
+            marginTop: 8,
+            borderTopWidth: 0.5,
+            borderTopColor: "#d2d2d2",
+            alignItems: "center",
+            flex: 1,
+            justifyContent: "space-between"
           }}>
-          <Button
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1
-            }}
-            onPress={this._onCanPolicy}>
-            {/* <Icon type="FontAwesome" name="mobile-phone" size={24} color="#6287F9" /> */}
+          <Button onPress={this._onCanPolicy}>
+            {/* <Icon name="mobile-phone" size={24} color="#6287F9" type="FontAwesome" /> */}
             <Text
               style={{
-                paddingStart: 5,
-                fontSize: 14,
-                fontWeight: "400",
-
+                fontSize: 12,
                 color: "#6287F9",
                 zIndex: 1
               }}>
               Cancellation Policy
             </Text>
           </Button>
-          <Text style={{ flex: 1 }}>Rs. {item.Fares}</Text>
+          <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
+            ₹ {item.Fares}
+          </Text>
         </View>
         <Modal
           animationType="slide"

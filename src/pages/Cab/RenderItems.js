@@ -58,7 +58,7 @@ class RenderItems extends React.PureComponent {
           shadowOpacity: 1,
           shadowRadius: 4,
           marginHorizontal: 16,
-          marginTop: 10,
+          marginTop: 16,
           backgroundColor: "#ffffff"
         }}
         onPress={this._BookNow(this.props.item)}>
@@ -66,39 +66,19 @@ class RenderItems extends React.PureComponent {
           style={{
             flexDirection: "row",
             marginEnd: 8,
+            paddingVertical: 8,
+            flexShrink: 1,
             alignItems: "center"
           }}>
           <Image
-            style={{ width: 80, height: 80, alignItems: "flex-start" }}
-            resizeMode="cover"
+            style={{ width: 50, height: 50 }}
             source={require("../../assets/imgs/carNew.png")}
           />
           <View
             style={{
-              flex: 1,
               marginStart: 2
             }}>
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "space-between"
-              }}>
-              <Text style={{ fontWeight: "400", fontSize: 14, flex: 1 }}>
-                {this.props.item.Name}
-              </Text>
-              <Text style={{ lineHeight: 22, fontSize: 18, fontWeight: "400" }}>
-                ₹ {this.props.item.TotalNetAmount}
-              </Text>
-              {/* <View style={{ alignItems: "flex-end" }}>
-                {this.props.item.PerKm > 0 && (
-                  <Text style={{ fontSize: 16, fontWeight: "600", lineHeight: 20 }}>
-                    ₹ {this.props.item.PerKm}/km
-                  </Text>
-                )}
-              </View> */}
-            </View>
+            <Text>{this.props.item.Name}</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -107,15 +87,15 @@ class RenderItems extends React.PureComponent {
                 justifyContent: "space-between"
               }}>
               <View style={{ flexDirection: "row" }}>
-                <Text style={{ fontWeight: "300", fontSize: 12 }}>
+                <Text style={{ fontSize: 12, color: "#5D666D" }}>
                   {this.props.item.SeatingCapacity} Seats |{" "}
                 </Text>
 
-                <Text style={{ fontWeight: "300", fontSize: 12 }}>
+                <Text style={{ fontSize: 12, color: "#5D666D" }}>
                   {this.props.item.AdditionalInfo.BaggageQuantity} bags
                 </Text>
               </View>
-              <View
+              {/* <View
                 style={{
                   width: 60,
                   borderStyle: "dashed",
@@ -132,15 +112,27 @@ class RenderItems extends React.PureComponent {
                   style={{ width: 24, height: 24, position: "absolute" }}
                   source={require("../../assets/imgs/carNew.png")}
                 />
-              </View>
-              <Button onPress={this._onFareDetails}>
-                <Text
-                  style={{ paddingStart: 5, fontSize: 12, fontWeight: "400", color: "#6287F9" }}>
-                  Fare Details
-                </Text>
-              </Button>
+              </View> */}
             </View>
           </View>
+        </View>
+
+        <View
+          style={{
+            borderTopWidth: 0.5,
+            borderTopColor: "#d2d2d2",
+            paddingVertical: 8,
+            flexDirection: "row",
+            marginHorizontal: 8,
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}>
+          <Button onPress={this._onFareDetails}>
+            <Text style={{ fontSize: 12, color: "#6287F9" }}>Fare Details</Text>
+          </Button>
+          <Text style={{ fontSize: 18, fontWeight: "600" }}>
+            ₹ {this.props.item.TotalNetAmount}
+          </Text>
         </View>
 
         <Modal

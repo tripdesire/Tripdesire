@@ -136,7 +136,7 @@ function MyAccount({ navigation }) {
             <Button style={styles.rowView} onPress={wallet}>
               <Image
                 source={require("../assets/imgs/wallet.png")}
-                style={{ width: 28, height: 28, tintColor: "#999DA0" }}
+                style={{ width: 28, height: 28, tintColor: "#757575" }}
               />
               <Text style={styles.rowText}>Wallet</Text>
             </Button>
@@ -175,7 +175,7 @@ function MyAccount({ navigation }) {
 
           {!isEmpty(user) && (
             <Button style={styles.rowView} onPress={logout}>
-              <Icon type="AntDesign" name="logout" size={24} color="#999DA0" />
+              <Icon type="AntDesign" name="logout" size={24} color="#757575" />
               <Text style={styles.rowText}>Logout</Text>
             </Button>
           )}
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   rowText: {
     marginStart: 16,
-    fontSize: 18,
-    color: "#999DA0"
+    fontSize: 16,
+    color: "#757575"
   }
 });

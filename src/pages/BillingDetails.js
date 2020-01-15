@@ -239,7 +239,7 @@ class BillingDetails extends React.PureComponent {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#F68E1F",
-    height: 48,
+    height: 36,
     width: 200,
     marginVertical: 40,
     paddingHorizontal: 50,
