@@ -50,6 +50,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
                 style={{
                   inputAndroidContainer: { height: 40, width: 40 },
                   inputAndroid: { paddingStart: 0, color: "#000" },
+                  inputIOS: { color: "#000" },
                   iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                 }}
                 onValueChange={changeAdults}
@@ -76,6 +77,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
                 style={{
                   inputAndroidContainer: { height: 40, width: 40 },
                   inputAndroid: { paddingStart: 0, color: "#000" },
+                  inputIOS: { color: "#000" },
                   iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                 }}
                 onValueChange={changeChildren}
@@ -103,6 +105,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
                 style={{
                   inputAndroidContainer: { height: 40, width: 40 },
                   inputAndroid: { paddingStart: 0, color: "#000" },
+                  inputIOS: { color: "#000" },
                   iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                 }}
                 onValueChange={changeInfants}

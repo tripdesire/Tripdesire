@@ -696,24 +696,33 @@ class CheckOut1 extends React.PureComponent {
               etravosApi
                 .get("/Flights/BookFlightTicket?referenceNo=" + blockres.ReferenceNo)
                 .then(({ data: Response }) => {
-                  let paymentData = {
-                    order_id: order.id,
-                    status: "completed",
-                    transaction_id: razorpayRes.razorpay_payment_id,
-                    reference_no: Response // blockres.data.ReferenceNo
-                  };
-                  console.log(paymentData);
-                  this.setState({ loading: true });
-                  domainApi.post("/checkout/update-order", paymentData).then(resp => {
-                    this.setState({ loading: false });
-                    console.log(resp);
-                  });
-                  const { params } = this.props.navigation.state.params;
-                  this.props.navigation.navigate("ThankYou", {
-                    order,
-                    params,
-                    razorpayRes
-                  });
+                  if (Response.ResponseStatus == 200) {
+                    let paymentData = {
+                      order_id: order.id,
+                      status: "completed",
+                      transaction_id: razorpayRes.razorpay_payment_id,
+                      reference_no: Response // blockres.data.ReferenceNo
+                    };
+                    console.log(paymentData);
+                    this.setState({ loading: true });
+                    domainApi
+                      .post("/checkout/update-order", paymentData)
+                      .then(resp => {
+                        this.setState({ loading: false });
+                        console.log(resp);
+                      })
+                      .catch(error => {
+                        this.setState({ loading: false });
+                      });
+                    const { params } = this.props.navigation.state.params;
+                    this.props.navigation.navigate("ThankYou", {
+                      order,
+                      params,
+                      Response
+                    });
+                  } else {
+                    Toast.show(Response.Message, Toast.SHORT);
+                  }
                 })
                 .catch(error => {
                   console.log(error);

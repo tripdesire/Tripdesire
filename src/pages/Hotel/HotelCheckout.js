@@ -394,11 +394,13 @@ class HotelCheckout extends React.Component {
                 {params.RoomDetails.map(item => {
                   const { params } = this.props.navigation.state;
                   const { _selectRadio } = this.state;
-                  var str = params.HotelImages[0].Imagepath;
-                  var res = str.replace(
-                    "https://cdn.grnconnect.com/",
-                    "https://images.grnconnect.com/"
-                  );
+                  var str = item.Images;
+                  if (str) {
+                    str = str.replace(
+                      "https://cdn.grnconnect.com/",
+                      "https://images.grnconnect.com/"
+                    );
+                  }
                   return (
                     <View key={item.RoomIndex}>
                       <View style={{ marginVertical: 20, flexDirection: "row" }}>
@@ -408,7 +410,7 @@ class HotelCheckout extends React.Component {
                             height: 80,
                             borderRadius: 5
                           }}
-                          source={{ uri: res || "https://via.placeholder.com/150" }}
+                          source={{ uri: str || "https://via.placeholder.com/150" }}
                         />
 
                         <View
@@ -523,7 +525,7 @@ class HotelCheckout extends React.Component {
                     alignItems: "center",
                     marginVertical: 30,
                     justifyContent: "center",
-                    height: 40,
+                    height: 36,
                     borderRadius: 20
                   }}
                   onPress={this._Next}>

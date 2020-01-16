@@ -653,6 +653,7 @@ class CheckoutBus extends React.PureComponent {
                         style={{
                           inputAndroidContainer: { height: 35 },
                           inputAndroid: { paddingStart: 0, color: "#000" },
+                          inputIOS: { color: "#000" },
                           iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                         }}
                         onValueChange={(itemValue, index) =>
@@ -751,6 +752,7 @@ class CheckoutBus extends React.PureComponent {
                                 style={{
                                   inputAndroidContainer: { height: 35 },
                                   inputAndroid: { paddingStart: 0, color: "#000" },
+                                  inputIOS: { color: "#000" },
                                   iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                                 }}
                                 onValueChange={this._changeAdults(index, "gender")}

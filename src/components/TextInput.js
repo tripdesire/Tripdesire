@@ -19,7 +19,11 @@ class TextInputComponent extends React.PureComponent {
           <Text style={styles.text}>{this.props.label}</Text>
           <TextInput
             {...this.props}
-            style={[styles.textinput, Platform.OS == "ios" ? { paddingVertical: 8 } : null]}
+            style={[
+              styles.textinput,
+              { color: "#000000" },
+              Platform.OS == "ios" ? { paddingVertical: 8 } : null
+            ]}
             placeholder={this.props.placeholder}
             placeholderTextColor={"#D9D8DD"}></TextInput>
         </View>

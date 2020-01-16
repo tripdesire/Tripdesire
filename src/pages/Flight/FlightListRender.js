@@ -175,7 +175,15 @@ class FlightListRender extends React.PureComponent {
             />
             <View>
               <Text style={{ fontSize: 18, lineHeight: 20 }}>{dd}</Text>
-              <Text style={{ fontSize: 12, lineHeight: 14, color: "#5D666D" }}>{from}</Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  lineHeight: 14,
+                  color: "#5D666D",
+                  textTransform: "capitalize"
+                }}>
+                {from}
+              </Text>
             </View>
           </View>
 
@@ -194,7 +202,15 @@ class FlightListRender extends React.PureComponent {
 
           <View>
             <Text style={{ fontSize: 18, lineHeight: 20, textAlign: "right" }}>{ad}</Text>
-            <Text style={{ fontSize: 12, color: "#5D666D", lineHeight: 14 }}>{to}</Text>
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#5D666D",
+                lineHeight: 14,
+                textTransform: "capitalize"
+              }}>
+              {to}
+            </Text>
           </View>
         </View>
         <View

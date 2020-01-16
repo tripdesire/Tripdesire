@@ -148,7 +148,7 @@ class Hotel extends React.PureComponent {
       destinationId: this.state.cityId,
       arrivalDate: moment(this.state.CheckIn).format("DD-MM-YYYY"),
       departureDate: moment(this.state.CheckOut).format("DD-MM-YYYY"),
-      rooms: 1,
+      rooms: this.state.room,
       adults: this.state.adults,
       children: this.state.children,
       childrenAges: this.state.childrenAges,

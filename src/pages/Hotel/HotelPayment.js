@@ -14,7 +14,7 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
-
+import { isArray } from "lodash";
 class HotelPayment extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -73,6 +73,7 @@ class HotelPayment extends React.PureComponent {
     let param = {
       id: 222,
       quantity: "1",
+      hotel_type: params.hoteltype,
       single_hotel_data: params,
       single_ht_img: params.HotelImages[0].Imagepath,
       hotel_adults: params.adultDetail,
@@ -92,9 +93,11 @@ class HotelPayment extends React.PureComponent {
       single_ht_children: params.child,
       single_ht_price: params.selectedRoom.RoomTotal,
       single_ht_extra_guest: params.selectedRoom.ExtGuestTotal,
-      single_ht_tax_amount: params.selectedRoom.etravosApitaxTotal,
+      single_ht_tax_amount: params.selectedRoom.ServicetaxTotal,
       single_ht_convenience_fee: params.ConvenienceFeeTotal
     };
+    console.log("cartdata", param);
+    //console.log(JSON.stringify(param));
     this.setState({ loading: true });
     domainApi
       .post("/cart/add", param)
@@ -154,45 +157,43 @@ class HotelPayment extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, flexDirection: "column" }}>
-            <LinearGradient colors={["#53b2fe", "#065af3"]} style={{ flex: 4 }}>
-              <View style={{ flex: 4 }}>
-                <View
-                  style={{
-                    height: 56,
-                    //  backgroundColor: "#5B89F9",
-                    flexDirection: "row",
-                    marginHorizontal: 16,
-                    marginTop: 10
-                  }}>
-                  <Button onPress={() => this.props.navigation.goBack(null)}>
-                    <Icon name="md-arrow-back" size={24} color="#fff" />
-                  </Button>
-                  <View style={{ marginHorizontal: 20 }}>
-                    <Text
-                      style={{
-                        fontWeight: "700",
-                        fontSize: 16,
-                        marginHorizontal: 5,
-                        color: "#fff"
-                      }}>
-                      Hotel Summary
+            <LinearGradient colors={["#53b2fe", "#065af3"]}>
+              <View
+                style={{
+                  height: 56,
+                  //  backgroundColor: "#5B89F9",
+                  flexDirection: "row",
+                  marginHorizontal: 16,
+                  marginTop: 10
+                }}>
+                <Button onPress={() => this.props.navigation.goBack(null)}>
+                  <Icon name="md-arrow-back" size={24} color="#fff" />
+                </Button>
+                <View style={{ marginHorizontal: 20 }}>
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      marginHorizontal: 5,
+                      color: "#fff"
+                    }}>
+                    Hotel Summary
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start"
+                    }}>
+                    <IconMaterial name="calendar-month" size={18} color="#ffffff" />
+                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
+                      {checkInDate} - {checkOutDate}
                     </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "flex-start"
-                      }}>
-                      <IconMaterial name="calendar-month" size={18} color="#ffffff" />
-                      <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
-                        {checkInDate} - {checkOutDate}
-                      </Text>
-                    </View>
                   </View>
                 </View>
               </View>
             </LinearGradient>
-            <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>
+            <View style={{ flex: 4, backgroundColor: "#FFFFFF", height: 100 }}>
               <View
                 style={{
                   elevation: 2,
@@ -200,38 +201,167 @@ class HotelPayment extends React.PureComponent {
                   shadowColor: "rgba(0,0,0,0.1)",
                   shadowOpacity: 1,
                   shadowRadius: 4,
-                  marginHorizontal: 16,
-                  borderRadius: 8,
                   backgroundColor: "#ffffff",
-                  marginTop: -220
+                  marginHorizontal: 16,
+                  marginVertical: 8,
+                  borderRadius: 8,
+                  padding: 10
                 }}>
-                <Text
+                <View>
+                  <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 10 }}>
+                    Hotel Details
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={style._textHeading}>City</Text>
+                    <Text style={style._Details}>{params.city}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={style._textHeading}>Check In</Text>
+                    <Text style={style._Details}>{params.checkInDate}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={style._textHeading}>Check Out</Text>
+                    <Text style={style._Details}>{params.checkOutDate}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={style._textHeading}>Night(s)</Text>
+                    <Text style={style._Details}>{params.Night}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={style._textHeading}>Room(s)</Text>
+                    <Text style={style._Details}>{params.room}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={style._textHeading}>Guest(s)</Text>
+                    <Text style={style._Details}>{params.adult + params.child}</Text>
+                  </View>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  elevation: 2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowColor: "rgba(0,0,0,0.1)",
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  backgroundColor: "#ffffff",
+                  marginHorizontal: 16,
+                  marginVertical: 8,
+                  borderRadius: 8
+                }}>
+                <View style={{ flexDirection: "row", marginStart: 5, padding: 10 }}>
+                  <Icon type="SimpleLineIcons" name="bag" size={24} />
+                  <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 10 }}>
+                    Price Summary
+                  </Text>
+                </View>
+
+                <View
                   style={{
-                    color: "#717A81",
-                    backgroundColor: "#E5EBF7",
-                    paddingTop: 16,
-                    borderTopLeftRadius: 8,
-                    borderTopRightRadius: 8,
-                    paddingHorizontal: 16
+                    paddingHorizontal: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
                   }}>
-                  From
-                </Text>
-                <Text
+                  <Text style={style._textHeading}>SCharge</Text>
+                  <HTML
+                    baseFontStyle={style._Details}
+                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
+                    html={
+                      isArray(this.state.data.cart_data) &&
+                      this.state.data.cart_data.length > 0 &&
+                      this.state.data.cart_data[0].custum_product_data.Hotel_item_details.gst !=
+                        null
+                        ? this.state.data.cart_data[0].custum_product_data.Hotel_item_details
+                            .service_charge
+                        : "₹ 0.00"
+                    }
+                  />
+                </View>
+
+                <View
                   style={{
-                    fontSize: 18,
-                    fontWeight: "700",
-                    backgroundColor: "#E5EBF7",
-                    paddingHorizontal: 16
+                    paddingHorizontal: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
                   }}>
-                  {this.state.data.total_price ? "₹ " + this.state.data.total_price : "₹ " + 0.0}
-                </Text>
+                  <Text style={style._textHeading}>Tax</Text>
+                  <HTML
+                    baseFontStyle={style._Details}
+                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
+                    html={
+                      isArray(this.state.data.cart_data) &&
+                      this.state.data.cart_data.length > 0 &&
+                      this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax !=
+                        null
+                        ? "₹" +
+                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax
+                        : "₹0.00"
+                    }
+                  />
+                </View>
+                <View
+                  style={{
+                    paddingHorizontal: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}>
+                  <Text style={style._textHeading}>Extra Guest Charge</Text>
+                  <HTML
+                    baseFontStyle={style._Details}
+                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
+                    html={
+                      isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0
+                        ? "₹" +
+                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details
+                            .extra_guest_charge
+                        : "₹0.00"
+                    }
+                  />
+                </View>
+                <View
+                  style={{
+                    paddingHorizontal: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}>
+                  <Text style={style._textHeading}>Room Total</Text>
+                  <Text style={style._Details}>₹{params.selectedRoom.RoomNetTotal}</Text>
+                </View>
                 {!this.state.inputCoupon && (
                   <View
                     style={{
-                      backgroundColor: "#E5EBF7",
-                      paddingStart: 5,
-                      paddingBottom: 10
+                      paddingHorizontal: 10,
+                      flexDirection: "row",
+                      justifyContent: "space-between"
                     }}>
+                    {Array.isArray(this.state.data.coupon) && this.state.data.coupon.length > 0 && (
+                      <Text style={style._textHeading}>Discount</Text>
+                    )}
                     {Array.isArray(this.state.data.coupon) &&
                       this.state.data.coupon.length > 0 &&
                       this.state.data.coupon.map(coupon => (
@@ -241,141 +371,135 @@ class HotelPayment extends React.PureComponent {
                             color: "green",
                             fontWeight: "700"
                           }}
-                          containerStyle={{ marginHorizontal: 10 }}
+                          containerStyle={{ marginHorizontal: 20 }}
                           html={"- " + coupon.discount}
                         />
                       ))}
                   </View>
                 )}
-                <View style={style._textDetailsStyle}>
-                  <Text style={style._textHeading}>City</Text>
-                  <Text style={style._Details}>{params.city} (INDIA)</Text>
-                </View>
-                <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
-                  <Text style={style._textHeading}>Check In</Text>
-                  <Text style={style._Details}>{params.checkInDate}</Text>
-                </View>
-                <View style={style._textDetailsStyle}>
-                  <Text style={style._textHeading}>Check Out</Text>
-                  <Text style={style._Details}>{params.checkOutDate}</Text>
-                </View>
-                <View style={[style._textDetailsStyle, { backgroundColor: "#E5EBF7" }]}>
-                  <Text style={style._textHeading}>Night(s)</Text>
-                  <Text style={style._Details}>{params.Night}</Text>
-                </View>
-                <View style={style._textDetailsStyle}>
-                  <Text style={style._textHeading}>Room(s)</Text>
-                  <Text style={style._Details}>{params.room}</Text>
-                </View>
                 <View
-                  style={[
-                    style._textDetailsStyle,
-                    {
-                      backgroundColor: "#E5EBF7"
-                    }
-                  ]}>
-                  <Text style={style._textHeading}>Guest(s)</Text>
-                  <Text style={style._Details}>{params.adult + params.child}</Text>
-                </View>
-                {this.state.data.hasOwnProperty("coupon") && this.state.data.coupon.length == 0 ? (
-                  this.state.inputCoupon ? (
-                    <View
-                      style={{
-                        elevation: 1,
-                        backgroundColor: "#fff",
-                        justifyContent: "center",
-                        marginVertical: 20,
-                        paddingVertical: Platform.OS == "ios" ? 10 : 0,
-                        marginHorizontal: 16,
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowColor: "rgba(0,0,0,0.1)",
-                        shadowOpacity: 1,
-                        shadowRadius: 4,
-                        borderRadius: 8
-                      }}>
-                      <TextInput
-                        placeholder="Enter Coupon Code"
-                        value={this.state.coupon_code}
-                        style={{ marginStart: 5 }}
-                        onChangeText={text => this.setState({ coupon_code: text })}
-                      />
-                      <Button
-                        onPress={this.applyCoupon}
-                        style={{
-                          position: "absolute",
-                          backgroundColor: "#222222",
-                          paddingHorizontal: 8,
-                          paddingVertical: 4,
-                          end: 8,
-                          zIndex: 1,
-                          elevation: 1,
-                          shadowOpacity: 0.2,
-                          shadowRadius: 1,
-                          borderRadius: 8,
-                          shadowOffset: { height: 1, width: 0 }
-                        }}>
-                        <Text style={{ color: "#FFFFFF" }}>Apply</Text>
-                      </Button>
-                    </View>
-                  ) : (
-                    <Button
-                      onPress={this.toggleCoupon(true)}
-                      style={[
-                        styles.billingContainer,
-                        styles.billingRow,
-                        { justifyContent: "flex-start", marginHorizontal: 16, marginVertical: 20 }
-                      ]}>
-                      <Icon
-                        name="brightness-percent"
-                        size={20}
-                        color="#E7BA34"
-                        type="MaterialCommunityIcons"
-                      />
-                      <Text style={{ fontWeight: "700", marginStart: 8 }}>APPLY COUPON</Text>
-                      <Icon
-                        name="ios-arrow-forward"
-                        style={{ fontSize: 20, color: "#E7BA34", marginStart: "auto" }}
-                        size={20}
-                      />
-                    </Button>
-                  )
-                ) : (
-                  Array.isArray(this.state.data.coupon) &&
-                  this.state.data.coupon.length > 0 &&
-                  this.state.data.coupon.map(coupon => (
-                    <View
-                      style={[
-                        styles.billingContainer,
-                        styles.billingRow,
-                        { marginHorizontal: 16, marginVertical: 20 }
-                      ]}
-                      key={coupon.code}>
-                      <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
-                        {coupon.code}
-                      </Text>
-                      <Button
-                        style={{ marginStart: "auto", padding: 5 }}
-                        onPress={this.removeCoupon(coupon.code)}>
-                        <Icon name="md-close" color="#E7BA34" size={20} />
-                      </Button>
-                    </View>
-                  ))
-                )}
-                <Button
                   style={{
-                    backgroundColor: "#F68E1D",
-                    marginHorizontal: 80,
-                    alignItems: "center",
-                    marginVertical: 30,
-                    justifyContent: "center",
-                    height: 40,
-                    paddingHorizontal: 20,
-                    borderRadius: 20
-                  }}
-                  onPress={this._payment}>
-                  <Text style={{ color: "#fff" }}>Next</Text>
-                </Button>
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    borderBottomLeftRadius: 8,
+                    borderBottomRightRadius: 8,
+                    backgroundColor: "#F2F3F5"
+                  }}>
+                  <Text
+                    style={[
+                      style._textHeading,
+                      { fontWeight: "700", fontSize: 16, color: "#000" }
+                    ]}>
+                    Total Payable
+                  </Text>
+                  <Text
+                    style={[style._Details, { fontSize: 16, fontWeight: "700", color: "#000" }]}>
+                    {this.state.data.total_price ? "₹ " + this.state.data.total_price : "₹ " + 0.0}
+                  </Text>
+                </View>
               </View>
+
+              {this.state.data.hasOwnProperty("coupon") && this.state.data.coupon.length == 0 ? (
+                this.state.inputCoupon ? (
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      paddingVertical: Platform.OS == "ios" ? 10 : 0,
+                      marginHorizontal: 16,
+                      elevation: 2,
+                      marginTop: 8,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowColor: "rgba(0,0,0,0.1)",
+                      shadowOpacity: 1,
+                      shadowRadius: 4,
+                      backgroundColor: "#ffffff",
+                      borderRadius: 8
+                    }}>
+                    <TextInput
+                      placeholder="Enter Coupon Code"
+                      value={this.state.coupon_code}
+                      style={{ marginStart: 5, color: "#000" }}
+                      onChangeText={text => this.setState({ coupon_code: text })}
+                    />
+                    <Button
+                      onPress={this.applyCoupon}
+                      style={{
+                        position: "absolute",
+                        backgroundColor: "#222222",
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                        end: 8,
+                        zIndex: 1,
+                        elevation: 1,
+                        shadowOpacity: 0.2,
+                        shadowRadius: 1,
+                        borderRadius: 8,
+                        shadowOffset: { height: 1, width: 0 }
+                      }}>
+                      <Text style={{ color: "#FFFFFF" }}>Apply</Text>
+                    </Button>
+                  </View>
+                ) : (
+                  <Button
+                    onPress={this.toggleCoupon(true)}
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { justifyContent: "flex-start", marginHorizontal: 16, marginTop: 8 }
+                    ]}>
+                    <Icon
+                      name="brightness-percent"
+                      size={20}
+                      color="#E7BA34"
+                      type="MaterialCommunityIcons"
+                    />
+                    <Text style={{ fontWeight: "700", marginStart: 8 }}>APPLY COUPON</Text>
+                    <Icon
+                      name="ios-arrow-forward"
+                      style={{ fontSize: 20, color: "#E7BA34", marginStart: "auto" }}
+                      size={20}
+                    />
+                  </Button>
+                )
+              ) : (
+                Array.isArray(this.state.data.coupon) &&
+                this.state.data.coupon.length > 0 &&
+                this.state.data.coupon.map(coupon => (
+                  <View
+                    style={[
+                      styles.billingContainer,
+                      styles.billingRow,
+                      { marginHorizontal: 16, marginVertical: 20 }
+                    ]}
+                    key={coupon.code}>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
+                      {coupon.code}
+                    </Text>
+                    <Button
+                      style={{ marginStart: "auto", padding: 5 }}
+                      onPress={this.removeCoupon(coupon.code)}>
+                      <Icon name="md-close" color="#E7BA34" size={20} />
+                    </Button>
+                  </View>
+                ))
+              )}
+
+              <Button
+                style={{
+                  backgroundColor: "#F68E1D",
+                  marginHorizontal: 80,
+                  alignItems: "center",
+                  marginVertical: 30,
+                  justifyContent: "center",
+                  height: 36,
+                  paddingHorizontal: 20,
+                  borderRadius: 20
+                }}
+                onPress={this._payment}>
+                <Text style={{ color: "#fff" }}>Next</Text>
+              </Button>
             </View>
           </View>
           {this.state.loading && <ActivityIndicator />}
@@ -394,7 +518,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 16
   },
   _Details: { color: "#717A81", flex: 2, alignItems: "flex-start" },
-  _textHeading: { color: "#717A81", flex: 3 }
+  _textHeading: { color: "#717A81", flex: 5, marginStart: 8 }
 });
 
 const styles = StyleSheet.create({

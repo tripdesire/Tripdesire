@@ -110,6 +110,7 @@ class AddPassengers extends React.PureComponent {
                     style={{
                       inputAndroidContainer: { height: 40 },
                       inputAndroid: { paddingStart: 0, color: "#000" },
+                      inputIOS: { color: "#000" },
                       iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                     }}
                     onValueChange={this.onRoomChange}
@@ -141,6 +142,7 @@ class AddPassengers extends React.PureComponent {
                       style={{
                         inputAndroidContainer: { height: 40 },
                         inputAndroid: { paddingStart: 0, color: "#000" },
+                        inputIOS: { color: "#000" },
                         iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                       }}
                       onValueChange={this.onAdultsChange(index)}
@@ -163,6 +165,7 @@ class AddPassengers extends React.PureComponent {
                       style={{
                         inputAndroidContainer: { height: 40 },
                         inputAndroid: { paddingStart: 0, color: "#000" },
+                        inputIOS: { color: "#000" },
                         iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                       }}
                       onValueChange={this.onChildrenChange(index)}
@@ -187,6 +190,7 @@ class AddPassengers extends React.PureComponent {
                         style={{
                           inputAndroidContainer: { height: 40 },
                           inputAndroid: { paddingStart: 0, color: "#000" },
+                          inputIOS: { color: "#000" },
                           iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
                         }}
                         onValueChange={this.onChildAgeChange(index, childIndex)}

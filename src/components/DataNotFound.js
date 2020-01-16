@@ -25,8 +25,8 @@ function DataNotFound({ title, onPress, style, subtitle }) {
   );
 }
 
-DataNotFound.PropTypes = {
-  title: PropTypes.oneOfType([PropTypes.string]),
+DataNotFound.propTypes = {
+  title: PropTypes.string,
   onPress: PropTypes.func
 };
 
