@@ -172,7 +172,7 @@ class Bus extends React.PureComponent {
                     onPress={() => this._triptype("onewway")}>
                     <Text
                       style={{
-                        color: TripType == 1 ? "#ffffff" : "#5D666D",
+                        color: TripType == 1 ? "#ffffff" : "#000000",
                         fontSize: 16,
                         fontWeight: "600"
                       }}>
@@ -195,7 +195,7 @@ class Bus extends React.PureComponent {
                       style={{
                         fontSize: 16,
                         fontWeight: "600",
-                        color: TripType == 2 ? "#ffffff" : "#5D666D"
+                        color: TripType == 2 ? "#ffffff" : "#000000"
                       }}>
                       Round
                     </Text>
@@ -210,7 +210,7 @@ class Bus extends React.PureComponent {
                   alignItems: "center"
                 }}>
                 <Image
-                  style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                  style={{ width: 40, height: 40, tintColor: "#000000" }}
                   source={require("../../assets/imgs/busNew.png")}
                 />
                 <View
@@ -222,9 +222,9 @@ class Bus extends React.PureComponent {
                     flex: 1
                   }}>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#5D666D" }}>From</Text>
+                    <Text style={{ color: "#000000" }}>From</Text>
                     <Text
-                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}
+                      style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}
                       onPress={this.setModalVisible("modalFrom", true)}>
                       {from}
                     </Text>
@@ -234,7 +234,7 @@ class Bus extends React.PureComponent {
                       style={[imageStyle, { marginTop: 10 }]}
                       source={require("../../assets/imgs/exchange.png")}
                     />
-                    {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} /> */}
+                    {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#000000" size={40} /> */}
                   </Button>
                 </View>
               </View>
@@ -248,13 +248,13 @@ class Bus extends React.PureComponent {
                   alignItems: "center"
                 }}>
                 <Image
-                  style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                  style={{ width: 40, height: 40, tintColor: "#000000" }}
                   source={require("../../assets/imgs/busNew.png")}
                 />
                 <View style={{ marginStart: 20, flex: 1 }}>
-                  <Text style={{ color: "#5D666D" }}>To</Text>
+                  <Text style={{ color: "#000000" }}>To</Text>
                   <Text
-                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}
+                    style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}
                     onPress={this.setModalVisible("modalTo", true)}>
                     {to}
                   </Text>
@@ -271,7 +271,7 @@ class Bus extends React.PureComponent {
                   alignItems: "center"
                 }}>
                 <Image
-                  style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                  style={{ width: 40, height: 40, tintColor: "#000000" }}
                   source={require("../../assets/imgs/calender.png")}
                 />
                 <Button
@@ -280,9 +280,9 @@ class Bus extends React.PureComponent {
                     paddingStart: 20
                   }}
                   onPress={this.showDateTimePicker("fromDTpicker")}>
-                  <Text style={{ color: "#5D666D" }}>Depart</Text>
+                  <Text style={{ color: "#000000" }}>Depart</Text>
 
-                  <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                  <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                     {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
                   </Text>
                   <DateTimePicker
@@ -299,8 +299,8 @@ class Bus extends React.PureComponent {
                       paddingStart: 20
                     }}
                     onPress={this.showDateTimePicker("toDTpicker")}>
-                    <Text style={{ color: "#5D666D" }}>Return</Text>
-                    <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                    <Text style={{ color: "#000000" }}>Return</Text>
+                    <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                       {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
                     </Text>
                     <DateTimePicker

@@ -710,23 +710,6 @@ class CheckOut extends React.PureComponent {
                   </Text>
                 </View>
 
-                {this.state.data.cart_data && isArray(this.state.data.cart_data) && (
-                  <View
-                    style={{
-                      marginEnd: 10,
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={{ marginStart: 10 }}>Convenience Fees</Text>
-                    <HTML
-                      html={
-                        this.state.data.cart_data[0].custum_product_data.flight_book_item
-                          .ConvenienceFee
-                      }
-                    />
-                  </View>
-                )}
-
                 {params.tripType == 2 && params.flightType == 1 && (
                   <View>
                     <Text style={{ marginStart: 10, fontWeight: "500", fontSize: 16 }}>Return</Text>
@@ -741,46 +724,48 @@ class CheckOut extends React.PureComponent {
                       </Text>
                     </View>
                     {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
-                    <Text style={{ marginEnd: 10 }}>
-                      {"₹" +
-                        this.state.data.cart_data[0].custum_product_data.flight_book_item
-                          .return_flight_schagre}
-                    </Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between"
+                        }}>
+                        <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
+                        <Text style={{ marginEnd: 10 }}>
+                          {"₹" +
+                            this.state.data.cart_data[0].custum_product_data.flight_book_item
+                              .return_flight_schagre}
+                        </Text>
+                      </View>
+                    )}
+
+                    {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between"
+                        }}>
+                        <Text style={{ marginStart: 10 }}>Tax</Text>
+                        <Text style={{ marginEnd: 10 }}>
+                          {"₹" +
+                            this.state.data.cart_data[0].custum_product_data.flight_book_item
+                              .return_flight_tax}
+                        </Text>
+                      </View>
+                    )}
+
+                    <View
+                      style={{
+                        marginEnd: 10,
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}>
+                      <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
+                      <Text style={{ marginStart: 10 }}>
+                        ₹{params.arrivalFlight.FareDetails.TotalFare}
+                      </Text>
+                    </View>
                   </View>
                 )}
-
-                {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={{ marginStart: 10 }}>Tax</Text>
-                    <Text style={{ marginEnd: 10 }}>
-                      {"₹" +
-                        this.state.data.cart_data[0].custum_product_data.flight_book_item
-                          .return_flight_tax}
-                    </Text>
-                  </View>
-                )}
-
-                <View
-                  style={{
-                    marginEnd: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
-                  <Text style={{ marginStart: 10 }}>
-                    ₹{params.arrivalFlight.FareDetails.TotalFare}
-                  </Text>
-                </View>
 
                 {this.state.data.cart_data && isArray(this.state.data.cart_data) && (
                   <View
@@ -790,15 +775,12 @@ class CheckOut extends React.PureComponent {
                       justifyContent: "space-between"
                     }}>
                     <Text style={{ marginStart: 10 }}>Convenience Fees</Text>
-                    <Text>₹{this.state.data.cart_data[0].custum_product_data.flight_book_item.return_convenience_fee}</Text>
-                    {/* <HTML
+                    <HTML
                       html={
                         this.state.data.cart_data[0].custum_product_data.flight_book_item
                           .ConvenienceFee
                       }
-                    /> */}
-                  </View>
-                )}
+                    />
                   </View>
                 )}
 

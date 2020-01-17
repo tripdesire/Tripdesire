@@ -154,7 +154,10 @@ class FlightListRender extends React.PureComponent {
             marginHorizontal: 8
           }}>
           <Text style={{ color: "#5D666D", fontSize: 12 }}>
-            {item.FlightSegments[0].AirLineName} | {item.FlightUId}
+            {item.FlightSegments[0].AirLineName} |{" "}
+            {item.FlightSegments[0].OperatingAirlineCode +
+              "-" +
+              item.FlightSegments[0].OperatingAirlineFlightNumber}
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             ₹{parseInt(item.FareDetails.TotalFare)}
@@ -179,7 +182,7 @@ class FlightListRender extends React.PureComponent {
                 style={{
                   fontSize: 12,
                   lineHeight: 14,
-                  color: "#5D666D",
+                  //  color: "#000",
                   textTransform: "capitalize"
                 }}>
                 {from}
@@ -205,7 +208,7 @@ class FlightListRender extends React.PureComponent {
             <Text
               style={{
                 fontSize: 12,
-                color: "#5D666D",
+                // color: "#5D666D",
                 lineHeight: 14,
                 textTransform: "capitalize"
               }}>
@@ -276,7 +279,8 @@ class FlightListRender extends React.PureComponent {
                     marginHorizontal: 8
                   }}>
                   <Text style={{ color: "#636C73", fontSize: 12 }}>
-                    {itemEach.AirLineName} | {item.FlightUId}
+                    {itemEach.AirLineName} |{" "}
+                    {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                   </Text>
                 </View>
                 <View
@@ -299,7 +303,7 @@ class FlightListRender extends React.PureComponent {
                       <Text
                         style={{
                           fontSize: 12,
-                          color: "#5D646A",
+                          // color: "#5D646A",
                           lineHeight: 14
                         }}>
                         {itemEach.IntDepartureAirportName}
@@ -336,7 +340,7 @@ class FlightListRender extends React.PureComponent {
                     <Text
                       style={{
                         fontSize: 12,
-                        color: "#5D646A",
+                        // color: "#5D646A",
                         lineHeight: 14
                       }}>
                       {itemEach.IntArrivalAirportName}
@@ -460,7 +464,7 @@ class FlightListRender extends React.PureComponent {
                         color: "#5D646A",
                         flex: 1
                       }}>
-                      Fee & SubCharges : ₹{item.FareDetails.ChargeableFares.Conveniencefee}
+                      Fee & Surcharges : ₹{item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
                     <Text
                       style={{

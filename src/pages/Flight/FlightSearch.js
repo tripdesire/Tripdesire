@@ -66,7 +66,7 @@ class FlightSearch extends React.PureComponent {
                     onPress={this.setDomesticActive}>
                     <Text
                       style={{
-                        color: flightType == 1 ? "#FFFFFF" : "#5D666D",
+                        color: flightType == 1 ? "#FFFFFF" : "#000000",
                         fontSize: 16,
                         fontWeight: "600"
                       }}>
@@ -101,7 +101,7 @@ class FlightSearch extends React.PureComponent {
                     onPress={this.setInternationalActive}>
                     <Text
                       style={{
-                        color: flightType == 2 ? "#FFFFFF" : "#5D666D",
+                        color: flightType == 2 ? "#FFFFFF" : "#000000",
                         fontSize: 16,
                         fontWeight: "600"
                       }}>

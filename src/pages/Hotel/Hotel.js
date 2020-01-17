@@ -161,7 +161,7 @@ class Hotel extends React.PureComponent {
       room: this.state.room
     };
     // console.log(params);
-    //console.log(JSON.stringify(params));
+    console.log(JSON.stringify(params));
     this.props.navigation.navigate("HotelInfo", params);
   };
 
@@ -227,7 +227,7 @@ class Hotel extends React.PureComponent {
                   }}>
                   <Text
                     style={{
-                      color: hoteltype == 1 ? "#FFF" : "#5D666D",
+                      color: hoteltype == 1 ? "#FFF" : "#000000",
                       fontSize: 16,
                       fontWeight: "600"
                     }}>
@@ -262,7 +262,7 @@ class Hotel extends React.PureComponent {
                   }}>
                   <Text
                     style={{
-                      color: hoteltype == 2 ? "#FFF" : "#5D666D",
+                      color: hoteltype == 2 ? "#FFF" : "#000000",
                       fontSize: 16,
                       fontWeight: "600"
                     }}>
@@ -277,13 +277,13 @@ class Hotel extends React.PureComponent {
                 <View
                   style={{ margin: 16, marginTop: 54, flexDirection: "row", alignItems: "center" }}>
                   <Image
-                    style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                    style={{ width: 40, height: 40, tintColor: "#000000" }}
                     source={require("../../assets/imgs/locationList.png")}
                   />
 
                   <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.countryOpen}>
-                    <Text style={{ color: "#5D666D" }}>Country</Text>
-                    <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                    <Text style={{ color: "#000000" }}>Country</Text>
+                    <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                       {country}
                     </Text>
                   </Button>
@@ -299,14 +299,14 @@ class Hotel extends React.PureComponent {
                 alignItems: "center"
               }}>
               <Image
-                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                style={{ width: 40, height: 40, tintColor: "#000000" }}
                 source={require("../../assets/imgs/locationList.png")}
               />
               <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.modalOpen}>
-                <Text style={{ color: "#5D666D" }}>City</Text>
+                <Text style={{ color: "#000000" }}>City</Text>
                 <Text
                   style={{
-                    color: "#5D666D",
+                    color: "#000000",
                     fontSize: 18,
                     fontWeight: "600",
                     textTransform: "capitalize"
@@ -320,14 +320,14 @@ class Hotel extends React.PureComponent {
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                style={{ width: 40, height: 40, tintColor: "#000000" }}
                 source={require("../../assets/imgs/calender.png")}
               />
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.showDateTimePicker("fromDTpicker")}>
-                <Text style={{ color: "#5D666D" }}>Check-in</Text>
-                <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                <Text style={{ color: "#000000" }}>Check-in</Text>
+                <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                   {moment(CheckIn).format("DD MMM YYYY")}
                 </Text>
                 <DateTimePicker
@@ -341,8 +341,8 @@ class Hotel extends React.PureComponent {
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.showDateTimePicker("toDTpicker")}>
-                <Text style={{ color: "#5D666D" }}>Check-out</Text>
-                <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                <Text style={{ color: "#000000" }}>Check-out</Text>
+                <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                   {moment(CheckOut).format("DD MMM YYYY")}
                 </Text>
                 <DateTimePicker
@@ -361,12 +361,12 @@ class Hotel extends React.PureComponent {
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                style={{ width: 40, height: 40, tintColor: "#000000" }}
                 source={require("../../assets/imgs/Passenger.png")}
               />
               <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
-                <Text style={{ color: "#5D666D" }}>Rooms & Guests</Text>
-                <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                <Text style={{ color: "#000000" }}>Rooms & Guests</Text>
+                <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                   {adults_count === "Passengers:" ? adults_count : ""}
                   {adults_count > 0 ? adults_count + " Adults , " : ""}
                   {children_count > 0 ? children_count + " Children , " : ""}

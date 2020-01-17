@@ -114,7 +114,7 @@ class RenderRoundReturn extends React.PureComponent {
             </Text>
           </Button>
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
-            ₹ {item.Fares}
+            ₹ {item.Fares.split("/", 1)}
           </Text>
         </View>
         <Modal

@@ -324,7 +324,7 @@ class Cab extends React.PureComponent {
                 onPress={() => this._triptype("oneway")}>
                 <Text
                   style={{
-                    color: travelType == 2 ? "#ffffff" : "#5D666D",
+                    color: travelType == 2 ? "#ffffff" : "#000000",
                     fontSize: 16,
                     fontWeight: "600"
                   }}>
@@ -356,7 +356,7 @@ class Cab extends React.PureComponent {
                   style={{
                     fontSize: 16,
                     fontWeight: "600",
-                    color: travelType == 1 ? "#ffffff" : "#5D666D"
+                    color: travelType == 1 ? "#ffffff" : "#000000"
                   }}>
                   Outstation
                 </Text>
@@ -390,7 +390,7 @@ class Cab extends React.PureComponent {
                   style={{
                     fontSize: 16,
                     fontWeight: "600",
-                    color: travelType == 3 ? "#ffffff" : "#5D666D"
+                    color: travelType == 3 ? "#ffffff" : "#000000"
                   }}>
                   Transfer
                 </Text>
@@ -437,50 +437,50 @@ class Cab extends React.PureComponent {
                   type="FontAwesome"
                   size={16}
                   style={{ marginEnd: 5 }}
-                  color={tripType == 6 ? "#5D666D" : "#BDC4CA"}
+                  color={tripType == 6 ? "#000000" : "#BDC4CA"}
                 />
                 <Button onPress={() => this._SelectTripType("airport")}>
-                  <Text style={{ color: tripType == 6 ? "#5D666D" : "#BDC4CA" }}>Airport</Text>
+                  <Text style={{ color: tripType == 6 ? "#000000" : "#BDC4CA" }}>Airport</Text>
                 </Button>
                 <Icon
                   name={Platform.OS == "ios" ? "ios-train" : "md-train"}
                   size={16}
-                  color={tripType == 7 ? "#5D666D" : "#BDC4CA"}
+                  color={tripType == 7 ? "#000000" : "#BDC4CA"}
                   style={{ marginStart: 10, marginEnd: 5 }}
                 />
                 <Button onPress={() => this._SelectTripType("railway")}>
-                  <Text style={{ color: tripType == 7 ? "#5D666D" : "#BDC4CA" }}>
+                  <Text style={{ color: tripType == 7 ? "#000000" : "#BDC4CA" }}>
                     Railway Station
                   </Text>
                 </Button>
                 <Icon
                   name={Platform.OS == "ios" ? "hotel" : "hotel"}
                   size={14}
-                  color={tripType == 8 ? "#5D666D" : "#BDC4CA"}
+                  color={tripType == 8 ? "#000000" : "#BDC4CA"}
                   type="FontAwesome5"
                   style={{ marginStart: 10, marginEnd: 5 }}
                 />
                 <Button
                   style={{ justifyContent: "center" }}
                   onPress={() => this._SelectTripType("hotel")}>
-                  <Text style={{ color: tripType == 8 ? "#5D666D" : "#BDC4CA" }}>Area/Hotel</Text>
+                  <Text style={{ color: tripType == 8 ? "#000000" : "#BDC4CA" }}>Area/Hotel</Text>
                 </Button>
               </View>
             )}
 
             <View style={{ margin: 16, marginTop: 40, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                style={{ width: 40, height: 40, tintColor: "#000000" }}
                 source={require("../../assets/imgs/cabSearch.png")}
               />
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.setModalVisible("modalFrom", true)}>
-                <Text style={{ color: "#5D666D" }}>From</Text>
+                <Text style={{ color: "#000000" }}>From</Text>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                   <Text
                     numberOfLines={1}
-                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                    style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                     {from}
                   </Text>
                   {travelType == 1 && (
@@ -492,7 +492,7 @@ class Cab extends React.PureComponent {
                       {/* <Icon
                         type="MaterialCommunityIcons"
                         name="swap-vertical"
-                        color="#5D666D"
+                        color="#000000"
                         size={40}
                       /> */}
                     </Button>
@@ -506,17 +506,17 @@ class Cab extends React.PureComponent {
                 <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
                 <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
                   <Image
-                    style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                    style={{ width: 40, height: 40, tintColor: "#000000" }}
                     source={require("../../assets/imgs/cabSearch.png")}
                   />
 
                   <Button
                     style={{ flex: 1, paddingStart: 20 }}
                     onPress={this.setModalVisible("modalTo", true)}>
-                    <Text style={{ color: "#5D666D" }}>To</Text>
+                    <Text style={{ color: "#000000" }}>To</Text>
                     <Text
                       numberOfLines={1}
-                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                      style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                       {to}
                     </Text>
                   </Button>
@@ -530,26 +530,26 @@ class Cab extends React.PureComponent {
 
                 <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
                   <Image
-                    style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                    style={{ width: 40, height: 40, tintColor: "#000000" }}
                     source={require("../../assets/imgs/locationList.png")}
                   />
                   <Button
                     style={{ flex: 1, paddingStart: 20 }}
                     onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
-                    <Text style={{ color: "#5D666D" }}>Pickup Location</Text>
+                    <Text style={{ color: "#000000" }}>Pickup Location</Text>
                     <Text
                       numberOfLines={1}
-                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                      style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                       {pickuplocation != "" ? pickuplocation : "Tap To Enter"}
                     </Text>
                   </Button>
                   <Button
                     style={{ flex: 1, paddingStart: 20 }}
                     onPress={this.setModalVisible("modalDropSugg", true)}>
-                    <Text style={{ color: "#5D666D" }}>Drop Location</Text>
+                    <Text style={{ color: "#000000" }}>Drop Location</Text>
                     <Text
                       numberOfLines={1}
-                      style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                      style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                       {droplocation != "" ? droplocation : "Tap To Enter"}
                     </Text>
                   </Button>
@@ -561,14 +561,14 @@ class Cab extends React.PureComponent {
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                style={{ width: 40, height: 40, tintColor: "#000000" }}
                 source={require("../../assets/imgs/calender.png")}
               />
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.showDateTimePicker("fromDTpicker")}>
-                <Text style={{ color: "#5D666D" }}>Depart</Text>
-                <Text style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                <Text style={{ color: "#000000" }}>Depart</Text>
+                <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                   {moment(this.state.CheckIn).format("DD MMM YYYY")}
                 </Text>
                 <DateTimePicker
@@ -583,10 +583,10 @@ class Cab extends React.PureComponent {
                 <Button
                   style={{ flex: 1, paddingStart: 20 }}
                   onPress={this.showDateTimePicker("toDTpicker")}>
-                  <Text style={{ color: "#5D666D" }}>Return</Text>
+                  <Text style={{ color: "#000000" }}>Return</Text>
                   <Text
                     numberOfLines={1}
-                    style={{ fontSize: 18, color: "#5D666D", fontWeight: "600" }}>
+                    style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                     {moment(this.state.CheckOut).format("DD MMM YYYY")}
                   </Text>
                   <DateTimePicker
@@ -604,12 +604,12 @@ class Cab extends React.PureComponent {
 
             <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
               <Image
-                style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+                style={{ width: 40, height: 40, tintColor: "#000000" }}
                 source={require("../../assets/imgs/locationList.png")}
               />
               {travelType == 2 && (
                 <View style={{ flex: 1, paddingStart: 20 }}>
-                  <Text style={{ color: "#5D666D" }}>Select Trip</Text>
+                  <Text style={{ color: "#000000" }}>Select Trip</Text>
                   <View style={{ width: 80 }}>
                     <RNPickerSelect
                       placeholder={{}}
@@ -624,14 +624,14 @@ class Cab extends React.PureComponent {
                       style={{
                         //iconContainer: { paddingEnd: 32 },
                         inputIOS: {
-                          color: "#5D666D",
+                          color: "#000000",
                           padding: 0,
                           height: 20,
                           fontWeight: "700",
                           fontSize: 18
                         },
                         inputAndroid: {
-                          color: "#5D666D",
+                          color: "#000000",
                           padding: 0,
                           height: 20,
                           fontWeight: "700",
@@ -646,7 +646,7 @@ class Cab extends React.PureComponent {
                 </View>
               )}
               <View style={{ flex: 1, paddingStart: 20 }}>
-                <Text style={{ color: "#5D666D" }}>Pickup</Text>
+                <Text style={{ color: "#000000" }}>Pickup</Text>
                 <View style={{ width: 100 }}>
                   <RNPickerSelect
                     placeholder={{}}
@@ -655,14 +655,14 @@ class Cab extends React.PureComponent {
                     items={this.state.item}
                     style={{
                       inputIOS: {
-                        color: "#5D666D",
+                        color: "#000000",
                         padding: 0,
                         height: 20,
                         fontWeight: "700",
                         fontSize: 18
                       },
                       inputAndroid: {
-                        color: "#5D666D",
+                        color: "#000000",
                         padding: 0,
                         height: 20,
                         fontWeight: "700",

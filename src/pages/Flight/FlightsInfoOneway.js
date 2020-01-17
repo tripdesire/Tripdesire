@@ -351,7 +351,9 @@ class FlightsInfoOneway extends React.PureComponent {
 
   _renderItem = ({ item, index }) => (
     <LinearGradient
-      colors={this.state.index === index ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
+      colors={
+        this.state.journeyDate === item.fullDate ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]
+      }
       style={{}}>
       <Button
         style={{
@@ -364,7 +366,11 @@ class FlightsInfoOneway extends React.PureComponent {
           // backgroundColor: this.state.index === index ? "#5B89F9" : "#fff"
         }}
         onPress={this._ChangeDate(item, index)}>
-        <Text style={{ fontSize: 12, color: this.state.index === index ? "#fff" : "#717984" }}>
+        <Text
+          style={{
+            fontSize: 12,
+            color: this.state.journeyDate === item.fullDate ? "#fff" : "#717984"
+          }}>
           {item.day}
         </Text>
         <Text

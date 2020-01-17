@@ -281,13 +281,63 @@ class HotelPayment extends React.PureComponent {
                   </Text>
                 </View>
 
+                {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
+                  <View
+                    style={{
+                      paddingHorizontal: 10,
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}>
+                    <Text style={style._textHeading}>Room Total</Text>
+                    <Text style={style._Details}>
+                      ₹
+                      {this.state.data.cart_data[0].custum_product_data.Hotel_item_details
+                        .single_hotel_data.selectedRoom.RoomNetTotal * params.Night}
+                    </Text>
+                  </View>
+                )}
+
                 <View
                   style={{
                     paddingHorizontal: 10,
                     flexDirection: "row",
                     justifyContent: "space-between"
                   }}>
-                  <Text style={style._textHeading}>SCharge</Text>
+                  <Text style={style._textHeading}></Text>
+                  <Text style={style._Details}>
+                    {params.room + " Room(s)" + " x " + params.Night + " Night(s)"}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    paddingHorizontal: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}>
+                  <Text style={style._textHeading}>Taxes and Fees</Text>
+                  <HTML
+                    baseFontStyle={style._Details}
+                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
+                    html={
+                      isArray(this.state.data.cart_data) &&
+                      this.state.data.cart_data.length > 0 &&
+                      this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax !=
+                        null
+                        ? "₹" +
+                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax
+                        : "₹0.00"
+                    }
+                  />
+                </View>
+
+                <View
+                  style={{
+                    paddingHorizontal: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}>
+                  <Text style={style._textHeading}>Service Charge</Text>
                   <HTML
                     baseFontStyle={style._Details}
                     containerStyle={{ flex: 2, alignItems: "flex-start" }}
@@ -309,27 +359,6 @@ class HotelPayment extends React.PureComponent {
                     flexDirection: "row",
                     justifyContent: "space-between"
                   }}>
-                  <Text style={style._textHeading}>Tax</Text>
-                  <HTML
-                    baseFontStyle={style._Details}
-                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
-                    html={
-                      isArray(this.state.data.cart_data) &&
-                      this.state.data.cart_data.length > 0 &&
-                      this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax !=
-                        null
-                        ? "₹" +
-                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax
-                        : "₹0.00"
-                    }
-                  />
-                </View>
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
                   <Text style={style._textHeading}>Extra Guest Charge</Text>
                   <HTML
                     baseFontStyle={style._Details}
@@ -343,15 +372,7 @@ class HotelPayment extends React.PureComponent {
                     }
                   />
                 </View>
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={style._textHeading}>Room Total</Text>
-                  <Text style={style._Details}>₹{params.selectedRoom.RoomNetTotal}</Text>
-                </View>
+
                 {!this.state.inputCoupon && (
                   <View
                     style={{

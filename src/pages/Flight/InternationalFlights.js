@@ -264,7 +264,7 @@ class InternationalFlights extends React.PureComponent {
             onPress={() => this._SelectTripType("oneway")}>
             <Text
               style={{
-                color: tripType == 1 ? "#5D666D" : "#BDC4CA",
+                color: tripType == 1 ? "#000000" : "#BDC4CA",
                 fontWeight: "600",
                 fontSize: 14
               }}>
@@ -280,7 +280,7 @@ class InternationalFlights extends React.PureComponent {
             onPress={() => this._SelectTripType("round")}>
             <Text
               style={{
-                color: tripType == 2 ? "#5D666D" : "#BDC4CA",
+                color: tripType == 2 ? "#000000" : "#BDC4CA",
                 fontWeight: "600",
                 fontSize: 14
               }}>
@@ -292,16 +292,16 @@ class InternationalFlights extends React.PureComponent {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              style={{ width: 40, height: 40, tintColor: "#000000" }}
               source={require("../../assets/imgs/flightSearch.png")}
             />
             <Button
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalFrom", true)}>
-              <Text style={{ color: "#5D666D" }}>From</Text>
+              <Text style={{ color: "#000000" }}>From</Text>
               <Text
                 style={{
-                  color: "#5D666D",
+                  color: "#000000",
                   fontSize: 18,
                   fontWeight: "600",
                   textTransform: "capitalize"
@@ -314,7 +314,7 @@ class InternationalFlights extends React.PureComponent {
                 style={[imageStyle, { marginTop: 10 }]}
                 source={require("../../assets/imgs/exchange.png")}
               />
-              {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#5D666D" size={40} /> */}
+              {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#000000" size={40} /> */}
             </Button>
           </View>
 
@@ -322,16 +322,16 @@ class InternationalFlights extends React.PureComponent {
 
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              style={{ width: 40, height: 40, tintColor: "#000000" }}
               source={require("../../assets/imgs/flightSearch.png")}
             />
             <Button
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalTo", true)}>
-              <Text style={{ color: "#5D666D" }}>To</Text>
+              <Text style={{ color: "#000000" }}>To</Text>
               <Text
                 style={{
-                  color: "#5D666D",
+                  color: "#000000",
                   fontSize: 18,
                   fontWeight: "600",
                   textTransform: "capitalize"
@@ -345,14 +345,14 @@ class InternationalFlights extends React.PureComponent {
 
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              style={{ width: 40, height: 40, tintColor: "#000000" }}
               source={require("../../assets/imgs/calender.png")}
             />
             <Button
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.showDateTimePicker("fromDTpicker")}>
-              <Text style={{ color: "#5D666D" }}>Depart </Text>
-              <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+              <Text style={{ color: "#000000" }}>Depart </Text>
+              <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                 {moment(Journey_date).format("DD MMM YYYY")}
               </Text>
               <DateTimePicker
@@ -367,8 +367,8 @@ class InternationalFlights extends React.PureComponent {
               <Button
                 style={{ flex: 1, paddingStart: 20 }}
                 onPress={this.showDateTimePicker("toDTpicker")}>
-                <Text style={{ color: "#5D666D" }}>Return</Text>
-                <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+                <Text style={{ color: "#000000" }}>Return</Text>
+                <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                   {moment(Return_date).format("DD MMM YYYY")}
                 </Text>
                 <DateTimePicker
@@ -386,12 +386,12 @@ class InternationalFlights extends React.PureComponent {
 
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              style={{ width: 40, height: 40, tintColor: "#000000" }}
               source={require("../../assets/imgs/Passenger.png")}
             />
             <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
-              <Text style={{ color: "#5D666D" }}>Passengers</Text>
-              <Text style={{ color: "#5D666D", fontSize: 18, fontWeight: "600" }}>
+              <Text style={{ color: "#000000" }}>Passengers</Text>
+              <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                 {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
                   ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
                   : parseInt(adult) + parseInt(children) + parseInt(infants)}
@@ -401,12 +401,12 @@ class InternationalFlights extends React.PureComponent {
           <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
           <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
             <Image
-              style={{ width: 40, height: 40, tintColor: "#5D666D" }}
+              style={{ width: 40, height: 40, tintColor: "#000000" }}
               source={require("../../assets/imgs/class.png")}
             />
 
             <View style={{ flex: 1, paddingStart: 20 }}>
-              <Text style={{ color: "#5D666D" }}>Class</Text>
+              <Text style={{ color: "#000000" }}>Class</Text>
               <RNPickerSelect
                 useNativeAndroidPickerStyle={false}
                 placeholder={{}}
@@ -415,14 +415,14 @@ class InternationalFlights extends React.PureComponent {
                   inputIOS: {
                     fontSize: 18,
                     fontWeight: "700",
-                    color: "#5D666D"
+                    color: "#000000"
                   },
                   inputAndroid: {
                     padding: 0,
                     height: 20,
                     fontSize: 18,
                     fontWeight: "700",
-                    color: "#5D666D"
+                    color: "#000000"
                   }
                 }}
                 pickerProps={{ mode: "dropdown" }}

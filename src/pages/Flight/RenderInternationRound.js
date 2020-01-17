@@ -209,7 +209,9 @@ class RenderInternationRound extends React.PureComponent {
           }}>
           <Text style={{ color: "#636C73", fontSize: 12 }}>
             Depart - {this.props.item.IntOnward.FlightSegments[0].AirLineName} |{" "}
-            {this.props.item.FlightUId}
+            {this.props.item.IntOnward.FlightSegments[0].OperatingAirlineCode +
+              "-" +
+              this.props.item.IntOnward.FlightSegments[0].OperatingAirlineFlightNumber}
           </Text>
         </View>
         <View
@@ -230,7 +232,7 @@ class RenderInternationRound extends React.PureComponent {
               <Text
                 style={{
                   fontSize: 12,
-                  color: "#5D646A",
+                  // color: "#5D646A",
                   lineHeight: 14
                 }}>
                 {from}
@@ -263,7 +265,7 @@ class RenderInternationRound extends React.PureComponent {
             <Text
               style={{
                 fontSize: 12,
-                color: "#5D646A",
+                // color: "#5D646A",
                 lineHeight: 14
               }}>
               {to}
@@ -333,7 +335,8 @@ class RenderInternationRound extends React.PureComponent {
                     marginHorizontal: 8
                   }}>
                   <Text style={{ color: "#636C73", fontSize: 12 }}>
-                    {itemEach.AirLineName} | {this.props.item.FlightUId}
+                    {itemEach.AirLineName} |{" "}
+                    {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                   </Text>
                 </View>
                 <View
@@ -356,7 +359,7 @@ class RenderInternationRound extends React.PureComponent {
                       <Text
                         style={{
                           fontSize: 12,
-                          color: "#5D646A",
+                          // color: "#5D646A",
                           lineHeight: 14
                         }}>
                         {itemEach.IntDepartureAirportName}
@@ -379,7 +382,7 @@ class RenderInternationRound extends React.PureComponent {
                     <Text
                       style={{
                         fontSize: 12,
-                        color: "#5D646A",
+                        //color: "#5D646A",
                         lineHeight: 14
                       }}>
                       {itemEach.IntArrivalAirportName}
@@ -529,7 +532,9 @@ class RenderInternationRound extends React.PureComponent {
             }}>
             <Text style={{ color: "#636C73", fontSize: 12 }}>
               Return - {this.props.item.IntReturn.FlightSegments[0].AirLineName} |{" "}
-              {this.props.item.FlightUId}
+              {this.props.item.IntReturn.FlightSegments[0].OperatingAirlineCode +
+                "-" +
+                this.props.item.IntReturn.FlightSegments[0].OperatingAirlineFlightNumber}
             </Text>
           </View>
           <View
@@ -545,7 +550,7 @@ class RenderInternationRound extends React.PureComponent {
                 <Text
                   style={{
                     fontSize: 12,
-                    color: "#5D646A",
+                    // color: "#5D646A",
                     lineHeight: 14
                   }}>
                   {to}
@@ -583,7 +588,7 @@ class RenderInternationRound extends React.PureComponent {
               <Text
                 style={{
                   fontSize: 12,
-                  color: "#5D646A",
+                  // color: "#5D646A",
                   lineHeight: 18,
                   textAlign: "right"
                 }}>
@@ -654,7 +659,8 @@ class RenderInternationRound extends React.PureComponent {
                       marginHorizontal: 8
                     }}>
                     <Text style={{ color: "#636C73", fontSize: 12 }}>
-                      {itemEach.AirLineName} | {this.props.item.FlightUId}
+                      {itemEach.AirLineName} |{" "}
+                      {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                     </Text>
                   </View>
                   <View
@@ -681,7 +687,7 @@ class RenderInternationRound extends React.PureComponent {
                         <Text
                           style={{
                             fontSize: 12,
-                            color: "#5D646A",
+                            // color: "#5D646A",
                             lineHeight: 14
                           }}>
                           {itemEach.IntDepartureAirportName}
@@ -706,7 +712,7 @@ class RenderInternationRound extends React.PureComponent {
                       <Text
                         style={{
                           fontSize: 12,
-                          color: "#5D646A",
+                          // color: "#5D646A",
                           lineHeight: 14
                         }}>
                         {itemEach.IntArrivalAirportName}

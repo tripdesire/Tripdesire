@@ -46,29 +46,9 @@ class HotelCheckout extends React.Component {
     };
     this.SingleHotelData();
   }
-  componentDidMount() {}
 
-  _radioButton = item => () => {
-    this.setState({
-      _selectRadio: item.RoomIndex,
-      selectedRoom: item
-    });
-  };
-
-  modalBackPress = () => {
-    this.setState({ policy: false });
-  };
-
-  modalClose = () => {
-    this.setState({ imageShow: false });
-  };
-
-  showImage = () => {
-    this.setState({ imageShow: true });
-  };
-
-  SingleHotelData() {
-    console.log("hey");
+  componentDidMount() {
+    console.log("kamal");
     const { params } = this.props.navigation.state;
     let param = {
       hotelId: params.HotelId,
@@ -98,7 +78,8 @@ class HotelCheckout extends React.Component {
 
         //let merged = mergeWith({}, params, data, (a, b) => (b === null ? a : undefined));
         if (data.HotelId == null) {
-          Toast.show("Room data is not available", Toast.LONG);
+          this.props.navigation.goBack(null);
+          Toast.show("Room is not available", Toast.LONG);
         } else {
           this.props.navigation.setParams({ ...params, ...data });
           this.setState({ selectedRoom: data.RoomDetails[0] });
@@ -108,6 +89,29 @@ class HotelCheckout extends React.Component {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  _radioButton = item => () => {
+    this.setState({
+      _selectRadio: item.RoomIndex,
+      selectedRoom: item
+    });
+  };
+
+  modalBackPress = () => {
+    this.setState({ policy: false });
+  };
+
+  modalClose = () => {
+    this.setState({ imageShow: false });
+  };
+
+  showImage = () => {
+    this.setState({ imageShow: true });
+  };
+
+  SingleHotelData() {
+    console.log("hey");
   }
 
   _viewLocation = (lat, lng, lbl) => () => {

@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, SafeAreaView, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import { View, SafeAreaView, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
 import { Button, Text, ActivityIndicator } from "../../components";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -7,13 +7,15 @@ import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
-import { isEmpty } from "lodash";
+import { isEmpty, isArray } from "lodash";
 import { connect } from "react-redux";
+import RNPickerSelect from "react-native-picker-select";
 import { etravosApi, domainApi } from "../../service";
 
 class BusPayment extends React.PureComponent {
   constructor(props) {
     super(props);
+    const { selectedSheets } = this.props.navigation.state.params;
     console.log(this.props.navigation.state.params);
     this.state = {
       loader: false,
@@ -23,9 +25,37 @@ class BusPayment extends React.PureComponent {
       radioCheck: false,
       radioCOD: false,
       orderId: "",
-      transaction_id: ""
+      transaction_id: "",
+      IdCardType: "ADHAR_CARD",
+      IdNumber: "",
+      IssuedBy: "",
+      adults: [...Array(selectedSheets.length)].map(item => {
+        return {
+          name: "",
+          age: "",
+          gender: "M",
+          den: "Mr"
+        };
+      }),
+      BlockingReferenceNo: "",
+      BookingReferenceNo: ""
     };
   }
+
+  _changeAdults = (index, key) => text => {
+    let newData = Object.assign([], this.state.adults);
+    newData[index][key] = text;
+    if (key == "gender") {
+      newData[index].den = text == "M" ? "Mr" : "Mrs";
+    }
+    this.setState({
+      adults: newData
+    });
+  };
+
+  _changeAdult = key => text => {
+    this.setState({ [key]: text });
+  };
 
   _FFN = () => {
     this.setState({ ffn: true });
@@ -33,26 +63,19 @@ class BusPayment extends React.PureComponent {
 
   validate = () => {
     let needToValidateAdults = false;
-    const { adults } = this.props.navigation.state.params;
+    const { adults } = this.state;
     needToValidateAdults = adults.every(
       item => item.den == "" || item.name == "" || item.age == ""
     );
     return needToValidateAdults;
   };
 
-  _PlaceOrder = () => {
-    const {
-      TripType,
-      params,
-      paramsRound,
-      adults,
-      BlockingReferenceNo,
-      BookingReferenceNo,
-      BlockingReferenceNoRound,
-      BookingReferenceNoRound
-    } = this.props.navigation.state.params;
+  _OrderApiCall = (block, blockRound) => {
+    const { user } = this.props;
 
-    let adult_details = adults.map(item => ({
+    const { TripType } = this.props.navigation.state.params;
+
+    let adult_details = this.state.adults.map(item => ({
       "ad-den": item.den,
       "ad-fname": item.name,
       "ad-gender": item.gender,
@@ -60,12 +83,288 @@ class BusPayment extends React.PureComponent {
     }));
 
     let param = {
-      user_id: "7",
+      user_id: user.id,
       payment_method: "razopay",
       adult_details: adult_details,
       child_details: [],
       infant_details: []
     };
+
+    this.setState({ loader: true });
+    domainApi
+      .post("/checkout/new-order?user_id=" + user.id, param)
+      .then(({ data: order }) => {
+        console.log(order);
+        this.setState({ loader: false });
+        var options = {
+          description: "Credits towards consultation",
+          // image: "https://i.imgur.com/3g7nmJC.png",
+          currency: "INR",
+          key: "rzp_test_I66kFrN53lhauw",
+          //  key: "rzp_live_IRhvqgmESx60tW",
+          amount: parseInt(order.total) * 100,
+          name: "TripDesire",
+          prefill: {
+            email: user.billing.email,
+            contact: user.billing.phone,
+            name: "Razorpay Software"
+          },
+          theme: { color: "#E5EBF7" }
+        };
+
+        RazorpayCheckout.open(options)
+          .then(razorpayRes => {
+            if (TripType == 1) {
+              this.setState({ loader: true });
+              etravosApi
+                .get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo)
+                .then(({ data: Response }) => {
+                  this.setState({ loader: false });
+                  console.log(Response);
+                  if (Response.BookingStatus == 3) {
+                    this.props.navigation.navigate("ThankYouBus", {
+                      order,
+                      razorpayRes,
+                      Response,
+                      ...this.props.navigation.state.params
+                    });
+                    Toast.show(Response.Message, Toast.LONG);
+                    let paymentData = {
+                      order_id: order.id,
+                      status: "completed",
+                      transaction_id: razorpayRes.razorpay_payment_id,
+                      reference_no: Response
+                    };
+                    console.log(paymentData);
+
+                    this.setState({ loader: true });
+                    domainApi.post("/checkout/update-order", paymentData).then(res => {
+                      this.setState({ loader: false });
+                      console.log(res);
+                    });
+                  } else {
+                    Toast.show(Response.Message, Toast.LONG);
+                  }
+                })
+                .catch(error => {
+                  // handle failure
+                  alert(`Error: ${error.code} | ${error.description}`);
+                });
+            } else {
+              this.setState({ loader: true });
+              axios
+                .all([
+                  etravosApi.get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo),
+                  etravosApi.get("Buses/BookBusTicket?referenceNo=" + blockRound.BookingReferenceNo)
+                ])
+                .then(
+                  axios.spread(({ data: BookingOneway }, { data: BookingRound }) => {
+                    // Both requests are now complete
+                    this.setState({ loader: false });
+                    console.log(BookingOneway, "BooKiNgOneway", BookingRound, "BooKiNgRound");
+
+                    if (BookingOneway.BookingStatus == 3) {
+                      if (BookingRound.BookingStatus == 3) {
+                        this.props.navigation.navigate("ThankYouBus", {
+                          ...this.props.navigation.state.params,
+                          razorpayRes,
+                          BookingOneway,
+                          BookingRound,
+                          order
+                        });
+
+                        Toast.show(BookingOneway.Message, Toast.LONG);
+                        let paymentData = {
+                          order_id: order.id,
+                          status: "completed",
+                          transaction_id: razorpayRes.razorpay_payment_id,
+                          reference_no: BookingOneway,
+                          return_reference_no: BookingRound
+                        };
+                        console.log(paymentData);
+
+                        domainApi.post("/checkout/update-order", paymentData).then(res => {
+                          console.log(res);
+                        });
+                      } else {
+                        Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                      }
+                    } else {
+                      Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                    }
+                  })
+                )
+                .catch(eroor => {
+                  this.setState({ loader: false });
+                });
+            }
+          })
+          .catch(error => {
+            this.setState({ loader: false });
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        this.setState({ loader: false });
+      });
+  };
+
+  _PlaceOrder = () => {
+    const { IdCardType, IdNumber, IssuedBy, adults } = this.state;
+
+    const { user } = this.props;
+
+    const {
+      params,
+      paramsRound,
+      BoardingPoint,
+      BoardingPointReturn,
+      DroppingPoint,
+      DroppingPointReturn,
+      destinationName,
+      selectedSheets,
+      selectedSheetsRound,
+      sourceName,
+      journeyDate,
+      returnDate,
+      TripType
+    } = this.props.navigation.state.params;
+
+    let name = [...this.state.adults.map(item => item.name)].join("~");
+
+    let age = [...this.state.adults.map(item => item.age)].join("~");
+
+    let gender = [...this.state.adults.map(item => item.gender)].join("~");
+
+    let den = [...this.state.adults.map(item => item.den)].join("~");
+
+    let SeatNos = [...selectedSheets.map(item => item.Number)].join("~");
+
+    let Fares = [...selectedSheets.map(item => item.Fare)].join("~");
+
+    let ServiceCharge = [...selectedSheets.map(item => item.OperatorServiceCharge)].join("~");
+
+    let ServiceTax = [...selectedSheets.map(item => item.Servicetax)].join("~");
+
+    let SeatNosRound =
+      TripType == 2 ? [...selectedSheetsRound.map(item => item.Number)].join("~") : "";
+
+    let FaresRound = TripType == 2 ? [...selectedSheetsRound.map(item => item.Fare)].join("~") : "";
+
+    let ServiceChargeRound =
+      TripType == 2
+        ? [...selectedSheetsRound.map(item => item.OperatorServiceCharge)].join("~")
+        : "";
+
+    let ServiceTaxRound =
+      TripType == 2 ? [...selectedSheetsRound.map(item => item.Servicetax)].join("~") : "";
+
+    console.log(name, age, gender, den, Fares, SeatNos);
+
+    let paramOneway = {
+      Address: user.billing.address_1,
+      Ages: age,
+      BoardingId: BoardingPoint.PointId,
+      BoardingPointDetails: BoardingPoint.Location + "" + BoardingPoint.Landmark,
+      BusTypeName: params.BusType,
+      CancellationPolicy: params.CancellationPolicy,
+      City: user.billing.city,
+      ConvenienceFee: params.ConvenienceFee,
+      DepartureTime: params.DepartureTime,
+      DestinationId: params.DestinationId,
+      DestinationName: destinationName,
+      DisplayName: params.DisplayName,
+      DroppingId: DroppingPoint.PointId,
+      DroppingPointDetails: DroppingPoint.Location + "" + DroppingPoint.Landmark,
+      EmailId: user.billing.email || user.email,
+      EmergencyMobileNo: null,
+      Fares: Fares,
+      Genders: gender,
+      IdCardNo: IdNumber,
+      IdCardType: IdCardType,
+      IdCardIssuedBy: IssuedBy,
+      JourneyDate: journeyDate,
+      MobileNo: user.billing.phone,
+      Names: name,
+      NoofSeats: selectedSheets.length,
+      Operator: params.Travels,
+      PartialCancellationAllowed: params.PartialCancellationAllowed,
+      PostalCode: user.billing.postcode,
+      Provider: params.Provider,
+      ReturnDate: null,
+      State: user.billing.state,
+      Seatcodes: null,
+      SeatNos: SeatNos,
+      Servicetax: ServiceTax,
+      ServiceCharge: ServiceCharge,
+      SourceId: params.SourceId,
+      SourceName: sourceName,
+      Titles: den,
+      TripId: params.Id,
+      TripType: 1,
+      UserType: 5
+    };
+
+    if (TripType == 2) {
+      var paramRound = {
+        Address: user.billing.address_1,
+        Ages: age,
+        BoardingId: BoardingPointReturn.PointId,
+        BoardingPointDetails: BoardingPointReturn.Location + "" + BoardingPointReturn.Landmark,
+        BusTypeName: paramsRound.BusType,
+        CancellationPolicy: paramsRound.CancellationPolicy,
+        City: user.billing.city != "" ? user.billing.city : "",
+        ConvenienceFee: paramsRound.ConvenienceFee,
+        DepartureTime: paramsRound.DepartureTime,
+        DestinationId: paramsRound.DestinationId,
+        DestinationName: sourceName,
+        DisplayName: paramsRound.DisplayName,
+        DroppingId: DroppingPointReturn.PointId,
+        DroppingPointDetails: DroppingPointReturn.Location + "" + DroppingPointReturn.Landmark,
+        EmailId: user.billing.email || user.email,
+        EmergencyMobileNo: null,
+        Fares: FaresRound,
+        Genders: gender,
+        IdCardNo: IdNumber,
+        IdCardType: IdCardType,
+        IdCardIssuedBy: IssuedBy,
+        JourneyDate: returnDate,
+        MobileNo: user.billing.phone,
+        Names: name,
+        NoofSeats: selectedSheetsRound.length,
+        Operator: paramsRound.Travels, //////not showing
+        PartialCancellationAllowed: paramsRound.PartialCancellationAllowed,
+        PostalCode: user.billing.postcode, /////
+        Provider: paramsRound.Provider,
+        ReturnDate: null,
+        State: user.billing.state,
+        Seatcodes: null,
+        SeatNos: SeatNosRound,
+        Servicetax: ServiceTaxRound,
+        ServiceCharge: ServiceChargeRound,
+        SourceId: paramsRound.SourceId,
+        SourceName: destinationName,
+        Titles: den,
+        TripId: paramsRound.Id,
+        TripType: 1,
+        UserType: 5
+      };
+      console.log(paramRound);
+      //console.log(JSON.stringify(paramRound));
+    }
+    console.log(paramOneway);
+    console.log(JSON.stringify(paramOneway));
+    // return;
+
+    // if (this.state.IdNumber && this.state.IssuedBy && !this.validate()) {
+    //   var adharcard = /^\d{12}$/;
+    //   if (this.state.IdCardType == "ADHAR_CARD" && !this.state.IdNumber.match(adharcard)) {
+    //     Toast.show("Please enter the valid Adhar Card Number", Toast.LONG);
+    //   } else {
+
+    //     else {
+    //       Toast.show("Please fill all the Details", Toast.LONG);
+    //     }
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.SHORT);
@@ -74,118 +373,45 @@ class BusPayment extends React.PureComponent {
         //Toast.show("Please login or signup", Toast.LONG);
         this.props.navigation.navigate("SignIn", { isCheckout: true });
       } else {
-        // try {
-        //   const [BookingOneway, BookingRound] = await axios.all([
-        //     etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
-        //     etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
-        //   ]);
-        //   console.log(BookingOneway, BookingRound);
-        //   this.props.navigation.navigate("ThankYouBus", {
-        //     ...this.props.navigation.state.params
-        //   });
-        // } catch (e) {
-        //   console.log(e);
-        // }
-        //  return;
-        const { user } = this.props;
-        domainApi.post("/checkout/new-order?user_id=" + user.id, param).then(({ data: order }) => {
-          console.log(order);
+        ////////Block/////////
 
-          var options = {
-            description: "Credits towards consultation",
-            // image: "https://i.imgur.com/3g7nmJC.png",
-            currency: "INR",
-            key: "rzp_test_I66kFrN53lhauw",
-          //  key: "rzp_live_IRhvqgmESx60tW",
-            amount: parseInt(order.total) * 100,
-            name: "TripDesire",
-            prefill: {
-              email: user.billing.email,
-              contact: user.billing.phone,
-              name: "Razorpay Software"
-            },
-            theme: { color: "#E5EBF7" }
-          };
-
-          RazorpayCheckout.open(options)
-            .then(razorpayRes => {
-              if (TripType == 1) {
-                this.setState({ loader: true });
-                etravosApi
-                  .get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo)
-                  .then(({ data: Response }) => {
-                    this.setState({ loader: false });
-                    console.log(Response);
-                    if (Response.BookingStatus == 3) {
-                      this.props.navigation.navigate("ThankYouBus", {
-                        order,
-                        razorpayRes,
-                        Response,
-                        ...this.props.navigation.state.params
-                      });
-                      Toast.show(Response.Message, Toast.LONG);
-                      let paymentData = {
-                        order_id: order.id,
-                        status: "completed",
-                        transaction_id: razorpayRes.razorpay_payment_id,
-                        reference_no: Response
-                      };
-                      console.log(paymentData);
-
-                      this.setState({ loader: true });
-                      domainApi.post("/checkout/update-order", paymentData).then(res => {
-                        this.setState({ loader: false });
-                        console.log(res);
-                      });
-                    } else {
-                      Toast.show(Response.Message, Toast.LONG);
-                    }
-                  })
-                  .catch(error => {
-                    // handle failure
-                    alert(`Error: ${error.code} | ${error.description}`);
-                  });
+        if (TripType == 1) {
+          this.setState({ loader: true });
+          etravosApi
+            .post("/Buses/BlockBusTicket", paramOneway)
+            .then(({ data }) => {
+              console.log(data);
+              this.setState({ loader: false });
+              if (data.BookingStatus == 1) {
+                this._OrderApiCall(data);
               } else {
-                try {
-                  const [BookingOneway, BookingRound] = axios.all([
-                    etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNo),
-                    etravosApi.get("Buses/BookBusTicket?referenceNo=" + BookingReferenceNoRound)
-                  ]);
-                  console.log(BookingOneway, BookingRound);
-                  if (BookingOneway.BookingStatus == 3 && BookingRound.BookingStatus == 3) {
-                    this.props.navigation.navigate("ThankYouBus", {
-                      ...this.props.navigation.state.params,
-                      razorpayRes,
-                      BookingOneway,
-                      BookingRound,
-                      order
-                    });
-
-                    Toast.show(BookingOneway.Message, Toast.LONG);
-                    let paymentData = {
-                      order_id: order.id,
-                      status: "completed",
-                      transaction_id: razorpayRes.razorpay_payment_id,
-                      reference_no: BookingOneway,
-                      return_reference_no: BookingRound
-                    };
-                    console.log(paymentData);
-
-                    domainApi.post("/checkout/update-order", paymentData).then(res => {
-                      console.log(res);
-                    });
-                  } else if (BookingOneway.BookingStatus != 3 && BookingRound.BookingStatus != 3) {
-                    Toast.show("Your ticket is not booked successfully.", Toast.LONG);
-                  }
-                } catch (e) {
-                  console.log(e);
-                }
+                Toast.show(data.Message, Toast.LONG);
               }
             })
-            .catch(error => {
-              console.log(error);
-            });
-        });
+            .catch(error => {});
+        } else if (TripType == 2) {
+          this.setState({ loader: true });
+          etravosApi.post("/Buses/BlockBusTicket", paramOneway).then(({ data }) => {
+            console.log(data);
+            this.setState({ loader: false });
+
+            etravosApi
+              .post("/Buses/BlockBusTicket", paramRound)
+              .then(({ data: BlockRound }) => {
+                console.log(BlockRound);
+                if (data.BookingStatus == 1 && BlockRound.BookingStatus == 1) {
+                  this._OrderApiCall(data, BlockRound);
+                } else {
+                  Toast.show(data.Message, Toast.LONG);
+                  this.setState({ loader: false });
+                }
+              })
+              .catch(error => {
+                Toast.show(data.Message, Toast.LONG);
+                this.setState({ loader: false });
+              });
+          });
+        }
       }
     }
   };
@@ -197,7 +423,22 @@ class BusPayment extends React.PureComponent {
   };
   render() {
     const { radioDirect } = this.state;
-    const { cartData, params } = this.props.navigation.state.params;
+    // const { cartData, params } = this.props.navigation.state.params;
+
+    const {
+      cartData,
+      params,
+      paramsRound,
+      destinationName,
+      sourceName,
+      BoardingPoint,
+      BoardingPointReturn,
+      DroppingPoint,
+      selectedSheets,
+      TripType,
+      selectedSheetsRound
+    } = this.props.navigation.state.params;
+
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
@@ -237,67 +478,182 @@ class BusPayment extends React.PureComponent {
                     shadowColor: "rgba(0,0,0,0.1)",
                     shadowOpacity: 1,
                     shadowRadius: 4,
-                    borderRadius: 8,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
-                    marginTop: 20
+                    marginTop: 16,
+                    paddingVertical: 20,
+                    borderRadius: 8
                   }}>
-                  <View style={{ marginVertical: 10 }}>
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 10 }}>
-                      <IconSimple name="bag" size={24} />
-                      <Text style={{ marginStart: 10, fontWeight: "500", fontSize: 18 }}>
-                        Price Summary
-                      </Text>
-                    </View>
-                    {/* <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        paddingHorizontal: 10,
-                        marginTop: 5
-                      }}>
-                      <Text>Onward Fare</Text>
-                      <Text></Text>
-                    </View> */}
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        backgroundColor: "#F2F3F5",
-                        paddingHorizontal: 10,
-                        paddingVertical: 5,
-                        marginTop: 5
-                      }}>
-                      <Text>Fare</Text>
-                      <Text>0.00</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        paddingHorizontal: 10,
-                        paddingVertical: 5
-                      }}>
-                      <Text>Conv. Fare</Text>
-                      <Text>0.00</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        backgroundColor: "#F2F3F5",
-                        paddingHorizontal: 10,
-                        marginBottom: 10,
-                        paddingVertical: 5
-                      }}>
-                      <Text style={{ fontSize: 16, fontWeight: "600" }}>Total Payable</Text>
-                      <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                        ₹ {cartData.total_price}
-                      </Text>
-                    </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginHorizontal: 10,
+                      alignItems: "center"
+                    }}>
+                    <Image
+                      source={require("../../assets/imgs/person.png")}
+                      style={{ width: 20, height: 20 }}
+                      resizeMode="cover"
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                      Passengers Details
+                    </Text>
                   </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginTop: 10,
+                      marginHorizontal: 10,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}>
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "#F2F2F2",
+                        height: 40,
+                        flex: 1,
+                        marginStart: 2,
+                        paddingHorizontal: 5,
+                        justifyContent: "center"
+                        //alignItems: "center"
+                      }}>
+                      <RNPickerSelect
+                        useNativeAndroidPickerStyle={false}
+                        placeholder={{}}
+                        value={this.state.IdCardType}
+                        style={{
+                          inputAndroidContainer: { height: 35 },
+                          inputAndroid: { paddingStart: 0, color: "#000" },
+                          inputIOS: { color: "#000" },
+                          iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
+                        }}
+                        onValueChange={(itemValue, index) =>
+                          this.setState({ IdCardType: itemValue })
+                        }
+                        items={[
+                          { value: "ADHAR_CARD", label: "Adhar Card" },
+                          { value: "PAN_CARD", label: "Pan Card" },
+                          { value: "DRIVING_LICENSE", label: "Driving License" },
+                          { value: "PASSPORT", label: "Passport" },
+                          { value: "RATION_CARD", label: "Ration Card" },
+                          { value: "VOTER_CARD", label: "Voter Card" }
+                        ]}
+                        Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                      />
+                    </View>
+                    <TextInput
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "#F2F2F2",
+                        height: 40,
+                        flex: 1,
+                        paddingStart: 5,
+                        marginStart: 5
+                      }}
+                      keyboardType="numeric"
+                      onChangeText={this._changeAdult("IdNumber")}
+                      placeholder="Enter Number"
+                    />
+                  </View>
+                  <TextInput
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "#F2F2F2",
+                      height: 40,
+                      flex: 1,
+                      marginTop: 5,
+                      paddingStart: 5,
+                      marginStart: 12,
+                      marginEnd: 10
+                    }}
+                    onChangeText={this._changeAdult("IssuedBy")}
+                    placeholder="Identification Document Issued By"
+                  />
+                  {selectedSheets &&
+                    selectedSheets.map((item, index) => {
+                      return (
+                        <View key={"sap" + index}>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              marginTop: 5,
+                              marginHorizontal: 10,
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}>
+                            <Text style={{ color: "#5B6974" }}>Seat No.</Text>
+
+                            <Text style={{ marginHorizontal: 5 }}>{item.Number}</Text>
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                paddingStart: 5,
+                                marginStart: 2
+                              }}
+                              onChangeText={this._changeAdults(index, "name")}
+                              placeholder="Passenger Name"
+                            />
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              marginTop: 5,
+                              marginHorizontal: 10,
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}>
+                            <View
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                marginStart: 2,
+                                paddingHorizontal: 5,
+                                justifyContent: "center"
+                                //alignItems: "center"
+                              }}>
+                              <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                placeholder={{}}
+                                value={this.state.adults[index].gender}
+                                style={{
+                                  inputAndroidContainer: { height: 35 },
+                                  inputAndroid: { paddingStart: 0, color: "#000" },
+                                  inputIOS: { color: "#000" },
+                                  iconContainer: { justifyContent: "center", top: 0, bottom: 0 }
+                                }}
+                                onValueChange={this._changeAdults(index, "gender")}
+                                items={[
+                                  { value: "M", label: "Male" },
+                                  { value: "F", label: "Female" }
+                                ]}
+                                Icon={() => <Icon name="ios-arrow-down" size={20} />}
+                              />
+                            </View>
+                            <TextInput
+                              style={{
+                                borderWidth: 1,
+                                borderColor: "#F2F2F2",
+                                height: 40,
+                                flex: 1,
+                                paddingStart: 5,
+                                marginStart: 5
+                              }}
+                              keyboardType="numeric"
+                              placeholder="age"
+                              onChangeText={this._changeAdults(index, "age")}
+                            />
+                          </View>
+                        </View>
+                      );
+                    })}
                 </View>
+
                 {/* <View
                   style={{
                     elevation: 2,
@@ -340,7 +696,7 @@ class BusPayment extends React.PureComponent {
                     shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     marginHorizontal: 16,
-                    marginTop: 20,
+                    marginTop: 16,
                     padding: 10,
                     borderRadius: 8
                   }}>
