@@ -318,10 +318,21 @@ class AutoCompleteModal extends React.PureComponent {
                 }}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={styles.autocompleteContainer}>
+              <View
+                style={[
+                  styles.autocompleteContainer,
+                  { borderBottomColor: "#000", borderBottomWidth: 1 }
+                ]}>
                 <Autocomplete
                   placeholder={this.props.placeholder}
-                  style={{ color: "#000" }}
+                  style={{
+                    color: "#000",
+                    backgroundColor: "#EFEFEF",
+                    borderRadius: 2,
+                    paddingHorizontal: 5,
+                    paddingVertical: 5,
+                    marginEnd: 16
+                  }}
                   inputContainerStyle={{
                     borderWidth: 0,
                     height: 48,
@@ -336,6 +347,7 @@ class AutoCompleteModal extends React.PureComponent {
                     paddingHorizontal: 16,
                     borderWidth: 0
                   }}
+                  listContainerStyle={{ borderTopWidth: 1, borderTopColor: "#DDD" }}
                   renderItem={this.renderItem}
                   keyExtractor={this.keyExtractor}
                 />

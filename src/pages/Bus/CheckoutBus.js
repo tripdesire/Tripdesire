@@ -133,7 +133,7 @@ class CheckoutBus extends React.PureComponent {
       service_charge: ServiceCharge,
       service_tax: ServiceTax,
       ConvenienceFee: params.ConvenienceFee,
-      trip_type: tripType,
+      trip_type: TripType,
       journey_date: moment(params.Journeydate, "YYYY-MM-DD").format("DD-MM-YYYY")
     };
 
