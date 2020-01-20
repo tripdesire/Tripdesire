@@ -627,44 +627,58 @@ class CheckoutCab extends React.PureComponent {
                 </View>
                 {Array.isArray(this.state.cartData.cart_data) &&
                   this.state.cartData.cart_data.length > 0 && (
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        flex: 1,
-                        marginTop: 10,
-                        paddingHorizontal: 8
-                      }}>
-                      <Text>Base Fare</Text>
-                      <Text>
-                        ₹
-                        {
-                          this.state.cartData.cart_data[0].custum_product_data.car_item_details
-                            .car_item_data.TotalNetAmount
-                        }
-                      </Text>
-                    </View>
+                    <>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          flex: 1,
+                          marginTop: 10,
+                          paddingHorizontal: 8
+                        }}>
+                        <Text>Base Fare</Text>
+                        <Text>
+                          ₹
+                          {
+                            this.state.cartData.cart_data[0].custum_product_data.car_item_details
+                              .car_item_data.TotalNetAmount
+                          }
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          flex: 1,
+                          paddingHorizontal: 8
+                        }}>
+                        <Text>Service Charge</Text>
+                        <HTML
+                          html={
+                            this.state.cartData.cart_data[0].custum_product_data.car_item_details
+                              .service_charge
+                          }
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          flex: 1,
+                          paddingHorizontal: 8
+                        }}>
+                        <Text>Service Tax</Text>
+                        <Text>
+                          ₹
+                          {
+                            this.state.cartData.cart_data[0].custum_product_data.car_item_details
+                              .service_tax
+                          }
+                        </Text>
+                      </View>
+                    </>
                   )}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    flex: 1,
-                    paddingHorizontal: 8
-                  }}>
-                  <Text>Service Charge</Text>
-                  <Text>₹0</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    flex: 1,
-                    paddingHorizontal: 8
-                  }}>
-                  <Text>Convenience Fee</Text>
-                  <Text>₹0</Text>
-                </View>
+
                 {!this.state.inputCoupon && (
                   <View
                     style={{

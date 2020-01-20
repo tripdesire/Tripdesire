@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Text, Button, Icon } from "../components";
+import { Text, Button, Icon, HotelThankYou } from "../components";
 import { View, StyleSheet, SafeAreaView, Dimensions, Image, ScrollView } from "react-native";
 import moment from "moment";
 import { isObject } from "lodash";
@@ -8,14 +8,6 @@ const { width, height } = Dimensions.get("window");
 class OrderDetails extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { params } = props.navigation.state;
-    console.log(params);
-    console.log(
-      "hello",
-      this.hasJsonStructure(params.reference_no)
-        ? JSON.parse(params.reference_no)
-        : params.reference_no
-    );
   }
 
   _goBack = () => {
@@ -34,12 +26,9 @@ class OrderDetails extends React.PureComponent {
   }
 
   render() {
-    const {
-      adult_details,
-      child_details,
-      infan_details,
-      order_data
-    } = this.props.navigation.state.params;
+    console.log(this.props.navigation.state.params);
+    const order_data = this.props.navigation.state.params;
+    const { adult_details, child_details, infan_details } = order_data;
     JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
     const dataArray = order_data.line_items[0].meta_data.reduce(
       (obj, item) => (
@@ -917,179 +906,7 @@ class OrderDetails extends React.PureComponent {
         <>
           <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 16,
-                  height: 56,
-                  alignItems: "center"
-                }}>
-                <Button onPress={this._goBack}>
-                  <Icon name="md-arrow-back" size={24} />
-                </Button>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#1E293B",
-                    marginStart: 5,
-                    fontWeight: "700"
-                  }}>
-                  #{order_data.id}
-                </Text>
-              </View>
-              <View
-                style={{
-                  marginHorizontal: 8,
-                  marginVertical: 10,
-                  backgroundColor: "#EEF1F8",
-                  borderRadius: 8,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  padding: 10
-                }}>
-                <Image
-                  style={{ width: width / 4, height: height / 6, borderRadius: 5 }}
-                  resizeMode="cover"
-                  source={{ uri: res || "https://via.placeholder.com/150" }}
-                />
-                <View style={{ marginStart: 10, flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: "700" }}>{dataArray["Hotel Name"]}</Text>
-                  <Text style={{ flex: 1 }}>{dataArray["Room Type"]}</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      flex: 1
-                    }}>
-                    <View>
-                      <Text style={{ fontWeight: "700" }}>Check-In</Text>
-                      <Text>{dataArray["Check In"]}</Text>
-                    </View>
-                    <View>
-                      <Text style={{ fontWeight: "700" }}>Check-Out</Text>
-                      <Text>{dataArray["Check Out"]}</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  marginHorizontal: 8,
-                  elevation: 1,
-                  borderRadius: 5,
-                  marginTop: 10
-                }}>
-                <Text
-                  style={{
-                    fontWeight: "700",
-                    fontSize: 18,
-                    paddingVertical: 10,
-                    backgroundColor: "#EEF1F8",
-                    paddingHorizontal: 10,
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5
-                  }}>
-                  Passenger Details
-                </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingHorizontal: 10
-                  }}>
-                  <View>
-                    <Text
-                      style={{
-                        fontWeight: "700",
-                        fontSize: 16
-                      }}>
-                      Passenger
-                    </Text>
-                    {adult_details.map((item, index) => {
-                      return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
-                    })}
-                    {child_details.length > 0 &&
-                      child_details.map((item, index) => {
-                        return <Text key={item.index}>{item.fname + " " + item.lname}</Text>;
-                      })}
-                  </View>
-                  <View>
-                    <Text style={{ fontWeight: "700", fontSize: 16 }}>Age</Text>
-                    {adult_details.map((item, index) => {
-                      return <Text key={item.index}>{item.age}</Text>;
-                    })}
-                    {child_details &&
-                      child_details.map((item, index) => {
-                        return <Text key={item.index}>{item.age}</Text>;
-                      })}
-                  </View>
-                  <View>
-                    <Text style={{ fontWeight: "700", fontSize: 16 }}>Gender</Text>
-                    {adult_details.map((item, index) => {
-                      return <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>;
-                    })}
-                    {child_details.length > 0 &&
-                      child_details.map((item, index) => {
-                        return (
-                          <Text key={item.index}>{item.gender == "M" ? "Male" : "Female"}</Text>
-                        );
-                      })}
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  marginHorizontal: 8,
-                  elevation: 1,
-                  borderRadius: 5,
-                  marginTop: 10
-                }}>
-                <Text
-                  style={{
-                    fontWeight: "700",
-                    fontSize: 18,
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5,
-                    backgroundColor: "#EEF1F8",
-                    paddingHorizontal: 10,
-                    paddingVertical: 10
-                  }}>
-                  Fare Summary
-                </Text>
-                <View style={styles.summaryView}>
-                  <Text>Convenience Fee</Text>
-                  <Text></Text>
-                </View>
-                <View style={styles.summaryView}>
-                  <Text>Flight Scharge</Text>
-                  <Text></Text>
-                </View>
-                <View style={styles.summaryView}>
-                  <Text>Base Fare</Text>
-                  <Text></Text>
-                </View>
-                <View style={styles.summaryView}>
-                  <Text>Flight Gst</Text>
-                  <Text></Text>
-                </View>
-                <View style={styles.summaryView}>
-                  <Text>Flight Tax</Text>
-                  <Text></Text>
-                </View>
-                <View style={styles.summaryView}>
-                  <Text style={{ fontWeight: "700", fontSize: 18 }}>Total Price</Text>
-                  <Text style={{ fontWeight: "700", fontSize: 18 }}>
-                    {order_data.currency_symbol}
-                    {order_data.total}
-                  </Text>
-                </View>
-                <View style={styles.summaryView}>
-                  <Text style={{ flex: 1 }}>Payment Method</Text>
-                  <Text style={{ flex: 1, marginStart: 10 }}>{order_data.payment_method}</Text>
-                </View>
-              </View>
-            </View>
+            <HotelThankYou order={order_data} />
           </SafeAreaView>
         </>
       );

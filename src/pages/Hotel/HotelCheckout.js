@@ -68,12 +68,14 @@ class HotelCheckout extends React.Component {
     };
 
     console.log(param);
+    console.log(JSON.stringify(param));
 
     this.setState({ loader: true });
     etravosApi
       .get("/Hotels/HotelDetails", param)
       .then(({ data }) => {
         this.setState({ loader: false });
+        console.log(JSON.stringify(data));
         const { params } = this.props.navigation.state;
 
         //let merged = mergeWith({}, params, data, (a, b) => (b === null ? a : undefined));

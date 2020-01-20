@@ -11,7 +11,7 @@ import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from "re
 class SignIn extends React.PureComponent {
   constructor(props) {
     GoogleSignin.configure({
-      iosClientId: "700390422426-jd4ktatcufq8ncqd6p3728be7c3cl3bj.apps.googleusercontent.com"
+      //iosClientId: "700390422426-jd4ktatcufq8ncqd6p3728be7c3cl3bj.apps.googleusercontent.com"
     });
     super(props);
     this.state = {

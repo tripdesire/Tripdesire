@@ -1,25 +1,19 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
+import { View, StyleSheet, ScrollView, SafeAreaView, Image } from "react-native";
+import Button from "./Button";
+import Text from "./TextComponent";
+import Icon from "./IconNB";
 import moment from "moment";
-import HTML from "react-native-render-html";
 
-class ThankYouCab extends React.PureComponent {
+class BusThankYou extends React.PureComponent {
   constructor(props) {
     super(props);
-    console.log(this.props.navigation.state.params);
-    return;
   }
+
+  _goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   navigateToScreen = page => () => {
     this.props.navigation.navigate(page);
   };
@@ -36,8 +30,8 @@ class ThankYouCab extends React.PureComponent {
   }
 
   render() {
-    const { order } = this.props.navigation.state.params;
-
+    console.log(this.props.navigation.state.params);
+    const { order, isOrderPage } = this.props.navigation.state.params;
     const dataArray = order.line_items[0].meta_data.reduce(
       (obj, item) => (
         (obj[item.key] = this.hasJsonStructure(item.value) ? JSON.parse(item.value) : item.value),
@@ -46,17 +40,41 @@ class ThankYouCab extends React.PureComponent {
       {}
     );
     console.log(dataArray);
-
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          {isOrderPage && (
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 16,
+                height: 56,
+                backgroundColor: "#E4EAF6",
+                alignItems: "center"
+              }}>
+              <Button onPress={this._goBack}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 5,
+                  fontWeight: "700"
+                }}>
+                #{order.id}
+              </Text>
+            </View>
+          )}
           <ScrollView>
             <View>
-              <View style={{ justifyContent: "center", marginHorizontal: 8, marginTop: 20 }}>
-                <Text style={{ fontWeight: "700", fontSize: 18 }}>Booking Confirmed</Text>
-                <Text>ThankYou. Your booking has been completed.</Text>
-              </View>
+              {!isOrderPage && (
+                <View style={{ justifyContent: "center", marginHorizontal: 8, marginTop: 20 }}>
+                  <Text style={{ fontWeight: "700", fontSize: 18 }}>Booking Confirmed</Text>
+                  <Text>ThankYou. Your booking has been completed.</Text>
+                </View>
+              )}
 
               <View style={[styles.cardView, { marginTop: 15 }]}>
                 <View style={styles.flightType}>
@@ -89,55 +107,66 @@ class ThankYouCab extends React.PureComponent {
                   <Text style={styles.heading}>Arrival</Text>
                 </View>
                 <View style={styles.contentView}>
-                  <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
-                  <View style={{ flex: 1, marginStart: 10 }}>
+                  <Image
+                    style={{ width: 60, height: 60, marginEnd: 3 }}
+                    source={require("../assets/imgs/busNew.png")}
+                  />
+                  <View style={{ flex: 1 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <View>
-                        <Text style={styles.time}>Cab Type</Text>
-                        <Text style={styles.airlineno}>{dataArray["Car Name"]}</Text>
-                      </View>
-                      <View>
-                        <Text style={styles.time}>Car Number</Text>
-                        <Text style={styles.airlineno}>UP@% AL 5011</Text>
+                      <Text style={styles.time}>{dataArray["Bus Name"]}</Text>
+                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Text style={styles.time}>Seat(s):</Text>
+                        <Text style={styles.time}>{dataArray["Select Seat Number"]}</Text>
                       </View>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        marginTop: 5
-                      }}>
-                      <View>
-                        <Text style={styles.time}>Pick Up</Text>
-                        <Text style={styles.airlineno}>
-                          {dataArray["Journey Date"]}({dataArray["Pickup Time"]})
-                        </Text>
-                      </View>
-                      {dataArray.hasOwnProperty("Return Date") && dataArray["Return Date"] != "" && (
-                        <View>
-                          <Text style={styles.time}>Drop Off</Text>
-                          <Text style={styles.airlineno}>{dataArray["Return Date"]}</Text>
-                        </View>
-                      )}
+                    <Text style={styles.airlineno}>{dataArray["Bus Type"]}</Text>
+                    <View>
+                      <Text style={styles.time}>Boarding Point</Text>
+                      <Text style={styles.airlineno}>{dataArray["Boarding Point Id"]}</Text>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        marginTop: 5
-                      }}>
-                      <View>
-                        <Text style={styles.time}>From</Text>
-                        <Text style={styles.airlineno}>{dataArray["Source City"]}</Text>
-                      </View>
-                      <View>
-                        <Text style={styles.time}>To</Text>
-                        <Text style={styles.airlineno}>UP@% AL 5011</Text>
-                      </View>
+                    <View>
+                      <Text style={styles.time}>Dropping Point</Text>
+                      <Text style={styles.airlineno}>{dataArray["Dropping Point Id"]}</Text>
                     </View>
                   </View>
                 </View>
               </View>
+
+              {dataArray.hasOwnProperty("Return Bus Item Result Data") && (
+                <View style={[styles.cardView, { marginTop: 15 }]}>
+                  <View style={styles.flightType}>
+                    <Text style={styles.heading}>Return</Text>
+                  </View>
+                  <View style={styles.contentView}>
+                    <Image
+                      style={{ width: 60, height: 60, marginEnd: 3 }}
+                      source={require("../assets/imgs/busNew.png")}
+                    />
+                    <View style={{ flex: 1 }}>
+                      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <Text style={styles.time}>{dataArray["Return Bus Name"]}</Text>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                          <Text style={styles.time}>Seat(s):</Text>
+                          <Text style={styles.time}>{dataArray["Return Select Seat Number"]}</Text>
+                        </View>
+                      </View>
+                      <Text style={styles.airlineno}>{dataArray["Return Bus Type"]}</Text>
+                      <View>
+                        <Text style={styles.time}>Boarding Point</Text>
+                        <Text style={styles.airlineno}>
+                          {dataArray["Return Boarding Point Id"]}
+                        </Text>
+                      </View>
+                      <View>
+                        <Text style={styles.time}>Dropping Point</Text>
+                        <Text style={styles.airlineno}>
+                          {dataArray["Return Dropping Point Id"]}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              )}
             </View>
 
             <View style={[styles.cardView, { marginTop: 15 }]}>
@@ -179,20 +208,40 @@ class ThankYouCab extends React.PureComponent {
                 <Text style={styles.heading}>Fare Summary</Text>
               </View>
 
-              <View style={styles.summaryRow}>
-                <Text style={styles.airlineno}>Base Fare</Text>
-                <Text style={styles.airlineno}>₹ {dataArray["Car Item Data"].TotalNetAmount}</Text>
-              </View>
+              <Text style={[styles.time, { marginHorizontal: 12, marginTop: 10 }]}>Onward</Text>
 
               <View style={styles.summaryRow}>
-                <Text style={styles.airlineno}>Service Tax</Text>
-                <Text style={styles.airlineno}>₹ {dataArray["Service Tax"]}</Text>
+                <Text style={styles.airlineno}>Base Fare</Text>
+                <Text style={styles.airlineno}>₹ {dataArray["Base Fare"]}</Text>
               </View>
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Service Charge</Text>
-                <HTML baseFontStyle={styles.airlineno} html={dataArray["Service Charge"]} />
+                <Text style={styles.airlineno}>₹ {dataArray["Service Charge2"]}</Text>
               </View>
+              <View style={styles.summaryRow}>
+                <Text style={styles.airlineno}>Tax</Text>
+                <Text style={styles.airlineno}>₹ {dataArray["Service Tax2"]}</Text>
+              </View>
+
+              {dataArray.hasOwnProperty("Return Bus Item Result Data") && (
+                <>
+                  <Text style={[styles.time, { marginHorizontal: 12 }]}>Return</Text>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.airlineno}>Base Fare</Text>
+                    <Text style={styles.airlineno}>₹ {dataArray["Return Base Fare"]}</Text>
+                  </View>
+
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.airlineno}>Service Charge</Text>
+                    <Text style={styles.airlineno}>₹ {dataArray["Return Service Charge2"]}</Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.airlineno}>Tax</Text>
+                    <Text style={styles.airlineno}>₹ {dataArray["Return Service Tax2"]}</Text>
+                  </View>
+                </>
+              )}
 
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
@@ -207,19 +256,21 @@ class ThankYouCab extends React.PureComponent {
               </View>
             </View>
 
-            <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                justifyContent: "center",
-                marginHorizontal: 50,
-                marginVertical: 40,
-                height: 40,
-                borderRadius: 20,
-                alignItems: "center"
-              }}
-              onPress={this.navigateToScreen("Home")}>
-              <Text style={{ color: "#fff", paddingHorizontal: 40 }}>Go Home</Text>
-            </Button>
+            {!isOrderPage && (
+              <Button
+                style={{
+                  backgroundColor: "#F68E1F",
+                  justifyContent: "center",
+                  marginHorizontal: 50,
+                  marginVertical: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  alignItems: "center"
+                }}
+                onPress={this.navigateToScreen("Home")}>
+                <Text style={{ color: "#fff", paddingHorizontal: 40 }}>Go Home</Text>
+              </Button>
+            )}
           </ScrollView>
         </SafeAreaView>
       </>
@@ -297,4 +348,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ThankYouCab;
+export default BusThankYou;

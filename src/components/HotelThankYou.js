@@ -10,18 +10,24 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
+import { isArray } from "lodash";
+import Button from "./Button";
+import Icon from "./IconNB";
+import Text from "./TextComponent";
 import moment from "moment";
 import HTML from "react-native-render-html";
 
-class ThankYouCab extends React.PureComponent {
+class HotelThankYou extends React.PureComponent {
   constructor(props) {
     super(props);
-    console.log(this.props.navigation.state.params);
-    return;
   }
+
   navigateToScreen = page => () => {
     this.props.navigation.navigate(page);
+  };
+
+  _goBack = () => {
+    this.props.navigation.goBack(null);
   };
 
   hasJsonStructure(str) {
@@ -36,9 +42,12 @@ class ThankYouCab extends React.PureComponent {
   }
 
   render() {
-    const { order } = this.props.navigation.state.params;
+    console.log(this.props.navigation.state.params);
+    const { order, isOrderPage } = this.props.navigation.state.params;
 
-    const dataArray = order.line_items[0].meta_data.reduce(
+    const { line_items } = order;
+    JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
+    const dataArray = line_items[0].meta_data.reduce(
       (obj, item) => (
         (obj[item.key] = this.hasJsonStructure(item.value) ? JSON.parse(item.value) : item.value),
         obj
@@ -47,20 +56,48 @@ class ThankYouCab extends React.PureComponent {
     );
     console.log(dataArray);
 
+    var str = dataArray["Hotel Image"];
+    var res = str.replace("https://cdn.grnconnect.com/", "https://images.grnconnect.com/");
+
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          {isOrderPage && (
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 16,
+                height: 56,
+                backgroundColor: "#E4EAF6",
+                alignItems: "center"
+              }}>
+              <Button onPress={this._goBack}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 5,
+                  fontWeight: "700"
+                }}>
+                #{order.id}
+              </Text>
+            </View>
+          )}
           <ScrollView>
             <View>
-              <View style={{ justifyContent: "center", marginHorizontal: 8, marginTop: 20 }}>
-                <Text style={{ fontWeight: "700", fontSize: 18 }}>Booking Confirmed</Text>
-                <Text>ThankYou. Your booking has been completed.</Text>
-              </View>
+              {!isOrderPage && (
+                <View style={{ justifyContent: "center", marginHorizontal: 8, marginTop: 20 }}>
+                  <Text style={{ fontWeight: "700", fontSize: 18 }}>Booking Confirmed</Text>
+                  <Text>ThankYou. Your booking has been completed.</Text>
+                </View>
+              )}
 
               <View style={[styles.cardView, { marginTop: 15 }]}>
                 <View style={styles.flightType}>
-                  <Text style={styles.heading}>Ticket Information</Text>
+                  <Text style={styles.heading}>Room Information</Text>
                 </View>
                 <View style={styles.contentView}>
                   <View>
@@ -86,53 +123,44 @@ class ThankYouCab extends React.PureComponent {
 
               <View style={[styles.cardView, { marginTop: 15 }]}>
                 <View style={styles.flightType}>
-                  <Text style={styles.heading}>Arrival</Text>
+                  <Text style={styles.heading}>{dataArray["Hotel Name"]}</Text>
                 </View>
                 <View style={styles.contentView}>
-                  <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
-                  <View style={{ flex: 1, marginStart: 10 }}>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                  <Image
+                    style={{ width: 100, height: 100, borderRadius: 5 }}
+                    resizeMode="cover"
+                    source={{ uri: res || "https://via.placeholder.com/150" }}
+                  />
+                  <View style={{ marginStart: 10, flex: 1 }}>
+                    <Text style={styles.airlineno}>{dataArray["Room Type"]}</Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        flex: 1
+                      }}>
                       <View>
-                        <Text style={styles.time}>Cab Type</Text>
-                        <Text style={styles.airlineno}>{dataArray["Car Name"]}</Text>
+                        <Text style={styles.time}>Check-In</Text>
+                        <Text style={styles.airlineno}>{dataArray["Check In"]}</Text>
                       </View>
                       <View>
-                        <Text style={styles.time}>Car Number</Text>
-                        <Text style={styles.airlineno}>UP@% AL 5011</Text>
+                        <Text style={styles.time}>Check-Out</Text>
+                        <Text style={styles.airlineno}>{dataArray["Check Out"]}</Text>
                       </View>
                     </View>
                     <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
-                        marginTop: 5
+                        flex: 1
                       }}>
                       <View>
-                        <Text style={styles.time}>Pick Up</Text>
-                        <Text style={styles.airlineno}>
-                          {dataArray["Journey Date"]}({dataArray["Pickup Time"]})
-                        </Text>
-                      </View>
-                      {dataArray.hasOwnProperty("Return Date") && dataArray["Return Date"] != "" && (
-                        <View>
-                          <Text style={styles.time}>Drop Off</Text>
-                          <Text style={styles.airlineno}>{dataArray["Return Date"]}</Text>
-                        </View>
-                      )}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        marginTop: 5
-                      }}>
-                      <View>
-                        <Text style={styles.time}>From</Text>
-                        <Text style={styles.airlineno}>{dataArray["Source City"]}</Text>
+                        <Text style={styles.time}>Rooms</Text>
+                        <Text style={styles.airlineno}>{dataArray["Room"]}</Text>
                       </View>
                       <View>
-                        <Text style={styles.time}>To</Text>
-                        <Text style={styles.airlineno}>UP@% AL 5011</Text>
+                        <Text style={styles.time}>Guests</Text>
+                        <Text style={styles.airlineno}>{dataArray["No. Of Guest"]}</Text>
                       </View>
                     </View>
                   </View>
@@ -142,7 +170,7 @@ class ThankYouCab extends React.PureComponent {
 
             <View style={[styles.cardView, { marginTop: 15 }]}>
               <View style={styles.flightType}>
-                <Text style={styles.heading}>Passenger Details</Text>
+                <Text style={styles.heading}>Guests Details</Text>
               </View>
               <View style={[styles.contentView, { flexDirection: "column" }]}>
                 <View style={{ flexDirection: "row", flex: 1, marginBottom: 4 }}>
@@ -156,7 +184,47 @@ class ThankYouCab extends React.PureComponent {
                     return (
                       <View style={{ flexDirection: "row", flex: 1 }} key={"adult" + index}>
                         <Text key={item.index} style={[styles.airlineno, { flex: 1 }]}>
-                          {item.fname}
+                          {item.fname + " " + item.lname}
+                        </Text>
+                        <Text
+                          key={item.index}
+                          style={[styles.airlineno, { flex: 1, textAlign: "center" }]}>
+                          {item.age}
+                        </Text>
+                        <Text
+                          key={item.index}
+                          style={[styles.airlineno, { flex: 1, textAlign: "center" }]}>
+                          {item.gender == "M" ? "Male" : "Female"}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                {order.child_details &&
+                  order.child_details.map((item, index) => {
+                    return (
+                      <View style={{ flexDirection: "row", flex: 1 }} key={"child" + index}>
+                        <Text key={item.index} style={styles.airlineno}>
+                          {item.fname + " " + item.lname}
+                        </Text>
+                        <Text
+                          key={item.index}
+                          style={[styles.airlineno, { flex: 1, textAlign: "center" }]}>
+                          {item.age}
+                        </Text>
+                        <Text
+                          key={item.index}
+                          style={[styles.airlineno, { flex: 1, textAlign: "center" }]}>
+                          {item.gender == "M" ? "Male" : "Female"}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                {order.infan_details &&
+                  order.infan_details.map((item, index) => {
+                    return (
+                      <View style={{ flexDirection: "row", flex: 1 }} key={"infant" + index}>
+                        <Text key={item.index} style={styles.airlineno}>
+                          {item.fname + " " + item.lname}
                         </Text>
                         <Text
                           key={item.index}
@@ -174,31 +242,34 @@ class ThankYouCab extends React.PureComponent {
               </View>
             </View>
 
-            <View style={[styles.cardView, { marginTop: 15, marginBottom: 20 }]}>
+            <View style={[styles.cardView, { marginTop: 15, marginBottom: 16 }]}>
               <View style={styles.flightType}>
                 <Text style={styles.heading}>Fare Summary</Text>
               </View>
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Base Fare</Text>
-                <Text style={styles.airlineno}>₹ {dataArray["Car Item Data"].TotalNetAmount}</Text>
-              </View>
-
-              <View style={styles.summaryRow}>
-                <Text style={styles.airlineno}>Service Tax</Text>
-                <Text style={styles.airlineno}>₹ {dataArray["Service Tax"]}</Text>
+                <Text style={styles.airlineno}>
+                  ₹ {dataArray["Single Hotel Data"].selectedRoom.RoomNetTotal}
+                </Text>
               </View>
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Service Charge</Text>
-                <HTML baseFontStyle={styles.airlineno} html={dataArray["Service Charge"]} />
+                <HTML
+                  baseFontStyle={styles.airlineno}
+                  containerStyle={{}}
+                  html={dataArray["Service Charge"]}
+                />
               </View>
-
+              <View style={styles.summaryRow}>
+                <Text style={styles.airlineno}>Tax</Text>
+                <Text style={styles.airlineno}>₹ {dataArray["Tax"]}</Text>
+              </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
                 <Text style={styles.time}>₹ {order.total}</Text>
               </View>
-
               <View style={[styles.summaryRow, { paddingBottom: 8 }]}>
                 <Text style={styles.airlineno}>Payment Method</Text>
                 <Text style={styles.airlineno}>
@@ -207,19 +278,21 @@ class ThankYouCab extends React.PureComponent {
               </View>
             </View>
 
-            <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                justifyContent: "center",
-                marginHorizontal: 50,
-                marginVertical: 40,
-                height: 40,
-                borderRadius: 20,
-                alignItems: "center"
-              }}
-              onPress={this.navigateToScreen("Home")}>
-              <Text style={{ color: "#fff", paddingHorizontal: 40 }}>Go Home</Text>
-            </Button>
+            {!isOrderPage && (
+              <Button
+                style={{
+                  backgroundColor: "#F68E1F",
+                  justifyContent: "center",
+                  marginHorizontal: 50,
+                  marginVertical: 40,
+                  height: 36,
+                  borderRadius: 20,
+                  alignItems: "center"
+                }}
+                onPress={this.navigateToScreen("Home")}>
+                <Text style={{ color: "#fff", paddingHorizontal: 40 }}>Go Home</Text>
+              </Button>
+            )}
           </ScrollView>
         </SafeAreaView>
       </>
@@ -297,4 +370,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ThankYouCab;
+export default HotelThankYou;

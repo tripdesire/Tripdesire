@@ -181,8 +181,8 @@ class PaymentCab extends React.PureComponent {
                   "/checkout/new-order?user_id=" + user.id + "&payment_method=razorpay",
                   newOrder
                 )
-                .then(({ data: order }) => {
-                  console.log(order);
+                .then(({ data: ord }) => {
+                  console.log(ord);
 
                   var options = {
                     description: "Credits towards consultation",
@@ -190,7 +190,7 @@ class PaymentCab extends React.PureComponent {
                     currency: "INR",
                     key: "rzp_test_I66kFrN53lhauw",
                     //  key: "rzp_live_IRhvqgmESx60tW",
-                    amount: parseInt(order.total) * 100,
+                    amount: parseInt(ord.total) * 100,
                     name: "TripDesire",
                     prefill: {
                       email: user.billing.email,
@@ -226,23 +226,26 @@ class PaymentCab extends React.PureComponent {
                             console.log(error);
                           });
                         let paymentData = {
-                          order_id: order.id,
+                          order_id: ord.id,
                           status: "completed",
                           transaction_id: razorpayRes.razorpay_payment_id,
                           reference_no: Response // blockres.data.ReferenceNo
                         };
                         this.setState({ loader: true });
-                        domainApi.post("/checkout/update-order", paymentData).then(res => {
-                          this.setState({ loader: false });
-                          console.log(res);
-                        });
-                        const { params } = this.props.navigation.state.params;
-                        this.props.navigation.navigate("ThankYouCab", {
-                          order,
-                          params,
-                          razorpayRes,
-                          item
-                        });
+                        domainApi
+                          .post("/checkout/update-order", paymentData)
+                          .then(({ data: order }) => {
+                            this.setState({ loader: false });
+                            console.log(order);
+                            const { params } = this.props.navigation.state.params;
+                            this.props.navigation.navigate("CabThankYou", {
+                              isOrderPage: false,
+                              order: order.data,
+                              params,
+                              razorpayRes,
+                              item
+                            });
+                          });
                       } else {
                         Toast.show("You have been cancelled the order.", Toast.LONG);
                       }

@@ -18,6 +18,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* tripdesireTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* tripdesireTests.m */; };
+		2F14056A23D57CBE00AC0F2B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F14056723D57CBE00AC0F2B /* GoogleService-Info.plist */; };
 		2F75BB30534345A4805D31DA /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7CC11BE025AB492CB2D3E6CF /* Poppins-LightItalic.ttf */; };
 		2F9CF395238403B700915828 /* Razorpay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9CF394238403B700915828 /* Razorpay.framework */; };
 		2F9CF396238403B700915828 /* Razorpay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9CF394238403B700915828 /* Razorpay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -105,6 +106,7 @@
 		2D02E47B1E0B4A5D006451C7 /* tripdesire-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tripdesire-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* tripdesire-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "tripdesire-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D14E83B229A4D8381A346B8 /* libRazorpayCheckout.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRazorpayCheckout.a; sourceTree = "<group>"; };
+		2F14056723D57CBE00AC0F2B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F1E6BA72383FAD700680041 /* Razorpay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Razorpay.framework; path = "../node_modules/react-native-razorpay/ios/Razorpay.framework"; sourceTree = "<group>"; };
 		2F3C23F323D1F7020027A72D /* tripdesire.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = tripdesire.entitlements; path = tripdesire/tripdesire.entitlements; sourceTree = "<group>"; };
 		2F9CF394238403B700915828 /* Razorpay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Razorpay.framework; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2F14056723D57CBE00AC0F2B /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* tripdesire */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* tripdesireTests */,
@@ -526,6 +529,7 @@
 				D03122E8BAB346FDADBA2176 /* Poppins-SemiBoldItalic.ttf in Resources */,
 				552BE220AF5B407DBFD89CF2 /* Poppins-Thin.ttf in Resources */,
 				698691E2AF3A40439ED0BCB4 /* Poppins-ThinItalic.ttf in Resources */,
+				2F14056A23D57CBE00AC0F2B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -904,7 +908,7 @@
 				CODE_SIGN_ENTITLEMENTS = tripdesire/tripdesire.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = HY47TX2567;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -914,7 +918,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = tripdesire/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -935,7 +939,7 @@
 				CODE_SIGN_ENTITLEMENTS = tripdesire/tripdesire.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = HY47TX2567;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -944,7 +948,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = tripdesire/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

@@ -10,16 +10,17 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Icon } from "../../components";
+import Button from "./Button";
+import Text from "./TextComponent";
+import Icon from "./IconNB";
 import moment from "moment";
 import HTML from "react-native-render-html";
 
-class ThankYouCab extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    console.log(this.props.navigation.state.params);
-    return;
-  }
+class CabThankYou extends React.PureComponent {
+  _goBack = () => {
+    this.props.navigation.goBack(null);
+  };
+
   navigateToScreen = page => () => {
     this.props.navigation.navigate(page);
   };
@@ -36,8 +37,8 @@ class ThankYouCab extends React.PureComponent {
   }
 
   render() {
-    const { order } = this.props.navigation.state.params;
-
+    console.log(this.props.navigation.state.params);
+    const { order, isOrderPage } = this.props.navigation.state.params;
     const dataArray = order.line_items[0].meta_data.reduce(
       (obj, item) => (
         (obj[item.key] = this.hasJsonStructure(item.value) ? JSON.parse(item.value) : item.value),
@@ -46,17 +47,41 @@ class ThankYouCab extends React.PureComponent {
       {}
     );
     console.log(dataArray);
-
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          {isOrderPage && (
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 16,
+                height: 56,
+                backgroundColor: "#E4EAF6",
+                alignItems: "center"
+              }}>
+              <Button onPress={this._goBack}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#1E293B",
+                  marginStart: 5,
+                  fontWeight: "700"
+                }}>
+                #{order.id}
+              </Text>
+            </View>
+          )}
           <ScrollView>
             <View>
-              <View style={{ justifyContent: "center", marginHorizontal: 8, marginTop: 20 }}>
-                <Text style={{ fontWeight: "700", fontSize: 18 }}>Booking Confirmed</Text>
-                <Text>ThankYou. Your booking has been completed.</Text>
-              </View>
+              {!isOrderPage && (
+                <View style={{ justifyContent: "center", marginHorizontal: 8, marginTop: 20 }}>
+                  <Text style={{ fontWeight: "700", fontSize: 18 }}>Booking Confirmed</Text>
+                  <Text>ThankYou. Your booking has been completed.</Text>
+                </View>
+              )}
 
               <View style={[styles.cardView, { marginTop: 15 }]}>
                 <View style={styles.flightType}>
@@ -92,14 +117,14 @@ class ThankYouCab extends React.PureComponent {
                   <Icon name={Platform.OS == "ios" ? "ios-car" : "md-car"} size={50} />
                   <View style={{ flex: 1, marginStart: 10 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <View>
+                      <View style={{ flex: 2 }}>
                         <Text style={styles.time}>Cab Type</Text>
                         <Text style={styles.airlineno}>{dataArray["Car Name"]}</Text>
                       </View>
-                      <View>
+                      {/* <View style={{ flex: 1 }}>
                         <Text style={styles.time}>Car Number</Text>
                         <Text style={styles.airlineno}>UP@% AL 5011</Text>
-                      </View>
+                      </View> */}
                     </View>
                     <View
                       style={{
@@ -107,15 +132,15 @@ class ThankYouCab extends React.PureComponent {
                         justifyContent: "space-between",
                         marginTop: 5
                       }}>
-                      <View>
+                      <View style={{ flex: 2 }}>
                         <Text style={styles.time}>Pick Up</Text>
                         <Text style={styles.airlineno}>
                           {dataArray["Journey Date"]}({dataArray["Pickup Time"]})
                         </Text>
                       </View>
                       {dataArray.hasOwnProperty("Return Date") && dataArray["Return Date"] != "" && (
-                        <View>
-                          <Text style={styles.time}>Drop Off</Text>
+                        <View style={{ flex: 1 }}>
+                          <Text style={[styles.time, { textAlign: "left" }]}>Drop Off</Text>
                           <Text style={styles.airlineno}>{dataArray["Return Date"]}</Text>
                         </View>
                       )}
@@ -126,14 +151,17 @@ class ThankYouCab extends React.PureComponent {
                         justifyContent: "space-between",
                         marginTop: 5
                       }}>
-                      <View>
+                      <View style={{ flex: 2 }}>
                         <Text style={styles.time}>From</Text>
                         <Text style={styles.airlineno}>{dataArray["Source City"]}</Text>
                       </View>
-                      <View>
-                        <Text style={styles.time}>To</Text>
-                        <Text style={styles.airlineno}>UP@% AL 5011</Text>
-                      </View>
+                      {dataArray.hasOwnProperty("Destination City") &&
+                        dataArray.hasOwnProperty("Destination City") != "" && (
+                          <View style={{ flex: 1 }}>
+                            <Text style={styles.time}>To</Text>
+                            <Text style={styles.airlineno}>{dataArray["Destination City"]}</Text>
+                          </View>
+                        )}
                     </View>
                   </View>
                 </View>
@@ -207,19 +235,21 @@ class ThankYouCab extends React.PureComponent {
               </View>
             </View>
 
-            <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                justifyContent: "center",
-                marginHorizontal: 50,
-                marginVertical: 40,
-                height: 40,
-                borderRadius: 20,
-                alignItems: "center"
-              }}
-              onPress={this.navigateToScreen("Home")}>
-              <Text style={{ color: "#fff", paddingHorizontal: 40 }}>Go Home</Text>
-            </Button>
+            {!isOrderPage && (
+              <Button
+                style={{
+                  backgroundColor: "#F68E1F",
+                  justifyContent: "center",
+                  marginHorizontal: 50,
+                  marginVertical: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  alignItems: "center"
+                }}
+                onPress={this.navigateToScreen("Home")}>
+                <Text style={{ color: "#fff", paddingHorizontal: 40 }}>Go Home</Text>
+              </Button>
+            )}
           </ScrollView>
         </SafeAreaView>
       </>
@@ -297,4 +327,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ThankYouCab;
+export default CabThankYou;

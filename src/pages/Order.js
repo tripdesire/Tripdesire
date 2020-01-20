@@ -59,12 +59,21 @@ class Order extends React.PureComponent {
     this.props.navigation.navigate("SignIn", { onBack: this.loadOrders });
   };
   navigateToOrderDetails = value => {
-    this.props.navigation.navigate("OrderDetails", value);
+    console.log(value);
+    if (value.line_items[0].product_id === 222) {
+      this.props.navigation.navigate("HotelThankYou", { order: value, isOrderPage: true });
+    } else if (value.line_items[0].product_id === 273) {
+      this.props.navigation.navigate("BusThankYou", { order: value, isOrderPage: true });
+    } else if (value.line_items[0].product_id === 2238) {
+      this.props.navigation.navigate("CabThankYou", { order: value, isOrderPage: true });
+    } else {
+      this.props.navigation.navigate("OrderDetails", value);
+    }
   };
 
   renderItem = ({ item }) => <OrderItems item={item} onPress={this.navigateToOrderDetails} />;
 
-  keyExtractor = item => "order_" + item.order_data.id;
+  keyExtractor = item => "order_" + item.id;
 
   render() {
     const { loading, orders } = this.state;
@@ -121,7 +130,7 @@ class Order extends React.PureComponent {
 }
 
 function OrderItems({ item, onPress }) {
-  const date = moment(item.order_data.date_created).format("MMM DD YYYY");
+  const date = moment(item.date_created).format("MMM DD YYYY");
   const _onPress = () => {
     onPress && onPress(item);
   };
@@ -183,24 +192,16 @@ function OrderItems({ item, onPress }) {
   //console.log(ticketData);
 
   const isFlight =
-    isArray(item.order_data.line_items) &&
-    item.order_data.line_items.length > 0 &&
-    item.order_data.line_items[0].product_id == 87;
+    isArray(item.line_items) && item.line_items.length > 0 && item.line_items[0].product_id == 87;
 
   const isHotel =
-    isArray(item.order_data.line_items) &&
-    item.order_data.line_items.length > 0 &&
-    item.order_data.line_items[0].product_id == 222;
+    isArray(item.line_items) && item.line_items.length > 0 && item.line_items[0].product_id == 222;
 
   const isBus =
-    isArray(item.order_data.line_items) &&
-    item.order_data.line_items.length > 0 &&
-    item.order_data.line_items[0].product_id == 273;
+    isArray(item.line_items) && item.line_items.length > 0 && item.line_items[0].product_id == 273;
 
   const isCab =
-    isArray(item.order_data.line_items) &&
-    item.order_data.line_items.length > 0 &&
-    item.order_data.line_items[0].product_id == 2238;
+    isArray(item.line_items) && item.line_items.length > 0 && item.line_items[0].product_id == 2238;
 
   return (
     <Button
@@ -219,11 +220,11 @@ function OrderItems({ item, onPress }) {
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Booking Id : </Text>
-          <Text style={{ lineHeight: 18 }}>{item.order_data.id}</Text>
+          <Text style={{ lineHeight: 18 }}>{item.id}</Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Status : </Text>
-          {status(item.order_data.status)}
+          {status(item.status)}
         </View>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -233,7 +234,7 @@ function OrderItems({ item, onPress }) {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Total : </Text>
-          <Text style={{ lineHeight: 20 }}>{"₹" + item.order_data.total}</Text>
+          <Text style={{ lineHeight: 20 }}>{"₹" + item.total}</Text>
         </View>
       </View>
 

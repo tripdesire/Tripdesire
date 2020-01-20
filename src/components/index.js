@@ -13,6 +13,9 @@ import RadioButton from "./RadioButton";
 import RNPicker from "./RNPicker";
 import DataNotFound from "./DataNotFound";
 import LinearGradient from "./LinearGradient";
+import HotelThankYou from "./HotelThankYou";
+import BusThankYou from "./BusThankYou";
+import CabThankYou from "./CabThankYou";
 export {
   Button,
   HomeButtonComponent,
@@ -28,5 +31,8 @@ export {
   RadioButton,
   RNPicker,
   DataNotFound,
-  LinearGradient
+  LinearGradient,
+  HotelThankYou,
+  BusThankYou,
+  CabThankYou
 };

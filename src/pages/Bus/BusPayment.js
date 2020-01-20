@@ -93,8 +93,8 @@ class BusPayment extends React.PureComponent {
     this.setState({ loader: true });
     domainApi
       .post("/checkout/new-order?user_id=" + user.id, param)
-      .then(({ data: order }) => {
-        console.log(order);
+      .then(({ data: ord }) => {
+        console.log(ord);
         this.setState({ loader: false });
         var options = {
           description: "Credits towards consultation",
@@ -102,7 +102,7 @@ class BusPayment extends React.PureComponent {
           currency: "INR",
           key: "rzp_test_I66kFrN53lhauw",
           //  key: "rzp_live_IRhvqgmESx60tW",
-          amount: parseInt(order.total) * 100,
+          amount: parseInt(ord.total) * 100,
           name: "TripDesire",
           prefill: {
             email: user.billing.email,
@@ -122,15 +122,9 @@ class BusPayment extends React.PureComponent {
                   this.setState({ loader: false });
                   console.log(Response);
                   if (Response.BookingStatus == 3) {
-                    this.props.navigation.navigate("ThankYouBus", {
-                      order,
-                      razorpayRes,
-                      Response,
-                      ...this.props.navigation.state.params
-                    });
                     Toast.show(Response.Message, Toast.LONG);
                     let paymentData = {
-                      order_id: order.id,
+                      order_id: ord.id,
                       status: "completed",
                       transaction_id: razorpayRes.razorpay_payment_id,
                       reference_no: Response
@@ -138,10 +132,19 @@ class BusPayment extends React.PureComponent {
                     console.log(paymentData);
 
                     this.setState({ loader: true });
-                    domainApi.post("/checkout/update-order", paymentData).then(res => {
-                      this.setState({ loader: false });
-                      console.log(res);
-                    });
+                    domainApi
+                      .post("/checkout/update-order", paymentData)
+                      .then(({ data: order }) => {
+                        this.setState({ loader: false });
+                        console.log(order);
+                        this.props.navigation.navigate("BusThankYou", {
+                          isOrderPage: false,
+                          order: order.data,
+                          razorpayRes,
+                          Response,
+                          ...this.props.navigation.state.params
+                        });
+                      });
                   } else {
                     Toast.show(Response.Message, Toast.LONG);
                   }
@@ -165,17 +168,9 @@ class BusPayment extends React.PureComponent {
 
                     if (BookingOneway.BookingStatus == 3) {
                       if (BookingRound.BookingStatus == 3) {
-                        this.props.navigation.navigate("ThankYouBus", {
-                          ...this.props.navigation.state.params,
-                          razorpayRes,
-                          BookingOneway,
-                          BookingRound,
-                          order
-                        });
-
                         Toast.show(BookingOneway.Message, Toast.LONG);
                         let paymentData = {
-                          order_id: order.id,
+                          order_id: ord.id,
                           status: "completed",
                           transaction_id: razorpayRes.razorpay_payment_id,
                           reference_no: BookingOneway,
@@ -183,9 +178,21 @@ class BusPayment extends React.PureComponent {
                         };
                         console.log(paymentData);
 
-                        domainApi.post("/checkout/update-order", paymentData).then(res => {
-                          console.log(res);
-                        });
+                        this.setState({ loader: true });
+                        domainApi
+                          .post("/checkout/update-order", paymentData)
+                          .then(({ data: order }) => {
+                            this.setState({ loader: false });
+                            console.log(order);
+                            this.props.navigation.navigate("BusThankYou", {
+                              isOrderPage: false,
+                              ...this.props.navigation.state.params,
+                              razorpayRes,
+                              BookingOneway,
+                              BookingRound,
+                              order: order.data
+                            });
+                          });
                       } else {
                         Toast.show("Your ticket is not booked successfully.", Toast.LONG);
                       }

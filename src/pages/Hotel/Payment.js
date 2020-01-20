@@ -304,15 +304,15 @@ class Payment extends React.PureComponent {
               const { user } = this.props;
               domainApi
                 .post("/checkout/new-order?user_id=" + user.id, param)
-                .then(({ data: order }) => {
-                  console.log(order);
+                .then(({ data: ord }) => {
+                  console.log(ord);
                   var options = {
                     description: "Credits towards consultation",
                     //image: "https://i.imgur.com/3g7nmJC.png",
                     currency: "INR",
                     key: "rzp_test_I66kFrN53lhauw",
                     //key: "rzp_live_IRhvqgmESx60tW",
-                    amount: parseInt(order.total) * 100,
+                    amount: parseInt(ord.total) * 100,
                     name: "TripDesire",
                     prefill: {
                       email: user.billing.email,
@@ -336,22 +336,28 @@ class Payment extends React.PureComponent {
                           console.log(error);
                         });
                       let paymentData = {
-                        order_id: order.id,
+                        order_id: ord.id,
                         status: "completed",
                         transaction_id: razorpayRes.razorpay_payment_id,
                         reference_no: Response // blockres.data.ReferenceNo
                       };
                       this.setState({ loading: true });
-                      domainApi.post("/checkout/update-order", paymentData).then(res => {
-                        this.setState({ loading: false });
-                        console.log(res);
-                      });
-                      const { params } = this.props.navigation.state.params;
-                      this.props.navigation.navigate("ThankYouHotel", {
-                        order,
-                        params,
-                        razorpayRes
-                      });
+                      domainApi
+                        .post("/checkout/update-order", paymentData)
+                        .then(({ data: order }) => {
+                          this.setState({ loading: false });
+                          console.log(order);
+                          const { params } = this.props.navigation.state.params;
+                          this.props.navigation.navigate("HotelThankYou", {
+                            order: order.data,
+                            isOrderPage: false
+                          });
+                          // this.props.navigation.navigate("ThankYouHotel", {
+                          //   order: order.data,
+                          //   params,
+                          //   razorpayRes
+                          // });
+                        });
                     })
                     .catch(error => {
                       // handle failure
@@ -727,7 +733,7 @@ class Payment extends React.PureComponent {
                     alignItems: "center",
                     marginVertical: 30,
                     justifyContent: "center",
-                    height: 40,
+                    height: 36,
                     borderRadius: 20
                   }}
                   onPress={this._order}>

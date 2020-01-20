@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./src/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { CustomDrawer, Icon } from "./src/components";
+import { HotelThankYou, BusThankYou, CabThankYou } from "./src/components";
 import {
   Home,
   FlightSearch,
@@ -156,6 +157,9 @@ const AuthStack = createStackNavigator(
 const OrderStack = createStackNavigator(
   {
     Order,
+    HotelThankYou,
+    BusThankYou,
+    CabThankYou,
     OrderDetails,
     LoginStack
   },

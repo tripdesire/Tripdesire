@@ -663,7 +663,7 @@ class CheckOut1 extends React.PureComponent {
       const { data: blockres } = await etravosApi.post("/Flights/BlockFlightTicket", book);
       //console.log(blockres);
       if (blockres.BookingStatus == 8) {
-        const { data: order } = await domainApi.post(
+        const { data: ord } = await domainApi.post(
           "/checkout/new-order?user_id=" + user.id,
           param
         );
@@ -673,7 +673,7 @@ class CheckOut1 extends React.PureComponent {
           currency: "INR",
           key: "rzp_test_I66kFrN53lhauw",
           // key: "rzp_live_IRhvqgmESx60tW",
-          amount: parseInt(order.total) * 100,
+          amount: parseInt(ord.total) * 100,
           name: "TripDesire",
           prefill: {
             email: user.billing.email,
@@ -698,7 +698,7 @@ class CheckOut1 extends React.PureComponent {
                 .then(({ data: Response }) => {
                   if (Response.ResponseStatus == 200) {
                     let paymentData = {
-                      order_id: order.id,
+                      order_id: ord.id,
                       status: "completed",
                       transaction_id: razorpayRes.razorpay_payment_id,
                       reference_no: Response // blockres.data.ReferenceNo
@@ -707,19 +707,19 @@ class CheckOut1 extends React.PureComponent {
                     this.setState({ loading: true });
                     domainApi
                       .post("/checkout/update-order", paymentData)
-                      .then(resp => {
+                      .then(({data:order}) => {
                         this.setState({ loading: false });
-                        console.log(resp);
+                        const { params } = this.props.navigation.state.params;
+                        console.log(order);
+                        this.props.navigation.navigate("ThankYou", {
+                          order:order.data,
+                          params,
+                          Response
+                        });
                       })
                       .catch(error => {
                         this.setState({ loading: false });
                       });
-                    const { params } = this.props.navigation.state.params;
-                    this.props.navigation.navigate("ThankYou", {
-                      order,
-                      params,
-                      Response
-                    });
                   } else {
                     Toast.show(Response.Message, Toast.SHORT);
                   }
