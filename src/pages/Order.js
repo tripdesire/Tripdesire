@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, Button } from "../components";
-import { SafeAreaView, ActivityIndicator } from "react-native";
+import { SafeAreaView, ActivityIndicator, RefreshControl } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import Toast from "react-native-simple-toast";
 import { isEmpty, isArray } from "lodash";
@@ -16,9 +16,28 @@ class Order extends React.PureComponent {
       orders: [],
       offset: 0,
       limit: 20,
-      allowMoreScroll: true
+      allowMoreScroll: true,
+      refreshing: false
     };
   }
+
+  onRefresh = async () => {
+    console.log("kamal");
+    await this.setState({ refreshing: true, offset: 0 });
+    this.loadOrders();
+    // this.setState({ refreshing: false });
+    // React.useCallback(() => {
+    //   this.setState({ refreshing: true });
+    //   this.wait(2000).then(() => this.setState({ refreshing: false }));
+    // }, [this.state.refreshing]);
+  };
+
+  // wait(timeout) {
+  //   return new Promise(resolve => {
+  //     setTimeout(resolve, timeout);
+  //   });
+  // }
+
   componentDidMount() {
     if (!isEmpty(this.props.user)) {
       this.loadOrders();
@@ -26,22 +45,22 @@ class Order extends React.PureComponent {
   }
 
   loadOrders = () => {
-    console.log("loading orders");
     const { user } = this.props;
     const { offset, limit, allowMoreScroll } = this.state;
     if (!allowMoreScroll) {
       return;
     }
-    this.setState({ loading: true });
+    this.setState({ loading: !this.state.refreshing });
     domainApi
       .post("/nutri-user/" + user.id + "/order-list", { offset, limit })
       .then(({ data }) => {
         console.log(data);
         if (data.status == 1) {
           this.setState({
-            orders: [...this.state.orders, ...data.data],
+            orders: this.state.refreshing ? data.data : [...this.state.orders, ...data.data],
             loading: false,
             offset: offset + limit,
+            refreshing: false,
             allowMoreScroll: data.data.length >= limit
           });
         } else {
@@ -60,12 +79,15 @@ class Order extends React.PureComponent {
   };
   navigateToOrderDetails = value => {
     console.log(value);
-    if (value.line_items[0].product_id === 222) {
+    const { product_id } = value.line_items[0];
+    if (product_id === 222) {
       this.props.navigation.navigate("HotelThankYou", { order: value, isOrderPage: true });
-    } else if (value.line_items[0].product_id === 273) {
+    } else if (product_id === 273) {
       this.props.navigation.navigate("BusThankYou", { order: value, isOrderPage: true });
-    } else if (value.line_items[0].product_id === 2238) {
+    } else if (product_id === 2238) {
       this.props.navigation.navigate("CabThankYou", { order: value, isOrderPage: true });
+    } else if (product_id === 87) {
+      this.props.navigation.navigate("FlightThankYou", { order: value, isOrderPage: true });
     } else {
       this.props.navigation.navigate("OrderDetails", value);
     }
@@ -76,13 +98,13 @@ class Order extends React.PureComponent {
   keyExtractor = item => "order_" + item.id;
 
   render() {
-    const { loading, orders } = this.state;
+    const { loading, orders, refreshing } = this.state;
     const { user } = this.props;
 
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Orders</Text>
           </View>
@@ -96,8 +118,10 @@ class Order extends React.PureComponent {
           ) : orders.length > 0 ? (
             <View style={{ flex: 5 }}>
               <FlatList
+                onRefresh={this.onRefresh}
+                refreshing={refreshing}
                 showsVerticalScrollIndicator={false}
-                bounces={false}
+                bounces={true}
                 data={orders}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
@@ -216,7 +240,8 @@ function OrderItems({ item, onPress }) {
         shadowRadius: 4,
         shadowOffset: { height: 0, width: 2 }
       }}
-      onPress={_onPress}>
+      onPress={_onPress}
+      key={"order" + item.id}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Booking Id : </Text>

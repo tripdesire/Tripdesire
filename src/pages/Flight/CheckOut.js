@@ -195,7 +195,9 @@ class CheckOut extends React.PureComponent {
           : params.departFlight.IntOnward.FlightSegments[0].StopQuantity,
       single_fl_conveniencefee: params.departFlight.FareDetails.ChargeableFares.Conveniencefee,
       single_fl_schagre: params.departFlight.FareDetails.ChargeableFares.SCharge,
-      single_fl_tax: params.departFlight.FareDetails.ChargeableFares.Tax,
+      single_fl_tax:
+        Number(params.departFlight.FareDetails.ChargeableFares.Tax) +
+        Number(params.departFlight.FareDetails.ChargeableFares.STax),
       single_fl_dept_date: departureDate,
       single_fl_arriv_date: arrivalDate,
       single_fl_fare_rule: "Refundable",
@@ -258,9 +260,11 @@ class CheckOut extends React.PureComponent {
           : "",
       return_fl_tax:
         params.flightType == 2 && params.tripType == 2
-          ? params.departFlight.FareDetails.ChargeableFares.Tax
+          ? Number(params.departFlight.FareDetails.ChargeableFares.Tax) +
+            Number(params.departFlight.FareDetails.ChargeableFares.STax)
           : params.flightType == 1 && params.tripType == 2
-          ? params.arrivalFlight.FareDetails.ChargeableFares.Tax
+          ? Number(params.arrivalFlight.FareDetails.ChargeableFares.Tax) +
+            Number(params.arrivalFlight.FareDetails.ChargeableFares.STax)
           : "",
       return_fl_dept_date: params.tripType == 2 ? departureDateReturn : "",
       return_fl_arriv_date: params.tripType == 2 ? arrivalDateReturn : "",
@@ -315,7 +319,20 @@ class CheckOut extends React.PureComponent {
   }
 
   navigateToScreen = (page, params = {}) => () => {
-    this.props.navigation.navigate(page, { params, data: this.state.data });
+    let data = {
+      ...this.state.data,
+      payment_method: [
+        {
+          id: "razorpay",
+          title: "RazorPay"
+        }
+        // {
+        //   id: "wallet",
+        //   title: "Wallet"
+        // }
+      ]
+    };
+    this.props.navigation.navigate(page, { params, data });
   };
 
   render() {

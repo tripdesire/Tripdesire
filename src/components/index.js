@@ -16,6 +16,7 @@ import LinearGradient from "./LinearGradient";
 import HotelThankYou from "./HotelThankYou";
 import BusThankYou from "./BusThankYou";
 import CabThankYou from "./CabThankYou";
+import FlightThankYou from "./FlightThankYou";
 export {
   Button,
   HomeButtonComponent,
@@ -34,5 +35,6 @@ export {
   LinearGradient,
   HotelThankYou,
   BusThankYou,
-  CabThankYou
+  CabThankYou,
+  FlightThankYou
 };

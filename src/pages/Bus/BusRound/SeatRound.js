@@ -112,24 +112,33 @@ class SeatRound extends React.PureComponent {
   }
 
   _bookNow = () => {
-    const { tripType, params, TripType } = this.props.navigation.state.params;
+    const { tripType, params, TripType, selectedSheets } = this.props.navigation.state.params;
     const { selectedSheetsRound } = this.state;
-    if (this.state.selectedSheetsRound.length > 0) {
+    if (selectedSheets.length === selectedSheetsRound.length) {
       this.props.navigation.navigate("BoardingRound", {
         ...this.props.navigation.state.params,
         selectedSheetsRound: selectedSheetsRound
       });
     } else {
-      Toast.show("Please Select the Seat");
+      Toast.show(
+        "Arrival selected seats can not be greater than or less than return selected seats",
+        Toast.SHORT
+      );
     }
   };
 
   updateSheets = item => () => {
+    const { selectedSheets } = this.props.navigation.state.params;
     if (item.IsAvailableSeat === "true" || item.IsAvailableSeat === "True") {
       let selectedSheetsRound = [...this.state.selectedSheetsRound];
       let index = selectedSheetsRound.findIndex(val => val.Number == item.Number);
       if (index != -1) {
         selectedSheetsRound.splice(index, 1);
+      } else if (this.state.selectedSheetsRound.length >= selectedSheets.length) {
+        Toast.show(
+          "Arrival selected seats can not be greater than or less than return selected seats",
+          Toast.SHORT
+        );
       } else {
         selectedSheetsRound.push(item);
       }

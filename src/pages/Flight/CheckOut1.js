@@ -129,7 +129,7 @@ class CheckOut1 extends React.PureComponent {
 
   closeModal = val => {
     console.log(val);
-    this.setState({ showGst: false, GstDetails: val });
+    this.setState({ showGst: false, GstDetails: val, loading: false });
   };
 
   onCountrySelect = index => val => {
@@ -708,7 +708,8 @@ class CheckOut1 extends React.PureComponent {
                         this.setState({ loading: false });
                         const { params } = this.props.navigation.state.params;
                         console.log(order);
-                        this.props.navigation.navigate("ThankYou", {
+                        this.props.navigation.navigate("FlightThankYou", {
+                          isOrderPage: false,
                           order: order.data,
                           params,
                           Response
