@@ -10,13 +10,11 @@ import {
   SafeAreaView,
   ToastAndroid
 } from "react-native";
-import { connect } from "react-redux";
-import { DomSugg, IntSugg, DomHotelSugg, BusSugg } from "../store/action";
 import { etravosApi } from "../service";
-import axios from "axios";
 import moment from "moment";
 import { isArray } from "lodash";
 import Toast from "react-native-simple-toast";
+import HTML from "react-native-render-html";
 const { height, width } = Dimensions.get("window");
 
 class ThankYou extends React.PureComponent {
@@ -30,7 +28,7 @@ class ThankYou extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { Response, order } = this.props.navigation.state.params;
+    const { order } = this.props.navigation.state.params;
     const dataArray = JSON.parse(order.reference_no);
     let params = {
       referenceNo: dataArray.ReferenceNo,
@@ -71,7 +69,7 @@ class ThankYou extends React.PureComponent {
 
   render() {
     const { ticket, loader } = this.state;
-    const { params, order, Response } = this.props.navigation.state.params;
+    const { order } = this.props.navigation.state.params;
 
     JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
     const dataArray = order.line_items[0].meta_data.reduce(
@@ -143,10 +141,15 @@ class ThankYou extends React.PureComponent {
                       <Text style={styles.time}>
                         {dataArray.hasOwnProperty("Onward Item Result Data")
                           ? dataArray["Onward Item Result Data"].FlightSegments[0].AirLineName
-                          : params.departFlight.IntOnward.FlightSegments[0].AirLineName}
+                          : dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                              .AirLineName}
                       </Text>
-                      <Text style={styles.airlineno}>{params.departFlight.FlightUId}</Text>
-                      <Text style={styles.class}>{params.className}</Text>
+                      <Text style={styles.airlineno}>
+                        {dataArray.hasOwnProperty("Onward Item Result Data")
+                          ? dataArray["Onward Item Result Data"].FlightUId
+                          : dataArray["Int Fl Item Result Data"].FlightUId}
+                      </Text>
+                      <Text style={styles.class}>{dataArray["Class Type"]}</Text>
                     </View>
 
                     <View style={{ alignItems: "center" }}>
@@ -157,14 +160,16 @@ class ThankYou extends React.PureComponent {
                                 .DepartureDateTime
                             ).format("HH:mm")
                           : moment(
-                              params.departFlight.IntOnward.FlightSegments[0].DepartureDateTime
+                              dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                                .DepartureDateTime
                             ).format("HH:mm")}
                       </Text>
                       <Text style={styles.airlineno}>
                         {dataArray.hasOwnProperty("Onward Item Result Data")
                           ? dataArray["Onward Item Result Data"].FlightSegments[0]
                               .IntDepartureAirportName
-                          : params.departFlight.IntOnward.FlightSegments[0].IntDepartureAirportName}
+                          : dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                              .IntDepartureAirportName}
                       </Text>
 
                       <View style={{ flexDirection: "row" }}>
@@ -177,12 +182,15 @@ class ThankYou extends React.PureComponent {
                                 ].AccumulatedDuration}
                           </Text>
                         )}
-                        {!dataArray.hasOwnProperty("Return Item Result Data") && (
+                        {dataArray.hasOwnProperty("Int Fl Item Result Data") && (
                           <Text style={styles.airlineno}>
-                            {params.departFlight.IntOnward.FlightSegments.length == 1
-                              ? params.departFlight.IntOnward.FlightSegments[0].Duration
-                              : params.departFlight.IntOnward.FlightSegments[
-                                  params.departFlight.IntOnward.FlightSegments.length - 1
+                            {dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments.length ==
+                            1
+                              ? dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                                  .Duration
+                              : dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[
+                                  dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments
+                                    .length - 1
                                 ].AccumulatedDuration}
                           </Text>
                         )}
@@ -197,12 +205,15 @@ class ThankYou extends React.PureComponent {
                                 " Stop(s)"}
                           </Text>
                         )}
-                        {!dataArray.hasOwnProperty("Return Item Result Data") && (
+                        {dataArray.hasOwnProperty("Int Fl Item Result Data") && (
                           <Text style={styles.airlineno}>
-                            {params.departFlight.IntOnward.FlightSegments.length - 1 == 0
+                            {dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments.length -
+                              1 ==
+                            0
                               ? " Non Stop"
                               : " " +
-                                params.departFlight.IntOnward.FlightSegments.length -
+                                dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments
+                                  .length -
                                 1 +
                                 " Stop(s)"}
                           </Text>
@@ -219,8 +230,9 @@ class ThankYou extends React.PureComponent {
                               ].ArrivalDateTime
                             ).format("HH:mm")
                           : moment(
-                              params.departFlight.IntOnward.FlightSegments[
-                                params.departFlight.IntOnward.FlightSegments.length - 1
+                              dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[
+                                dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments
+                                  .length - 1
                               ].ArrivalDateTime
                             ).format("HH:mm")}
                       </Text>
@@ -229,15 +241,18 @@ class ThankYou extends React.PureComponent {
                           ? dataArray["Onward Item Result Data"].FlightSegments[
                               dataArray["Onward Item Result Data"].FlightSegments.length - 1
                             ].IntArrivalAirportName
-                          : params.departFlight.IntOnward.FlightSegments[
-                              params.departFlight.IntOnward.FlightSegments.length - 1
+                          : dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[
+                              dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments.length -
+                                1
                             ].IntArrivalAirportName}
                       </Text>
                     </View>
                   </View>
                 </View>
 
-                {dataArray.hasOwnProperty("Return Item Result Data") && (
+                {((dataArray.hasOwnProperty("Int Fl Item Result Data") &&
+                  dataArray["Int Fl Item Result Data"].IntReturn != null) ||
+                  dataArray.hasOwnProperty("Return Item Result Data")) && (
                   <View style={[styles.cardView, { marginTop: 15 }]}>
                     <View style={styles.flightType}>
                       <Text style={styles.heading}>Return</Text>
@@ -246,65 +261,83 @@ class ThankYou extends React.PureComponent {
                       <View>
                         <Text style={styles.time}>
                           {!dataArray.hasOwnProperty("Return Item Result Data")
-                            ? params.departFlight.IntReturn.FlightSegments[0].AirLineName
-                            : params.arrivalFlight.FlightSegments[0].AirLineName}
+                            ? dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
+                                .AirLineName
+                            : dataArray["Return Item Result Data"].FlightSegments[0].AirLineName}
                         </Text>
-                        <Text style={styles.airlineno}>{params.arrivalFlight.FlightUId}</Text>
-                        <Text style={styles.class}>{params.className}</Text>
+                        <Text style={styles.airlineno}>
+                          {dataArray.hasOwnProperty("Return Item Result Data")
+                            ? dataArray["Return Item Result Data"].FlightUId
+                            : dataArray["Int Fl Item Result Data"].FlightUId}
+                        </Text>
+                        <Text style={styles.class}>{dataArray["Class Type"]}</Text>
                       </View>
 
                       <View style={{ alignItems: "center" }}>
                         <Text style={styles.time}>
                           {!dataArray.hasOwnProperty("Return Item Result Data")
                             ? moment(
-                                params.departFlight.IntReturn.FlightSegments[0].DepartureDateTime
+                                dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
+                                  .DepartureDateTime
                               ).format("HH:mm")
                             : moment(
-                                params.arrivalFlight.FlightSegments[0].DepartureDateTime
+                                dataArray["Return Item Result Data"].FlightSegments[0]
+                                  .DepartureDateTime
                               ).format("HH:mm")}
                         </Text>
                         <Text style={styles.airlineno}>
                           {!dataArray.hasOwnProperty("Return Item Result Data")
-                            ? params.departFlight.IntReturn.FlightSegments[0]
+                            ? dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
                                 .IntDepartureAirportName
-                            : params.arrivalFlight.FlightSegments[0].IntDepartureAirportName}
+                            : dataArray["Return Item Result Data"].FlightSegments[0]
+                                .IntDepartureAirportName}
                         </Text>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                          {!dataArray.hasOwnProperty("Return Item Result Data") && (
+                          {dataArray.hasOwnProperty("Int Fl Item Result Data") && (
                             <Text style={styles.airlineno}>
-                              {params.departFlight.IntReturn.FlightSegments.length == 1
-                                ? params.departFlight.IntReturn.FlightSegments[0].Duration
-                                : params.departFlight.IntReturn.FlightSegments[
-                                    params.departFlight.IntReturn.FlightSegments.length - 1
+                              {dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments
+                                .length == 1
+                                ? dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
+                                    .Duration
+                                : dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[
+                                    dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments
+                                      .length - 1
                                   ].AccumulatedDuration}
                             </Text>
                           )}
-                          {dataArray.hasOwnProperty("Onward Item Result Data") && (
+                          {dataArray.hasOwnProperty("Return Item Result Data") && (
                             <Text style={styles.airlineno}>
-                              {params.arrivalFlight.FlightSegments.length == 1
-                                ? params.arrivalFlight.FlightSegments[0].Duration
-                                : params.arrivalFlight.FlightSegments[
-                                    params.arrivalFlight.FlightSegments.length - 1
+                              {dataArray["Return Item Result Data"].FlightSegments.length == 1
+                                ? dataArray["Return Item Result Data"].FlightSegments[0].Duration
+                                : dataArray["Return Item Result Data"].FlightSegments[
+                                    dataArray["Return Item Result Data"].FlightSegments.length - 1
                                   ].AccumulatedDuration}
                             </Text>
                           )}
 
-                          {!dataArray.hasOwnProperty("Return Item Result Data") && (
+                          {dataArray.hasOwnProperty("Int Fl Item Result Data") && (
                             <Text style={styles.airlineno}>
-                              {params.departFlight.IntReturn.FlightSegments.length - 1 == 0
+                              {dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments
+                                .length -
+                                1 ==
+                              0
                                 ? " Non Stop"
                                 : " " +
-                                  params.departFlight.IntReturn.FlightSegments.length -
+                                  dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments
+                                    .length -
                                   1 +
                                   " Stop(s)"}
                             </Text>
                           )}
-                          {dataArray.hasOwnProperty("Onward Item Result Data") && (
+                          {dataArray.hasOwnProperty("Return Item Result Data") && (
                             <Text style={styles.airlineno}>
-                              {params.arrivalFlight.FlightSegments.length - 1 == 0
+                              {dataArray["Return Item Result Data"].FlightSegments.length - 1 == 0
                                 ? " Non Stop"
-                                : " " + params.arrivalFlight.FlightSegments.length - 1 + " Stop(s)"}
+                                : " " +
+                                  dataArray["Return Item Result Data"].FlightSegments.length -
+                                  1 +
+                                  " Stop(s)"}
                             </Text>
                           )}
                         </View>
@@ -316,23 +349,25 @@ class ThankYou extends React.PureComponent {
                         <Text style={styles.time}>
                           {!dataArray.hasOwnProperty("Return Item Result Data")
                             ? moment(
-                                params.departFlight.IntReturn.FlightSegments[
-                                  params.departFlight.IntReturn.FlightSegments.length - 1
+                                dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[
+                                  dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments
+                                    .length - 1
                                 ].ArrivalDateTime
                               ).format("HH:mm")
                             : moment(
-                                params.arrivalFlight.FlightSegments[
-                                  params.arrivalFlight.FlightSegments.length - 1
+                                dataArray["Return Item Result Data"].FlightSegments[
+                                  dataArray["Return Item Result Data"].FlightSegments.length - 1
                                 ].ArrivalDateTime
                               ).format("HH:mm")}
                         </Text>
                         <Text style={styles.airlineno}>
                           {!dataArray.hasOwnProperty("Return Item Result Data")
-                            ? params.departFlight.IntReturn.FlightSegments[
-                                params.departFlight.IntReturn.FlightSegments.length - 1
+                            ? dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[
+                                dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments
+                                  .length - 1
                               ].IntArrivalAirportName
-                            : params.arrivalFlight.FlightSegments[
-                                params.arrivalFlight.FlightSegments.length - 1
+                            : dataArray["Return Item Result Data"].FlightSegments[
+                                dataArray["Return Item Result Data"].FlightSegments.length - 1
                               ].IntArrivalAirportName}
                         </Text>
                       </View>
@@ -347,9 +382,19 @@ class ThankYou extends React.PureComponent {
                   <View style={styles.contentView}>
                     <View>
                       <Text style={[styles.time, { marginBottom: 4 }]}>Type</Text>
-                      <Text style={styles.airlineno}>{params.departFlight.FlightUId}</Text>
-                      {ticket.TripType == 2 && (
-                        <Text style={styles.airlineno}>{params.arrivalFlight.FlightUId}</Text>
+                      <Text style={styles.airlineno}>
+                        {dataArray.hasOwnProperty("Onward Item Result Data")
+                          ? dataArray["Onward Item Result Data"].FlightUId
+                          : dataArray["Int Fl Item Result Data"].FlightUId}
+                      </Text>
+                      {((dataArray.hasOwnProperty("Int Fl Item Result Data") &&
+                        dataArray["Int Fl Item Result Data"].IntReturn != null) ||
+                        dataArray.hasOwnProperty("Return Item Result Data")) && (
+                        <Text style={styles.airlineno}>
+                          {dataArray.hasOwnProperty("Return Item Result Data")
+                            ? dataArray["Return Item Result Data"].FlightUId
+                            : dataArray["Int Fl Item Result Data"].FlightUId}
+                        </Text>
                       )}
                     </View>
 
@@ -525,7 +570,9 @@ class ThankYou extends React.PureComponent {
                   </View>
                 </View>
 
-                {params.tripType == 2 && (
+                {((dataArray.hasOwnProperty("Int Fl Item Result Data") &&
+                  dataArray["Int Fl Item Result Data"].IntReturn != null) ||
+                  dataArray.hasOwnProperty("Return Item Result Data")) && (
                   <View style={[styles.cardView, { marginTop: 15 }]}>
                     <View style={styles.flightType}>
                       <Text style={styles.heading}>Passenger Details Return</Text>
@@ -651,32 +698,50 @@ class ThankYou extends React.PureComponent {
                     <Text style={styles.heading}>Fare Summary</Text>
                   </View>
 
-                  <View style={[styles.summaryRow, { paddingTop: 8 }]}>
-                    <Text style={styles.airlineno}>Convenience Fee</Text>
-                    <Text style={styles.airlineno}>₹ 0.00</Text>
+                  <Text style={[styles.time, { paddingTop: 8, marginHorizontal: 12 }]}>Onward</Text>
+
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.airlineno}>Base Fare</Text>
+                    <Text style={styles.airlineno}>₹ {dataArray["Base Fare"]}</Text>
                   </View>
 
                   <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Flight Scharge</Text>
-                    <Text style={styles.airlineno}>₹ 0.00</Text>
+                    <Text style={styles.airlineno}>₹ {dataArray["Flight Schagre"]}</Text>
                   </View>
 
                   <View style={styles.summaryRow}>
-                    <Text style={styles.airlineno}>Base Fare</Text>
-                    <Text style={styles.airlineno}>
-                      ₹ {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
-                    </Text>
-                  </View>
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.airlineno}>Flight GST</Text>
-                    <Text style={styles.airlineno}>₹ 0.00</Text>
-                  </View>
-                  <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Flight Tax</Text>
-                    <Text style={styles.airlineno}>
-                      ₹ {params.departFlight.FareDetails.ChargeableFares.Tax}
-                    </Text>
+                    <Text style={styles.airlineno}>₹ {dataArray["Flight Tax"]}</Text>
                   </View>
+
+                  {dataArray.hasOwnProperty("Return Item Result Data") && (
+                    <>
+                      <Text style={[styles.time, { paddingTop: 8, marginHorizontal: 12 }]}>
+                        Return
+                      </Text>
+                      <View style={styles.summaryRow}>
+                        <Text style={styles.airlineno}>Base Fare</Text>
+                        <Text style={styles.airlineno}>₹ {dataArray["Return Base Fare"]}</Text>
+                      </View>
+
+                      <View style={styles.summaryRow}>
+                        <Text style={styles.airlineno}>Flight Scharge</Text>
+                        <Text style={styles.airlineno}>₹ {dataArray["Flight Schagre"]}</Text>
+                      </View>
+
+                      <View style={styles.summaryRow}>
+                        <Text style={styles.airlineno}>Flight Tax</Text>
+                        <Text style={styles.airlineno}>₹ {dataArray["Return Flight Tax"]}</Text>
+                      </View>
+                    </>
+                  )}
+
+                  <View style={[styles.summaryRow]}>
+                    <Text style={styles.airlineno}>Convenience Fee</Text>
+                    <HTML baseFontStyle={styles.airlineno} html={dataArray["ConvenienceFee"]} />
+                  </View>
+
                   <View style={styles.summaryRow}>
                     <Text style={styles.time}>Total Price</Text>
                     <Text style={styles.time}>₹ {order.total}</Text>
