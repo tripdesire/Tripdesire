@@ -527,11 +527,11 @@ class HotelCheckout extends React.Component {
                 <Button
                   style={{
                     backgroundColor: "#F68E1D",
-                    marginHorizontal: 100,
+                    marginHorizontal: 80,
                     alignItems: "center",
-                    marginVertical: 30,
                     justifyContent: "center",
                     height: 36,
+                    marginVertical: 20,
                     borderRadius: 20
                   }}
                   onPress={this._Next}>

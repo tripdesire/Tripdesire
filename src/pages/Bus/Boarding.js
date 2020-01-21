@@ -97,13 +97,13 @@ class Boarding extends React.PureComponent {
             </View>
             <Button
               style={{
-                backgroundColor: "#F68E1F",
+                backgroundColor: "#F68E1D",
                 marginHorizontal: 100,
-                height: 40,
+                alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 20,
-                marginVertical: 16,
-                marginTop: 80
+                height: 36,
+                marginVertical: 20,
+                borderRadius: 20
               }}
               onPress={this._bookNow}>
               <Text style={{ color: "#fff", alignSelf: "center" }}>Book Now</Text>

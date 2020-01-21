@@ -510,12 +510,11 @@ class HotelPayment extends React.PureComponent {
               <Button
                 style={{
                   backgroundColor: "#F68E1D",
-                  marginHorizontal: 80,
+                  marginHorizontal: 100,
                   alignItems: "center",
-                  marginVertical: 30,
                   justifyContent: "center",
                   height: 36,
-                  paddingHorizontal: 20,
+                  marginVertical: 20,
                   borderRadius: 20
                 }}
                 onPress={this._payment}>

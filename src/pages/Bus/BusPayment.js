@@ -747,9 +747,9 @@ class BusPayment extends React.PureComponent {
                     backgroundColor: "#F68E1D",
                     marginHorizontal: 100,
                     alignItems: "center",
-                    marginVertical: 30,
                     justifyContent: "center",
-                    height: 40,
+                    height: 36,
+                    marginVertical: 20,
                     borderRadius: 20
                   }}
                   onPress={this._PlaceOrder}>

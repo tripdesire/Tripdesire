@@ -663,10 +663,7 @@ class CheckOut1 extends React.PureComponent {
       const { data: blockres } = await etravosApi.post("/Flights/BlockFlightTicket", book);
       //console.log(blockres);
       if (blockres.BookingStatus == 8) {
-        const { data: ord } = await domainApi.post(
-          "/checkout/new-order?user_id=" + user.id,
-          param
-        );
+        const { data: ord } = await domainApi.post("/checkout/new-order?user_id=" + user.id, param);
         var options = {
           description: "Credits towards consultation",
           // image: "https://i.imgur.com/3g7nmJC.png",
@@ -707,12 +704,12 @@ class CheckOut1 extends React.PureComponent {
                     this.setState({ loading: true });
                     domainApi
                       .post("/checkout/update-order", paymentData)
-                      .then(({data:order}) => {
+                      .then(({ data: order }) => {
                         this.setState({ loading: false });
                         const { params } = this.props.navigation.state.params;
                         console.log(order);
                         this.props.navigation.navigate("ThankYou", {
-                          order:order.data,
+                          order: order.data,
                           params,
                           Response
                         });
@@ -1639,13 +1636,12 @@ class CheckOut1 extends React.PureComponent {
                 <Button
                   style={{
                     backgroundColor: "#F68E1D",
-                    marginHorizontal: 120,
+                    marginHorizontal: 100,
                     alignItems: "center",
-                    marginVertical: 30,
                     justifyContent: "center",
                     height: 36,
+                    marginVertical: 20,
                     borderRadius: 20
-                    // marginTop: "auto"
                   }}
                   onPress={this._order}>
                   <Text style={{ color: "#fff" }}>Book Now</Text>
