@@ -273,7 +273,7 @@ class FlightListInternational extends React.PureComponent {
                 style={{
                   flex: 1,
                   marginHorizontal: 10,
-                  color: "#5D666D",
+                  color: "green",
                   fontSize: 12
                 }}>
                 {this.props.item.IntOnward.FlightSegments[0].BookingClassFare.Rule.trim()}

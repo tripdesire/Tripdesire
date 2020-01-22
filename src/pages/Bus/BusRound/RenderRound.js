@@ -110,7 +110,7 @@ class RenderRound extends React.PureComponent {
             <Text
               style={{
                 fontSize: 12,
-                color: "#6287F9",
+                color: "green",
                 zIndex: 1
               }}>
               Cancellation Policy

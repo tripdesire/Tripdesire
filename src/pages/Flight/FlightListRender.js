@@ -246,7 +246,7 @@ class FlightListRender extends React.PureComponent {
                 style={{
                   flex: 1,
                   marginHorizontal: 10,
-                  color: "#5D666D",
+                  color: "green",
                   fontSize: 12
                 }}>
                 {item.FlightSegments[0].BookingClassFare.Rule}

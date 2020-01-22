@@ -128,7 +128,7 @@ class RenderItems extends React.PureComponent {
             alignItems: "center"
           }}>
           <Button onPress={this._onFareDetails}>
-            <Text style={{ fontSize: 12, color: "#6287F9" }}>Fare Details</Text>
+            <Text style={{ fontSize: 12, color: "green" }}>Fare Details</Text>
           </Button>
           <Text style={{ fontSize: 18, fontWeight: "600" }}>
             ₹ {this.props.item.TotalNetAmount}

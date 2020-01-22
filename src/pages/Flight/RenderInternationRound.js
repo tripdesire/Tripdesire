@@ -302,7 +302,7 @@ class RenderInternationRound extends React.PureComponent {
                 style={{
                   flex: 1,
                   marginHorizontal: 8,
-                  color: "#5D666D",
+                  color: "green",
                   fontSize: 12
                 }}>
                 {this.props.item.IntOnward.FlightSegments[0].BookingClassFare.Rule.trim()}
@@ -626,7 +626,7 @@ class RenderInternationRound extends React.PureComponent {
                   style={{
                     flex: 1,
                     marginHorizontal: 8,
-                    color: "#5D666D",
+                    color: "green",
                     fontSize: 12
                   }}>
                   {this.props.item.IntReturn.FlightSegments[0].BookingClassFare.Rule}
