@@ -33,6 +33,10 @@ function MyAccount({ navigation }) {
     navigation.navigate("Wallet");
   };
 
+  const refer_earn = () => {
+    navigation.navigate("ReferAndEarn");
+  };
+
   const help = () => {
     navigation.navigate("Help");
   };
@@ -132,7 +136,7 @@ function MyAccount({ navigation }) {
             <Text style={styles.rowText}>My Trips</Text>
           </Button>
 
-          {/* {!isEmpty(user) && (
+          {!isEmpty(user) && (
             <Button style={styles.rowView} onPress={wallet}>
               <Image
                 source={require("../assets/imgs/wallet.png")}
@@ -140,7 +144,15 @@ function MyAccount({ navigation }) {
               />
               <Text style={styles.rowText}>Wallet</Text>
             </Button>
-          )} */}
+          )}
+
+          <Button style={styles.rowView} onPress={refer_earn}>
+            <Image
+              source={require("../assets/imgs/wallet.png")}
+              style={{ width: 28, height: 28, tintColor: "#757575" }}
+            />
+            <Text style={styles.rowText}>Refer & Earn</Text>
+          </Button>
 
           {!isEmpty(user) && (
             <Button style={styles.rowView} onPress={editAddress}>

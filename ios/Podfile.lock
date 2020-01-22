@@ -295,6 +295,8 @@ PODS:
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
+  - RNShare (3.0.0):
+    - React
   - RNVectorIcons (6.6.0):
     - React
   - Toast (4.0.0)
@@ -342,6 +344,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNShare (from `../node_modules/react-native-share`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -435,6 +438,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -488,6 +493,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
+  RNShare: 0e19ddb0bf338b62702ce1d9e001ee14effa68a8
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f

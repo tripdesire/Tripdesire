@@ -59,7 +59,8 @@ import {
   OTPScreen,
   OTPVerify,
   PaymentCab,
-  Wallet
+  Wallet,
+  ReferAndEarn
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -132,7 +133,8 @@ const HomeStack = createStackNavigator(
     LoginStack,
     BillingDetails,
     PaymentCab,
-    Wallet
+    Wallet,
+    ReferAndEarn
   },
   {
     headerMode: "none",
@@ -146,7 +148,8 @@ const AuthStack = createStackNavigator(
     LoginStack,
     ProfilePage,
     BillingDetails,
-    Wallet
+    Wallet,
+    ReferAndEarn
   },
   {
     headerMode: "none",

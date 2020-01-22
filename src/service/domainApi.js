@@ -7,7 +7,7 @@ class Service {
   constructor() {
     let service = axios.create({
       baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2"
-      //  baseURL: "https://tripdesire.co/wp-json/wc/v2"
+      // baseURL: "https://tripdesire.co/wp-json/wc/v2"
     });
     axiosRetry(service, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
     service.interceptors.response.use(this.handleSuccess, this.handleError);
