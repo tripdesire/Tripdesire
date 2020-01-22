@@ -180,7 +180,7 @@ class FlightThankYou extends React.PureComponent {
                       <Text style={styles.class}>{dataArray["Class Type"]}</Text>
                     </View>
 
-                    <View style={{ alignItems: "center" }}>
+                    <View style={{ alignItems: "center", flex: 1 }}>
                       <Text style={styles.time}>
                         {dataArray.hasOwnProperty("Onward Item Result Data")
                           ? moment(
@@ -250,7 +250,7 @@ class FlightThankYou extends React.PureComponent {
                       </View>
                     </View>
 
-                    <View>
+                    <View style={{ flex: 1, alignItems: "flex-end" }}>
                       <Text style={styles.time}>
                         {dataArray.hasOwnProperty("Onward Item Result Data")
                           ? moment(
@@ -281,8 +281,8 @@ class FlightThankYou extends React.PureComponent {
                   <Button
                     style={{ marginHorizontal: 16, marginBottom: 4, alignItems: "flex-end" }}
                     onPress={this._Expended("expended")}>
-                    {expended == false && <Text style={styles.time}>+View Details</Text>}
-                    {expended == true && <Text style={styles.time}>-Hide Details</Text>}
+                    {expended == false && <Text style={styles.airlineno}>+View Details</Text>}
+                    {expended == true && <Text style={styles.airlineno}>-Hide Details</Text>}
                   </Button>
 
                   {expended &&
@@ -353,6 +353,79 @@ class FlightThankYou extends React.PureComponent {
                         </>
                       );
                     })}
+
+                  {expended &&
+                    dataArray.hasOwnProperty("Int Fl Item Result Data") &&
+                    dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments.map(
+                      (item, index) => {
+                        return (
+                          <>
+                            <View
+                              style={[
+                                styles.contentView,
+                                {
+                                  backgroundColor: "#edeeef",
+                                  marginHorizontal: 0,
+                                  paddingHorizontal: 10
+                                }
+                              ]}>
+                              <View style={{ flex: 1 }}>
+                                <Text style={styles.time}>{item.AirLineName}</Text>
+                                <Text style={styles.airlineno}>
+                                  {item.OperatingAirlineCode +
+                                    " - " +
+                                    item.OperatingAirlineFlightNumber}
+                                </Text>
+                              </View>
+
+                              <View style={{ alignItems: "center", flex: 1 }}>
+                                <Text style={styles.time}>
+                                  {moment(item.DepartureDateTime).format("HH:mm")}
+                                </Text>
+                                <Text style={styles.airlineno}>{item.IntDepartureAirportName}</Text>
+
+                                <View style={{ flexDirection: "row" }}>
+                                  <Text style={styles.airlineno}>{item.Duration}</Text>
+                                </View>
+                              </View>
+
+                              <View style={{ flex: 1, alignItems: "flex-end" }}>
+                                <Text style={styles.time}>
+                                  {moment(item.ArrivalDateTime).format("HH:mm")}
+                                </Text>
+                                <Text style={styles.airlineno}>{item.IntArrivalAirportName}</Text>
+                              </View>
+                            </View>
+                            {dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments.length -
+                              1 !=
+                              index && (
+                              <Text
+                                style={{
+                                  paddingHorizontal: 8,
+                                  color: "green",
+                                  fontSize: 12,
+                                  backgroundColor: "#edeeef"
+                                }}>
+                                Change of Planes at{" "}
+                                <Text style={{ fontSize: 12, fontWeight: "500" }}>
+                                  {" "}
+                                  {item.IntArrivalAirportName}
+                                </Text>{" "}
+                                | Connection Time:
+                                <Text style={{ fontSize: 12, fontWeight: "500" }}>
+                                  {" "}
+                                  {
+                                    dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[
+                                      index + 1
+                                    ].GroundTime
+                                  }
+                                </Text>
+                              </Text>
+                            )}
+                          </>
+                        );
+                      }
+                    )}
                 </View>
 
                 {((dataArray.hasOwnProperty("Int Fl Item Result Data") &&
@@ -386,7 +459,7 @@ class FlightThankYou extends React.PureComponent {
                         <Text style={styles.class}>{dataArray["Class Type"]}</Text>
                       </View>
 
-                      <View style={{ alignItems: "center" }}>
+                      <View style={{ alignItems: "center", flex: 1 }}>
                         <Text style={styles.time}>
                           {!dataArray.hasOwnProperty("Return Item Result Data")
                             ? moment(
@@ -455,11 +528,9 @@ class FlightThankYou extends React.PureComponent {
                             </Text>
                           )}
                         </View>
-
-                        {/* <Text style={styles.airlineno}>01:10hrs Non Stop</Text> */}
                       </View>
 
-                      <View>
+                      <View style={{ flex: 1, alignItems: "flex-end" }}>
                         <Text style={styles.time}>
                           {!dataArray.hasOwnProperty("Return Item Result Data")
                             ? moment(
@@ -489,8 +560,12 @@ class FlightThankYou extends React.PureComponent {
                     <Button
                       style={{ marginHorizontal: 16, marginBottom: 4, alignItems: "flex-end" }}
                       onPress={this._Expended("expendedReturn")}>
-                      {expended == false && <Text style={styles.time}>+View Details</Text>}
-                      {expended == true && <Text style={styles.time}>-Hide Details</Text>}
+                      {expendedReturn == false && (
+                        <Text style={styles.airlineno}>+View Details</Text>
+                      )}
+                      {expendedReturn == true && (
+                        <Text style={styles.airlineno}>-Hide Details</Text>
+                      )}
                     </Button>
                     {expendedReturn &&
                       dataArray.hasOwnProperty("Return Item Result Data") &&
@@ -561,6 +636,87 @@ class FlightThankYou extends React.PureComponent {
                           </>
                         );
                       })}
+
+                    {expendedReturn &&
+                      dataArray.hasOwnProperty("Int Fl Item Result Data") &&
+                      dataArray["Int Fl Item Result Data"].IntReturn != null &&
+                      dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments.map(
+                        (item, index) => {
+                          return (
+                            <>
+                              <View
+                                style={[
+                                  styles.contentView,
+                                  {
+                                    backgroundColor: "#edeeef",
+                                    marginHorizontal: 0,
+                                    paddingHorizontal: 12
+                                  }
+                                ]}>
+                                <View style={{ flex: 1 }}>
+                                  <Text style={styles.time}>{item.AirLineName}</Text>
+                                  <Text style={styles.airlineno}>
+                                    {item.OperatingAirlineCode +
+                                      " - " +
+                                      item.OperatingAirlineFlightNumber}
+                                  </Text>
+                                </View>
+
+                                <View style={{ alignItems: "center", flex: 1 }}>
+                                  <Text style={styles.time}>
+                                    {moment(item.DepartureDateTime).format("HH:mm")}
+                                  </Text>
+                                  <Text style={styles.airlineno}>
+                                    {item.IntDepartureAirportName}
+                                  </Text>
+
+                                  <View
+                                    style={{
+                                      flexDirection: "row",
+                                      justifyContent: "space-between"
+                                    }}>
+                                    <Text style={styles.airlineno}>{item.Duration}</Text>
+                                  </View>
+                                </View>
+
+                                <View style={{ flex: 1, alignItems: "flex-end" }}>
+                                  <Text style={styles.time}>
+                                    {moment(item.ArrivalDateTime).format("HH:mm")}
+                                  </Text>
+                                  <Text style={styles.airlineno}>{item.IntArrivalAirportName}</Text>
+                                </View>
+                              </View>
+                              {dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments
+                                .length -
+                                1 !=
+                                index && (
+                                <Text
+                                  style={{
+                                    paddingHorizontal: 8,
+                                    color: "green",
+                                    fontSize: 12,
+                                    backgroundColor: "#edeeef"
+                                  }}>
+                                  Change of Planes at{" "}
+                                  <Text style={{ fontSize: 12, fontWeight: "500" }}>
+                                    {" "}
+                                    {item.IntArrivalAirportName}
+                                  </Text>{" "}
+                                  | Connection Time:
+                                  <Text style={{ fontSize: 12, fontWeight: "500" }}>
+                                    {" "}
+                                    {
+                                      dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[
+                                        index + 1
+                                      ].GroundTime
+                                    }
+                                  </Text>
+                                </Text>
+                              )}
+                            </>
+                          );
+                        }
+                      )}
                   </View>
                 )}
 

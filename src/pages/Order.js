@@ -240,8 +240,7 @@ function OrderItems({ item, onPress }) {
         shadowRadius: 4,
         shadowOffset: { height: 0, width: 2 }
       }}
-      onPress={_onPress}
-      key={"order" + item.id}>
+      onPress={_onPress}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Booking Id : </Text>

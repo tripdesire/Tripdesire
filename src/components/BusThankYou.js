@@ -180,7 +180,7 @@ class BusThankYou extends React.PureComponent {
                   <Text style={[styles.time, { flex: 1, textAlign: "center" }]}>Gender</Text>
                 </View>
 
-                {order.adult_details &&
+                {order.adult_details != "" &&
                   order.adult_details.map((item, index) => {
                     return (
                       <View style={{ flexDirection: "row", flex: 1 }} key={"adult" + index}>
