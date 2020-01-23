@@ -14,6 +14,7 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
 import { isArray } from "lodash";
+import { connect } from "react-redux";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
 
@@ -72,8 +73,9 @@ class CheckOut extends React.PureComponent {
   };
 
   ApiCall() {
+    const { user } = this.props;
     domainApi
-      .get("/cart")
+      .get("/cart?user_id=" + user.id)
       .then(({ data }) => {
         this.setState({ data: data, loading: false });
       })
@@ -319,20 +321,20 @@ class CheckOut extends React.PureComponent {
   }
 
   navigateToScreen = (page, params = {}) => () => {
-    let data = {
-      ...this.state.data,
-      payment_method: [
-        {
-          id: "razorpay",
-          title: "RazorPay"
-        }
-        // {
-        //   id: "wallet",
-        //   title: "Wallet"
-        // }
-      ]
-    };
-    this.props.navigation.navigate(page, { params, data });
+    // let data = {
+    //   ...this.state.data,
+    //   payment_method: [
+    //     {
+    //       id: "razorpay",
+    //       title: "RazorPay"
+    //     }
+    //     // {
+    //     //   id: "wallet",
+    //     //   title: "Wallet"
+    //     // }
+    //   ]
+    // };
+    this.props.navigation.navigate(page, { params, data: this.state.data });
   };
 
   render() {
@@ -1448,4 +1450,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CheckOut;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, null)(CheckOut);

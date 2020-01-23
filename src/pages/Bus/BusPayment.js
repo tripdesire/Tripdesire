@@ -11,6 +11,7 @@ import { isEmpty, isArray } from "lodash";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { etravosApi, domainApi } from "../../service";
+import HTML from "react-native-render-html";
 
 class BusPayment extends React.PureComponent {
   constructor(props) {
@@ -38,7 +39,9 @@ class BusPayment extends React.PureComponent {
         };
       }),
       BlockingReferenceNo: "",
-      BookingReferenceNo: ""
+      BookingReferenceNo: "",
+      isSelectPaymentMethod: 0,
+      payment_method: "wallet"
     };
   }
 
@@ -84,7 +87,7 @@ class BusPayment extends React.PureComponent {
 
     let param = {
       user_id: user.id,
-      payment_method: "razopay",
+      payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: [],
       infant_details: []
@@ -423,14 +426,14 @@ class BusPayment extends React.PureComponent {
     }
   };
 
-  _radioButton = value => {
+  _radioButton = (index, item) => {
     this.setState({
-      radioDirect: value == "D" ? true : false
+      isSelectPaymentMethod: index,
+      payment_method: item.gateway_id
     });
   };
   render() {
     const { radioDirect } = this.state;
-    // const { cartData, params } = this.props.navigation.state.params;
 
     const {
       cartData,
@@ -661,86 +664,64 @@ class BusPayment extends React.PureComponent {
                     })}
                 </View>
 
-                {/* <View
-                  style={{
-                    elevation: 2,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    backgroundColor: "#ffffff",
-                    marginHorizontal: 16,
-                    marginTop: 20,
-                    height: 40,
-                    flexDirection: "row",
-                    borderRadius: 8,
-                    alignItems: "center",
-                    justifyContent: "space-between"
-                  }}>
-                  <TextInput
-                    style={{ marginStart: 10, flex: 1 }}
-                    placeholder="Have a Promo Code?"
-                  />
-                  <Button
-                    style={{
-                      height: 40,
-                      paddingHorizontal: 10,
-                      justifyContent: "center",
-                      backgroundColor: "#5B89F9",
-                      borderBottomRightRadius: 8,
-                      borderTopRightRadius: 8
-                    }}>
-                    <Text style={{ color: "#fff" }}>Apply</Text>
-                  </Button>
-                </View> */}
-
-                <View
-                  style={{
-                    elevation: 2,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    backgroundColor: "#ffffff",
-                    marginHorizontal: 16,
-                    marginTop: 16,
-                    padding: 10,
-                    borderRadius: 8
-                  }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <TouchableOpacity onPress={() => this._radioButton("D")}>
+                {cartData.payment_gateway &&
+                  cartData.payment_gateway.map((item, index) => {
+                    return (
                       <View
                         style={{
-                          height: 18,
-                          width: 18,
-                          borderRadius: 12,
-                          borderWidth: 2,
-                          borderColor: "#000",
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}>
-                        {radioDirect && (
-                          <View
-                            style={{
-                              height: 10,
-                              width: 10,
-                              borderRadius: 6,
-                              backgroundColor: "#000"
-                            }}
-                          />
-                        )}
+                          elevation: 2,
+                          shadowOffset: { width: 0, height: 2 },
+                          shadowColor: "rgba(0,0,0,0.1)",
+                          shadowOpacity: 1,
+                          shadowRadius: 4,
+                          backgroundColor: "#ffffff",
+                          marginHorizontal: 16,
+                          marginTop: 16,
+                          padding: 10,
+                          borderRadius: 8
+                        }}
+                        key={"sap" + index}>
+                        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                          <TouchableOpacity onPress={() => this._radioButton(index, item)}>
+                            <View
+                              style={{
+                                height: 18,
+                                width: 18,
+                                borderRadius: 12,
+                                borderWidth: 2,
+                                marginTop: 4,
+                                borderColor: "#000",
+                                alignItems: "center",
+                                justifyContent: "center"
+                              }}>
+                              {this.state.isSelectPaymentMethod === index && (
+                                <View
+                                  style={{
+                                    height: 10,
+                                    width: 10,
+                                    borderRadius: 6,
+                                    backgroundColor: "#000"
+                                  }}
+                                />
+                              )}
+                            </View>
+                          </TouchableOpacity>
+                          <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>
+                            {item.gateway_title}
+                          </Text>
+                        </View>
+                        <HTML
+                          baseFontStyle={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: "#696969",
+                            marginHorizontal: 20
+                          }}
+                          html={item.gateway_description}
+                        />
                       </View>
-                    </TouchableOpacity>
-                    <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>
-                      RazorPay
-                    </Text>
-                  </View>
-                  <Text style={{ flex: 1, fontSize: 12, color: "#696969", marginHorizontal: 20 }}>
-                    Make your payment direct into our bank account.Please use your order ID as the
-                    payment reference.Your order will not be shipped untill the funds have cleared
-                    in our account
-                  </Text>
-                </View>
+                    );
+                  })}
 
                 <Button
                   style={{

@@ -138,8 +138,10 @@ class ReferAndEarn extends React.PureComponent {
                 <View style={{ alignItems: "center" }}>
                   <Text
                     style={{
+                      borderStyle: "dashed",
+                      borderWidth: 1,
+                      borderRadius: 0.5,
                       borderColor: "#5D646A",
-                      borderWidth: 0.5,
                       marginTop: 40,
                       paddingHorizontal: 36,
                       paddingVertical: 4,

@@ -40,7 +40,9 @@ class PaymentCab extends React.PureComponent {
       radioDirect: true,
       cartData: {},
       inputCoupon: false,
-      coupon_code: ""
+      coupon_code: "",
+      isSelectPaymentMethod: 0,
+      payment_method: "wallet"
     };
   }
 
@@ -62,9 +64,10 @@ class PaymentCab extends React.PureComponent {
     this.setState({ dobShow: true });
   };
 
-  _radioButton = value => {
+  _radioButton = (index, item) => {
     this.setState({
-      radioDirect: value == "D" ? true : false
+      isSelectPaymentMethod: index,
+      payment_method: item.gateway_id
     });
   };
 
@@ -105,17 +108,16 @@ class PaymentCab extends React.PureComponent {
     ];
 
     let newOrder = {
-      user_id: "7",
-      payment_method: "razopay",
+      user_id: user.id,
+      payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: [],
       infant_details: []
     };
 
-    const { item, params } = this.props.navigation.state.params;
-    const { cartData } = this.state;
+    const { item, params, data } = this.props.navigation.state.params;
     let param = {
-      TotalFare: item.TotalNetAmount, //   cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
+      TotalFare: data.total_price, //   cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
       Conveniencefee: item.ConvenienceFee,
       NoofPassengers: item.VehicleId,
       Name: name,
@@ -274,6 +276,7 @@ class PaymentCab extends React.PureComponent {
   };
 
   render() {
+    const { data } = this.props.navigation.state.params;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
@@ -418,57 +421,66 @@ class PaymentCab extends React.PureComponent {
                 </View>
               </View>
             </View>
-            <View
-              style={{
-                elevation: 1,
-                shadowOffset: { width: 0, height: 2 },
-                shadowColor: "rgba(0,0,0,0.2)",
-                shadowOpacity: 1,
-                shadowRadius: 4,
-                backgroundColor: "#ffffff",
-                marginHorizontal: 16,
-                marginTop: 20,
-                padding: 10,
-                borderRadius: 8
-              }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity onPress={() => this._radioButton("D")}>
+            {data.payment_gateway &&
+              data.payment_gateway.map((item, index) => {
+                return (
                   <View
                     style={{
-                      height: 18,
-                      width: 18,
-                      borderRadius: 12,
-                      borderWidth: 2,
-                      borderColor: "#000",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}>
-                    {this.state.radioDirect && (
-                      <View
-                        style={{
-                          height: 10,
-                          width: 10,
-                          borderRadius: 6,
-                          backgroundColor: "#000"
-                        }}
-                      />
-                    )}
+                      elevation: 1,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowColor: "rgba(0,0,0,0.2)",
+                      shadowOpacity: 1,
+                      shadowRadius: 4,
+                      backgroundColor: "#ffffff",
+                      marginHorizontal: 16,
+                      marginTop: 20,
+                      padding: 10,
+                      borderRadius: 8
+                    }}
+                    key={"sap" + index}>
+                    <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                      <TouchableOpacity onPress={() => this._radioButton(index, item)}>
+                        <View
+                          style={{
+                            height: 18,
+                            width: 18,
+                            borderRadius: 12,
+                            borderWidth: 2,
+                            marginTop: 4,
+                            borderColor: "#000",
+                            alignItems: "center",
+                            justifyContent: "center"
+                          }}>
+                          {this.state.isSelectPaymentMethod === index && (
+                            <View
+                              style={{
+                                height: 10,
+                                width: 10,
+                                borderRadius: 6,
+                                backgroundColor: "#000"
+                              }}
+                            />
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                      <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>
+                        {" "}
+                        {item.gateway_title}
+                      </Text>
+                    </View>
+                    <HTML
+                      baseFontStyle={{
+                        flex: 1,
+                        fontSize: 12,
+                        color: "#696969",
+                        marginHorizontal: 20
+                      }}
+                      html={item.gateway_description}
+                    />
                   </View>
-                </TouchableOpacity>
-                <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>RazorPay</Text>
-              </View>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "#696969",
-                  marginHorizontal: 20
-                }}>
-                Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast Onboarding.
-                Free & Easy Application Process.100+ Payment Modes, Secure Gateway, Simple
-                Integration. Easy Integration. Dashboard Reporting. etravosApis: Customize Your
-                Checkout, Autofill OTP on Mobile.
-              </Text>
-            </View>
+                );
+              })}
+
             <Button
               style={{
                 backgroundColor: "#F68E1D",

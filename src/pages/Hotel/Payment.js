@@ -17,6 +17,7 @@ import RazorpayCheckout from "react-native-razorpay";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
+import HTML from "react-native-render-html";
 import data from "../Bus/data";
 
 class Payment extends React.PureComponent {
@@ -73,7 +74,8 @@ class Payment extends React.PureComponent {
       transactionId: "",
       status: "",
       openLoginPage: false,
-      isSelectPaymentMethod: 0
+      isSelectPaymentMethod: 0,
+      payment_method: "wallet"
     };
   }
 
@@ -175,7 +177,7 @@ class Payment extends React.PureComponent {
 
     let param = {
       user_id: user.id,
-      payment_method: "razorpay",
+      payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: child_details,
       infant_details: []
@@ -385,9 +387,10 @@ class Payment extends React.PureComponent {
     return;
   };
 
-  _radioButton = value => {
+  _radioButton = (index, item) => {
     this.setState({
-      isSelectPaymentMethod: value
+      isSelectPaymentMethod: index,
+      payment_method: item.gateway_id
     });
   };
   render() {
@@ -662,10 +665,8 @@ class Payment extends React.PureComponent {
                   </View>
                 </View>
 
-                {data.payment_method &&
-                  data.payment_method.map((item, index) => {
-                    // console.log(item);
-
+                {data.payment_gateway &&
+                  data.payment_gateway.map((item, index) => {
                     return (
                       <View
                         style={{
@@ -677,19 +678,19 @@ class Payment extends React.PureComponent {
                           backgroundColor: "#ffffff",
                           marginHorizontal: 16,
                           marginTop: 20,
-                          height: 190,
                           padding: 10,
                           borderRadius: 8
                         }}
                         key={item.id}>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                          <TouchableOpacity onPress={() => this._radioButton(index)}>
+                        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                          <TouchableOpacity onPress={() => this._radioButton(index, item)}>
                             <View
                               style={{
                                 height: 18,
                                 width: 18,
                                 borderRadius: 12,
                                 borderWidth: 2,
+                                marginTop: 4,
                                 borderColor: "#000",
                                 alignItems: "center",
                                 justifyContent: "center"
@@ -707,21 +708,18 @@ class Payment extends React.PureComponent {
                             </View>
                           </TouchableOpacity>
                           <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>
-                            {item.title}
+                            {item.gateway_title}
                           </Text>
                         </View>
-                        <Text
-                          style={{
+                        <HTML
+                          baseFontStyle={{
                             flex: 1,
                             fontSize: 12,
                             color: "#696969",
                             marginHorizontal: 20
-                          }}>
-                          Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast
-                          Onboarding. Free & Easy Application Process.100+ Payment Modes, Secure
-                          Gateway, Simple Integration. Easy Integration. Dashboard Reporting.
-                          etravosApis: Customize Your Checkout, Autofill OTP on Mobile.
-                        </Text>
+                          }}
+                          html={item.gateway_description}
+                        />
                       </View>
                     );
                   })}

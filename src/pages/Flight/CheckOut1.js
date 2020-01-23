@@ -19,6 +19,7 @@ import { etravosApi, domainApi } from "../../service";
 import { connect } from "react-redux";
 import CountryPicker, { getCallingCode, getAllCountries } from "react-native-country-picker-modal";
 import GstDetails from "./GstDetails";
+import HTML from "react-native-render-html";
 
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
@@ -123,7 +124,9 @@ class CheckOut1 extends React.PureComponent {
       transactionId: "",
       status: "",
       taxDetails: "",
-      GstDetails: ""
+      GstDetails: "",
+      isSelectPaymentMethod: 0,
+      payment_method: "wallet"
     };
   }
 
@@ -326,11 +329,12 @@ class CheckOut1 extends React.PureComponent {
 
     let param = {
       user_id: user.id,
-      payment_method: "razopay",
+      payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: child_details,
       infant_details: infant_details
     };
+    console.log(param);
 
     let name = [
       ...this.state.adults.map(
@@ -743,15 +747,14 @@ class CheckOut1 extends React.PureComponent {
     }
   };
 
-  _radioButton = value => {
+  _radioButton = (index, item) => {
     this.setState({
-      radioDirect: value == "D" ? true : false,
-      radioCheck: value == "CP" ? true : false,
-      radioCOD: value == "C" ? true : false
+      isSelectPaymentMethod: index,
+      payment_method: item.gateway_id
     });
   };
   render() {
-    const { params } = this.props.navigation.state.params;
+    const { params, data } = this.props.navigation.state.params;
     const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults } = this.state;
 
     return (
@@ -1579,60 +1582,73 @@ class CheckOut1 extends React.PureComponent {
                   </View>
                 </View>
 
-                <View
-                  style={{
-                    elevation: 2,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    backgroundColor: "#ffffff",
-                    marginHorizontal: 16,
-                    marginTop: 20,
-                    padding: 10,
-                    borderRadius: 8
-                  }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <TouchableOpacity onPress={() => this._radioButton("D")}>
+                {data.payment_gateway &&
+                  data.payment_gateway.map((item, index) => {
+                    return (
                       <View
                         style={{
-                          height: 18,
-                          width: 18,
-                          borderRadius: 12,
-                          borderWidth: 2,
-                          borderColor: "#000",
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}>
-                        {radioDirect && (
-                          <View
-                            style={{
-                              height: 10,
-                              width: 10,
-                              borderRadius: 6,
-                              backgroundColor: "#000"
-                            }}
-                          />
-                        )}
+                          elevation: 2,
+                          shadowOffset: { width: 0, height: 2 },
+                          shadowColor: "rgba(0,0,0,0.1)",
+                          shadowOpacity: 1,
+                          shadowRadius: 4,
+                          backgroundColor: "#ffffff",
+                          marginHorizontal: 16,
+                          marginTop: 20,
+                          padding: 10,
+                          borderRadius: 8
+                        }}
+                        key={item.id}>
+                        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                          <TouchableOpacity onPress={() => this._radioButton(index, item)}>
+                            <View
+                              style={{
+                                height: 18,
+                                width: 18,
+                                borderRadius: 12,
+                                borderWidth: 2,
+                                marginTop: 4,
+                                borderColor: "#000",
+                                alignItems: "center",
+                                justifyContent: "center"
+                              }}>
+                              {this.state.isSelectPaymentMethod === index && (
+                                <View
+                                  style={{
+                                    height: 10,
+                                    width: 10,
+                                    borderRadius: 6,
+                                    backgroundColor: "#000"
+                                  }}
+                                />
+                              )}
+                            </View>
+                          </TouchableOpacity>
+                          <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
+                            {item.gateway_title}
+                          </Text>
+                        </View>
+                        <HTML
+                          baseFontStyle={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: "#696969",
+                            marginHorizontal: 20
+                          }}
+                          html={item.gateway_description}
+                        />
+                        {/* <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: "#696969",
+                            marginHorizontal: 20
+                          }}>
+                          {item.gateway_description}
+                        </Text> */}
                       </View>
-                    </TouchableOpacity>
-                    <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 5 }}>
-                      RazorPay
-                    </Text>
-                  </View>
-                  <Text
-                    style={{
-                      flex: 1,
-                      fontSize: 12,
-                      color: "#696969",
-                      marginHorizontal: 20
-                    }}>
-                    Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast
-                    Onboarding. Free & Easy Application Process.100+ Payment Modes, Secure Gateway,
-                    Simple Integration. Easy Integration. Dashboard Reporting. etravosApis:
-                    Customize Your Checkout, Autofill OTP on Mobile.
-                  </Text>
-                </View>
+                    );
+                  })}
 
                 <Button
                   style={{

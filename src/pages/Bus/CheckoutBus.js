@@ -203,8 +203,9 @@ class CheckoutBus extends React.PureComponent {
   }
 
   ApiCall() {
+    const { user } = this.props;
     domainApi
-      .get("/cart")
+      .get("/cart?user_id=" + user.id)
       .then(({ data }) => {
         this.setState({ cartData: data, loader: false });
       })

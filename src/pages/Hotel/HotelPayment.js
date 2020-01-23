@@ -15,6 +15,7 @@ import moment from "moment";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
 import { isArray } from "lodash";
+import { connect } from "react-redux";
 class HotelPayment extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -115,8 +116,9 @@ class HotelPayment extends React.PureComponent {
   }
 
   ApiCall() {
+    const { user } = this.props;
     domainApi
-      .get("/cart")
+      .get("/cart?user_id=" + user.id)
       .then(({ data }) => {
         this.setState({ data: data, loading: false });
         //this.props.navigation.navigate("Payment", { params, data });
@@ -129,21 +131,21 @@ class HotelPayment extends React.PureComponent {
   _payment = () => {
     const params = { ...this.props.navigation.state.params, itemId: 222 };
 
-    let data = {
-      ...this.state.data,
-      payment_method: [
-        {
-          id: "razorpay",
-          title: "RazorPay"
-        }
-        // {
-        //   id: "wallet",
-        //   title: "Wallet"
-        // }
-      ]
-    };
+    // let data = {
+    //   ...this.state.data,
+    //   payment_method: [
+    //     {
+    //       id: "razorpay",
+    //       title: "RazorPay"
+    //     }
+    //     // {
+    //     //   id: "wallet",
+    //     //   title: "Wallet"
+    //     // }
+    //   ]
+    // };
 
-    this.props.navigation.navigate("Payment", { params, data });
+    this.props.navigation.navigate("Payment", { params, data: this.state.data });
   };
 
   render() {
@@ -560,4 +562,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HotelPayment;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, null)(HotelPayment);

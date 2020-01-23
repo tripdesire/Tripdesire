@@ -148,7 +148,7 @@ function MyAccount({ navigation }) {
 
           <Button style={styles.rowView} onPress={refer_earn}>
             <Image
-              source={require("../assets/imgs/wallet.png")}
+              source={require("../assets/imgs/ReferEarnAccount.png")}
               style={{ width: 28, height: 28, tintColor: "#757575" }}
             />
             <Text style={styles.rowText}>Refer & Earn</Text>
