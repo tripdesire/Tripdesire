@@ -24,9 +24,10 @@ import HTML from "react-native-render-html";
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { params } = props.navigation.state.params;
+    const { params, data } = props.navigation.state.params;
     console.log(props.navigation.state.params);
     this.state = {
+      data: data,
       showGst: false,
       loading: false,
       date: new Date(),
@@ -126,8 +127,9 @@ class CheckOut1 extends React.PureComponent {
       taxDetails: "",
       GstDetails: "",
       isSelectPaymentMethod: 0,
-      payment_method: "wallet"
+      payment_method: data.payment_gateway[0].gateway_id
     };
+    this.ApiCall(data.payment_gateway[0]);
   }
 
   closeModal = val => {
@@ -325,8 +327,6 @@ class CheckOut1 extends React.PureComponent {
       "if-age": item.age
     }));
 
-    //console.log(adult_details, child_details, infant_details);
-
     let param = {
       user_id: user.id,
       payment_method: this.state.payment_method,
@@ -335,6 +335,7 @@ class CheckOut1 extends React.PureComponent {
       infant_details: infant_details
     };
     console.log(param);
+    //return;
 
     let name = [
       ...this.state.adults.map(
@@ -752,10 +753,29 @@ class CheckOut1 extends React.PureComponent {
       isSelectPaymentMethod: index,
       payment_method: item.gateway_id
     });
+    this.ApiCall(item);
   };
+
+  ApiCall(item) {
+    const { user } = this.props;
+    let param = {
+      user_id: user.id,
+      chosen_payment_method: item.gateway_id
+    };
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart", param)
+      .then(({ data }) => {
+        this.setState({ data: data, loading: false });
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+      });
+  }
+
   render() {
-    const { params, data } = this.props.navigation.state.params;
-    const { ffn, radioDirect, radioCheck, radioCOD, DOB, mode, adults } = this.state;
+    const { params } = this.props.navigation.state.params;
+    const { ffn, data } = this.state;
 
     return (
       <>
@@ -1598,7 +1618,7 @@ class CheckOut1 extends React.PureComponent {
                           padding: 10,
                           borderRadius: 8
                         }}
-                        key={item.id}>
+                        key={"_SAP" + index}>
                         <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                           <TouchableOpacity onPress={() => this._radioButton(index, item)}>
                             <View

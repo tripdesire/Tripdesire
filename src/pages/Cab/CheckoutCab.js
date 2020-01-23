@@ -165,7 +165,26 @@ class CheckoutCab extends React.PureComponent {
   };
 
   _next = () => {
-    console.log("kamal");
+    const { user } = this.props;
+    if (isEmpty(user)) {
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { needBilling: true });
+      return;
+    }
+    if (
+      user.billing.email === "" ||
+      user.billing.phone === "" ||
+      user.billing.state === "" ||
+      user.billing.city === "" ||
+      user.billing.address_1 === "" ||
+      user.billing.postcode === ""
+    ) {
+      this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
+      return;
+    }
+
+    this.ApiCall();
+
     this.props.navigation.navigate("PaymentCab", {
       ...this.props.navigation.state.params,
       data: this.state.cartData

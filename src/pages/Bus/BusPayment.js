@@ -16,9 +16,10 @@ import HTML from "react-native-render-html";
 class BusPayment extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { selectedSheets } = this.props.navigation.state.params;
+    const { selectedSheets, cartData } = this.props.navigation.state.params;
     console.log(this.props.navigation.state.params);
     this.state = {
+      cartData: cartData,
       loader: false,
       gender: "Mr",
       ffn: false,
@@ -41,8 +42,9 @@ class BusPayment extends React.PureComponent {
       BlockingReferenceNo: "",
       BookingReferenceNo: "",
       isSelectPaymentMethod: 0,
-      payment_method: "wallet"
+      payment_method: cartData.payment_gateway[0].gateway_id
     };
+    this.ApiCall(cartData.payment_gateway[0]);
   }
 
   _changeAdults = (index, key) => text => {
@@ -431,12 +433,28 @@ class BusPayment extends React.PureComponent {
       isSelectPaymentMethod: index,
       payment_method: item.gateway_id
     });
+    this.ApiCall(item);
   };
+  ApiCall(item) {
+    const { user } = this.props;
+    let param = {
+      user_id: user.id,
+      chosen_payment_method: item.gateway_id
+    };
+    this.setState({ loader: true });
+    domainApi
+      .get("/cart", param)
+      .then(({ data }) => {
+        this.setState({ cartData: data, loader: false });
+      })
+      .catch(error => {
+        this.setState({ loader: false });
+      });
+  }
   render() {
-    const { radioDirect } = this.state;
+    const { cartData } = this.state;
 
     const {
-      cartData,
       params,
       paramsRound,
       destinationName,

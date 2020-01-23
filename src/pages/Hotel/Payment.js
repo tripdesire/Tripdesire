@@ -18,7 +18,6 @@ import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { etravosApi, domainApi } from "../../service";
 import HTML from "react-native-render-html";
-import data from "../Bus/data";
 
 class Payment extends React.PureComponent {
   constructor(props) {
@@ -26,6 +25,7 @@ class Payment extends React.PureComponent {
     console.log(props.navigation.state.params);
     const { params, data } = props.navigation.state.params;
     this.state = {
+      data: data,
       loading: false,
       date: new Date(),
       gender: "Mr",
@@ -75,8 +75,9 @@ class Payment extends React.PureComponent {
       status: "",
       openLoginPage: false,
       isSelectPaymentMethod: 0,
-      payment_method: "wallet"
+      payment_method: data.payment_gateway[0].gateway_id
     };
+    this.ApiCall(data.payment_gateway[0]);
   }
 
   show = (key, index, isShow) => () => {
@@ -182,6 +183,10 @@ class Payment extends React.PureComponent {
       child_details: child_details,
       infant_details: []
     };
+
+    console.log(param);
+
+    //return;
 
     var adults = params.adultDetail.split("~");
     var childs = params.childDetail.split("~");
@@ -392,10 +397,27 @@ class Payment extends React.PureComponent {
       isSelectPaymentMethod: index,
       payment_method: item.gateway_id
     });
+    this.ApiCall(item);
   };
+  ApiCall(item) {
+    const { user } = this.props;
+    let param = {
+      user_id: user.id,
+      chosen_payment_method: item.gateway_id
+    };
+    this.setState({ loading: true });
+    domainApi
+      .get("/cart", param)
+      .then(({ data }) => {
+        this.setState({ data: data, loading: false });
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+      });
+  }
   render() {
-    const { params, data } = this.props.navigation.state.params;
-    const { ffn, radioDirect, openLoginPage, DOB, loading } = this.state;
+    const { params } = this.props.navigation.state.params;
+    const { data, loading } = this.state;
 
     return (
       <>
@@ -681,7 +703,7 @@ class Payment extends React.PureComponent {
                           padding: 10,
                           borderRadius: 8
                         }}
-                        key={item.id}>
+                        key={"sap" + index}>
                         <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                           <TouchableOpacity onPress={() => this._radioButton(index, item)}>
                             <View

@@ -14,7 +14,7 @@ import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
-import { isArray } from "lodash";
+import { isArray, isEmpty } from "lodash";
 import { connect } from "react-redux";
 class HotelPayment extends React.PureComponent {
   constructor(props) {
@@ -131,20 +131,25 @@ class HotelPayment extends React.PureComponent {
   _payment = () => {
     const params = { ...this.props.navigation.state.params, itemId: 222 };
 
-    // let data = {
-    //   ...this.state.data,
-    //   payment_method: [
-    //     {
-    //       id: "razorpay",
-    //       title: "RazorPay"
-    //     }
-    //     // {
-    //     //   id: "wallet",
-    //     //   title: "Wallet"
-    //     // }
-    //   ]
-    // };
+    const { user } = this.props;
 
+    if (isEmpty(user)) {
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { needBilling: true });
+      return;
+    }
+    if (
+      user.billing.email === "" ||
+      user.billing.phone === "" ||
+      user.billing.state === "" ||
+      user.billing.city === "" ||
+      user.billing.address_1 === "" ||
+      user.billing.postcode === ""
+    ) {
+      this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
+      return;
+    }
+    this.ApiCall();
     this.props.navigation.navigate("Payment", { params, data: this.state.data });
   };
 

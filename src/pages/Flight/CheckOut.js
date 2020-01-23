@@ -13,7 +13,7 @@ import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
-import { isArray } from "lodash";
+import { isArray, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
@@ -321,19 +321,26 @@ class CheckOut extends React.PureComponent {
   }
 
   navigateToScreen = (page, params = {}) => () => {
-    // let data = {
-    //   ...this.state.data,
-    //   payment_method: [
-    //     {
-    //       id: "razorpay",
-    //       title: "RazorPay"
-    //     }
-    //     // {
-    //     //   id: "wallet",
-    //     //   title: "Wallet"
-    //     // }
-    //   ]
-    // };
+    const { user } = this.props;
+    if (isEmpty(user)) {
+      //Toast.show("Please login or signup", Toast.LONG);
+      this.props.navigation.navigate("SignIn", { needBilling: true });
+      return;
+    }
+    if (
+      user.billing.email === "" ||
+      user.billing.phone === "" ||
+      user.billing.state === "" ||
+      user.billing.city === "" ||
+      user.billing.address_1 === "" ||
+      user.billing.postcode === ""
+    ) {
+      this.props.navigation.navigate("BillingDetails", { needBillingOnly: true });
+      return;
+    }
+
+    this.ApiCall();
+
     this.props.navigation.navigate(page, { params, data: this.state.data });
   };
 

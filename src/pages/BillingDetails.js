@@ -20,7 +20,7 @@ class BillingDetails extends React.PureComponent {
       phone: user.billing.phone,
       streetAddress: user.billing.address_1,
       city: user.billing.city,
-      company: user.billing.company,
+      // company: user.billing.company,
       streetAddress1: user.billing.address_2,
       state: user.billing.state,
       postcode: user.billing.postcode,
@@ -38,7 +38,7 @@ class BillingDetails extends React.PureComponent {
       phone,
       streetAddress,
       city,
-      company,
+      // company,
       streetAddress1,
       state,
       postcode,
@@ -48,7 +48,7 @@ class BillingDetails extends React.PureComponent {
       user_id: this.props.user.id,
       billing_first_name: firstname,
       billing_last_name: lastname,
-      billing_company: company,
+      //  billing_company: company,
       billing_email: email,
       billing_phone: phone,
       billing_address_1: streetAddress,
@@ -62,7 +62,7 @@ class BillingDetails extends React.PureComponent {
     let redux = {
       first_name: firstname,
       last_name: lastname,
-      company: company,
+      company: "",
       address_1: streetAddress,
       address_2: streetAddress1,
       city: city,
@@ -77,7 +77,6 @@ class BillingDetails extends React.PureComponent {
     if (
       firstname === "" &&
       lastname === "" &&
-      company === "" &&
       streetAddress === "" &&
       streetAddress1 === "" &&
       city === "" &&
@@ -205,12 +204,12 @@ class BillingDetails extends React.PureComponent {
                 value={city}
                 onChangeText={text => this.setState({ city: text })}
               />
-              <TextInputComponent
+              {/* <TextInputComponent
                 label="Company"
                 placeholder="Enter the company"
                 value={company}
                 onChangeText={text => this.setState({ company: text })}
-              />
+              /> */}
               <TextInputComponent
                 label="State"
                 placeholder="Enter the State"

@@ -255,6 +255,8 @@ class CheckoutBus extends React.PureComponent {
       return;
     }
 
+    this.ApiCall();
+
     this.props.navigation.navigate("BusPayment", {
       ...this.props.navigation.state.params,
       cartData: this.state.cartData

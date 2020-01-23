@@ -25,7 +25,9 @@ class PaymentCab extends React.PureComponent {
   constructor(props) {
     super(props);
     console.log(props.navigation.state.params);
+    const { data } = props.navigation.state.params;
     this.state = {
+      data: data,
       den: "Mr",
       firstname: "",
       last_name: "",
@@ -42,8 +44,9 @@ class PaymentCab extends React.PureComponent {
       inputCoupon: false,
       coupon_code: "",
       isSelectPaymentMethod: 0,
-      payment_method: "wallet"
+      payment_method: data.payment_gateway[0].gateway_id
     };
+    this.ApiCall(data.payment_gateway[0]);
   }
 
   onAdultChange = key => text => {
@@ -69,7 +72,25 @@ class PaymentCab extends React.PureComponent {
       isSelectPaymentMethod: index,
       payment_method: item.gateway_id
     });
+    this.ApiCall(item);
   };
+
+  ApiCall(item) {
+    const { user } = this.props;
+    let param = {
+      user_id: user.id,
+      chosen_payment_method: item.gateway_id
+    };
+    this.setState({ loader: true });
+    domainApi
+      .get("/cart", param)
+      .then(({ data }) => {
+        this.setState({ data: data, loader: false });
+      })
+      .catch(error => {
+        this.setState({ loader: false });
+      });
+  }
 
   _order = () => {
     const { user } = this.props;
@@ -276,7 +297,7 @@ class PaymentCab extends React.PureComponent {
   };
 
   render() {
-    const { data } = this.props.navigation.state.params;
+    const { data } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
