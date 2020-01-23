@@ -309,7 +309,7 @@ class PaymentCab extends React.PureComponent {
                 backgroundColor: "#E5EBF7",
                 flexDirection: "row",
                 paddingHorizontal: 16,
-                paddingVertical: 10
+                alignItems: "center"
               }}>
               <Button onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />

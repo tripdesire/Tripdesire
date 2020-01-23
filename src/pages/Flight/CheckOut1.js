@@ -669,75 +669,82 @@ class CheckOut1 extends React.PureComponent {
       //console.log(blockres);
       if (blockres.BookingStatus == 8) {
         const { data: ord } = await domainApi.post("/checkout/new-order?user_id=" + user.id, param);
-        var options = {
-          description: "Credits towards consultation",
-          // image: "https://i.imgur.com/3g7nmJC.png",
-          currency: "INR",
-          key: "rzp_test_I66kFrN53lhauw",
-          // key: "rzp_live_IRhvqgmESx60tW",
-          amount: parseInt(ord.total) * 100,
-          name: "TripDesire",
-          prefill: {
-            email: user.billing.email,
-            contact: user.billing.phone,
-            name: "Razorpay Software"
-          },
-          theme: { color: "#E5EBF7" }
-        };
+        if (this.state.payment_method == "razorpay") {
+          var options = {
+            description: "Credits towards consultation",
+            // image: "https://i.imgur.com/3g7nmJC.png",
+            currency: "INR",
+            key: "rzp_test_I66kFrN53lhauw",
+            // key: "rzp_live_IRhvqgmESx60tW",
+            amount: parseInt(ord.total) * 100,
+            name: "TripDesire",
+            prefill: {
+              email: user.billing.email,
+              contact: user.billing.phone,
+              name: "Razorpay Software"
+            },
+            theme: { color: "#E5EBF7" }
+          };
 
-        RazorpayCheckout.open(options)
-          .then(razorpayRes => {
-            // handle success
-            console.log(razorpayRes);
-            // alert(`Success: ${data.razorpay_payment_id}`);
-            if (
-              (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
-              razorpayRes.code == 0
-            ) {
-              this.setState({ loading: true });
-              etravosApi
-                .get("/Flights/BookFlightTicket?referenceNo=" + blockres.ReferenceNo)
-                .then(({ data: Response }) => {
-                  if (Response.ResponseStatus == 200) {
-                    let paymentData = {
-                      order_id: ord.id,
-                      status: "completed",
-                      transaction_id: razorpayRes.razorpay_payment_id,
-                      reference_no: Response // blockres.data.ReferenceNo
-                    };
-                    console.log(paymentData);
-                    this.setState({ loading: true });
-                    domainApi
-                      .post("/checkout/update-order", paymentData)
-                      .then(({ data: order }) => {
-                        this.setState({ loading: false });
-                        const { params } = this.props.navigation.state.params;
-                        console.log(order);
-                        this.props.navigation.navigate("FlightThankYou", {
-                          isOrderPage: false,
-                          order: order.data,
-                          params,
-                          Response
+          RazorpayCheckout.open(options)
+            .then(razorpayRes => {
+              // handle success
+              console.log(razorpayRes);
+              // alert(`Success: ${data.razorpay_payment_id}`);
+              if (
+                (razorpayRes.razorpay_payment_id && razorpayRes.razorpay_payment_id != "") ||
+                razorpayRes.code == 0
+              ) {
+                this.setState({ loading: true });
+                etravosApi
+                  .get("/Flights/BookFlightTicket?referenceNo=" + blockres.ReferenceNo)
+                  .then(({ data: Response }) => {
+                    if (Response.ResponseStatus == 200) {
+                      let paymentData = {
+                        order_id: ord.id,
+                        status: "completed",
+                        transaction_id: razorpayRes.razorpay_payment_id,
+                        reference_no: Response // blockres.data.ReferenceNo
+                      };
+                      console.log(paymentData);
+                      this.setState({ loading: true });
+                      domainApi
+                        .post("/checkout/update-order", paymentData)
+                        .then(({ data: order }) => {
+                          this.setState({ loading: false });
+                          const { params } = this.props.navigation.state.params;
+                          console.log(order);
+                          this.props.navigation.navigate("FlightThankYou", {
+                            isOrderPage: false,
+                            order: order.data,
+                            params,
+                            Response
+                          });
+                        })
+                        .catch(error => {
+                          this.setState({ loading: false });
                         });
-                      })
-                      .catch(error => {
-                        this.setState({ loading: false });
-                      });
-                  } else {
-                    Toast.show(Response.Message, Toast.SHORT);
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            } else {
-              Toast.show("You have been cancelled the ticket", Toast.LONG);
-            }
-          })
-          .catch(error => {
-            this.setState({ loading: false });
-            console.log(error);
-          });
+                    } else {
+                      Toast.show(Response.Message, Toast.SHORT);
+                    }
+                  })
+                  .catch(error => {
+                    this.setState({ loading: false });
+                    console.log(error);
+                  });
+              } else {
+                this.setState({ loading: false });
+                Toast.show("You have been cancelled the ticket", Toast.LONG);
+              }
+            })
+            .catch(error => {
+              this.setState({ loading: false });
+              console.log(error);
+            });
+        } else {
+          this.setState({ loading: false });
+          Toast.show("Please select the RazorPay", Toast.SHORT);
+        }
       } else {
         this.setState({ loading: false });
         Toast.show(blockres.Message, Toast.LONG);

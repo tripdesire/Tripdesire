@@ -58,7 +58,7 @@ class RenderItems extends React.PureComponent {
           shadowOpacity: 1,
           shadowRadius: 4,
           marginHorizontal: 16,
-          marginTop: 16,
+          marginVertical: 8,
           backgroundColor: "#ffffff"
         }}
         onPress={this._BookNow(this.props.item)}>

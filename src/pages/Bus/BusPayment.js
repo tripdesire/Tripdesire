@@ -472,27 +472,18 @@ class BusPayment extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ height: 72, backgroundColor: "#E5EBF7" }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: 20,
-                  marginTop: 20
-                }}>
-                <Button onPress={() => this.props.navigation.goBack(null)}>
-                  <Icon name="md-arrow-back" size={24} />
-                </Button>
-                <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
-                  <View>
-                    <Text style={{ fontWeight: "700", fontSize: 16, marginHorizontal: 20 }}>
-                      Payment
-                    </Text>
-                    <Text style={{ fontSize: 12, marginHorizontal: 20, color: "#717984" }}>
-                      {moment(params.Journeydate, "YYYY-MM-DD").format("DD MMM")} |{" "}
-                      {moment(params.Journeydate, "YYYY-MM-DD").format("dddd")}
-                    </Text>
-                  </View>
-                </View>
+            <View style={{ flexDirection: "row", height: 56, backgroundColor: "#E5EBF7" }}>
+              <Button
+                style={{ padding: 10, paddingHorizontal: 16 }}
+                onPress={() => this.props.navigation.goBack(null)}>
+                <Icon name="md-arrow-back" size={24} />
+              </Button>
+              <View style={{ justifyContent: "center", marginHorizontal: 10 }}>
+                <Text style={{ fontWeight: "700", fontSize: 16, lineHeight: 22 }}>Payment</Text>
+                <Text style={{ fontSize: 12, color: "#717984", lineHeight: 14 }}>
+                  {moment(params.Journeydate, "YYYY-MM-DD").format("DD MMM")} |{" "}
+                  {moment(params.Journeydate, "YYYY-MM-DD").format("dddd")}
+                </Text>
               </View>
             </View>
             <View style={{ flex: 4, backgroundColor: "#FFFFFF" }}>

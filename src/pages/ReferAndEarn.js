@@ -140,11 +140,10 @@ class ReferAndEarn extends React.PureComponent {
                     style={{
                       borderStyle: "dashed",
                       borderWidth: 1,
-                      borderRadius: 0.5,
                       borderColor: "#5D646A",
                       marginTop: 40,
                       paddingHorizontal: 36,
-                      paddingVertical: 4,
+                      paddingVertical: 10,
                       fontSize: 18,
                       fontWeight: "700"
                     }}>

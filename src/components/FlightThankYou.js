@@ -35,7 +35,7 @@ class FlightThankYou extends React.PureComponent {
 
   componentDidMount() {
     const { order } = this.props.navigation.state.params;
-    const dataArray = JSON.parse(order.reference_no);
+    const dataArray = order.reference_no && JSON.parse(order.reference_no);
     let params = {
       referenceNo: dataArray.ReferenceNo,
       type: 2,
@@ -950,7 +950,7 @@ class FlightThankYou extends React.PureComponent {
                                   <Text
                                     key={item.index}
                                     style={[styles.airlineno, { flex: 2, textAlign: "center" }]}>
-                                    {item.EticketNo}
+                                    {item.EticketNo ? item.EticketNo : null}
                                   </Text>
                                 );
                               }
@@ -982,7 +982,7 @@ class FlightThankYou extends React.PureComponent {
                                     <Text
                                       key={item.index}
                                       style={[styles.airlineno, { flex: 2, textAlign: "center" }]}>
-                                      {item.EticketNo}
+                                      {item.EticketNo ? item.EticketNo : null}
                                     </Text>
                                   );
                                 }
@@ -1014,7 +1014,7 @@ class FlightThankYou extends React.PureComponent {
                                     <Text
                                       key={item.index}
                                       style={[styles.airlineno, { flex: 2, textAlign: "center" }]}>
-                                      {item.EticketNo}
+                                      {item.EticketNo ? item.EticketNo : null}
                                     </Text>
                                   );
                                 }

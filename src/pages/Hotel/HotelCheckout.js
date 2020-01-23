@@ -140,6 +140,11 @@ class HotelCheckout extends React.Component {
   render() {
     const { params } = this.props.navigation.state;
 
+    let str = params.HotelImages[0].Imagepath.replace(
+      "https://cdn.grnconnect.com/",
+      "https://images.grnconnect.com/"
+    );
+
     const Amenities =
       params.Facilities && params.Facilities != null
         ? params.Facilities.split(",").map(s => s.trim())
@@ -307,9 +312,7 @@ class HotelCheckout extends React.Component {
                         borderRadius: 5
                       }}
                       source={{
-                        uri: params.HotelImages[0]
-                          ? params.HotelImages[0].Imagepath
-                          : "https://via.placeholder.com/150"
+                        uri: params.HotelImages[0] ? str : "https://via.placeholder.com/150"
                       }}
                     />
                   </Button>

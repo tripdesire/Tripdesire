@@ -34,6 +34,10 @@ function ImageFull({ onBackPress, params }) {
             paginationActiveColor="#4D4C4C"
             paginationDefaultColor="#CCCCCC">
             {params.HotelImages.map(item => {
+              let str = item.Imagepath.replace(
+                "https://cdn.grnconnect.com/",
+                "https://images.grnconnect.com/"
+              );
               return (
                 <Image
                   key={item.Imagepath}
@@ -42,7 +46,7 @@ function ImageFull({ onBackPress, params }) {
                     resizeMode: "contain"
                   }}
                   source={{
-                    uri: item.Imagepath
+                    uri: str
                   }}
                 />
               );

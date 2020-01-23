@@ -428,16 +428,16 @@ class Payment extends React.PureComponent {
               style={{
                 height: 56,
                 backgroundColor: "#E5EBF7",
-                flexDirection: "row",
-                paddingHorizontal: 16,
-                paddingVertical: 10
+                flexDirection: "row"
               }}>
-              <Button onPress={() => this.props.navigation.goBack(null)}>
+              <Button
+                style={{ padding: 10, paddingHorizontal: 16 }}
+                onPress={() => this.props.navigation.goBack(null)}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View style={{ marginHorizontal: 20 }}>
-                <Text style={{ fontWeight: "700", fontSize: 16 }}>Checkout</Text>
-                <Text style={{ fontSize: 12, color: "#717984" }}>
+              <View style={{ marginHorizontal: 10, justifyContent: "center" }}>
+                <Text style={{ fontWeight: "700", fontSize: 16, lineHeight: 20 }}>Checkout</Text>
+                <Text style={{ fontSize: 12, color: "#717984", lineHeight: 14 }}>
                   {params.checkInDate
                     ? moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM")
                     : ""}
