@@ -7,6 +7,7 @@ import { etravosApi, domainApi } from "../service";
 import Autocomplete from "react-native-autocomplete-input";
 import Toast from "react-native-simple-toast";
 import Icon from "./IconNB";
+import { isEmpty } from "lodash";
 import {
   DomSugg,
   IntSugg,
@@ -245,10 +246,12 @@ class AutoCompleteModal extends React.PureComponent {
 
   renderItem = ({ item, i }) => {
     let text = "";
+    let airpotName = "";
     switch (this.props.type) {
       case "domesticFlight":
       case "internationalFlight":
-        text = item.City + "," + item.Country + "-(" + item.AirportCode + ")-" + item.AirportDesc;
+        text = item.AirportCode + " - " + item.City + ", " + item.Country;
+        airpotName = item.AirportDesc; //item.City + "," + item.Country + "-(" + item.AirportCode + ")-" + item.AirportDesc;
         break;
       case "domesticHotel":
         text = item.CityName + ", " + item.CityId + " - (India)";
@@ -278,6 +281,9 @@ class AutoCompleteModal extends React.PureComponent {
         }}
         onPress={this.handleItemChange(item)}>
         <Text style={{ flex: 1 }}>{text}</Text>
+        {!isEmpty(airpotName) && (
+          <Text style={{ flex: 1, fontSize: 12, color: "#757575" }}>{airpotName}</Text>
+        )}
       </TouchableOpacity>
     );
   };
@@ -318,11 +324,7 @@ class AutoCompleteModal extends React.PureComponent {
                 }}>
                 <Icon name="md-arrow-back" size={24} />
               </Button>
-              <View
-                style={[
-                  styles.autocompleteContainer,
-                  { borderBottomColor: "#000", borderBottomWidth: 1 }
-                ]}>
+              <View style={styles.autocompleteContainer}>
                 <Autocomplete
                   placeholder={this.props.placeholder}
                   style={{
@@ -348,6 +350,17 @@ class AutoCompleteModal extends React.PureComponent {
                     borderWidth: 0
                   }}
                   listContainerStyle={{ borderTopWidth: 1, borderTopColor: "#DDD" }}
+                  renderSeparator={() => (
+                    <View
+                      style={{
+                        borderBottomWidth: 2,
+                        borderColor: "red",
+                        height: 1,
+                        width: "100%",
+                        backgroundColor: "red"
+                      }}
+                    />
+                  )}
                   renderItem={this.renderItem}
                   keyExtractor={this.keyExtractor}
                 />

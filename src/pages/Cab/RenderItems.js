@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   FlatList
 } from "react-native";
-import { Button, Text, AutoCompleteModal, ActivityIndicator, Header, Icon } from "../../components";
+import { Button, Text, CurrencyText, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import { withNavigation } from "react-navigation";
 import axios from "axios";
@@ -131,7 +131,7 @@ class RenderItems extends React.PureComponent {
             <Text style={{ fontSize: 12, color: "green" }}>Fare Details</Text>
           </Button>
           <Text style={{ fontSize: 18, fontWeight: "600" }}>
-            ₹ {this.props.item.TotalNetAmount}
+          <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹ </CurrencyText>{this.props.item.TotalNetAmount}
           </Text>
         </View>
 

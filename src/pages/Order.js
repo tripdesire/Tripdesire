@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Button } from "../components";
+import { Text, Button ,CurrencyText} from "../components";
 import { SafeAreaView, ActivityIndicator, RefreshControl } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import Toast from "react-native-simple-toast";
@@ -258,7 +258,7 @@ function OrderItems({ item, onPress }) {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Total : </Text>
-          <Text style={{ lineHeight: 20 }}>{"₹" + item.total}</Text>
+          <Text style={{ lineHeight: 20 }}><CurrencyText>₹ </CurrencyText>{item.total}</Text>
         </View>
       </View>
 

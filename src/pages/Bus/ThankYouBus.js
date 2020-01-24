@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { View, StyleSheet, ScrollView, SafeAreaView, Image } from "react-native";
-import { Button, Text } from "../../components";
+import { Button, Text,CurrencyText } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 
@@ -145,20 +145,20 @@ class ThankYouBus extends React.PureComponent {
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Tax</Text>
-                <Text style={styles.airlineno}>₹ {dataArray["Base Fare"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Base Fare"]}</Text>
               </View>
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Service Charge</Text>
-                <Text style={styles.airlineno}>₹ {dataArray["Service Charge2"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Service Charge2"]}</Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Tax</Text>
-                <Text style={styles.airlineno}>₹ {dataArray["Service Tax2"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Service Tax2"]}</Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
-                <Text style={styles.time}>₹ {order.total}</Text>
+                <Text style={styles.time}><CurrencyText style={styles.time}>₹ </CurrencyText>{order.total}</Text>
               </View>
               <View style={[styles.summaryRow, { paddingBottom: 8 }]}>
                 <Text style={styles.airlineno}>Payment Method</Text>

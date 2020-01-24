@@ -138,7 +138,7 @@ class PaymentCab extends React.PureComponent {
 
     const { item, params, data } = this.props.navigation.state.params;
     let param = {
-      TotalFare: data.total_price, //   cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
+      TotalFare: item.TotalNetAmount, //   cartData.cart_data[0].custum_product_data.car_item_details.total_price, ///
       Conveniencefee: item.ConvenienceFee,
       NoofPassengers: item.VehicleId,
       Name: name,
@@ -207,76 +207,135 @@ class PaymentCab extends React.PureComponent {
                 .then(({ data: ord }) => {
                   console.log(ord);
 
-                  var options = {
-                    description: "Credits towards consultation",
-                    //image: "https://i.imgur.com/3g7nmJC.png",
-                    currency: "INR",
-                    key: "rzp_test_I66kFrN53lhauw",
-                    //  key: "rzp_live_IRhvqgmESx60tW",
-                    amount: parseInt(ord.total) * 100,
-                    name: "TripDesire",
-                    prefill: {
-                      email: user.billing.email,
-                      contact: user.billing.phone,
-                      name: "Razorpay Software"
-                    },
-                    theme: { color: "#E5EBF7" }
-                  };
+                  if (this.state.payment_method == "razorpay") {
+                    var options = {
+                      description: "Credits towards consultation",
+                      //image: "https://i.imgur.com/3g7nmJC.png",
+                      currency: "INR",
+                      key: "rzp_test_I66kFrN53lhauw",
+                      //  key: "rzp_live_IRhvqgmESx60tW",
+                      amount: parseInt(ord.total) * 100,
+                      name: "TripDesire",
+                      prefill: {
+                        email: user.billing.email,
+                        contact: user.billing.phone,
+                        name: "Razorpay Software"
+                      },
+                      theme: { color: "#E5EBF7" }
+                    };
 
-                  RazorpayCheckout.open(options)
-                    .then(razorpayRes => {
-                      // handle success
-                      console.log(razorpayRes);
-                      // alert(`Success: ${razorpayRes.razorpay_payment_id}`);
-                      if (
-                        (razorpayRes.razorpay_payment_id &&
-                          razorpayRes.razorpay_payment_id != "") ||
-                        razorpayRes.code == 0
-                      ) {
-                        this.setState({ loader: true });
-                        etravosApi
-                          .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
-                          .then(({ data: Response }) => {
-                            this.setState({ loader: false });
-                            console.log(Response);
-                            if (Response.BookingStatus == 3) {
-                              Toast.show(Response.Message, Toast.LONG);
-                            } else {
-                              Toast.show(Response.Message, Toast.LONG);
-                            }
-                          })
-                          .catch(error => {
-                            console.log(error);
-                          });
-                        let paymentData = {
-                          order_id: ord.id,
-                          status: "completed",
-                          transaction_id: razorpayRes.razorpay_payment_id,
-                          reference_no: Response // blockres.data.ReferenceNo
-                        };
-                        this.setState({ loader: true });
-                        domainApi
-                          .post("/checkout/update-order", paymentData)
-                          .then(({ data: order }) => {
-                            this.setState({ loader: false });
-                            console.log(order);
-                            const { params } = this.props.navigation.state.params;
-                            this.props.navigation.navigate("CabThankYou", {
-                              isOrderPage: false,
-                              order: order.data,
-                              params,
-                              razorpayRes,
-                              item
+                    RazorpayCheckout.open(options)
+                      .then(razorpayRes => {
+                        // handle success
+                        console.log(razorpayRes);
+                        // alert(`Success: ${razorpayRes.razorpay_payment_id}`);
+                        if (
+                          (razorpayRes.razorpay_payment_id &&
+                            razorpayRes.razorpay_payment_id != "") ||
+                          razorpayRes.code == 0
+                        ) {
+                          this.setState({ loader: true });
+                          etravosApi
+                            .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+                            .then(({ data: Response }) => {
+                              this.setState({ loader: false });
+                              console.log(Response);
+                              if (Response.BookingStatus == 3) {
+                                Toast.show(Response.Message, Toast.LONG);
+                              } else {
+                                Toast.show(Response.Message, Toast.LONG);
+                              }
+                            })
+                            .catch(error => {
+                              console.log(error);
                             });
-                          });
-                      } else {
+                          let paymentData = {
+                            order_id: ord.id,
+                            status: "completed",
+                            transaction_id: razorpayRes.razorpay_payment_id,
+                            reference_no: Response // blockres.data.ReferenceNo
+                          };
+                          this.setState({ loader: true });
+                          domainApi
+                            .post("/checkout/update-order", paymentData)
+                            .then(({ data: order }) => {
+                              this.setState({ loader: false });
+                              console.log(order);
+                              const { params } = this.props.navigation.state.params;
+                              this.props.navigation.navigate("CabThankYou", {
+                                isOrderPage: false,
+                                order: order.data,
+                                params,
+                                razorpayRes,
+                                item
+                              });
+                            });
+                        } else {
+                          this.setState({ loader: false });
+                          Toast.show("You have been cancelled the order.", Toast.LONG);
+                        }
+                      })
+                      .catch(error => {
+                        this.setState({ loader: false });
+                        console.log(error);
+                      });
+                  } else {
+                    this.setState({ loading: true });
+                    domainApi
+                      .get("/wallet/payment", { user_id: user.id, order_id: ord.id })
+                      .then(({ data }) => {
+                        this.setState({ loading: false });
+                        console.log(data);
+                        if (data.result == "success") {
+                          this.setState({ loader: true });
+                          etravosApi
+                            .get("Cabs/BookCab?referenceNo=" + response.data.ReferenceNo)
+                            .then(({ data: Response }) => {
+                              this.setState({ loader: false });
+                              console.log(Response);
+                              if (Response.BookingStatus == 3) {
+                                Toast.show(Response.Message, Toast.LONG);
+                              } else {
+                                Toast.show(Response.Message, Toast.LONG);
+                              }
+                            })
+                            .catch(error => {
+                              console.log(error);
+                            });
+                          let paymentData = {
+                            order_id: ord.id,
+                            status: "completed",
+                            transaction_id: "",
+                            reference_no: Response // blockres.data.ReferenceNo
+                          };
+                          this.setState({ loader: true });
+                          domainApi
+                            .post("/checkout/update-order", paymentData)
+                            .then(({ data: order }) => {
+                              this.setState({ loader: false });
+                              console.log(order);
+                              const { params } = this.props.navigation.state.params;
+                              this.props.navigation.navigate("CabThankYou", {
+                                isOrderPage: false,
+                                order: order.data,
+                                params,
+                                item
+                              });
+                            })
+                            .catch(error => {
+                              this.setState({ loading: false });
+                              Toast.show("You have been cancelled the order.", Toast.LONG);
+                            });
+                        } else {
+                          this.setState({ loading: false });
+                          Toast.show("You have been cancelled the order.", Toast.LONG);
+                        }
+                      })
+                      .catch(error => {
+                        this.setState({ loading: false });
                         Toast.show("You have been cancelled the order.", Toast.LONG);
-                      }
-                    })
-                    .catch(error => {
-                      this.setState({ loader: false });
-                      console.log(error);
-                    });
+                      });
+                  }
                 })
                 .catch(error => {
                   this.setState({ loader: false });

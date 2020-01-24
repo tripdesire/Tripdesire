@@ -46,7 +46,7 @@ function ImageFull({ onBackPress, params }) {
                     resizeMode: "contain"
                   }}
                   source={{
-                    uri: str
+                    uri: item.Imagepath != "" ? str : "https://via.placeholder.com/150"
                   }}
                 />
               );

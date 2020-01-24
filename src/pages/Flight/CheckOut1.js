@@ -742,8 +742,58 @@ class CheckOut1 extends React.PureComponent {
               console.log(error);
             });
         } else {
-          this.setState({ loading: false });
-          Toast.show("Please select the RazorPay", Toast.SHORT);
+          this.setState({ loading: true });
+          domainApi
+            .get("/wallet/payment", { user_id: user.id, order_id: ord.id })
+            .then(({ data }) => {
+              this.setState({ loading: false });
+              console.log(data);
+              ///////////////////
+              if (data.result == "success") {
+                this.setState({ loading: true });
+                etravosApi
+                  .get("/Flights/BookFlightTicket?referenceNo=" + blockres.ReferenceNo)
+                  .then(({ data: Response }) => {
+                    if (Response.ResponseStatus == 200) {
+                      let paymentData = {
+                        order_id: ord.id,
+                        status: "completed",
+                        transaction_id: "",
+                        reference_no: Response // blockres.data.ReferenceNo
+                      };
+                      console.log(paymentData);
+                      this.setState({ loading: true });
+                      domainApi
+                        .post("/checkout/update-order", paymentData)
+                        .then(({ data: order }) => {
+                          this.setState({ loading: false });
+                          const { params } = this.props.navigation.state.params;
+                          console.log(order);
+                          this.props.navigation.navigate("FlightThankYou", {
+                            isOrderPage: false,
+                            order: order.data,
+                            params,
+                            Response
+                          });
+                        })
+                        .catch(error => {
+                          this.setState({ loading: false });
+                        });
+                    } else {
+                      Toast.show(Response.Message, Toast.SHORT);
+                    }
+                  })
+                  .catch(error => {
+                    this.setState({ loading: false });
+                    console.log(error);
+                  });
+              } else {
+                this.setState({ loading: false });
+                Toast.show("You have been cancelled the ticket", Toast.LONG);
+              }
+              ///////////////////
+            });
+          //Toast.show("Please select the RazorPay", Toast.SHORT);
         }
       } else {
         this.setState({ loading: false });

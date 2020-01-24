@@ -221,7 +221,7 @@ class Wallet extends React.PureComponent {
                   flex: 1,
                   marginBottom: "40%"
                 }}>
-                <Text style={{ fontSize: 22, fontWeight: "500" }}>No transactions founds</Text>
+                <Text style={{ fontSize: 22, fontWeight: "500" }}>No transactions found</Text>
 
                 <Button style={{ alignItems: "center", marginTop: 25 }} onPress={this.goBack}>
                   <Text style={{ color: "#5B89F9", fontWeight: "500", fontSize: 16 }}>Go Back</Text>
@@ -235,7 +235,10 @@ class Wallet extends React.PureComponent {
                     marginHorizontal: 16,
                     padding: 8,
                     marginTop: 16,
-
+                    borderRadius: 20,
+                    // marginBottom: 0,
+                    //marginEnd: 0,
+                    //  position: "absolute",
                     alignItems: "center"
                   }}
                   onPress={this.modalShow}>

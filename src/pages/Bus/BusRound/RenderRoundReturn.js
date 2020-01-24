@@ -1,7 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Modal, SafeAreaView, Image } from "react-native";
-import { Button, Text, Icon } from "../../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
+import { Button, Text, Icon,CurrencyText } from "../../../components";
 import { withNavigation } from "react-navigation";
 class RenderRoundReturn extends React.PureComponent {
   constructor(props) {
@@ -114,7 +113,7 @@ class RenderRoundReturn extends React.PureComponent {
             </Text>
           </Button>
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
-            ₹ {item.Fares.split("/", 1)}
+          <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹ </CurrencyText>{item.Fares.split("/", 1)}
           </Text>
         </View>
         <Modal

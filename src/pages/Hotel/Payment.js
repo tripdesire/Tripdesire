@@ -313,64 +313,120 @@ class Payment extends React.PureComponent {
                 .post("/checkout/new-order?user_id=" + user.id, param)
                 .then(({ data: ord }) => {
                   console.log(ord);
-                  var options = {
-                    description: "Credits towards consultation",
-                    //image: "https://i.imgur.com/3g7nmJC.png",
-                    currency: "INR",
-                    key: "rzp_test_I66kFrN53lhauw",
-                    //key: "rzp_live_IRhvqgmESx60tW",
-                    amount: parseInt(ord.total) * 100,
-                    name: "TripDesire",
-                    prefill: {
-                      email: user.billing.email,
-                      contact: user.billing.phone,
-                      name: "Razorpay Software"
-                    },
-                    theme: { color: "#E5EBF7" }
-                  };
-                  RazorpayCheckout.open(options)
-                    .then(razorpayRes => {
-                      // handle success
-                      //console.log(data);
-                      this.setState({ loading: true });
-                      etravosApi
-                        .get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
-                        .then(({ data: Response }) => {
+
+                  if (this.state.payment_method == "razorpay") {
+                    var options = {
+                      description: "Credits towards consultation",
+                      //image: "https://i.imgur.com/3g7nmJC.png",
+                      currency: "INR",
+                      key: "rzp_test_I66kFrN53lhauw",
+                      //key: "rzp_live_IRhvqgmESx60tW",
+                      amount: parseInt(ord.total) * 100,
+                      name: "TripDesire",
+                      prefill: {
+                        email: user.billing.email,
+                        contact: user.billing.phone,
+                        name: "Razorpay Software"
+                      },
+                      theme: { color: "#E5EBF7" }
+                    };
+                    RazorpayCheckout.open(options)
+                      .then(razorpayRes => {
+                        // handle success
+                        //console.log(data);
+                        this.setState({ loading: true });
+                        if (
+                          (razorpayRes.razorpay_payment_id &&
+                            razorpayRes.razorpay_payment_id != "") ||
+                          razorpayRes.code == 0
+                        ) {
+                          etravosApi
+                            .get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
+                            .then(({ data: Response }) => {
+                              this.setState({ loading: false });
+                              console.log(Response);
+                            })
+                            .catch(error => {
+                              console.log(error);
+                            });
+                          let paymentData = {
+                            order_id: ord.id,
+                            status: "completed",
+                            transaction_id: razorpayRes.razorpay_payment_id,
+                            reference_no: Response // blockres.data.ReferenceNo
+                          };
+                          this.setState({ loading: true });
+                          domainApi
+                            .post("/checkout/update-order", paymentData)
+                            .then(({ data: order }) => {
+                              this.setState({ loading: false });
+                              console.log(order);
+                              this.props.navigation.navigate("HotelThankYou", {
+                                order: order.data,
+                                isOrderPage: false
+                              });
+                            })
+                            .catch(error => {
+                              this.setState({ loading: false });
+                            });
+                        } else {
                           this.setState({ loading: false });
-                          console.log(Response);
-                        })
-                        .catch(error => {
-                          console.log(error);
-                        });
-                      let paymentData = {
-                        order_id: ord.id,
-                        status: "completed",
-                        transaction_id: razorpayRes.razorpay_payment_id,
-                        reference_no: Response // blockres.data.ReferenceNo
-                      };
-                      this.setState({ loading: true });
-                      domainApi
-                        .post("/checkout/update-order", paymentData)
-                        .then(({ data: order }) => {
+                          Toast.show("You have been cancelled the ticket", Toast.LONG);
+                        }
+                      })
+
+                      .catch(error => {
+                        // handle failure
+                        this.setState({ loading: false });
+                        alert(`Error:  ${error.description}`);
+                      });
+                  } else {
+                    this.setState({ loading: true });
+                    domainApi
+                      .get("/wallet/payment", { user_id: user.id, order_id: ord.id })
+                      .then(({ data }) => {
+                        this.setState({ loading: false });
+                        console.log(data);
+                        if (data.result == "success") {
+                          etravosApi
+                            .get("Hotels/BookHotelRoom?referenceNo=" + blockres.data.ReferenceNo)
+                            .then(({ data: Response }) => {
+                              this.setState({ loading: false });
+                              console.log(Response);
+                            })
+                            .catch(error => {
+                              console.log(error);
+                            });
+                          let paymentData = {
+                            order_id: ord.id,
+                            status: "completed",
+                            transaction_id: "",
+                            reference_no: Response // blockres.data.ReferenceNo
+                          };
+                          this.setState({ loading: true });
+                          domainApi
+                            .post("/checkout/update-order", paymentData)
+                            .then(({ data: order }) => {
+                              this.setState({ loading: false });
+                              console.log(order);
+                              const { params } = this.props.navigation.state.params;
+                              this.props.navigation.navigate("HotelThankYou", {
+                                order: order.data,
+                                isOrderPage: false
+                              });
+                            })
+                            .catch(error => {
+                              this.setState({ loading: false });
+                            });
+                        } else {
                           this.setState({ loading: false });
-                          console.log(order);
-                          const { params } = this.props.navigation.state.params;
-                          this.props.navigation.navigate("HotelThankYou", {
-                            order: order.data,
-                            isOrderPage: false
-                          });
-                          // this.props.navigation.navigate("ThankYouHotel", {
-                          //   order: order.data,
-                          //   params,
-                          //   razorpayRes
-                          // });
-                        });
-                    })
-                    .catch(error => {
-                      // handle failure
-                      this.setState({ loading: false });
-                      alert(`Error:  ${error.description}`);
-                    });
+                          Toast.show("You have been cancelled the ticket", Toast.LONG);
+                        }
+                      })
+                      .catch(error => {
+                        this.setState({ loading: false });
+                      });
+                  }
                 })
                 .catch(error => {
                   Toast.show(error, Toast.LONG);

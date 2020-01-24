@@ -1,12 +1,7 @@
 import React, { PureComponent } from "react";
 import { View, SafeAreaView, TouchableOpacity, Modal, StyleSheet, Image } from "react-native";
-import { Button, Text, ActivityIndicator, DomesticFlights, Icon } from "../../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Foundation from "react-native-vector-icons/Foundation";
-import { etravosApi } from "../../../service";
-import moment from "moment";
+import { Button, Text, CurrencyText, Icon } from "../../../components";
 import { withNavigation } from "react-navigation";
-import Toast from "react-native-simple-toast";
 class RenderRound extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -117,7 +112,7 @@ class RenderRound extends React.PureComponent {
             </Text>
           </Button>
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
-            ₹ {item.Fares.split("/", 1)}
+          <CurrencyText style={{ fontSize: 16,  fontWeight: "600" }}>₹ </CurrencyText>{item.Fares.split("/", 1)}
           </Text>
         </View>
         <Modal

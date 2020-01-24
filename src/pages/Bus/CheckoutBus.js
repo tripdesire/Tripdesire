@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Platform
 } from "react-native";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import { Button, Text, ActivityIndicator, Icon,CurrencyText } from "../../components";
 import { etravosApi, domainApi } from "../../service";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
@@ -449,7 +449,7 @@ class CheckoutBus extends React.PureComponent {
                         }}>
                         <Text>Fare</Text>
                         <Text>
-                          ₹ {cartData.cart_data[0].custum_product_data.bus_item_details.base_fare}
+                        <CurrencyText>₹ </CurrencyText>{cartData.cart_data[0].custum_product_data.bus_item_details.base_fare}
                         </Text>
                       </View>
 
@@ -462,7 +462,7 @@ class CheckoutBus extends React.PureComponent {
                         }}>
                         <Text>Service Charges</Text>
                         <Text>
-                          ₹{" "}
+                        <CurrencyText>₹ </CurrencyText>
                           {
                             cartData.cart_data[0].custum_product_data.bus_item_details
                               .service_charge2
@@ -476,7 +476,7 @@ class CheckoutBus extends React.PureComponent {
                         }}>
                         <Text style={{ marginStart: 10 }}>Tax</Text>
                         <Text style={{ marginEnd: 10 }}>
-                          ₹{" "}
+                        <CurrencyText>₹ </CurrencyText>
                           {cartData.cart_data[0].custum_product_data.bus_item_details.service_tax2}
                         </Text>
                       </View>
@@ -502,7 +502,7 @@ class CheckoutBus extends React.PureComponent {
                           }}>
                           <Text>Fare</Text>
                           <Text>
-                            ₹{" "}
+                          <CurrencyText>₹ </CurrencyText>
                             {
                               cartData.cart_data[0].custum_product_data.bus_item_details
                                 .return_base_fare
@@ -519,7 +519,7 @@ class CheckoutBus extends React.PureComponent {
                           }}>
                           <Text>Service Charges</Text>
                           <Text>
-                            ₹{" "}
+                          <CurrencyText>₹ </CurrencyText>
                             {
                               cartData.cart_data[0].custum_product_data.bus_item_details
                                 .return_service_charge2
@@ -533,7 +533,7 @@ class CheckoutBus extends React.PureComponent {
                           }}>
                           <Text style={{ marginStart: 10 }}>Tax</Text>
                           <Text style={{ marginEnd: 10 }}>
-                            ₹{" "}
+                          <CurrencyText>₹ </CurrencyText>
                             {
                               cartData.cart_data[0].custum_product_data.bus_item_details
                                 .return_service_tax2
@@ -581,7 +581,7 @@ class CheckoutBus extends React.PureComponent {
                       Total Payable
                     </Text>
                     <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                      ₹ {cartData.total_price}
+                    <CurrencyText style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>₹ </CurrencyText>{cartData.total_price}
                     </Text>
                   </View>
                 </View>

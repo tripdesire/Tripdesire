@@ -9,8 +9,7 @@ import {
   Platform
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
+import { Button, Text, ActivityIndicator, Icon, CurrencyText } from "../../components";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
 import { isArray, isEmpty } from "lodash";
@@ -691,7 +690,8 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Base Fare</Text>
                   <Text style={{ marginEnd: 10 }}>
-                    {"₹" + params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                    <CurrencyText>₹ </CurrencyText>
+                    {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                   </Text>
                 </View>
                 {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
@@ -702,9 +702,11 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                     <Text style={{ marginEnd: 10 }}>
-                      {"₹" +
+                      <CurrencyText>₹ </CurrencyText>
+                      {
                         this.state.data.cart_data[0].custum_product_data.flight_book_item
-                          .flight_schagre}
+                          .flight_schagre
+                      }
                     </Text>
                   </View>
                 )}
@@ -717,9 +719,8 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Tax</Text>
                     <Text style={{ marginEnd: 10 }}>
-                      {"₹" +
-                        this.state.data.cart_data[0].custum_product_data.flight_book_item
-                          .flight_tax}
+                      <CurrencyText>₹ </CurrencyText>
+                      {this.state.data.cart_data[0].custum_product_data.flight_book_item.flight_tax}
                     </Text>
                   </View>
                 )}
@@ -732,7 +733,8 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                   <Text style={{ marginStart: 10 }}>
-                    ₹{params.departFlight.FareDetails.TotalFare}
+                    <CurrencyText>₹ </CurrencyText>
+                    {params.departFlight.FareDetails.TotalFare}
                   </Text>
                 </View>
 
@@ -746,7 +748,8 @@ class CheckOut extends React.PureComponent {
                       }}>
                       <Text style={{ marginStart: 10 }}>Base Fare</Text>
                       <Text style={{ marginEnd: 10 }}>
-                        {"₹" + params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                        <CurrencyText>₹ </CurrencyText>
+                        {params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare}
                       </Text>
                     </View>
                     {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
@@ -757,9 +760,11 @@ class CheckOut extends React.PureComponent {
                         }}>
                         <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                         <Text style={{ marginEnd: 10 }}>
-                          {"₹" +
+                          <CurrencyText>₹ </CurrencyText>
+                          {
                             this.state.data.cart_data[0].custum_product_data.flight_book_item
-                              .return_flight_schagre}
+                              .return_flight_schagre
+                          }
                         </Text>
                       </View>
                     )}
@@ -772,9 +777,11 @@ class CheckOut extends React.PureComponent {
                         }}>
                         <Text style={{ marginStart: 10 }}>Tax</Text>
                         <Text style={{ marginEnd: 10 }}>
-                          {"₹" +
+                          <CurrencyText>₹ </CurrencyText>
+                          {
                             this.state.data.cart_data[0].custum_product_data.flight_book_item
-                              .return_flight_tax}
+                              .return_flight_tax
+                          }
                         </Text>
                       </View>
                     )}
@@ -787,7 +794,8 @@ class CheckOut extends React.PureComponent {
                       }}>
                       <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                       <Text style={{ marginStart: 10 }}>
-                        ₹{params.arrivalFlight.FareDetails.TotalFare}
+                        <CurrencyText>₹ </CurrencyText>
+                        {params.arrivalFlight.FareDetails.TotalFare}
                       </Text>
                     </View>
                   </View>
@@ -847,7 +855,8 @@ class CheckOut extends React.PureComponent {
                     Total Payable
                   </Text>
                   <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                    ₹ {this.state.data.total_price}
+                    <CurrencyText style={{ fontSize: 16, fontWeight: "700" }}>₹ </CurrencyText>
+                    {this.state.data.total_price}
                   </Text>
                 </View>
               </View>
@@ -1217,7 +1226,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Base Fare</Text>
                   <Text style={{ marginEnd: 10 }}>
-                    ₹ {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                  <CurrencyText>₹ </CurrencyText>{params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                   </Text>
                 </View>
 
@@ -1229,7 +1238,8 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                     <Text style={{ marginEnd: 10 }}>
-                      {"₹" +
+                    <CurrencyText>₹ </CurrencyText>
+                      {
                         this.state.data.cart_data[0].custum_product_data.flight_book_item
                           .flight_schagre}
                     </Text>
@@ -1245,7 +1255,7 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Tax</Text>
                     <Text>
-                      ₹
+                    <CurrencyText>₹ </CurrencyText>
                       {params.departFlight.FareDetails.ChargeableFares.Tax +
                         params.departFlight.FareDetails.ChargeableFares.STax}
                     </Text>
@@ -1270,7 +1280,7 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                   <Text style={{ marginStart: 10 }}>
-                    ₹{params.departFlight.FareDetails.TotalFare}
+                  <CurrencyText>₹ </CurrencyText>{params.departFlight.FareDetails.TotalFare}
                   </Text>
                 </View>
 
@@ -1328,7 +1338,7 @@ class CheckOut extends React.PureComponent {
                     Total Payable
                   </Text>
                   <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                    ₹ {this.state.data.total_price}
+                  <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹ </CurrencyText>{this.state.data.total_price}
                   </Text>
                 </View>
               </View>

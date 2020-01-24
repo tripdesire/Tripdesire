@@ -9,7 +9,7 @@ import {
   StatusBar
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon, LinearGradient } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, LinearGradient ,CurrencyText} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import HTML from "react-native-render-html";
@@ -297,7 +297,7 @@ class HotelPayment extends React.PureComponent {
                     }}>
                     <Text style={style._textHeading}>Room Total</Text>
                     <Text style={style._Details}>
-                      ₹
+                    <CurrencyText style={style._Details}>₹ </CurrencyText>
                       {this.state.data.cart_data[0].custum_product_data.Hotel_item_details
                         .single_hotel_data.selectedRoom.RoomNetTotal * params.Night}
                     </Text>
@@ -424,7 +424,8 @@ class HotelPayment extends React.PureComponent {
                   </Text>
                   <Text
                     style={[style._Details, { fontSize: 16, fontWeight: "700", color: "#000" }]}>
-                    {this.state.data.total_price ? "₹ " + this.state.data.total_price : "₹ " + 0.0}
+                    <CurrencyText style={{fontWeight:"700",fontSize:16}}>₹ </CurrencyText>
+                    {this.state.data.total_price ? this.state.data.total_price : "₹ " + 0.0}
                   </Text>
                 </View>
               </View>

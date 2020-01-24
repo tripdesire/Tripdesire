@@ -101,85 +101,147 @@ class BusPayment extends React.PureComponent {
       .then(({ data: ord }) => {
         console.log(ord);
         this.setState({ loader: false });
-        var options = {
-          description: "Credits towards consultation",
-          // image: "https://i.imgur.com/3g7nmJC.png",
-          currency: "INR",
-          key: "rzp_test_I66kFrN53lhauw",
-          //  key: "rzp_live_IRhvqgmESx60tW",
-          amount: parseInt(ord.total) * 100,
-          name: "TripDesire",
-          prefill: {
-            email: user.billing.email,
-            contact: user.billing.phone,
-            name: "Razorpay Software"
-          },
-          theme: { color: "#E5EBF7" }
-        };
+        if (this.state.payment_method == "razorpay") {
+          var options = {
+            description: "Credits towards consultation",
+            // image: "https://i.imgur.com/3g7nmJC.png",
+            currency: "INR",
+            key: "rzp_test_I66kFrN53lhauw",
+            //  key: "rzp_live_IRhvqgmESx60tW",
+            amount: parseInt(ord.total) * 100,
+            name: "TripDesire",
+            prefill: {
+              email: user.billing.email,
+              contact: user.billing.phone,
+              name: "Razorpay Software"
+            },
+            theme: { color: "#E5EBF7" }
+          };
 
-        RazorpayCheckout.open(options)
-          .then(razorpayRes => {
-            if (TripType == 1) {
-              this.setState({ loader: true });
-              etravosApi
-                .get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo)
-                .then(({ data: Response }) => {
-                  this.setState({ loader: false });
-                  console.log(Response);
-                  if (Response.BookingStatus == 3) {
-                    Toast.show(Response.Message, Toast.LONG);
-                    let paymentData = {
-                      order_id: ord.id,
-                      status: "completed",
-                      transaction_id: razorpayRes.razorpay_payment_id,
-                      reference_no: Response
-                    };
-                    console.log(paymentData);
-
-                    this.setState({ loader: true });
-                    domainApi
-                      .post("/checkout/update-order", paymentData)
-                      .then(({ data: order }) => {
-                        this.setState({ loader: false });
-                        console.log(order);
-                        this.props.navigation.navigate("BusThankYou", {
-                          isOrderPage: false,
-                          order: order.data,
-                          razorpayRes,
-                          Response,
-                          ...this.props.navigation.state.params
-                        });
-                      });
-                  } else {
-                    Toast.show(Response.Message, Toast.LONG);
-                  }
-                })
-                .catch(error => {
-                  // handle failure
-                  alert(`Error: ${error.code} | ${error.description}`);
-                });
-            } else {
-              this.setState({ loader: true });
-              axios
-                .all([
-                  etravosApi.get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo),
-                  etravosApi.get("Buses/BookBusTicket?referenceNo=" + blockRound.BookingReferenceNo)
-                ])
-                .then(
-                  axios.spread(({ data: BookingOneway }, { data: BookingRound }) => {
-                    // Both requests are now complete
+          RazorpayCheckout.open(options)
+            .then(razorpayRes => {
+              if (TripType == 1) {
+                this.setState({ loader: true });
+                etravosApi
+                  .get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo)
+                  .then(({ data: Response }) => {
                     this.setState({ loader: false });
-                    console.log(BookingOneway, "BooKiNgOneway", BookingRound, "BooKiNgRound");
+                    console.log(Response);
+                    if (Response.BookingStatus == 3) {
+                      Toast.show(Response.Message, Toast.LONG);
+                      let paymentData = {
+                        order_id: ord.id,
+                        status: "completed",
+                        transaction_id: razorpayRes.razorpay_payment_id,
+                        reference_no: Response
+                      };
+                      console.log(paymentData);
 
-                    if (BookingOneway.BookingStatus == 3) {
-                      if (BookingRound.BookingStatus == 3) {
-                        Toast.show(BookingOneway.Message, Toast.LONG);
+                      this.setState({ loader: true });
+                      domainApi
+                        .post("/checkout/update-order", paymentData)
+                        .then(({ data: order }) => {
+                          this.setState({ loader: false });
+                          console.log(order);
+                          this.props.navigation.navigate("BusThankYou", {
+                            isOrderPage: false,
+                            order: order.data,
+                            razorpayRes,
+                            Response,
+                            ...this.props.navigation.state.params
+                          });
+                        });
+                    } else {
+                      Toast.show(Response.Message, Toast.LONG);
+                    }
+                  })
+                  .catch(error => {
+                    // handle failure
+                    alert(`Error: ${error.code} | ${error.description}`);
+                  });
+              } else {
+                this.setState({ loader: true });
+                axios
+                  .all([
+                    etravosApi.get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo),
+                    etravosApi.get(
+                      "Buses/BookBusTicket?referenceNo=" + blockRound.BookingReferenceNo
+                    )
+                  ])
+                  .then(
+                    axios.spread(({ data: BookingOneway }, { data: BookingRound }) => {
+                      // Both requests are now complete
+                      this.setState({ loader: false });
+                      console.log(BookingOneway, "BooKiNgOneway", BookingRound, "BooKiNgRound");
+
+                      if (BookingOneway.BookingStatus == 3) {
+                        if (BookingRound.BookingStatus == 3) {
+                          Toast.show(BookingOneway.Message, Toast.LONG);
+                          let paymentData = {
+                            order_id: ord.id,
+                            status: "completed",
+                            transaction_id: razorpayRes.razorpay_payment_id,
+                            reference_no: BookingOneway,
+                            return_reference_no: BookingRound
+                          };
+                          console.log(paymentData);
+
+                          this.setState({ loader: true });
+                          domainApi
+                            .post("/checkout/update-order", paymentData)
+                            .then(({ data: order }) => {
+                              this.setState({ loader: false });
+                              console.log(order);
+                              this.props.navigation.navigate("BusThankYou", {
+                                isOrderPage: false,
+                                ...this.props.navigation.state.params,
+                                razorpayRes,
+                                BookingOneway,
+                                BookingRound,
+                                order: order.data
+                              });
+                            });
+                        } else {
+                          Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                        }
+                      } else {
+                        Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                      }
+                    })
+                  )
+                  .catch(eroor => {
+                    this.setState({ loader: false });
+                  });
+              }
+            })
+            .catch(error => {
+              this.setState({ loader: false });
+              console.log(error);
+            });
+        } else {
+          this.setState({ loader: true });
+          domainApi
+            .get("/wallet/payment", { user_id: user.id, order_id: ord.id })
+            .then(({ data }) => {
+              this.setState({ loader: false });
+              console.log(data);
+              if (data.result == "success") {
+                ////
+
+                if (TripType == 1) {
+                  this.setState({ loader: true });
+                  etravosApi
+                    .get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo)
+                    .then(({ data: Response }) => {
+                      this.setState({ loader: false });
+                      console.log(Response);
+                      if (Response.BookingStatus == 3) {
+                        Toast.show(Response.Message, Toast.LONG);
                         let paymentData = {
                           order_id: ord.id,
                           status: "completed",
-                          transaction_id: razorpayRes.razorpay_payment_id,
-                          reference_no: BookingOneway,
-                          return_reference_no: BookingRound
+                          transaction_id: "",
+                          reference_no: Response
                         };
                         console.log(paymentData);
 
@@ -191,30 +253,82 @@ class BusPayment extends React.PureComponent {
                             console.log(order);
                             this.props.navigation.navigate("BusThankYou", {
                               isOrderPage: false,
-                              ...this.props.navigation.state.params,
-                              razorpayRes,
-                              BookingOneway,
-                              BookingRound,
-                              order: order.data
+                              order: order.data,
+                              Response,
+                              ...this.props.navigation.state.params
                             });
                           });
                       } else {
-                        Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                        Toast.show(Response.Message, Toast.LONG);
                       }
-                    } else {
-                      Toast.show("Your ticket is not booked successfully.", Toast.LONG);
-                    }
-                  })
-                )
-                .catch(eroor => {
-                  this.setState({ loader: false });
-                });
-            }
-          })
-          .catch(error => {
-            this.setState({ loader: false });
-            console.log(error);
-          });
+                    })
+                    .catch(error => {
+                      // handle failure
+                      alert(`Error: ${error.code} | ${error.description}`);
+                    });
+                } else {
+                  this.setState({ loader: true });
+                  axios
+                    .all([
+                      etravosApi.get("Buses/BookBusTicket?referenceNo=" + block.BookingReferenceNo),
+                      etravosApi.get(
+                        "Buses/BookBusTicket?referenceNo=" + blockRound.BookingReferenceNo
+                      )
+                    ])
+                    .then(
+                      axios.spread(({ data: BookingOneway }, { data: BookingRound }) => {
+                        // Both requests are now complete
+                        this.setState({ loader: false });
+                        console.log(BookingOneway, "BooKiNgOneway", BookingRound, "BooKiNgRound");
+
+                        if (BookingOneway.BookingStatus == 3) {
+                          if (BookingRound.BookingStatus == 3) {
+                            Toast.show(BookingOneway.Message, Toast.LONG);
+                            let paymentData = {
+                              order_id: ord.id,
+                              status: "completed",
+                              transaction_id: "",
+                              reference_no: BookingOneway,
+                              return_reference_no: BookingRound
+                            };
+                            console.log(paymentData);
+
+                            this.setState({ loader: true });
+                            domainApi
+                              .post("/checkout/update-order", paymentData)
+                              .then(({ data: order }) => {
+                                this.setState({ loader: false });
+                                console.log(order);
+                                this.props.navigation.navigate("BusThankYou", {
+                                  isOrderPage: false,
+                                  ...this.props.navigation.state.params,
+                                  BookingOneway,
+                                  BookingRound,
+                                  order: order.data
+                                });
+                              });
+                          } else {
+                            Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                          }
+                        } else {
+                          Toast.show("Your ticket is not booked successfully.", Toast.LONG);
+                        }
+                      })
+                    )
+                    .catch(eroor => {
+                      this.setState({ loader: false });
+                    });
+                }
+
+                ////
+              } else {
+                this.setState({ loader: false });
+              }
+            })
+            .catch(error => {
+              this.setState({ loader: false });
+            });
+        }
       })
       .catch(error => {
         this.setState({ loader: false });

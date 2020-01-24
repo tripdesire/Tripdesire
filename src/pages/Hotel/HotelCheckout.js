@@ -12,7 +12,14 @@ import {
   Platform,
   StatusBar
 } from "react-native";
-import { Button, Text, ActivityIndicator, Icon, LinearGradient } from "../../components";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  Icon,
+  LinearGradient,
+  CurrencyText
+} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import { mergeWith } from "lodash";
@@ -312,7 +319,10 @@ class HotelCheckout extends React.Component {
                         borderRadius: 5
                       }}
                       source={{
-                        uri: params.HotelImages[0] ? str : "https://via.placeholder.com/150"
+                        uri:
+                          params.HotelImages[0] && params.HotelImages[0].Imagepath != ""
+                            ? str
+                            : "https://via.placeholder.com/150"
                       }}
                     />
                   </Button>
@@ -464,7 +474,10 @@ class HotelCheckout extends React.Component {
                               fontSize: 18,
                               fontWeight: "700"
                             }}>
-                            ₹ {item.RoomTotal.toFixed(2)}
+                            <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
+                              ₹{" "}
+                            </CurrencyText>
+                            {item.RoomTotal.toFixed(2)}
                           </Text>
                         </View>
                       </View>

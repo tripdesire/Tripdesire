@@ -11,7 +11,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { withNavigation } from "react-navigation";
-import { Button, Text, ActivityIndicator, DomesticFlights } from "../../components";
+import { Button, Text, ActivityIndicator, DomesticFlights, CurrencyText } from "../../components";
 import FareDetails from "./FareRules";
 import Icon from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -160,7 +160,8 @@ class FlightListRender extends React.PureComponent {
               item.FlightSegments[0].OperatingAirlineFlightNumber}
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
-            ₹{parseInt(item.FareDetails.TotalFare)}
+            <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹ </CurrencyText>
+            {parseInt(item.FareDetails.TotalFare)}
           </Text>
         </View>
         <View
@@ -446,7 +447,8 @@ class FlightListRender extends React.PureComponent {
                         flex: 1,
                         marginTop: 5
                       }}>
-                      Base Fare : ₹{item.FareDetails.ChargeableFares.ActualBaseFare}
+                      Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      {item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                     <Text
                       style={{
@@ -455,7 +457,8 @@ class FlightListRender extends React.PureComponent {
                         color: "#5D646A",
                         flex: 1
                       }}>
-                      Tax : ₹{item.FareDetails.ChargeableFares.Tax}
+                      Tax : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      {item.FareDetails.ChargeableFares.Tax}
                     </Text>
                     <Text
                       style={{
@@ -464,7 +467,8 @@ class FlightListRender extends React.PureComponent {
                         color: "#5D646A",
                         flex: 1
                       }}>
-                      Fee & Surcharges : ₹{item.FareDetails.ChargeableFares.Conveniencefee}
+                      Fee & Surcharges : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      {item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
                     <Text
                       style={{
@@ -473,7 +477,8 @@ class FlightListRender extends React.PureComponent {
                         color: "#5D646A",
                         flex: 1
                       }}>
-                      Total Fare:₹{parseInt(item.FareDetails.TotalFare)}
+                      Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      {parseInt(item.FareDetails.TotalFare)}
                     </Text>
                   </View>
                 )}

@@ -17,6 +17,7 @@ import HotelThankYou from "./HotelThankYou";
 import BusThankYou from "./BusThankYou";
 import CabThankYou from "./CabThankYou";
 import FlightThankYou from "./FlightThankYou";
+import CurrencyText from "./CurrencyText";
 export {
   Button,
   HomeButtonComponent,
@@ -36,5 +37,6 @@ export {
   HotelThankYou,
   BusThankYou,
   CabThankYou,
-  FlightThankYou
+  FlightThankYou,
+  CurrencyText
 };
