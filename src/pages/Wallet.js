@@ -5,6 +5,7 @@ import { domainApi, etravosApi } from "../service";
 import { connect } from "react-redux";
 import HTML from "react-native-render-html";
 import Modal from "react-native-modal";
+import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
 
 const { height } = Dimensions.get("window");
@@ -12,7 +13,6 @@ const { height } = Dimensions.get("window");
 class Wallet extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.doApiCall();
     this.state = {
       transaction: [],
       transactions: [],
@@ -20,6 +20,7 @@ class Wallet extends React.PureComponent {
       modalShow: false,
       rupee: ""
     };
+    this.doApiCall();
   }
 
   addMoneyToWallet(rupee) {
@@ -42,7 +43,7 @@ class Wallet extends React.PureComponent {
         if (data.code == 1) {
           this.setState({ loader: true });
           domainApi
-            .post("/checkout/new-order", param)
+            .post("/checkout/new-order?user_id=" + user.id + "&payment_method=razorpay")
             .then(res => {
               console.log(res.data);
               this.setState({ loader: false });
@@ -65,11 +66,24 @@ class Wallet extends React.PureComponent {
                 RazorpayCheckout.open(options)
                   .then(razorpayRes => {
                     console.log(razorpayRes);
-                    domainApi
-                      .get("/wallet/payment", { user_id: user.id, order_id: res.data.id })
-                      .then(({ data }) => {
-                        console.log(data);
-                      });
+                    if (razorpayRes.razorpay_payment_id != "") {
+                      let param = {
+                        order_id: res.data.id,
+                        status: "completed"
+                      };
+                      domainApi
+                        .post("/checkout/update-order", param)
+                        .then(({ data: order }) => {
+                          console.log(order);
+                          this.doApiCall();
+                        })
+                        .catch(error => {
+                          this.setState({ loader: false });
+                        });
+                    } else {
+                      this.setState({ loader: false });
+                      Toast.show("You have cancelled the order", Toast.SHORT);
+                    }
                   })
                   .catch(error => {
                     // handle failure
@@ -102,7 +116,6 @@ class Wallet extends React.PureComponent {
 
   doApiCall() {
     const { user } = this.props;
-    // console.log(user.id);
     let param = {
       uid: user.id
     };
@@ -164,7 +177,7 @@ class Wallet extends React.PureComponent {
     );
   };
 
-  _keyExtractor = index => "_key" + index;
+  _keyExtractor = (item, index) => "_key" + index;
 
   render() {
     const { transaction, transactions, loader, modalShow } = this.state;
@@ -234,7 +247,7 @@ class Wallet extends React.PureComponent {
                     backgroundColor: "#F68E1D",
                     marginHorizontal: 16,
                     padding: 8,
-                    marginTop: 16,
+                    marginVertical: 16,
                     borderRadius: 20,
                     // marginBottom: 0,
                     //marginEnd: 0,
@@ -267,7 +280,6 @@ class Wallet extends React.PureComponent {
                 data={this.setRupee}
               />
             </Modal>
-
             {loader && <ActivityIndicator />}
           </View>
         </SafeAreaView>

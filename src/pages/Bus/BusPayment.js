@@ -88,8 +88,8 @@ class BusPayment extends React.PureComponent {
     }));
 
     let param = {
-      user_id: user.id,
-      payment_method: this.state.payment_method,
+      // user_id: user.id,
+      // payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: [],
       infant_details: []
@@ -97,7 +97,10 @@ class BusPayment extends React.PureComponent {
 
     this.setState({ loader: true });
     domainApi
-      .post("/checkout/new-order?user_id=" + user.id, param)
+      .post(
+        "/checkout/new-order?user_id=" + user.id + "&payment_method=" + this.state.payment_method,
+        param
+      )
       .then(({ data: ord }) => {
         console.log(ord);
         this.setState({ loader: false });

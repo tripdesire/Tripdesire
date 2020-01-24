@@ -449,12 +449,7 @@ class SeatRound extends React.PureComponent {
                   }}>
                   <Button
                     onPress={() => this.setState({ selectedTab: "lower" })}
-                    style={
-                      [
-                        //  selectedTab == "lower" ? { backgroundColor: "#5B89F9" } : null,
-                        // styles.tab
-                      ]
-                    }>
+                    style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
                     <Text style={[selectedTab == "lower" ? { color: "#FFF" } : { color: "#000" }]}>
                       Lower Birth
                     </Text>
@@ -475,12 +470,7 @@ class SeatRound extends React.PureComponent {
                   }}>
                   <Button
                     onPress={() => this.setState({ selectedTab: "upper" })}
-                    style={
-                      [
-                        // selectedTab == "upper" ? { backgroundColor: "#5B89F9" } : null,
-                        // styles.tab
-                      ]
-                    }>
+                    style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
                     <Text style={[selectedTab == "upper" ? { color: "#FFF" } : { color: "#000" }]}>
                       Upper Birth
                     </Text>
@@ -606,8 +596,8 @@ const styles = StyleSheet.create({
   },
   tab: {
     backgroundColor: "#ffffff",
-    borderWidth: 5,
-    borderColor: "#d2d2d2",
+    //borderWidth: 5,
+    //borderColor: "#d2d2d2",
     paddingHorizontal: 6,
     alignItems: "center",
     justifyContent: "center"

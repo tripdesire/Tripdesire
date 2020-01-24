@@ -436,7 +436,7 @@ class Seats extends React.PureComponent {
                     elevation: 2,
                     shadowOffset: { width: 0, height: 2 },
                     shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
+                    shadowOpacity: 2,
                     shadowRadius: 4,
                     backgroundColor: "#ffffff",
                     borderTopLeftRadius: 5,
@@ -446,6 +446,8 @@ class Seats extends React.PureComponent {
                     onPress={() => this.setState({ selectedTab: "lower" })}
                     style={{
                       borderTopLeftRadius: 5,
+                      paddingHorizontal: 8,
+                      paddingVertical: 4,
                       borderBottomLeftRadius: 5
                     }}>
                     <Text style={[selectedTab == "lower" ? { color: "#FFF" } : { color: "#000" }]}>
@@ -470,6 +472,8 @@ class Seats extends React.PureComponent {
                     onPress={() => this.setState({ selectedTab: "upper" })}
                     style={{
                       borderTopRightRadius: 5,
+                      paddingHorizontal: 8,
+                      paddingVertical: 4,
                       borderBottomRightRadius: 5
                     }}>
                     <Text style={[selectedTab == "upper" ? { color: "#FFF" } : { color: "#000" }]}>
@@ -598,9 +602,8 @@ const styles = StyleSheet.create({
   },
   tab: {
     backgroundColor: "#ffffff",
-    borderWidth: 5,
-    borderColor: "#d2d2d2",
-
+    // borderWidth: 1,
+    // borderColor: "#d2d2d2",
     paddingHorizontal: 6,
     alignItems: "center",
     justifyContent: "center"

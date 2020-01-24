@@ -177,8 +177,8 @@ class Payment extends React.PureComponent {
     }));
 
     let param = {
-      user_id: user.id,
-      payment_method: this.state.payment_method,
+      //user_id: user.id,
+      //payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: child_details,
       infant_details: []
@@ -310,7 +310,13 @@ class Payment extends React.PureComponent {
             if (blockres.data.BookingStatus == 1) {
               const { user } = this.props;
               domainApi
-                .post("/checkout/new-order?user_id=" + user.id, param)
+                .post(
+                  "/checkout/new-order?user_id=" +
+                    user.id +
+                    "&payment_method=" +
+                    this.state.payment_method,
+                  param
+                )
                 .then(({ data: ord }) => {
                   console.log(ord);
 

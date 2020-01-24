@@ -129,8 +129,8 @@ class PaymentCab extends React.PureComponent {
     ];
 
     let newOrder = {
-      user_id: user.id,
-      payment_method: this.state.payment_method,
+      // user_id: user.id,
+      //payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: [],
       infant_details: []
@@ -201,7 +201,10 @@ class PaymentCab extends React.PureComponent {
               const { user } = this.props;
               domainApi
                 .post(
-                  "/checkout/new-order?user_id=" + user.id + "&payment_method=razorpay",
+                  "/checkout/new-order?user_id=" +
+                    user.id +
+                    "&payment_method=" +
+                    this.state.payment_method,
                   newOrder
                 )
                 .then(({ data: ord }) => {

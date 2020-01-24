@@ -328,8 +328,8 @@ class CheckOut1 extends React.PureComponent {
     }));
 
     let param = {
-      user_id: user.id,
-      payment_method: this.state.payment_method,
+      // user_id: user.id,
+      // payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: child_details,
       infant_details: infant_details
@@ -668,7 +668,10 @@ class CheckOut1 extends React.PureComponent {
       const { data: blockres } = await etravosApi.post("/Flights/BlockFlightTicket", book);
       //console.log(blockres);
       if (blockres.BookingStatus == 8) {
-        const { data: ord } = await domainApi.post("/checkout/new-order?user_id=" + user.id, param);
+        const { data: ord } = await domainApi.post(
+          "/checkout/new-order?user_id=" + user.id + "&payment_method=" + this.state.payment_method,
+          param
+        );
         if (this.state.payment_method == "razorpay") {
           var options = {
             description: "Credits towards consultation",
