@@ -181,12 +181,12 @@ class ThankYouCab extends React.PureComponent {
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Base Fare</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Car Item Data"].TotalNetAmount}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Car Item Data"].TotalNetAmount}</Text>
               </View>
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Service Tax</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Service Tax"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Service Tax"]}</Text>
               </View>
 
               <View style={styles.summaryRow}>
@@ -196,7 +196,7 @@ class ThankYouCab extends React.PureComponent {
 
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
-                <Text style={styles.time}><CurrencyText style={styles.time}>₹ </CurrencyText>{order.total}</Text>
+                <Text style={styles.time}><CurrencyText style={styles.time}>₹</CurrencyText>{order.total}</Text>
               </View>
 
               <View style={[styles.summaryRow, { paddingBottom: 8 }]}>

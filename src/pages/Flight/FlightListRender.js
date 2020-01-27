@@ -160,7 +160,7 @@ class FlightListRender extends React.PureComponent {
               item.FlightSegments[0].OperatingAirlineFlightNumber}
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
-            <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹ </CurrencyText>
+            <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
             {parseInt(item.FareDetails.TotalFare)}
           </Text>
         </View>
@@ -447,7 +447,7 @@ class FlightListRender extends React.PureComponent {
                         flex: 1,
                         marginTop: 5
                       }}>
-                      Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                     <Text
@@ -457,7 +457,7 @@ class FlightListRender extends React.PureComponent {
                         color: "#5D646A",
                         flex: 1
                       }}>
-                      Tax : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {item.FareDetails.ChargeableFares.Tax}
                     </Text>
                     <Text
@@ -467,7 +467,7 @@ class FlightListRender extends React.PureComponent {
                         color: "#5D646A",
                         flex: 1
                       }}>
-                      Fee & Surcharges : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Fee & Surcharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
                     <Text
@@ -477,7 +477,7 @@ class FlightListRender extends React.PureComponent {
                         color: "#5D646A",
                         flex: 1
                       }}>
-                      Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {parseInt(item.FareDetails.TotalFare)}
                     </Text>
                   </View>

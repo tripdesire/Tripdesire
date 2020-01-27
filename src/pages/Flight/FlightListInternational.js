@@ -166,7 +166,7 @@ class FlightListInternational extends React.PureComponent {
               this.props.item.IntOnward.FlightSegments[0].OperatingAirlineFlightNumber}
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
-            <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹ </CurrencyText>
+            <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
             {parseInt(this.props.item.FareDetails.TotalFare)}
           </Text>
         </View>
@@ -473,7 +473,7 @@ class FlightListInternational extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                     <Text
@@ -482,7 +482,7 @@ class FlightListInternational extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Tax : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Tax}
                     </Text>
                     <Text
@@ -491,7 +491,7 @@ class FlightListInternational extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Fee & Surcharges : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Fee & Surcharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
                     <Text
@@ -500,7 +500,7 @@ class FlightListInternational extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {parseInt(this.props.item.FareDetails.TotalFare)}
                     </Text>
                   </View>

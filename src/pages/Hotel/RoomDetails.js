@@ -72,7 +72,7 @@ class RoomDetails extends React.PureComponent {
               <Text style={{ color: "#717A81" }}>No room inclusion here</Text>
             </TouchableOpacity>
             <View style={{ flex: 2, paddingStart: 4, marginStart: 10 }}>
-              <Text style={{ fontSize: 18, fontWeight: "700" }}><CurrencyText style={{ fontSize: 18, fontWeight: "700" }}>₹ </CurrencyText>{this.props.item.RoomTotal}</Text>
+              <Text style={{ fontSize: 18, fontWeight: "700" }}><CurrencyText style={{ fontSize: 18, fontWeight: "700" }}>₹</CurrencyText>{this.props.item.RoomTotal}</Text>
               <Text style={{ color: "#717A81" }}>
                 {this.props.params.room}:Room(s),{this.props.params.Night}:night
               </Text>

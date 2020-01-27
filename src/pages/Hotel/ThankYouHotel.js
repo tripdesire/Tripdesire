@@ -227,11 +227,11 @@ class ThankYouHotel extends React.PureComponent {
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Tax</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Tax"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Tax"]}</Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
-                <Text style={styles.time}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{order.total}</Text>
+                <Text style={styles.time}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{order.total}</Text>
               </View>
               <View style={[styles.summaryRow, { paddingBottom: 8 }]}>
                 <Text style={styles.airlineno}>Payment Method</Text>

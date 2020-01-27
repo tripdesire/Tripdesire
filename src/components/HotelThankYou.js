@@ -251,7 +251,7 @@ class HotelThankYou extends React.PureComponent {
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Base Fare</Text>
                 <Text style={styles.airlineno}>
-                <CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Single Hotel Data"].selectedRoom.RoomNetTotal}
+                <CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Single Hotel Data"].selectedRoom.RoomNetTotal}
                 </Text>
               </View>
 
@@ -265,11 +265,11 @@ class HotelThankYou extends React.PureComponent {
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Tax</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Tax"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Tax"]}</Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
-                <Text style={styles.time}><CurrencyText style={styles.time}>₹ </CurrencyText>{order.total}</Text>
+                <Text style={styles.time}><CurrencyText style={styles.time}>₹</CurrencyText>{order.total}</Text>
               </View>
               <View style={[styles.summaryRow, { paddingBottom: 8 }]}>
                 <Text style={styles.airlineno}>Payment Method</Text>

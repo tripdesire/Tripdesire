@@ -131,7 +131,7 @@ class RenderItems extends React.PureComponent {
             <Text style={{ fontSize: 12, color: "green" }}>Fare Details</Text>
           </Button>
           <Text style={{ fontSize: 18, fontWeight: "600" }}>
-          <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹ </CurrencyText>{this.props.item.TotalNetAmount}
+          <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹</CurrencyText>{this.props.item.TotalNetAmount}
           </Text>
         </View>
 

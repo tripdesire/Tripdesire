@@ -479,7 +479,7 @@ class HotelCheckout extends React.Component {
                               fontWeight: "700"
                             }}>
                             <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
-                              ₹{" "}
+                              ₹
                             </CurrencyText>
                             {item.RoomTotal.toFixed(2)}
                           </Text>

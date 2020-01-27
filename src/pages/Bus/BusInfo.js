@@ -236,7 +236,7 @@ class BusInfo extends React.PureComponent {
             </Text>
           </Button>
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
-          <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹ </CurrencyText>{item.Fares.split("/", 1)}
+          <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹</CurrencyText>{item.Fares.split("/", 1)}
           </Text>
         </View>
       </Button>

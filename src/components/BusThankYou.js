@@ -213,16 +213,16 @@ class BusThankYou extends React.PureComponent {
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Base Fare</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Base Fare"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Base Fare"]}</Text>
               </View>
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Service Charge</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Service Charge2"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Service Charge2"]}</Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Tax</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Service Tax2"]}</Text>
+                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Service Tax2"]}</Text>
               </View>
 
               {dataArray.hasOwnProperty("Return Bus Item Result Data") && (
@@ -230,23 +230,23 @@ class BusThankYou extends React.PureComponent {
                   <Text style={[styles.time, { marginHorizontal: 12 }]}>Return</Text>
                   <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Base Fare</Text>
-                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Return Base Fare"]}</Text>
+                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Return Base Fare"]}</Text>
                   </View>
 
                   <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Service Charge</Text>
-                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Return Service Charge2"]}</Text>
+                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Return Service Charge2"]}</Text>
                   </View>
                   <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Tax</Text>
-                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹ </CurrencyText>{dataArray["Return Service Tax2"]}</Text>
+                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Return Service Tax2"]}</Text>
                   </View>
                 </>
               )}
 
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
-                <Text style={styles.time}><CurrencyText style={styles.time}>₹ </CurrencyText>{order.total}</Text>
+                <Text style={styles.time}><CurrencyText style={styles.time}>₹</CurrencyText>{order.total}</Text>
               </View>
 
               <View style={[styles.summaryRow, { paddingBottom: 8 }]}>

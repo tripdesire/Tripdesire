@@ -307,7 +307,7 @@ class CheckoutCab extends React.PureComponent {
                         }}>
                         <Text>Base Fare</Text>
                         <Text>
-                        <CurrencyText>₹ </CurrencyText>
+                        <CurrencyText>₹</CurrencyText>
                           {
                             this.state.cartData.cart_data[0].custum_product_data.car_item_details
                               .car_item_data.TotalNetAmount
@@ -338,7 +338,7 @@ class CheckoutCab extends React.PureComponent {
                         }}>
                         <Text>Service Tax</Text>
                         <Text>
-                        <CurrencyText>₹ </CurrencyText>
+                        <CurrencyText>₹</CurrencyText>
                           {
                             this.state.cartData.cart_data[0].custum_product_data.car_item_details
                               .service_tax
@@ -382,7 +382,7 @@ class CheckoutCab extends React.PureComponent {
                   }}>
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>Total Payable</Text>
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                  <CurrencyText style={{ fontSize: 16, fontWeight: "700" }}>₹ </CurrencyText>{this.state.cartData.total_price}
+                  <CurrencyText style={{ fontSize: 16, fontWeight: "700" }}>₹</CurrencyText>{this.state.cartData.total_price}
                   </Text>
                 </View>
               </View>

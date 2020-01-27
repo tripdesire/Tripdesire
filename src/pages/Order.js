@@ -258,7 +258,7 @@ function OrderItems({ item, onPress }) {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Total : </Text>
-          <Text style={{ lineHeight: 20 }}><CurrencyText>₹ </CurrencyText>{item.total}</Text>
+          <Text style={{ lineHeight: 20 }}><CurrencyText>₹</CurrencyText>{item.total}</Text>
         </View>
       </View>
 

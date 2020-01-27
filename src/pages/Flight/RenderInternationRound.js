@@ -177,7 +177,7 @@ class RenderInternationRound extends React.PureComponent {
                   fontSize: 18,
                   fontWeight: "700"
                 }}>
-                <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹ </CurrencyText>
+                <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
                 {this.props.item.FareDetails.TotalFare}
               </Text>
               {/* <Button
@@ -483,7 +483,7 @@ class RenderInternationRound extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
                     <Text
@@ -492,7 +492,7 @@ class RenderInternationRound extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Tax : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Tax}
                     </Text>
                     <Text
@@ -501,7 +501,7 @@ class RenderInternationRound extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Fee & SubCharges : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Fee & SubCharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
                     <Text
@@ -510,7 +510,7 @@ class RenderInternationRound extends React.PureComponent {
                         color: "#5D646A",
                         lineHeight: 14
                       }}>
-                      Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                      Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {parseInt(this.props.item.FareDetails.TotalFare)}
                     </Text>
                   </View>
@@ -810,7 +810,7 @@ class RenderInternationRound extends React.PureComponent {
                           color: "#5D646A",
                           lineHeight: 14
                         }}>
-                        Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                        Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                       </Text>
                       <Text
@@ -819,7 +819,7 @@ class RenderInternationRound extends React.PureComponent {
                           color: "#5D646A",
                           lineHeight: 14
                         }}>
-                        Tax : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                        Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {this.props.item.FareDetails.ChargeableFares.Tax}
                       </Text>
                       <Text
@@ -828,11 +828,11 @@ class RenderInternationRound extends React.PureComponent {
                           color: "#5D646A",
                           lineHeight: 14
                         }}>
-                        Fee & SubCharges : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                        Fee & SubCharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
                       </Text>
                       <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
-                        Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹ </CurrencyText>
+                        Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {parseInt(this.props.item.FareDetails.TotalFare)}
                       </Text>
                     </View>
