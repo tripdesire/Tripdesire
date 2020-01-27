@@ -535,7 +535,9 @@ class FlightsInfoOneway extends React.PureComponent {
                   <Text
                     style={{
                       transform: [{ rotate: "270deg" }],
-                      marginVertical: 20
+                      marginVertical: 20,
+                      marginStart: 10,
+                      fontWeight: "600"
                     }}>
                     {title}
                   </Text>
