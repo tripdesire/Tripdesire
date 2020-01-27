@@ -1226,7 +1226,8 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Base Fare</Text>
                   <Text style={{ marginEnd: 10 }}>
-                  <CurrencyText>₹ </CurrencyText>{params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                    <CurrencyText>₹ </CurrencyText>
+                    {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                   </Text>
                 </View>
 
@@ -1238,10 +1239,11 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                     <Text style={{ marginEnd: 10 }}>
-                    <CurrencyText>₹ </CurrencyText>
+                      <CurrencyText>₹ </CurrencyText>
                       {
                         this.state.data.cart_data[0].custum_product_data.flight_book_item
-                          .flight_schagre}
+                          .flight_schagre
+                      }
                     </Text>
                   </View>
                 )}
@@ -1255,7 +1257,7 @@ class CheckOut extends React.PureComponent {
                     }}>
                     <Text style={{ marginStart: 10 }}>Tax</Text>
                     <Text>
-                    <CurrencyText>₹ </CurrencyText>
+                      <CurrencyText>₹ </CurrencyText>
                       {params.departFlight.FareDetails.ChargeableFares.Tax +
                         params.departFlight.FareDetails.ChargeableFares.STax}
                     </Text>
@@ -1280,7 +1282,8 @@ class CheckOut extends React.PureComponent {
                   }}>
                   <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                   <Text style={{ marginStart: 10 }}>
-                  <CurrencyText>₹ </CurrencyText>{params.departFlight.FareDetails.TotalFare}
+                    <CurrencyText>₹ </CurrencyText>
+                    {params.departFlight.FareDetails.TotalFare}
                   </Text>
                 </View>
 
@@ -1338,7 +1341,8 @@ class CheckOut extends React.PureComponent {
                     Total Payable
                   </Text>
                   <Text style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
-                  <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹ </CurrencyText>{this.state.data.total_price}
+                    <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹ </CurrencyText>
+                    {this.state.data.total_price}
                   </Text>
                 </View>
               </View>
