@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, SafeAreaView, Image, Dimensions } from "react-native";
 import { Text, Button, Icon } from "../../components";
 import SwiperFlatList from "react-native-swiper-flatlist";
+import ImageZoom from "react-native-image-pan-zoom";
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,17 +39,25 @@ function ImageFull({ onBackPress, params }) {
                 "https://cdn.grnconnect.com/",
                 "https://images.grnconnect.com/"
               );
+              console.log(str);
               return (
-                <Image
+                <ImageZoom
                   key={item.Imagepath}
-                  style={{
-                    width: width,
-                    resizeMode: "contain"
-                  }}
-                  source={{
-                    uri: item.Imagepath != "" ? str : "https://via.placeholder.com/150"
-                  }}
-                />
+                  cropWidth={Dimensions.get("window").width}
+                  cropHeight={Dimensions.get("window").height}
+                  imageWidth={width}
+                  imageHeight={height}>
+                  <Image
+                    style={{
+                      width,
+                      height,
+                      resizeMode: "contain"
+                    }}
+                    source={{
+                      uri: item.Imagepath != "" ? str : "https://via.placeholder.com/150"
+                    }}
+                  />
+                </ImageZoom>
               );
             })}
           </SwiperFlatList>

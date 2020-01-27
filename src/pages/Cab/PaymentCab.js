@@ -216,7 +216,7 @@ class PaymentCab extends React.PureComponent {
                       //image: "https://i.imgur.com/3g7nmJC.png",
                       currency: "INR",
                       key: "rzp_test_I66kFrN53lhauw",
-                      //  key: "rzp_live_IRhvqgmESx60tW",
+                     //   key: "rzp_live_IRhvqgmESx60tW",
                       amount: parseInt(ord.total) * 100,
                       name: "TripDesire",
                       prefill: {

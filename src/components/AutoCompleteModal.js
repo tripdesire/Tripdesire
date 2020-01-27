@@ -280,12 +280,39 @@ class AutoCompleteModal extends React.PureComponent {
           justifyContent: "center"
         }}
         onPress={this.handleItemChange(item)}>
-        <Text style={{ flex: 1 }}>{text}</Text>
+        <Text
+          style={{
+            flex: 1,
+            fontWeight:
+              this.props.type == "domesticFlight" || this.props.type == "internationalFlight"
+                ? "600"
+                : "400"
+          }}>
+          {text}
+        </Text>
         {!isEmpty(airpotName) && (
           <Text style={{ flex: 1, fontSize: 12, color: "#757575" }}>{airpotName}</Text>
         )}
       </TouchableOpacity>
     );
+  };
+
+  _itemSeparator = () => {
+    switch (this.props.type) {
+      case "domesticFlight":
+      case "internationalFlight":
+        return (
+          <View
+            style={{
+              backgroundColor: "#dedede",
+              height: 0.5,
+              width: "100%"
+            }}
+          />
+        );
+      default:
+        return <View></View>;
+    }
   };
 
   keyExtractor = (item, index) => {
@@ -350,17 +377,9 @@ class AutoCompleteModal extends React.PureComponent {
                     borderWidth: 0
                   }}
                   listContainerStyle={{ borderTopWidth: 1, borderTopColor: "#DDD" }}
-                  renderSeparator={() => (
-                    <View
-                      style={{
-                        borderBottomWidth: 2,
-                        borderColor: "red",
-                        height: 1,
-                        width: "100%",
-                        backgroundColor: "red"
-                      }}
-                    />
-                  )}
+                  flatListProps={{
+                    ItemSeparatorComponent: this._itemSeparator
+                  }}
                   renderItem={this.renderItem}
                   keyExtractor={this.keyExtractor}
                 />

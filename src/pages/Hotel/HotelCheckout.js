@@ -45,10 +45,10 @@ class HotelCheckout extends React.Component {
       data: "",
       loader: false,
       items: [
-        { uri: "https://via.placeholder.com/150" },
-        { uri: "https://via.placeholder.com/150" },
-        { uri: "https://via.placeholder.com/150" },
-        { uri: "https://via.placeholder.com/150" }
+        { uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg" },
+        { uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg" },
+        { uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg" },
+        { uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg" }
       ]
     };
     this.SingleHotelData();
@@ -322,7 +322,7 @@ class HotelCheckout extends React.Component {
                         uri:
                           params.HotelImages[0] && params.HotelImages[0].Imagepath != ""
                             ? str
-                            : "https://via.placeholder.com/150"
+                            : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                       }}
                     />
                   </Button>
@@ -337,7 +337,7 @@ class HotelCheckout extends React.Component {
                         source={{
                           uri: params.HotelImages[1]
                             ? params.HotelImages[1].Imagepath
-                            : "https://via.placeholder.com/150"
+                            : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                         }}
                       />
                     </Button>
@@ -353,7 +353,7 @@ class HotelCheckout extends React.Component {
                           uri:
                             params.HotelImages[2] != null
                               ? params.HotelImages[2].Imagepath
-                              : "https://via.placeholder.com/150"
+                              : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                         }}
                       />
                     </Button>
@@ -371,7 +371,7 @@ class HotelCheckout extends React.Component {
                           uri:
                             params.HotelImages[3] != null
                               ? params.HotelImages[3].Imagepath
-                              : "https://via.placeholder.com/150"
+                              : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                         }}
                       />
                       <Text
@@ -429,7 +429,11 @@ class HotelCheckout extends React.Component {
                             height: 80,
                             borderRadius: 5
                           }}
-                          source={{ uri: str || "https://via.placeholder.com/150" }}
+                          source={{
+                            uri:
+                              str ||
+                              "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
+                          }}
                         />
 
                         <View

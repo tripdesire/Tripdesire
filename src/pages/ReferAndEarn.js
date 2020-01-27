@@ -1,5 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, Image, Platform } from "react-native";
+import { View, SafeAreaView, Image, Platform, Clipboard } from "react-native";
 import { Text, Button, Icon, ActivityIndicator } from "../components";
 import { domainApi, etravosApi } from "../service";
 import { connect } from "react-redux";
@@ -17,6 +17,7 @@ class ReferAndEarn extends React.PureComponent {
   }
 
   share = () => {
+    Clipboard.setString("Copy Code");
     let options = {
       url:
         Platform.OS == "ios"
@@ -41,12 +42,8 @@ class ReferAndEarn extends React.PureComponent {
       .get("/refer", { user_id: user.id })
       .then(({ data }) => {
         console.log(data);
-        data.html_msg =
-          "Invite your friends on TripDesire and get <HTML " +
-          data.amount_referrer +
-          " as wallet credit. Your friend will get " +
-          data.amount_earner +
-          " as wallet credit";
+        data.html_msg = "Share The App, Get Rs. " + data.amount_referrer;
+        data.earn_msg = "Earn " + data.amount_earner + " When Friends Join With";
         this.setState({ loader: false, data: data });
         this.setStaet({ loader: true });
         domainApi.get("/wallet", { uid: user.id }).then(({ data }) => {
@@ -100,46 +97,56 @@ class ReferAndEarn extends React.PureComponent {
               </View>
             </View>
             <View style={{ marginHorizontal: 16, marginTop: 24 }}>
-              <Text style={{ fontWeight: "500", fontSize: 22, lineHeight: 24 }}>
-                Refer A Friend And
-              </Text>
-              <Text style={{ fontWeight: "500", fontSize: 22, lineHeight: 22 }}>earn money</Text>
               <View
                 style={{
                   padding: 16,
                   borderRadius: 8,
                   backgroundColor: "#ffffff",
                   alignSelf: "center",
-                  marginBottom: 20,
-                  marginTop: 40,
-                  elevation: 2,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4
+                  marginVertical: 20
                 }}>
                 <Image
                   resizeMode="contain"
-                  style={{ width: 90, height: 90 }}
+                  style={{ width: 160, height: 160 }}
                   source={require("../assets/imgs/IconReferAndEarn.png")}
                 />
               </View>
-              <View style={{ alignItems: "center", marginTop: 20 }}>
-                <HTML baseFontStyle={{ color: "#5D646A" }} html={data.html_msg} />
-                <Text style={{ marginTop: 20, color: "#5D646A" }}>
-                  Referral valid upto {data.refer_earn_uses} users
-                </Text>
-
-                {/* <Text style={{ color: "#5D646A" }}>{data.html_msg}</Text> */}
-                {/* <Text style={{ color: "#5D646A" }}>both you and your friends earn money.</Text> */}
+              {/* <Text
+                style={{ fontWeight: "500", fontSize: 22, lineHeight: 24, alignSelf: "center" }}>
+                {data.html_msg}
+              </Text> */}
+              <View style={{ alignItems: "center" }}>
+                <HTML
+                  baseFontStyle={{
+                    fontWeight: "600",
+                    fontSize: 18,
+                    lineHeight: 24
+                  }}
+                  html={data.html_msg ? data.html_msg : <p></p>}
+                />
+                <View style={{ marginTop: 20, alignItems: "center" }}>
+                  <HTML
+                    baseFontStyle={{
+                      fontSize: 12,
+                      lineHeight: 18
+                    }}
+                    html={data.earn_msg ? data.earn_msg : <p></p>}
+                  />
+                  <Text style={{ fontSize: 12, lineHeight: 14 }}>Your Invite Link</Text>
+                  <Text style={{ marginTop: 20, fontSize: 12 }}>
+                    Valid For {data.refer_earn_uses} Contacts
+                  </Text>
+                </View>
               </View>
+
               <View style={{ alignItems: "center", marginTop: 10 }}>
-                <Text style={{ color: "#5D646A" }}>Your Referral Code</Text>
                 <View style={{ alignItems: "center" }}>
                   <Text
                     style={{
-                      borderStyle: "dashed",
+                      borderStyle: "dotted",
                       borderWidth: 1,
+                      borderRadius: 5,
+                      color: "#5D646A",
                       borderColor: "#5D646A",
                       marginTop: 40,
                       paddingHorizontal: 36,
@@ -154,7 +161,7 @@ class ReferAndEarn extends React.PureComponent {
               <Button
                 style={{
                   backgroundColor: "#F68E1D",
-                  marginHorizontal: 90,
+                  marginHorizontal: 80,
                   marginTop: 50,
                   height: 36,
                   flexDirection: "row",
@@ -163,7 +170,7 @@ class ReferAndEarn extends React.PureComponent {
                   borderRadius: 20
                 }}
                 onPress={this.share}>
-                <Text style={{ color: "#fff" }}>Refer Friends</Text>
+                <Text style={{ color: "#fff" }}>Share with friends</Text>
                 <Image source={require("../assets/imgs/ArrowReferAndEarn.png")} />
               </Button>
             </View>
