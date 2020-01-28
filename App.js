@@ -248,14 +248,14 @@ const TabNavigator = createBottomTabNavigator(
     tabBarOptions: {
       //activeBackgroundColor: "#1E2A48",
       //inactiveBackgroundColor: "#1E2A48",
-      activeTintColor: "#FFFFFF",
+      activeTintColor: "#5789FF",
       inactiveTintColor: "#828E99",
       labelStyle: {
         fontSize: 8
       },
       // tabBarComponent: TabBarComponent
       style: {
-        backgroundColor: "#1E2A48",
+        backgroundColor: "#ffffff",
         //paddingVertical: 12,
         height: 60,
         paddingVertical: 10

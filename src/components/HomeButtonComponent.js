@@ -14,11 +14,11 @@ function HomeButtonComponent({ tintColor, onPress, img_name, name }) {
 const styles = StyleSheet.create({
   container: {
     elevation: 2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: "rgba(0,0,0,0.1)",
-    shadowOpacity: 1,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: "#d8eaff",
+    shadowOpacity: 4,
     shadowRadius: 4,
-    backgroundColor: "#F2F2F2",
+    backgroundColor: "#FFFFFF",
     borderRadius: 15,
     padding: 16,
     justifyContent: "center",
