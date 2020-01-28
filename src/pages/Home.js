@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Image, SafeAreaView } from "react-native";
+import { View, Image, SafeAreaView, ImageBackground, Dimensions } from "react-native";
 import { Button, HomeButtonComponent, Text } from "../../src/components";
 
+const { width, height } = Dimensions.get("window");
 class Home extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -22,37 +23,61 @@ class Home extends React.PureComponent {
         <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <Text
-              style={{
-                fontSize: 28,
-                color: "#1B294C",
-                fontWeight: "600",
-                marginHorizontal: 20,
-                marginTop: 50,
-                lineHeight: 34
-              }}>
-              WHERE WOULD
-            </Text>
-            <Text
-              style={{
-                color: "#5789FF",
-                fontSize: 36,
-                lineHeight: 40,
-                fontWeight: "700",
-                marginHorizontal: 20
-              }}>
-              YOU WANT TO GO?
-            </Text>
-            <Text style={{ marginHorizontal: 20, color: "#616A71" }}>
-              Search Amazing Flights, Hotels, Bus & Cabs
-            </Text>
-            <Text style={{ marginHorizontal: 20, color: "#616A71" }}>at a good Price.</Text>
             <View
               style={{
+                backgroundColor: "#ffffff",
+                color: "#fff",
+                borderRadius: 20
+              }}>
+              <ImageBackground
+                resizeMode="cover"
+                style={{
+                  width,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: height / 2.5,
+                  width: width + 40,
+                  alignSelf: "center",
+                  borderBottomLeftRadius: 220,
+                  borderBottomRightRadius: 220,
+                  overflow: "hidden"
+                  //   transform: [{ translateX: 100, translateY: 100 }]
+                }}
+                source={require("../assets/imgs/Banner.jpg")}>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    color: "#081057",
+                    fontWeight: "700",
+                    marginHorizontal: 20,
+                    lineHeight: 32
+                  }}>
+                  WHERE WOULD
+                </Text>
+                <Text
+                  style={{
+                    color: "#081057",
+                    fontSize: 30,
+                    lineHeight: 34,
+                    fontWeight: "700",
+                    marginHorizontal: 20
+                  }}>
+                  YOU WANT TO GO??
+                </Text>
+                <Text style={{ marginHorizontal: 20, color: "#ffffff", fontWeight: "700" }}>
+                  Search Amazing Flights, Hotels, Bus & Cabs
+                </Text>
+                <Text style={{ marginHorizontal: 20, color: "#ffffff", fontWeight: "700" }}>
+                  at a good Price.
+                </Text>
+              </ImageBackground>
+            </View>
+            <View
+              style={{
+                marginTop: 30,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginHorizontal: 16,
-                marginTop: 40
+                marginHorizontal: 16
               }}>
               <HomeButtonComponent
                 tintColor={"#5789FF"}
