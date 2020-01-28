@@ -52,7 +52,7 @@ class Home extends React.PureComponent {
                     marginHorizontal: 20,
                     lineHeight: 32
                   }}>
-                  WHERE WOULD
+                  WHERE WOULD YOU
                 </Text>
                 <Text
                   style={{
@@ -62,7 +62,7 @@ class Home extends React.PureComponent {
                     fontWeight: "700",
                     marginHorizontal: 20
                   }}>
-                  YOU WANT TO GO??
+                  WANT TO GO??
                 </Text>
                 <Text style={{ marginHorizontal: 20, color: "#ffffff", fontWeight: "700" }}>
                   Search Amazing Flights, Hotels, Bus & Cabs
