@@ -44,7 +44,7 @@ class Home extends React.PureComponent {
                   //   transform: [{ translateX: 100, translateY: 100 }]
                 }}
                 source={require("../assets/imgs/Banner.jpg")}>
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 30,
                     color: "#081057",
@@ -69,7 +69,7 @@ class Home extends React.PureComponent {
                 </Text>
                 <Text style={{ marginHorizontal: 20, color: "#ffffff", fontWeight: "700" }}>
                   at a good Price.
-                </Text>
+                </Text> */}
               </ImageBackground>
             </View>
             <View

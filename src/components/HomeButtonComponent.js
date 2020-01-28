@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0,0,0,0.1)",
     shadowOpacity: 1,
     shadowRadius: 4,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F2F2F2",
     borderRadius: 15,
     padding: 16,
     justifyContent: "center",
