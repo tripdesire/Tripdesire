@@ -677,14 +677,19 @@ class CheckOut1 extends React.PureComponent {
             description: "Credits towards consultation",
             // image: "https://i.imgur.com/3g7nmJC.png",
             currency: "INR",
-            key: "rzp_test_I66kFrN53lhauw",
-             //key: "rzp_live_IRhvqgmESx60tW",
+            //key: "rzp_test_I66kFrN53lhauw",
+            key: "rzp_live_IRhvqgmESx60tW",
             amount: parseInt(ord.total) * 100,
             name: "TripDesire",
             prefill: {
               email: user.billing.email,
               contact: user.billing.phone,
-              name: "Razorpay Software"
+              name:
+                user.first_name && user.last_name
+                  ? user.first_name + " " + user.last_name
+                  : user.first_name
+                  ? user.first_name
+                  : user.username
             },
             theme: { color: "#E5EBF7" }
           };
