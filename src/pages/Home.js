@@ -36,10 +36,10 @@ class Home extends React.PureComponent {
                 justifyContent: "center",
                 alignItems: "center",
                 height: height / 2.8,
-                width: width + 300,
+                width: width + 220,
                 alignSelf: "center",
-                borderBottomLeftRadius: 345,
-                borderBottomRightRadius: 345,
+                borderBottomLeftRadius: 650,
+                borderBottomRightRadius: 650,
                 overflow: "hidden"
                 //   transform: [{ translateX: 100, translateY: 100 }]
               }}
