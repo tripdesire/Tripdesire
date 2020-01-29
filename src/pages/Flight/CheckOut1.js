@@ -1380,7 +1380,7 @@ class CheckOut1 extends React.PureComponent {
                                       ? moment(this.state.childs[index].passportIssueDate).format(
                                           "DD-MMM-YYYY"
                                         )
-                                      : "-- Issue Date --"}
+                                      : "Issue Date"}
                                   </Text>
                                 </Button>
                                 <DateTimePicker
@@ -1408,7 +1408,7 @@ class CheckOut1 extends React.PureComponent {
                                       ? moment(this.state.childs[index].passportExpiryDate).format(
                                           "DD-MMM-YYYY"
                                         )
-                                      : "-- Expiry Date --"}
+                                      : "Expiry Date"}
                                   </Text>
                                 </Button>
                                 <DateTimePicker

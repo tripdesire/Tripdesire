@@ -75,7 +75,7 @@ class Boarding extends React.PureComponent {
             </View>
             <View style={{ marginTop: 40 }}>
               <View style={{ marginHorizontal: 16 }}>
-                <Text style={{ color: "#5D666D" }}>--Boarding Points--</Text>
+                <Text style={{ color: "#5D666D", marginStart: 10 }}>Boarding Points</Text>
                 <RNPicker
                   value={bp}
                   items={boardingpoints}
@@ -85,7 +85,7 @@ class Boarding extends React.PureComponent {
                 />
               </View>
               <View style={{ marginHorizontal: 16 }}>
-                <Text style={{ color: "#5D666D" }}>--Dropping Points--</Text>
+                <Text style={{ color: "#5D666D", marginStart: 10 }}>Dropping Points</Text>
                 <RNPicker
                   value={dp}
                   items={droppingpoints}

@@ -25,11 +25,14 @@ class ReferAndEarn extends React.PureComponent {
           : "https://play.google.com/store/apps/details?id=com.tripdesire",
       message: this.state.data.message
     };
+    this.setState({ loader: true });
     Share.open(options)
       .then(res => {
+        this.setState({ loader: false });
         console.log(res);
       })
       .catch(err => {
+        this.setState({ loader: false });
         err && console.log(err);
       });
   };

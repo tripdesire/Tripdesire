@@ -251,7 +251,8 @@ const TabNavigator = createBottomTabNavigator(
       activeTintColor: "#5789FF",
       inactiveTintColor: "#828E99",
       labelStyle: {
-        fontSize: 8
+        fontSize: 10,
+        fontWeight: "700"
       },
       // tabBarComponent: TabBarComponent
       style: {
