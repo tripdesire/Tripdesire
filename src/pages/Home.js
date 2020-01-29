@@ -3,6 +3,9 @@ import { View, Image, SafeAreaView, ImageBackground, Dimensions, ScrollView } fr
 import { Button, HomeButtonComponent, Text } from "../../src/components";
 
 const { width, height } = Dimensions.get("window");
+
+const aspectHeight = (width, height, newWidth) => (height / width) * newWidth;
+
 class Home extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -113,11 +116,11 @@ class Home extends React.PureComponent {
           </View>
           <Image
             style={{
-              marginTop: 20,
-              resizeMode: "cover",
+              marginVertical: 20,
+              resizeMode: "contain",
               marginHorizontal: 32,
               width: width - 64,
-              height: height / 3
+              height: aspectHeight(1134, 1134, width - 64)
             }}
             source={require("../assets/imgs/offer.png")}
           />
