@@ -242,11 +242,15 @@ class RenderInternationRound extends React.PureComponent {
           </View>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Text style={{ fontSize: 16, lineHeight: 18 }}>
-              {
-                this.props.item.IntOnward.FlightSegments[
-                  this.props.item.IntOnward.FlightSegments.length - 1
-                ].AccumulatedDuration
-              }
+              {moment
+                .duration(
+                  moment(
+                    this.props.item.IntOnward.FlightSegments[
+                      this.props.item.IntOnward.FlightSegments.length - 1
+                    ].ArrivalDateTime
+                  ).diff(moment(this.props.item.IntOnward.FlightSegments[0].DepartureDateTime))
+                )
+                .format("h:mm [hrs]")}
             </Text>
             {/* <View
               style={{
@@ -563,11 +567,15 @@ class RenderInternationRound extends React.PureComponent {
             </View>
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Text style={{ fontSize: 16, lineHeight: 18 }}>
-                {
-                  this.props.item.IntReturn.FlightSegments[
-                    this.props.item.IntReturn.FlightSegments.length - 1
-                  ].AccumulatedDuration
-                }
+                {moment
+                  .duration(
+                    moment(
+                      this.props.item.IntReturn.FlightSegments[
+                        this.props.item.IntReturn.FlightSegments.length - 1
+                      ].ArrivalDateTime
+                    ).diff(moment(this.props.item.IntReturn.FlightSegments[0].DepartureDateTime))
+                  )
+                  .format("h:mm [hrs]")}
               </Text>
               {/* <View
                 style={{

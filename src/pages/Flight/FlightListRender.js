@@ -9,6 +9,9 @@ import Foundation from "react-native-vector-icons/Foundation";
 import { etravosApi } from "../../service";
 import NumberFormat from "react-number-format";
 import moment from "moment";
+import momentDurationFormatSetup from "moment-duration-format";
+momentDurationFormatSetup(moment);
+
 var newData = [];
 class FlightListRender extends React.PureComponent {
   constructor(props) {
@@ -107,6 +110,14 @@ class FlightListRender extends React.PureComponent {
     this.props.navigation.navigate("CheckOut", param);
   };
 
+  getTimeString(duration) {
+    const time = moment()
+      .hours(duration.hours())
+      .minutes(duration.minutes());
+
+    return time.format("HH:mm") + " hrs";
+  }
+
   render() {
     const { item, index, from, to, className } = this.props;
     let dd = moment(item.FlightSegments[0].DepartureDateTime).format("HH:mm");
@@ -190,7 +201,13 @@ class FlightListRender extends React.PureComponent {
             <Text style={{ fontSize: 16, lineHeight: 20 }}>
               {item.FlightSegments.length == 1
                 ? item.FlightSegments[0].Duration
-                : item.FlightSegments[item.FlightSegments.length - 1].AccumulatedDuration}
+                : moment
+                    .duration(
+                      moment(
+                        item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime
+                      ).diff(moment(item.FlightSegments[0].DepartureDateTime))
+                    )
+                    .format("h:mm [hrs]")}
             </Text>
             <Text style={{ fontSize: 12, color: "#5D666D", lineHeight: 14 }}>
               {item.FlightSegments.length - 1 == 0
@@ -245,7 +262,7 @@ class FlightListRender extends React.PureComponent {
                   color: "green",
                   fontSize: 12
                 }}>
-                {item.FlightSegments[0].BookingClassFare.Rule}
+                {item.FlightSegments[0].BookingClassFare.Rule.trim()}
               </Text>
             </Button>
             <Button onPress={this.fareRules}>

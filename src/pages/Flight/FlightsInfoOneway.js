@@ -74,7 +74,7 @@ class FlightsInfoOneway extends React.PureComponent {
       .then(({ data }) => {
         this.setState({ loader: false });
         if (this.state.flight_type == 1) {
-          console.log(JSON.stringify(data.DomesticOnwardFlights));
+          console.log(data.DomesticOnwardFlights);
           if (data.DomesticOnwardFlights.length != 0) {
             this.setState({
               flights: data.DomesticOnwardFlights,

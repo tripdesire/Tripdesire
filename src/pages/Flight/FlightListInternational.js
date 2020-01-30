@@ -201,13 +201,17 @@ class FlightListInternational extends React.PureComponent {
               </Text>
             </View>
           </View>
-          <View>
+          <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 16, lineHeight: 20 }}>
-              {
-                this.props.item.IntOnward.FlightSegments[
-                  this.props.item.IntOnward.FlightSegments.length - 1
-                ].AccumulatedDuration
-              }
+              {moment
+                .duration(
+                  moment(
+                    this.props.item.IntOnward.FlightSegments[
+                      this.props.item.IntOnward.FlightSegments.length - 1
+                    ].ArrivalDateTime
+                  ).diff(moment(this.props.item.IntOnward.FlightSegments[0].DepartureDateTime))
+                )
+                .format("h:mm [hrs]")}
             </Text>
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
               {this.props.item.IntOnward.FlightSegments.length - 1 == 0
