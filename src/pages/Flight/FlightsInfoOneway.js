@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Image, FlatList, Modal, SafeAreaView, SectionList } from "react-native";
+StatusBar;
+import { View, Image, FlatList, Modal, SafeAreaView, SectionList, StatusBar } from "react-native";
 import {
   Button,
   Text,
@@ -73,7 +74,7 @@ class FlightsInfoOneway extends React.PureComponent {
       .then(({ data }) => {
         this.setState({ loader: false });
         if (this.state.flight_type == 1) {
-          console.log(data.DomesticOnwardFlights);
+          console.log(JSON.stringify(data.DomesticOnwardFlights));
           if (data.DomesticOnwardFlights.length != 0) {
             this.setState({
               flights: data.DomesticOnwardFlights,
@@ -86,6 +87,7 @@ class FlightsInfoOneway extends React.PureComponent {
           }
         }
         if (this.state.flight_type == 2) {
+          //  console.log(data.InternationalFlights);
           if (data.InternationalFlights.length != 0) {
             this.setState({
               flights: data.InternationalFlights,
@@ -478,6 +480,7 @@ class FlightsInfoOneway extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flex: 1, backgroundColor: "white" }}>
             <View style={{ paddingBottom: 40, backgroundColor: "#E5EBF7" }}>
               <HeaderFlights
