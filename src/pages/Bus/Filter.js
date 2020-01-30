@@ -1,5 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { View, SafeAreaView, ScrollView, StyleSheet, StatusBar } from "react-native";
 import { Button, Text, CheckBox, RadioButton, Header, Icon } from "../../components";
 import { uniq } from "lodash";
 
@@ -96,6 +96,7 @@ class Filter extends React.Component {
 
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={styles.headerContainer}>

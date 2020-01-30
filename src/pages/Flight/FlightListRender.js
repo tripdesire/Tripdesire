@@ -1,24 +1,13 @@
-import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  Modal,
-  Linking,
-  Alert,
-  TouchableOpacity
-} from "react-native";
+import React from "react";
+import { View, Image, Modal, Linking, Alert, TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
-import { Button, Text, ActivityIndicator, DomesticFlights, CurrencyText } from "../../components";
+import { Button, Text, CurrencyText } from "../../components";
 import FareDetails from "./FareRules";
 import Icon from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-simple-toast";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
 import { etravosApi } from "../../service";
+import NumberFormat from "react-number-format";
 import moment from "moment";
 var newData = [];
 class FlightListRender extends React.PureComponent {
@@ -161,7 +150,13 @@ class FlightListRender extends React.PureComponent {
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            {parseInt(item.FareDetails.TotalFare)}
+            <NumberFormat
+              value={parseInt(item.FareDetails.TotalFare)}
+              displayType={"text"}
+              thousandSeparator={true}
+              thousandsGroupStyle="lakh"
+              renderText={value => <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>}
+            />
           </Text>
         </View>
         <View

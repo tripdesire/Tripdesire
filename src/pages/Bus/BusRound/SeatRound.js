@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
+import { StyleSheet, View, ScrollView, SafeAreaView, StatusBar } from "react-native";
 import { Button, Text, Header, ActivityIndicator, Icon, LinearGradient } from "../../../components";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
@@ -308,6 +308,7 @@ class SeatRound extends React.PureComponent {
 
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
           <View style={{ backgroundColor: "#E5EBF7" }}>

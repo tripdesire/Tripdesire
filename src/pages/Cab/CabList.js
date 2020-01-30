@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, FlatList, Modal, SafeAreaView } from "react-native";
+import { View, FlatList, Modal, SafeAreaView, StatusBar } from "react-native";
 import { Button, Text, ActivityIndicator, Icon, DataNotFound } from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
@@ -113,6 +113,7 @@ class CabList extends React.PureComponent {
     let returnDate = moment(params.returnDate, "DD-MM-YYYY").format("DD MMM");
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ backgroundColor: "#E5EBF7", flexDirection: "row", width: "100%" }}>

@@ -38,26 +38,6 @@ class Splash extends React.PureComponent {
           source={require("../assets/gifs/splashLogo.gif")}
         />
       </View>
-      /* <ImageBackground
-        style={{
-          height: height,
-          width: width,
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-        source={require("../assets/imgs/Bg.jpg")}>
-        <Image
-          resizeMode="contain"
-          style={{
-            width: width - 100,
-            height: height / 5,
-            alignItems: "center",
-            marginTop: -50,
-            justifyContent: "center"
-          }}
-          source={require("../assets/imgs/td-logo.png")}
-        />
-      </ImageBackground> */
     );
   }
 }

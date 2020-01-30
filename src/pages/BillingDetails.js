@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import { View, StatusBar, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../service";
 import moment from "moment";
@@ -129,6 +129,7 @@ class BillingDetails extends React.PureComponent {
     } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>

@@ -12,11 +12,11 @@ import {
 } from "react-native";
 import { Button, Text, CurrencyText } from "../../components";
 import Icon from "react-native-vector-icons/AntDesign";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Foundation from "react-native-vector-icons/Foundation";
 import { withNavigation } from "react-navigation";
 import FareDetails from "./FareRules";
 import { etravosApi } from "../../service";
+import NumberFormat from "react-number-format";
 import moment from "moment";
 var newData = [];
 class FlightListInternational extends React.PureComponent {
@@ -167,7 +167,13 @@ class FlightListInternational extends React.PureComponent {
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            {parseInt(this.props.item.FareDetails.TotalFare)}
+            <NumberFormat
+              value={parseInt(this.props.item.FareDetails.TotalFare)}
+              displayType={"text"}
+              thousandSeparator={true}
+              thousandsGroupStyle="lakh"
+              renderText={value => <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>}
+            />
           </Text>
         </View>
         <View

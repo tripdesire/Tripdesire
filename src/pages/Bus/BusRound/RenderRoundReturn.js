@@ -1,7 +1,8 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Modal, SafeAreaView, Image } from "react-native";
-import { Button, Text, Icon,CurrencyText } from "../../../components";
+import { Button, Text, Icon, CurrencyText } from "../../../components";
 import { withNavigation } from "react-navigation";
+import NumberFormat from "react-number-format";
 class RenderRoundReturn extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -28,6 +29,7 @@ class RenderRoundReturn extends React.PureComponent {
 
   render() {
     const { item, index } = this.props;
+    const rupee = item.Fares.split("/", 1);
     return (
       <TouchableOpacity
         style={{
@@ -43,25 +45,6 @@ class RenderRoundReturn extends React.PureComponent {
           backgroundColor: "#FFFFFF"
         }}
         onPress={this._SelectedSeat(item, index)}>
-        {/* <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginHorizontal: 16
-          }}>
-          <Text style={{ flex: 1, fontWeight: "700" }}>{item.BusType}</Text>
-          {/* <Button
-            style={{
-              backgroundColor: "#5191FB",
-              borderRadius: 20,
-              paddingHorizontal: 10,
-              paddingVertical: 5
-            }}
-            onPress={this._SelectedSeat(item)}>
-            <Text style={{ color: "#fff", fontWeight: "600" }}>Select Seats</Text>
-          </Button> 
-        </View> */}
         <View
           style={{
             flexDirection: "row",
@@ -113,7 +96,14 @@ class RenderRoundReturn extends React.PureComponent {
             </Text>
           </Button>
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
-          <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹</CurrencyText>{item.Fares.split("/", 1)}
+            <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹</CurrencyText>
+            <NumberFormat
+              value={parseInt(rupee[0])}
+              displayType={"text"}
+              thousandSeparator={true}
+              thousandsGroupStyle="lakh"
+              renderText={value => <Text style={{ fontSize: 16, fontWeight: "600" }}>{value}</Text>}
+            />
           </Text>
         </View>
         <Modal

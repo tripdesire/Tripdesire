@@ -18,6 +18,7 @@ import { etravosApi } from "../../service";
 import FareDetails from "./FareRules";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
+import NumberFormat from "react-number-format";
 class RenderDomesticRound extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -185,7 +186,13 @@ class RenderDomesticRound extends React.PureComponent {
           </View>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            {parseInt(this.props.item.FareDetails.TotalFare)}
+            <NumberFormat
+              value={parseInt(this.props.item.FareDetails.TotalFare)}
+              displayType={"text"}
+              thousandSeparator={true}
+              thousandsGroupStyle="lakh"
+              renderText={value => <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>}
+            />
           </Text>
         </View>
         <View

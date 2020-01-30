@@ -1,5 +1,13 @@
 import React from "react";
-import { Dimensions, Modal, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
+import {
+  Dimensions,
+  Modal,
+  StyleSheet,
+  View,
+  FlatList,
+  SafeAreaView,
+  StatusBar
+} from "react-native";
 import { Button, Text, ActivityIndicator, Icon, DataNotFound } from "../../../components";
 import { orderBy } from "lodash";
 import { etravosApi } from "../../../service";
@@ -179,6 +187,7 @@ class BusRound extends React.PureComponent {
     } = this.props.navigation.state.params;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>

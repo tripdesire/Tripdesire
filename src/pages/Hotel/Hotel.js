@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
+import { View, Image, StatusBar, Modal, SafeAreaView } from "react-native";
 import { Button, Text, AutoCompleteModal, LinearGradient } from "../../components";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -187,6 +187,7 @@ class Hotel extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flexDirection: "column", height: 80, backgroundColor: "#E5EBF7" }}>
             <Header firstName="Hotels" lastName="Search" onPress={this.goBack} />
           </View>

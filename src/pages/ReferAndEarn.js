@@ -1,5 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, Image, Platform, Clipboard } from "react-native";
+import { View, SafeAreaView, Image, Platform, Clipboard, StatusBar } from "react-native";
 import { Text, Button, Icon, ActivityIndicator } from "../components";
 import { domainApi, etravosApi } from "../service";
 import { connect } from "react-redux";
@@ -67,6 +67,7 @@ class ReferAndEarn extends React.PureComponent {
     const { loader, data, balance } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>

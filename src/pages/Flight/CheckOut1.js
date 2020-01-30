@@ -6,7 +6,8 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
-  Modal
+  Modal,
+  StatusBar
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -17,7 +18,7 @@ import RNPickerSelect from "react-native-picker-select";
 import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
 import { connect } from "react-redux";
-import CountryPicker, { getCallingCode, getAllCountries } from "react-native-country-picker-modal";
+import CountryPicker from "react-native-country-picker-modal";
 import GstDetails from "./GstDetails";
 import HTML from "react-native-render-html";
 
@@ -846,6 +847,7 @@ class CheckOut1 extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flex: 1 }}>
             <View
               style={{

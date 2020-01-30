@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import { View, SafeAreaView, StatusBar } from "react-native";
 import { Button, Text, Header, RNPicker, Icon } from "../../components";
 import moment from "moment";
 
@@ -47,6 +47,7 @@ class Boarding extends React.PureComponent {
     const { boardingpoints, droppingpoints, bp, dp } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>

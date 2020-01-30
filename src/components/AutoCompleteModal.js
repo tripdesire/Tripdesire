@@ -1,5 +1,12 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  StatusBar
+} from "react-native";
 import Button from "./Button";
 import Text from "./TextComponent";
 import ActivityIndicator from "./ActivityIndicator";
@@ -336,6 +343,7 @@ class AutoCompleteModal extends React.PureComponent {
   render() {
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={{ flex: 1, backgroundColor: "white" }}>

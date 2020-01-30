@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Modal, StyleSheet, SafeAreaView } from "react-native";
+import { View, Image, Modal, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { Button, Text, AutoCompleteModal, LinearGradient } from "../../components";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -145,6 +145,7 @@ class Bus extends React.PureComponent {
     };
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>

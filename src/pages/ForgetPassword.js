@@ -1,15 +1,9 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, SafeAreaView } from "react-native";
+import { View, StatusBar, StyleSheet, SafeAreaView } from "react-native";
 import Toast from "react-native-simple-toast";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
-import Stars from "react-native-stars";
 import { etravosApi, domainApi } from "../service";
-import moment from "moment";
 import { Icon } from "../components";
 import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
-import { connect } from "react-redux";
-import { Signup, Signin } from "../store/action";
-import axios from "axios";
 
 class ForgetPassword extends React.PureComponent {
   constructor(props) {
@@ -52,6 +46,7 @@ class ForgetPassword extends React.PureComponent {
     const { loader } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View

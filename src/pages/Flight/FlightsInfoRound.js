@@ -1,5 +1,13 @@
 import React, { PureComponent } from "react";
-import { Dimensions, Image, StyleSheet, View, FlatList, Modal, SafeAreaView } from "react-native";
+import {
+  Dimensions,
+  StatusBar,
+  StyleSheet,
+  View,
+  FlatList,
+  Modal,
+  SafeAreaView
+} from "react-native";
 import {
   Button,
   Text,
@@ -7,7 +15,8 @@ import {
   HeaderFlights,
   Icon,
   DataNotFound,
-  LinearGradient
+  LinearGradient,
+  CurrencyText
 } from "../../components";
 import Toast from "react-native-simple-toast";
 import { orderBy } from "lodash";
@@ -17,6 +26,7 @@ import { etravosApi } from "../../service";
 import moment from "moment";
 import RenderDomesticRound from "./RenderDomesticRound";
 import Filter from "./Filter";
+import NumberFormat from "react-number-format";
 
 const { width, height } = Dimensions.get("window");
 
@@ -432,6 +442,7 @@ class FlightsInfoRound extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <HeaderFlights
               from={from}
@@ -469,19 +480,46 @@ class FlightsInfoRound extends React.PureComponent {
                   <View>
                     <Text style={{ color: "#5F6D78" }}>Departure</Text>
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                    <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>{onwardFare}
+                      <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
+                      <NumberFormat
+                        value={onwardFare}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        thousandsGroupStyle="lakh"
+                        renderText={value => (
+                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>
+                        )}
+                      />
                     </Text>
                   </View>
                   <View>
                     <Text style={{ color: "#5F6D78" }}>Return</Text>
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                    <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>{returnFare}
+                      <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
+                      <NumberFormat
+                        value={returnFare}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        thousandsGroupStyle="lakh"
+                        renderText={value => (
+                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>
+                        )}
+                      />
                     </Text>
                   </View>
                   <View>
                     <Text style={{ color: "#5F6D78" }}>Total</Text>
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                    <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>{onwardFare + returnFare}
+                      <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
+                      <NumberFormat
+                        value={onwardFare + returnFare}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        thousandsGroupStyle="lakh"
+                        renderText={value => (
+                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>
+                        )}
+                      />
                     </Text>
                   </View>
                   <Button

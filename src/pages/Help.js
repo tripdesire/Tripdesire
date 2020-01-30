@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { View, StyleSheet, SafeAreaView, Image, Linking, Alert, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Linking,
+  Alert,
+  Platform,
+  StatusBar
+} from "react-native";
 import { Text, Button } from "../components";
 
 function Help(props) {
@@ -50,6 +59,7 @@ function Help(props) {
 
   return (
     <>
+      <StatusBar backgroundColor="black" barStyle="light-content" />
       <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
         <View style={styles.header}>

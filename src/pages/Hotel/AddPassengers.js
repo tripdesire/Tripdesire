@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, Modal, SafeAreaView } from "react-native";
+import { View, StatusBar, Modal, SafeAreaView } from "react-native";
 import { Button, Text } from "../../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import RNPickerSelect from "react-native-picker-select";
@@ -83,6 +83,7 @@ class AddPassengers extends React.PureComponent {
     return (
       <Modal animationType="slide" transparent={false} visible={this.props.visible}>
         <>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
             <View>

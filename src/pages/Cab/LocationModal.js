@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, TouchableOpacity, SafeAreaView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar
+} from "react-native";
 import { Button, Text, ActivityIndicator, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 import { etravosApi } from "../../service";
@@ -103,6 +110,7 @@ class SuggLoc extends React.PureComponent {
   render() {
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>

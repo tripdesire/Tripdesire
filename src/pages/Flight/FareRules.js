@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Image, StyleSheet, FlatList, ScrollView, Modal, SafeAreaView } from "react-native";
+import { View, StatusBar, ScrollView, SafeAreaView } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Text, Button, ActivityIndicator } from "../../components";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -15,20 +15,13 @@ class FareDetails extends React.PureComponent {
     };
   }
 
-  // componentDidMount() {
-  //   if (this.props.data == {}) {
-  //     this.setState({ loader: true });
-  //   } else {
-  //     this.setState({ loader: false });
-  //   }
-  // }
-
   render() {
     const { loader } = this.state;
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View>
             <View
               style={{

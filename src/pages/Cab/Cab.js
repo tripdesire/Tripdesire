@@ -1,5 +1,14 @@
 import React from "react";
-import { View, Image, Modal, StyleSheet, SafeAreaView, Platform, ScrollView } from "react-native";
+import {
+  View,
+  Image,
+  Modal,
+  StyleSheet,
+  SafeAreaView,
+  Platform,
+  ScrollView,
+  StatusBar
+} from "react-native";
 import { Button, Text, AutoCompleteModal, Icon, LinearGradient } from "../../components";
 import Toast from "react-native-simple-toast";
 import Animated, { Easing } from "react-native-reanimated";
@@ -279,6 +288,7 @@ class Cab extends React.PureComponent {
 
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", backgroundColor: "#E4EAF6", height: 80 }}>

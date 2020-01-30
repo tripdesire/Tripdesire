@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TextInput, SafeAreaView, Platform } from "react-native";
+import { View, StyleSheet, TextInput, SafeAreaView, Platform, StatusBar } from "react-native";
 import CountryPicker, { getCallingCode, getAllCountries } from "react-native-country-picker-modal";
 import { domainApi } from "../service";
 import Toast from "react-native-simple-toast";
@@ -74,6 +74,7 @@ class OTPScreen extends React.Component {
   render() {
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <Button

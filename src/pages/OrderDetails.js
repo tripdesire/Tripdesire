@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { Text, Button, Icon } from "../components";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 class OrderDetails extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -16,6 +16,7 @@ class OrderDetails extends React.PureComponent {
 
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>

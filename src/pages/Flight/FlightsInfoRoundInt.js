@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, View, FlatList, SafeAreaView, Modal } from "react-native";
+import { StatusBar, View, FlatList, SafeAreaView, Modal } from "react-native";
 import { orderBy } from "lodash";
 import {
   Button,
@@ -13,7 +13,6 @@ import RenderInternationRound from "./RenderInternationRound";
 import Filter from "./Filter";
 import { etravosApi } from "../../service";
 import moment from "moment";
-import Toast from "react-native-simple-toast";
 
 class FlightsInfoRoundInt extends React.PureComponent {
   constructor(props) {
@@ -288,6 +287,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flex: 1 }}>
             <View style={{ backgroundColor: "#E5EBF7" }}>
               <HeaderFlights

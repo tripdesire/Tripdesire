@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, Button ,CurrencyText} from "../components";
-import { SafeAreaView, ActivityIndicator, RefreshControl } from "react-native";
+import { Text, Button, CurrencyText } from "../components";
+import { SafeAreaView, ActivityIndicator, StatusBar } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import Toast from "react-native-simple-toast";
 import { isEmpty, isArray } from "lodash";
@@ -103,6 +103,7 @@ class Order extends React.PureComponent {
 
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
           <View style={styles.header}>
@@ -258,7 +259,10 @@ function OrderItems({ item, onPress }) {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={[styles.Heading, { lineHeight: 20 }]}>Total : </Text>
-          <Text style={{ lineHeight: 20 }}><CurrencyText>₹</CurrencyText>{item.total}</Text>
+          <Text style={{ lineHeight: 20 }}>
+            <CurrencyText>₹</CurrencyText>
+            {item.total}
+          </Text>
         </View>
       </View>
 

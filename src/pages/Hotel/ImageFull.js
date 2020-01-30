@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Image, Dimensions } from "react-native";
+import { View, StyleSheet, SafeAreaView, Image, Dimensions, StatusBar } from "react-native";
 import { Text, Button, Icon } from "../../components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import ImageZoom from "react-native-image-pan-zoom";
@@ -10,6 +10,7 @@ function ImageFull({ onBackPress, params }) {
   console.log(params);
   return (
     <>
+      <StatusBar backgroundColor="black" barStyle="light-content" />
       <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
         <View style={styles.headerContainer}>

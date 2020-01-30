@@ -6,16 +6,18 @@ import {
   ScrollView,
   SafeAreaView,
   StyleSheet,
-  Platform
+  Platform,
+  StatusBar
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon, CurrencyText } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, CurrencyText, } from "../../components";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
 import { isArray, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
+import NumberFormat from "react-number-format";
 
 class CheckOut extends React.PureComponent {
   constructor(props) {
@@ -428,6 +430,7 @@ class CheckOut extends React.PureComponent {
         <>
           <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
             <View style={{ backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
@@ -691,7 +694,13 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginStart: 10 }}>Base Fare</Text>
                   <Text style={{ marginEnd: 10 }}>
                     <CurrencyText>₹</CurrencyText>
-                    {params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                    <NumberFormat
+                      value={params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      thousandsGroupStyle="lakh"
+                      renderText={value => <Text>{value}</Text>}
+                    />
                   </Text>
                 </View>
                 {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
@@ -703,10 +712,16 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
-                      {
-                        this.state.data.cart_data[0].custum_product_data.flight_book_item
-                          .flight_schagre
-                      }
+                      <NumberFormat
+                        value={
+                          this.state.data.cart_data[0].custum_product_data.flight_book_item
+                            .flight_schagre
+                        }
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        thousandsGroupStyle="lakh"
+                        renderText={value => <Text>{value}</Text>}
+                      />
                     </Text>
                   </View>
                 )}
@@ -720,7 +735,16 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginStart: 10 }}>Tax</Text>
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
-                      {this.state.data.cart_data[0].custum_product_data.flight_book_item.flight_tax}
+                      <NumberFormat
+                        value={
+                          this.state.data.cart_data[0].custum_product_data.flight_book_item
+                            .flight_tax
+                        }
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        thousandsGroupStyle="lakh"
+                        renderText={value => <Text>{value}</Text>}
+                      />
                     </Text>
                   </View>
                 )}
@@ -734,7 +758,13 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                   <Text style={{ marginStart: 10 }}>
                     <CurrencyText>₹</CurrencyText>
-                    {params.departFlight.FareDetails.TotalFare}
+                    <NumberFormat
+                      value={params.departFlight.FareDetails.TotalFare}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      thousandsGroupStyle="lakh"
+                      renderText={value => <Text>{value}</Text>}
+                    />
                   </Text>
                 </View>
 
@@ -749,7 +779,13 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginStart: 10 }}>Base Fare</Text>
                       <Text style={{ marginEnd: 10 }}>
                         <CurrencyText>₹</CurrencyText>
-                        {params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                        <NumberFormat
+                          value={params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          thousandsGroupStyle="lakh"
+                          renderText={value => <Text>{value}</Text>}
+                        />
                       </Text>
                     </View>
                     {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
@@ -761,10 +797,16 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
-                          {
-                            this.state.data.cart_data[0].custum_product_data.flight_book_item
-                              .return_flight_schagre
-                          }
+                          <NumberFormat
+                            value={
+                              this.state.data.cart_data[0].custum_product_data.flight_book_item
+                                .return_flight_schagre
+                            }
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            thousandsGroupStyle="lakh"
+                            renderText={value => <Text>{value}</Text>}
+                          />
                         </Text>
                       </View>
                     )}
@@ -778,10 +820,16 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginStart: 10 }}>Tax</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
-                          {
-                            this.state.data.cart_data[0].custum_product_data.flight_book_item
-                              .return_flight_tax
-                          }
+                          <NumberFormat
+                            value={
+                              this.state.data.cart_data[0].custum_product_data.flight_book_item
+                                .return_flight_tax
+                            }
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            thousandsGroupStyle="lakh"
+                            renderText={value => <Text>{value}</Text>}
+                          />
                         </Text>
                       </View>
                     )}
@@ -795,7 +843,13 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                       <Text style={{ marginStart: 10 }}>
                         <CurrencyText>₹</CurrencyText>
-                        {params.arrivalFlight.FareDetails.TotalFare}
+                        <NumberFormat
+                          value={params.arrivalFlight.FareDetails.TotalFare}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          thousandsGroupStyle="lakh"
+                          renderText={value => <Text>{value}</Text>}
+                        />
                       </Text>
                     </View>
                   </View>
@@ -967,6 +1021,7 @@ class CheckOut extends React.PureComponent {
         <>
           <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
             <View style={{ backgroundColor: "#E5EBF7" }}>
               <View
                 style={{

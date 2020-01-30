@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, ScrollView, Platform } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView, Platform, StatusBar } from "react-native";
 import { Button, Icon, Text, CheckBox, RadioButton } from "../../components";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { uniq, max, min } from "lodash";
@@ -73,6 +73,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
 
   return (
     <>
+      <StatusBar backgroundColor="black" barStyle="light-content" />
       <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
         <View style={styles.headerContainer}>

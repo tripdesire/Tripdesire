@@ -4,9 +4,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  Picker,
-  ScrollView,
-  Platform,
+  StatusBar,
   SafeAreaView,
   StyleSheet
 } from "react-native";
@@ -367,6 +365,7 @@ class PaymentCab extends React.PureComponent {
     const { data } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>

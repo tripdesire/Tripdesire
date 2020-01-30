@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { _ } from "lodash";
 import { connect } from "react-redux";
 import Toast from "react-native-simple-toast";
@@ -101,6 +101,7 @@ class OTPVerify extends Component {
   render() {
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={styles.header}>

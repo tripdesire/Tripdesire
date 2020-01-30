@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import { View, SafeAreaView, StyleSheet, StatusBar } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Button, Text, Icon } from "../../components";
 
@@ -26,6 +26,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <View>
           <View style={styles.container}>
             <Button

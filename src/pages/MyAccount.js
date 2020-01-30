@@ -1,5 +1,13 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Image, Linking, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Linking,
+  ScrollView,
+  StatusBar
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty } from "lodash";
 import { GoogleSignin } from "@react-native-community/google-signin";
@@ -82,6 +90,7 @@ function MyAccount({ navigation }) {
 
   return (
     <>
+      <StatusBar backgroundColor="black" barStyle="light-content" />
       <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
         <View style={styles.header}>

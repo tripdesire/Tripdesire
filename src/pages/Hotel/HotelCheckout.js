@@ -22,7 +22,6 @@ import {
 } from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
-import { mergeWith } from "lodash";
 import { etravosApi } from "../../service";
 //import MapView from "react-native-maps";
 import moment from "moment";
@@ -30,7 +29,7 @@ import HTML from "react-native-render-html";
 import { Component } from "react";
 import Toast from "react-native-simple-toast";
 import ImageFull from "./ImageFull";
-const { width } = Dimensions.get("window");
+import NumberFormat from "react-number-format";
 
 class HotelCheckout extends React.Component {
   constructor(props) {
@@ -251,66 +250,12 @@ class HotelCheckout extends React.Component {
                 <Text style={{ color: "#ffffff", marginHorizontal: 16 }}>
                   {params.HotelAddress}
                 </Text>
-
-                {/* <View style={{ flexDirection: "row", width: "100%" }}>
-                  {Amenities.map(item => (
-                    <View key={item}>
-                      {item.toLowerCase() == "housekeeping - daily" && (
-                        <Icon
-                          type="MaterialCommunityIcons"
-                          size={24}
-                          color="#ffffff"
-                          name="washing-machine"
-                        />
-                      )}
-                      {item.toLowerCase() == "complimentary wireless internet" && (
-                        <Icon
-                          style={{ marginHorizontal: 5 }}
-                          color="#ffffff"
-                          size={24}
-                          name="ios-wifi"
-                        />
-                      )}
-                      {item.toLowerCase() == "24-hour front desk" && (
-                        <Icon
-                          style={{ marginHorizontal: 5 }}
-                          type="FontAwesome5"
-                          name="crosshairs"
-                          size={24}
-                          color="#ffffff"
-                        />
-                      )}
-                      {item.toLowerCase() == "air conditioning" && (
-                        <Icon
-                          type="MaterialCommunityIcons"
-                          color="#ffffff"
-                          size={24}
-                          name="air-conditioner"
-                        />
-                      )}
-                    </View>
-                  ))}
-                </View> */}
               </View>
             </LinearGradient>
             <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
               <ScrollView
                 contentContainerStyle={{ backgroundColor: "#ffffff", marginHorizontal: 16 }}
                 showsVerticalScrollIndicator={false}>
-                {/* <View>
-                  <GridList
-                    showSeparator
-                    data={this.state.items}
-                    numColumns={3}
-                    renderItem={this.renderItem}
-                  />
-                  <GridList
-                    showSeparator
-                    data={this.state.items}
-                    numColumns={3}
-                    renderItem={this.renderItem}
-                  />
-                </View> */}
                 <View style={{ flexDirection: "row", marginTop: 16, width: "100%" }}>
                   <Button style={{ flex: 1 }} onPress={this.showImage}>
                     <Image
@@ -481,7 +426,15 @@ class HotelCheckout extends React.Component {
                             <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
                               ₹
                             </CurrencyText>
-                            {item.RoomTotal.toFixed(2)}
+                            <NumberFormat
+                              value={item.RoomTotal.toFixed(2)}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              thousandsGroupStyle="lakh"
+                              renderText={value => (
+                                <Text style={{ fontWeight: "700", fontSize: 18 }}>{value}</Text>
+                              )}
+                            />
                           </Text>
                         </View>
                       </View>

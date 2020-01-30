@@ -1,10 +1,18 @@
 import React from "react";
-import { View, Modal, StyleSheet, FlatList, SafeAreaView, Image } from "react-native";
-import { Button, Text, ActivityIndicator, Icon, DataNotFound,CurrencyText } from "../../components";
+import { View, Modal, StyleSheet, FlatList, SafeAreaView, Image, StatusBar } from "react-native";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  Icon,
+  DataNotFound,
+  CurrencyText
+} from "../../components";
 import { orderBy } from "lodash";
 import moment from "moment";
 import { etravosApi } from "../../service";
 import Filter from "./Filter";
+import NumberFormat from "react-number-format";
 
 class BusInfo extends React.PureComponent {
   constructor(props) {
@@ -170,6 +178,7 @@ class BusInfo extends React.PureComponent {
   };
 
   _renderItemList = ({ item, index }) => {
+    let rupee = item.Fares.split("/", 1);
     return (
       <Button
         style={{
@@ -236,7 +245,14 @@ class BusInfo extends React.PureComponent {
             </Text>
           </Button>
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
-          <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹</CurrencyText>{item.Fares.split("/", 1)}
+            <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹</CurrencyText>
+            <NumberFormat
+              value={parseInt(rupee[0])}
+              displayType={"text"}
+              thousandSeparator={true}
+              thousandsGroupStyle="lakh"
+              renderText={value => <Text style={{ fontSize: 16, fontWeight: "600" }}>{value}</Text>}
+            />
           </Text>
         </View>
       </Button>
@@ -262,6 +278,7 @@ class BusInfo extends React.PureComponent {
     } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>

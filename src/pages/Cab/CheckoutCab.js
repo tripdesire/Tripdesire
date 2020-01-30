@@ -1,22 +1,21 @@
 import React, { PureComponent } from "react";
 import {
   View,
-  Image,
-  TouchableOpacity,
+  StatusBar,
   TextInput,
-  Picker,
   ScrollView,
   Platform,
   SafeAreaView,
   StyleSheet
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon,CurrencyText } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, CurrencyText } from "../../components";
 import moment from "moment";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
 import HTML from "react-native-render-html";
+import NumberFormat from "react-number-format";
 
 class CheckoutCab extends React.PureComponent {
   constructor(props) {
@@ -196,6 +195,7 @@ class CheckoutCab extends React.PureComponent {
     const { item, params, cartData } = this.props.navigation.state.params;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>
@@ -307,11 +307,17 @@ class CheckoutCab extends React.PureComponent {
                         }}>
                         <Text>Base Fare</Text>
                         <Text>
-                        <CurrencyText>₹</CurrencyText>
-                          {
-                            this.state.cartData.cart_data[0].custum_product_data.car_item_details
-                              .car_item_data.TotalNetAmount
-                          }
+                          <CurrencyText>₹</CurrencyText>
+                          <NumberFormat
+                            value={
+                              this.state.cartData.cart_data[0].custum_product_data.car_item_details
+                                .car_item_data.TotalNetAmount
+                            }
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            thousandsGroupStyle="lakh"
+                            renderText={value => <Text>{value}</Text>}
+                          />
                         </Text>
                       </View>
                       <View
@@ -338,11 +344,17 @@ class CheckoutCab extends React.PureComponent {
                         }}>
                         <Text>Service Tax</Text>
                         <Text>
-                        <CurrencyText>₹</CurrencyText>
-                          {
-                            this.state.cartData.cart_data[0].custum_product_data.car_item_details
-                              .service_tax
-                          }
+                          <CurrencyText>₹</CurrencyText>
+                          <NumberFormat
+                            value={
+                              this.state.cartData.cart_data[0].custum_product_data.car_item_details
+                                .service_tax
+                            }
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            thousandsGroupStyle="lakh"
+                            renderText={value => <Text>{value}</Text>}
+                          />
                         </Text>
                       </View>
                     </>
@@ -382,62 +394,19 @@ class CheckoutCab extends React.PureComponent {
                   }}>
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>Total Payable</Text>
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                  <CurrencyText style={{ fontSize: 16, fontWeight: "700" }}>₹</CurrencyText>{this.state.cartData.total_price}
+                    <CurrencyText style={{ fontSize: 16, fontWeight: "700" }}>₹</CurrencyText>
+                    <NumberFormat
+                      value={this.state.cartData.total_price}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      thousandsGroupStyle="lakh"
+                      renderText={value => (
+                        <Text style={{ fontSize: 16, fontWeight: "700" }}>{value}</Text>
+                      )}
+                    />
                   </Text>
                 </View>
               </View>
-              {/* <View
-                style={{
-                  elevation: 1,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.2)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  backgroundColor: "#ffffff",
-                  marginHorizontal: 16,
-                  marginTop: 20,
-                  padding: 10,
-                  borderRadius: 8
-                }}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <TouchableOpacity onPress={() => this._radioButton("D")}>
-                    <View
-                      style={{
-                        height: 18,
-                        width: 18,
-                        borderRadius: 12,
-                        borderWidth: 2,
-                        borderColor: "#000",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}>
-                      {this.state.radioDirect && (
-                        <View
-                          style={{
-                            height: 10,
-                            width: 10,
-                            borderRadius: 6,
-                            backgroundColor: "#000"
-                          }}
-                        />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                  <Text style={{ marginStart: 5, fontSize: 18, fontWeight: "500" }}>RazorPay</Text>
-                </View>
-                <Text
-                  style={{
-                    flex: 1,
-                    fontSize: 12,
-                    color: "#696969",
-                    marginHorizontal: 20
-                  }}>
-                  Accept Cards, Netbanking, Wallets & UPI. Developer Friendly API, Fast Onboarding.
-                  Free & Easy Application Process.100+ Payment Modes, Secure Gateway, Simple
-                  Integration. Easy Integration. Dashboard Reporting. etravosApis: Customize Your
-                  Checkout, Autofill OTP on Mobile.
-                </Text>
-              </View> */}
 
               {this.state.cartData.hasOwnProperty("coupon") &&
               this.state.cartData.coupon.length == 0 ? (

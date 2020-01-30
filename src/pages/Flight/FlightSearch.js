@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { Button, Text, LinearGradient } from "../../components";
 import DomesticFlights from "./DomesticFlights";
 import InternationalFlights from "./InternationalFlights";
@@ -27,6 +27,7 @@ class FlightSearch extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flexDirection: "column", flex: 1 }}>
             <View style={{ backgroundColor: "#E4EAF6", height: 72 }}>
               <Header firstName="Flights" lastName="Search" />

@@ -5,18 +5,12 @@ import {
   Modal,
   StyleSheet,
   SafeAreaView,
-  Platform,
-  ScrollView,
   Dimensions,
-  TouchableOpacity,
-  FlatList
+  TouchableOpacity
 } from "react-native";
 import { Button, Text, CurrencyText, Icon } from "../../components";
-import Toast from "react-native-simple-toast";
 import { withNavigation } from "react-navigation";
-import axios from "axios";
-
-const { height } = Dimensions.get("window");
+import NumberFormat from "react-number-format";
 
 class RenderItems extends React.PureComponent {
   constructor(props) {
@@ -95,24 +89,6 @@ class RenderItems extends React.PureComponent {
                   {this.props.item.AdditionalInfo.BaggageQuantity} bags
                 </Text>
               </View>
-              {/* <View
-                style={{
-                  width: 60,
-                  borderStyle: "dashed",
-                  borderWidth: 1,
-                  height: 1,
-                  marginHorizontal: 8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderColor: "#8894A8",
-                  borderRadius: 1
-                }}>
-                <Image
-                  tintColor={"#000"}
-                  style={{ width: 24, height: 24, position: "absolute" }}
-                  source={require("../../assets/imgs/carNew.png")}
-                />
-              </View> */}
             </View>
           </View>
         </View>
@@ -131,7 +107,14 @@ class RenderItems extends React.PureComponent {
             <Text style={{ fontSize: 12, color: "green" }}>Fare Details</Text>
           </Button>
           <Text style={{ fontSize: 18, fontWeight: "600" }}>
-          <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹</CurrencyText>{this.props.item.TotalNetAmount}
+            <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹</CurrencyText>
+            <NumberFormat
+              value={this.props.item.TotalNetAmount}
+              displayType={"text"}
+              thousandSeparator={true}
+              thousandsGroupStyle="lakh"
+              renderText={value => <Text style={{ fontSize: 18, fontWeight: "600" }}>{value}</Text>}
+            />
           </Text>
         </View>
 

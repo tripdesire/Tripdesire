@@ -1,15 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
+import { View, StyleSheet, SafeAreaView, Platform, ScrollView, StatusBar } from "react-native";
 import Button from "./Button";
 import Text from "./TextComponent";
 import Icon from "./IconNB";
@@ -50,6 +40,7 @@ class CabThankYou extends React.PureComponent {
     console.log(dataArray);
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           {isOrderPage && (
@@ -210,12 +201,18 @@ class CabThankYou extends React.PureComponent {
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Base Fare</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Car Item Data"].TotalNetAmount}</Text>
+                <Text style={styles.airlineno}>
+                  <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                  {dataArray["Car Item Data"].TotalNetAmount}
+                </Text>
               </View>
 
               <View style={styles.summaryRow}>
                 <Text style={styles.airlineno}>Service Tax</Text>
-                <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Service Tax"]}</Text>
+                <Text style={styles.airlineno}>
+                  <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                  {dataArray["Service Tax"]}
+                </Text>
               </View>
 
               <View style={styles.summaryRow}>
@@ -225,7 +222,10 @@ class CabThankYou extends React.PureComponent {
 
               <View style={styles.summaryRow}>
                 <Text style={styles.time}>Total Price</Text>
-                <Text style={styles.time}><CurrencyText style={styles.time}>₹</CurrencyText>{order.total}</Text>
+                <Text style={styles.time}>
+                  <CurrencyText style={styles.time}>₹</CurrencyText>
+                  {order.total}
+                </Text>
               </View>
 
               <View style={[styles.summaryRow, { paddingBottom: 8 }]}>

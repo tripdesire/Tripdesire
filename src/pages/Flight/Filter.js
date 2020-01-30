@@ -1,5 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { View, SafeAreaView, ScrollView, StyleSheet, StatusBar } from "react-native";
 import { Button, Text, CheckBox, RadioButton } from "../../components";
 import { uniq, intersection, max, min } from "lodash";
 import { Icon } from "../../components";
@@ -205,6 +205,7 @@ class Filter extends React.Component {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={styles.headerContainer}>
             <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>
               <Icon name="md-arrow-back" size={24} />

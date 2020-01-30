@@ -1,5 +1,13 @@
 import React from "react";
-import { View, Image, StyleSheet, SafeAreaView, ScrollView, TextInput } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  StatusBar
+} from "react-native";
 import Toast from "react-native-simple-toast";
 import { domainApi } from "../service";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
@@ -166,6 +174,7 @@ class SignIn extends React.PureComponent {
   render() {
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View

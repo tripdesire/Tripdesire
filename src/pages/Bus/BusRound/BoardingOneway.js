@@ -1,9 +1,8 @@
 import React, { PureComponent } from "react";
-import { View, SafeAreaView } from "react-native";
+import { View, SafeAreaView, StatusBar } from "react-native";
 import { Button, Text, Header, RNPicker } from "../../../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
-import RNPickerSelect from "react-native-picker-select";
 
 class BoardingOneway extends React.PureComponent {
   constructor(props) {
@@ -54,6 +53,7 @@ class BoardingOneway extends React.PureComponent {
     const { boardingpoints, droppingpoints, bp, dp } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>

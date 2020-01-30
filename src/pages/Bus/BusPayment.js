@@ -1,5 +1,13 @@
 import React, { PureComponent } from "react";
-import { View, SafeAreaView, TouchableOpacity, TextInput, ScrollView, Image } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Image,
+  StatusBar
+} from "react-native";
 import { Button, Text, ActivityIndicator } from "../../components";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -591,6 +599,7 @@ class BusPayment extends React.PureComponent {
 
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flexDirection: "column", flex: 1 }}>

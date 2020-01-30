@@ -9,13 +9,21 @@ import {
   StatusBar
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon, LinearGradient ,CurrencyText} from "../../components";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  Icon,
+  LinearGradient,
+  CurrencyText
+} from "../../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
 import { isArray, isEmpty } from "lodash";
 import { connect } from "react-redux";
+import NumberFormat from "react-number-format";
 class HotelPayment extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -297,9 +305,17 @@ class HotelPayment extends React.PureComponent {
                     }}>
                     <Text style={style._textHeading}>Room Total</Text>
                     <Text style={style._Details}>
-                    <CurrencyText style={style._Details}>₹</CurrencyText>
-                      {this.state.data.cart_data[0].custum_product_data.Hotel_item_details
-                        .single_hotel_data.selectedRoom.RoomNetTotal * params.Night}
+                      <CurrencyText style={style._Details}>₹</CurrencyText>
+                      <NumberFormat
+                        value={
+                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details
+                            .single_hotel_data.selectedRoom.RoomNetTotal * params.Night
+                        }
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        thousandsGroupStyle="lakh"
+                        renderText={value => <Text style={style._Details}>{value}</Text>}
+                      />
                     </Text>
                   </View>
                 )}
@@ -424,7 +440,7 @@ class HotelPayment extends React.PureComponent {
                   </Text>
                   <Text
                     style={[style._Details, { fontSize: 16, fontWeight: "700", color: "#000" }]}>
-                    <CurrencyText style={{fontWeight:"700",fontSize:16}}>₹ </CurrencyText>
+                    <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹ </CurrencyText>
                     {this.state.data.total_price ? this.state.data.total_price : "₹" + 0.0}
                   </Text>
                 </View>

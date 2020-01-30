@@ -1,5 +1,13 @@
 import React from "react";
-import { View, SafeAreaView, FlatList, TextInput, Dimensions, StyleSheet } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  FlatList,
+  TextInput,
+  Dimensions,
+  StyleSheet,
+  StatusBar
+} from "react-native";
 import { Text, Button, Icon, ActivityIndicator } from "../components";
 import { domainApi, etravosApi } from "../service";
 import { connect } from "react-redux";
@@ -183,6 +191,7 @@ class Wallet extends React.PureComponent {
     const { transaction, transactions, loader, modalShow } = this.state;
     return (
       <>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1 }}>

@@ -8,7 +8,7 @@ import {
   TextInput,
   Dimensions,
   SafeAreaView,
-  TouchableOpacity
+  StatusBar
 } from "react-native";
 import {
   Button,
@@ -26,6 +26,7 @@ import { etravosApi } from "../../service";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import Filter from "./Filter";
+import NumberFormat from "react-number-format";
 
 const { width, height } = Dimensions.get("window");
 
@@ -200,7 +201,15 @@ class HotelInfo extends React.PureComponent {
             <View style={{ marginStart: 10 }}>
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
                 <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹</CurrencyText>
-                {item.RoomDetails[0].RoomTotal.toFixed(2)}
+                <NumberFormat
+                  value={item.RoomDetails[0].RoomTotal.toFixed(2)}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  thousandsGroupStyle="lakh"
+                  renderText={value => (
+                    <Text style={{ fontWeight: "700", fontSize: 16 }}>{value}</Text>
+                  )}
+                />
               </Text>
             </View>
           </View>
@@ -323,6 +332,7 @@ class HotelInfo extends React.PureComponent {
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flex: 1 }}>
             <View
               style={{

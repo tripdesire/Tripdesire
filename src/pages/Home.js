@@ -1,7 +1,14 @@
 import React from "react";
-import { View, Image, SafeAreaView, ImageBackground, Dimensions, ScrollView } from "react-native";
-import { Button, HomeButtonComponent, Text } from "../../src/components";
-
+import {
+  View,
+  Image,
+  SafeAreaView,
+  ImageBackground,
+  Dimensions,
+  ScrollView,
+  StatusBar
+} from "react-native";
+import { HomeButtonComponent, Text } from "../../src/components";
 const { width, height } = Dimensions.get("window");
 
 const aspectHeight = (width, height, newWidth) => (height / width) * newWidth;
@@ -26,6 +33,7 @@ class Home extends React.PureComponent {
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
         {/* <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}> */}
         <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+          <StatusBar backgroundColor="black" barStyle="light-content" />
           <View
             style={{
               backgroundColor: "#ffffff",
@@ -57,22 +65,6 @@ class Home extends React.PureComponent {
                 }}>
                 Desire.Travel.Explore
               </Text>
-              {/* <Text
-                  style={{
-                    color: "#081057",
-                    fontSize: 30,
-                    lineHeight: 34,
-                    fontWeight: "700",
-                    marginHorizontal: 20
-                  }}>
-                  WANT TO GO??
-                </Text>
-                <Text style={{ marginHorizontal: 20, color: "#ffffff", fontWeight: "700" }}>
-                  Search Amazing Flights, Hotels, Bus & Cabs
-                </Text>
-                <Text style={{ marginHorizontal: 20, color: "#ffffff", fontWeight: "700" }}>
-                  at a good Price.
-                </Text> */}
             </ImageBackground>
           </View>
           <View
