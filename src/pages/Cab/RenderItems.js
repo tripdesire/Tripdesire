@@ -140,7 +140,7 @@ class FareDetails extends React.PureComponent {
     const { data } = this.props;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View>
             <View style={styles.headerContainer}>

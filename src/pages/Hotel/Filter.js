@@ -74,7 +74,7 @@ function Filter({ data, onBackPress, filterValues, onChangeFilter, filter }) {
   return (
     <>
       <StatusBar backgroundColor="black" barStyle="light-content" />
-      <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
         <View style={styles.headerContainer}>
           <Button onPress={onBackPress} style={{ padding: 16 }}>

@@ -25,7 +25,7 @@ class FlightSearch extends React.PureComponent {
     const { flightType } = this.state;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={{ flexDirection: "column", flex: 1 }}>

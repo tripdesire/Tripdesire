@@ -97,7 +97,7 @@ class Filter extends React.Component {
     return (
       <>
         <StatusBar backgroundColor="black" barStyle="light-content" />
-        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={styles.headerContainer}>
             <Button onPress={this.props.onBackPress} style={{ padding: 16 }}>

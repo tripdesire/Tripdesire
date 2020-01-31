@@ -428,7 +428,7 @@ class CheckOut extends React.PureComponent {
     if (params.flightType == 1) {
       return (
         <>
-          <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
             <StatusBar backgroundColor="black" barStyle="light-content" />
             <View style={{ backgroundColor: "#E5EBF7" }}>
@@ -1023,7 +1023,7 @@ class CheckOut extends React.PureComponent {
     } else if (params.flightType == 2) {
       return (
         <>
-          <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
             <StatusBar backgroundColor="black" barStyle="light-content" />
             <View style={{ backgroundColor: "#E5EBF7" }}>

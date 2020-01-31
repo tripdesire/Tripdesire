@@ -47,7 +47,7 @@ class ForgetPassword extends React.PureComponent {
     return (
       <>
         <StatusBar backgroundColor="black" barStyle="light-content" />
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View
             style={{

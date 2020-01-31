@@ -84,7 +84,7 @@ class AddPassengers extends React.PureComponent {
       <Modal animationType="slide" transparent={false} visible={this.props.visible}>
         <>
           <StatusBar backgroundColor="black" barStyle="light-content" />
-          <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+          <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
             <View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>

@@ -19,7 +19,7 @@ class FareDetails extends React.PureComponent {
     const { loader } = this.state;
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <StatusBar backgroundColor="black" barStyle="light-content" />
           <View>

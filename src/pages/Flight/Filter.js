@@ -203,7 +203,7 @@ class Filter extends React.Component {
 
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <StatusBar backgroundColor="black" barStyle="light-content" />
           <View style={styles.headerContainer}>

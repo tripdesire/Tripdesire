@@ -102,7 +102,7 @@ class OTPVerify extends Component {
     return (
       <>
         <StatusBar backgroundColor="black" barStyle="light-content" />
-        <SafeAreaView style={{ flex: 0, backgroundColor: "#E4EAF6" }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
           <View style={styles.header}>
             <Button onPress={() => this.props.navigation.goBack(null)} style={{ padding: 16 }}>

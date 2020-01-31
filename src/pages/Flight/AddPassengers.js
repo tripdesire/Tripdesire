@@ -24,7 +24,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
 
   return (
     <>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#ffffff" }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
         <StatusBar backgroundColor="black" barStyle="light-content" />
         <View>
