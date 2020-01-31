@@ -201,7 +201,7 @@ class HotelInfo extends React.PureComponent {
             <View style={{ marginStart: 10 }}>
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
                 <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹</CurrencyText>
-                <NumberFormat
+                <NumberFormat decimalScale={2} fixedDecimalScale
                   value={item.RoomDetails[0].RoomTotal.toFixed(2)}
                   displayType={"text"}
                   thousandSeparator={true}

@@ -452,7 +452,7 @@ class CheckoutBus extends React.PureComponent {
                         <Text>Fare</Text>
                         <Text>
                           <CurrencyText>₹</CurrencyText>
-                          <NumberFormat
+                          <NumberFormat decimalScale={2} fixedDecimalScale
                             value={
                               cartData.cart_data[0].custum_product_data.bus_item_details.base_fare
                             }
@@ -474,7 +474,7 @@ class CheckoutBus extends React.PureComponent {
                         <Text>Service Charges</Text>
                         <Text>
                           <CurrencyText>₹</CurrencyText>
-                          <NumberFormat
+                          <NumberFormat decimalScale={2} fixedDecimalScale
                             value={
                               cartData.cart_data[0].custum_product_data.bus_item_details
                                 .service_charge2
@@ -494,7 +494,7 @@ class CheckoutBus extends React.PureComponent {
                         <Text style={{ marginStart: 10 }}>Tax</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
-                          <NumberFormat
+                          <NumberFormat decimalScale={2} fixedDecimalScale
                             value={
                               cartData.cart_data[0].custum_product_data.bus_item_details
                                 .service_tax2
@@ -529,7 +529,7 @@ class CheckoutBus extends React.PureComponent {
                           <Text>Fare</Text>
                           <Text>
                             <CurrencyText>₹</CurrencyText>
-                            <NumberFormat
+                            <NumberFormat decimalScale={2} fixedDecimalScale
                               value={
                                 cartData.cart_data[0].custum_product_data.bus_item_details
                                   .return_base_fare
@@ -552,7 +552,7 @@ class CheckoutBus extends React.PureComponent {
                           <Text>Service Charges</Text>
                           <Text>
                             <CurrencyText>₹</CurrencyText>
-                            <NumberFormat
+                            <NumberFormat decimalScale={2} fixedDecimalScale
                               value={
                                 cartData.cart_data[0].custum_product_data.bus_item_details
                                   .return_service_charge2
@@ -572,7 +572,7 @@ class CheckoutBus extends React.PureComponent {
                           <Text style={{ marginStart: 10 }}>Tax</Text>
                           <Text style={{ marginEnd: 10 }}>
                             <CurrencyText>₹</CurrencyText>
-                            <NumberFormat
+                            <NumberFormat decimalScale={2} fixedDecimalScale
                               value={
                                 cartData.cart_data[0].custum_product_data.bus_item_details
                                   .return_service_tax2
@@ -628,7 +628,7 @@ class CheckoutBus extends React.PureComponent {
                       <CurrencyText style={{ marginEnd: 10, fontWeight: "700", fontSize: 16 }}>
                         ₹
                       </CurrencyText>
-                      <NumberFormat
+                      <NumberFormat decimalScale={2} fixedDecimalScale
                         value={cartData.total_price}
                         displayType={"text"}
                         thousandSeparator={true}

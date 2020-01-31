@@ -192,7 +192,7 @@ class RenderDomesticRound extends React.PureComponent {
           </View>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            <NumberFormat
+            <NumberFormat decimalScale={2} fixedDecimalScale
               value={parseInt(this.props.item.FareDetails.TotalFare)}
               displayType={"text"}
               thousandSeparator={true}
@@ -412,7 +412,13 @@ class RenderDomesticRound extends React.PureComponent {
                     | Connection Time:
                     <Text style={{ fontSize: 16, fontWeight: "700" }}>
                       {" "}
-                      {this.props.item.FlightSegments[index + 1].GroundTime}
+                      {moment
+                        .duration(
+                          moment(this.props.item.FlightSegments[index + 1].DepartureDateTime).diff(
+                            moment(this.props.item.FlightSegments[index].ArrivalDateTime)
+                          )
+                        )
+                        .format("h:mm [hrs]")}
                     </Text>
                   </Text>
                 )}

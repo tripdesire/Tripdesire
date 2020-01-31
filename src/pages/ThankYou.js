@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Text, Button, Icon, ActivityIndicator ,CurrencyText} from "../components";
+import { Text, Button, Icon, ActivityIndicator, CurrencyText } from "../components";
 import {
   Image,
   ImageBackground,
@@ -146,8 +146,16 @@ class ThankYou extends React.PureComponent {
                       </Text>
                       <Text style={styles.airlineno}>
                         {dataArray.hasOwnProperty("Onward Item Result Data")
-                          ? dataArray["Onward Item Result Data"].FlightUId
-                          : dataArray["Int Fl Item Result Data"].FlightUId}
+                          ? dataArray["Onward Item Result Data"].FlightSegments[0]
+                              .OperatingAirlineCode +
+                            "-" +
+                            dataArray["Onward Item Result Data"].FlightSegments[0]
+                              .OperatingAirlineFlightNumber
+                          : dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                              .OperatingAirlineCode +
+                            "-" +
+                            dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                              .OperatingAirlineFlightNumber}
                       </Text>
                       <Text style={styles.class}>{dataArray["Class Type"]}</Text>
                     </View>
@@ -267,8 +275,16 @@ class ThankYou extends React.PureComponent {
                         </Text>
                         <Text style={styles.airlineno}>
                           {dataArray.hasOwnProperty("Return Item Result Data")
-                            ? dataArray["Return Item Result Data"].FlightUId
-                            : dataArray["Int Fl Item Result Data"].FlightUId}
+                            ? dataArray["Return Item Result Data"].FlightSegments[0]
+                                .OperatingAirlineCode +
+                              "-" +
+                              dataArray["Return Item Result Data"].FlightSegments[0]
+                                .OperatingAirlineFlightNumber
+                            : dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
+                                .OperatingAirlineCode +
+                              "-" +
+                              dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
+                                .OperatingAirlineFlightNumber}
                         </Text>
                         <Text style={styles.class}>{dataArray["Class Type"]}</Text>
                       </View>
@@ -384,16 +400,32 @@ class ThankYou extends React.PureComponent {
                       <Text style={[styles.time, { marginBottom: 4 }]}>Type</Text>
                       <Text style={styles.airlineno}>
                         {dataArray.hasOwnProperty("Onward Item Result Data")
-                          ? dataArray["Onward Item Result Data"].FlightUId
-                          : dataArray["Int Fl Item Result Data"].FlightUId}
+                          ? dataArray["Onward Item Result Data"].FlightSegments[0]
+                              .OperatingAirlineCode +
+                            "-" +
+                            dataArray["Onward Item Result Data"].FlightSegments[0]
+                              .OperatingAirlineFlightNumber
+                          : dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                              .OperatingAirlineCode +
+                            "-" +
+                            dataArray["Int Fl Item Result Data"].IntOnward.FlightSegments[0]
+                              .OperatingAirlineFlightNumber}
                       </Text>
                       {((dataArray.hasOwnProperty("Int Fl Item Result Data") &&
                         dataArray["Int Fl Item Result Data"].IntReturn != null) ||
                         dataArray.hasOwnProperty("Return Item Result Data")) && (
                         <Text style={styles.airlineno}>
                           {dataArray.hasOwnProperty("Return Item Result Data")
-                            ? dataArray["Return Item Result Data"].FlightUId
-                            : dataArray["Int Fl Item Result Data"].FlightUId}
+                            ? dataArray["Return Item Result Data"].FlightSegments[0]
+                                .OperatingAirlineCode +
+                              "-" +
+                              dataArray["Return Item Result Data"].FlightSegments[0]
+                                .OperatingAirlineFlightNumber
+                            : dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
+                                .OperatingAirlineCode +
+                              "-" +
+                              dataArray["Int Fl Item Result Data"].IntReturn.FlightSegments[0]
+                                .OperatingAirlineFlightNumber}
                         </Text>
                       )}
                     </View>
@@ -702,17 +734,26 @@ class ThankYou extends React.PureComponent {
 
                   <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Base Fare</Text>
-                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Base Fare"]}</Text>
+                    <Text style={styles.airlineno}>
+                      <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                      {dataArray["Base Fare"]}
+                    </Text>
                   </View>
 
                   <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Flight Scharge</Text>
-                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Flight Schagre"]}</Text>
+                    <Text style={styles.airlineno}>
+                      <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                      {dataArray["Flight Schagre"]}
+                    </Text>
                   </View>
 
                   <View style={styles.summaryRow}>
                     <Text style={styles.airlineno}>Flight Tax</Text>
-                    <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Flight Tax"]}</Text>
+                    <Text style={styles.airlineno}>
+                      <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                      {dataArray["Flight Tax"]}
+                    </Text>
                   </View>
 
                   {dataArray.hasOwnProperty("Return Item Result Data") && (
@@ -722,17 +763,26 @@ class ThankYou extends React.PureComponent {
                       </Text>
                       <View style={styles.summaryRow}>
                         <Text style={styles.airlineno}>Base Fare</Text>
-                        <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Return Base Fare"]}</Text>
+                        <Text style={styles.airlineno}>
+                          <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                          {dataArray["Return Base Fare"]}
+                        </Text>
                       </View>
 
                       <View style={styles.summaryRow}>
                         <Text style={styles.airlineno}>Flight Scharge</Text>
-                        <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Flight Schagre"]}</Text>
+                        <Text style={styles.airlineno}>
+                          <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                          {dataArray["Flight Schagre"]}
+                        </Text>
                       </View>
 
                       <View style={styles.summaryRow}>
                         <Text style={styles.airlineno}>Flight Tax</Text>
-                        <Text style={styles.airlineno}><CurrencyText style={styles.airlineno}>₹</CurrencyText>{dataArray["Return Flight Tax"]}</Text>
+                        <Text style={styles.airlineno}>
+                          <CurrencyText style={styles.airlineno}>₹</CurrencyText>
+                          {dataArray["Return Flight Tax"]}
+                        </Text>
                       </View>
                     </>
                   )}
@@ -744,7 +794,10 @@ class ThankYou extends React.PureComponent {
 
                   <View style={styles.summaryRow}>
                     <Text style={styles.time}>Total Price</Text>
-                    <Text style={styles.time}><CurrencyText style={styles.time}>₹</CurrencyText>{order.total}</Text>
+                    <Text style={styles.time}>
+                      <CurrencyText style={styles.time}>₹</CurrencyText>
+                      {order.total}
+                    </Text>
                   </View>
                   <View style={[styles.summaryRow, { paddingBottom: 8 }]}>
                     <Text style={styles.airlineno}>Payment Method</Text>

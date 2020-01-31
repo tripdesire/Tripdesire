@@ -10,7 +10,7 @@ import {
   StatusBar
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import { Button, Text, ActivityIndicator, Icon, CurrencyText, } from "../../components";
+import { Button, Text, ActivityIndicator, Icon, CurrencyText } from "../../components";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import moment from "moment";
 import { isArray, isEmpty } from "lodash";
@@ -42,7 +42,7 @@ class CheckOut extends React.PureComponent {
           Toast.show(data.message.join());
         }
         this.toggleCoupon(false)();
-        this.setState({ data: data });
+        //this.setState({ data: data });
         this.ApiCall();
         // this.setState({ loading: false });
       })
@@ -430,7 +430,7 @@ class CheckOut extends React.PureComponent {
         <>
           <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <StatusBar backgroundColor="black" barStyle="light-content" />
+            <StatusBar backgroundColor="black" barStyle="light-content" />
             <View style={{ backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
@@ -501,7 +501,9 @@ class CheckOut extends React.PureComponent {
                     <View style={{ marginStart: 10, flex: 1 }}>
                       <Text>
                         {params.departFlight.FlightSegments[0].AirLineName} |{" "}
-                        {params.departFlight.FlightUId}
+                        {params.departFlight.FlightSegments[0].OperatingAirlineCode +
+                          "-" +
+                          params.departFlight.FlightSegments[0].OperatingAirlineFlightNumber}
                       </Text>
                       <View
                         style={{
@@ -588,7 +590,9 @@ class CheckOut extends React.PureComponent {
                       <View style={{ flex: 1, marginStart: 10 }}>
                         <Text>
                           {params.arrivalFlight.FlightSegments[0].AirLineName} |{" "}
-                          {params.arrivalFlight.FlightUId}
+                          {params.arrivalFlight.FlightSegments[0].OperatingAirlineCode +
+                            "-" +
+                            params.arrivalFlight.FlightSegments[0].OperatingAirlineFlightNumber}
                         </Text>
                         <View
                           style={{
@@ -694,7 +698,7 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginStart: 10 }}>Base Fare</Text>
                   <Text style={{ marginEnd: 10 }}>
                     <CurrencyText>₹</CurrencyText>
-                    <NumberFormat
+                    <NumberFormat decimalScale={2} fixedDecimalScale
                       value={params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                       displayType={"text"}
                       thousandSeparator={true}
@@ -712,7 +716,7 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
-                      <NumberFormat
+                      <NumberFormat decimalScale={2} fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.flight_book_item
                             .flight_schagre
@@ -735,7 +739,7 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginStart: 10 }}>Tax</Text>
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
-                      <NumberFormat
+                      <NumberFormat decimalScale={2} fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.flight_book_item
                             .flight_tax
@@ -758,7 +762,7 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                   <Text style={{ marginStart: 10 }}>
                     <CurrencyText>₹</CurrencyText>
-                    <NumberFormat
+                    <NumberFormat decimalScale={2} fixedDecimalScale
                       value={params.departFlight.FareDetails.TotalFare}
                       displayType={"text"}
                       thousandSeparator={true}
@@ -779,7 +783,7 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginStart: 10 }}>Base Fare</Text>
                       <Text style={{ marginEnd: 10 }}>
                         <CurrencyText>₹</CurrencyText>
-                        <NumberFormat
+                        <NumberFormat decimalScale={2} fixedDecimalScale
                           value={params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare}
                           displayType={"text"}
                           thousandSeparator={true}
@@ -797,7 +801,7 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
-                          <NumberFormat
+                          <NumberFormat decimalScale={2} fixedDecimalScale
                             value={
                               this.state.data.cart_data[0].custum_product_data.flight_book_item
                                 .return_flight_schagre
@@ -820,7 +824,7 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginStart: 10 }}>Tax</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
-                          <NumberFormat
+                          <NumberFormat decimalScale={2} fixedDecimalScale
                             value={
                               this.state.data.cart_data[0].custum_product_data.flight_book_item
                                 .return_flight_tax
@@ -843,7 +847,7 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                       <Text style={{ marginStart: 10 }}>
                         <CurrencyText>₹</CurrencyText>
-                        <NumberFormat
+                        <NumberFormat decimalScale={2} fixedDecimalScale
                           value={params.arrivalFlight.FareDetails.TotalFare}
                           displayType={"text"}
                           thousandSeparator={true}
@@ -1021,7 +1025,7 @@ class CheckOut extends React.PureComponent {
         <>
           <SafeAreaView style={{ flex: 0, backgroundColor: "#E5EBF7" }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-          <StatusBar backgroundColor="black" barStyle="light-content" />
+            <StatusBar backgroundColor="black" barStyle="light-content" />
             <View style={{ backgroundColor: "#E5EBF7" }}>
               <View
                 style={{
@@ -1096,7 +1100,10 @@ class CheckOut extends React.PureComponent {
                     <View style={{ marginStart: 10, flex: 1 }}>
                       <Text>
                         {params.departFlight.IntOnward.FlightSegments[0].AirLineName} |{" "}
-                        {params.departFlight.FlightUId}
+                        {params.departFlight.IntOnward.FlightSegments[0].OperatingAirlineCode +
+                          "-" +
+                          params.departFlight.IntOnward.FlightSegments[0]
+                            .OperatingAirlineFlightNumber}
                       </Text>
                       <View
                         style={{
@@ -1176,7 +1183,10 @@ class CheckOut extends React.PureComponent {
                       <View style={{ flex: 1, marginStart: 10 }}>
                         <Text>
                           {params.departFlight.IntReturn.FlightSegments[0].AirLineName} |{" "}
-                          {params.departFlight.FlightUId}
+                          {params.departFlight.IntReturn.FlightSegments[0].OperatingAirlineCode +
+                            "-" +
+                            params.departFlight.IntReturn.FlightSegments[0]
+                              .OperatingAirlineFlightNumber}
                         </Text>
                         <View
                           style={{

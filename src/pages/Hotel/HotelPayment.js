@@ -306,7 +306,7 @@ class HotelPayment extends React.PureComponent {
                     <Text style={style._textHeading}>Room Total</Text>
                     <Text style={style._Details}>
                       <CurrencyText style={style._Details}>₹</CurrencyText>
-                      <NumberFormat
+                      <NumberFormat decimalScale={2} fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.Hotel_item_details
                             .single_hotel_data.selectedRoom.RoomNetTotal * params.Night

@@ -426,7 +426,7 @@ class HotelCheckout extends React.Component {
                             <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
                               ₹
                             </CurrencyText>
-                            <NumberFormat
+                            <NumberFormat decimalScale={2} fixedDecimalScale
                               value={item.RoomTotal.toFixed(2)}
                               displayType={"text"}
                               thousandSeparator={true}

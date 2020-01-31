@@ -161,7 +161,7 @@ class FlightListRender extends React.PureComponent {
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            <NumberFormat
+            <NumberFormat decimalScale={2} fixedDecimalScale
               value={parseInt(item.FareDetails.TotalFare)}
               displayType={"text"}
               thousandSeparator={true}
@@ -444,7 +444,13 @@ class FlightListRender extends React.PureComponent {
                     | Connection Time:
                     <Text style={{ fontSize: 16, fontWeight: "700" }}>
                       {" "}
-                      {item.FlightSegments[index + 1].GroundTime}
+                      {moment
+                        .duration(
+                          moment(item.FlightSegments[index + 1].DepartureDateTime).diff(
+                            moment(item.FlightSegments[index].ArrivalDateTime)
+                          )
+                        )
+                        .format("h:mm [hrs]")}
                     </Text>
                   </Text>
                 )}

@@ -468,7 +468,15 @@ class RenderInternationRound extends React.PureComponent {
                     | Connection Time:
                     <Text style={{ fontSize: 16, fontWeight: "700" }}>
                       {" "}
-                      {this.props.item.IntOnward.FlightSegments[index + 1].GroundTime}
+                      {moment
+                        .duration(
+                          moment(
+                            this.props.item.IntOnward.FlightSegments[index + 1].DepartureDateTime
+                          ).diff(
+                            moment(this.props.item.IntOnward.FlightSegments[index].ArrivalDateTime)
+                          )
+                        )
+                        .format("h:mm [hrs]")}
                     </Text>
                   </Text>
                 )}
@@ -805,7 +813,17 @@ class RenderInternationRound extends React.PureComponent {
                       | Connection Time:
                       <Text style={{ fontSize: 16, fontWeight: "700" }}>
                         {" "}
-                        {this.props.item.IntReturn.FlightSegments[index + 1].GroundTime}
+                        {moment
+                          .duration(
+                            moment(
+                              this.props.item.IntReturn.FlightSegments[index + 1].DepartureDateTime
+                            ).diff(
+                              moment(
+                                this.props.item.IntReturn.FlightSegments[index].ArrivalDateTime
+                              )
+                            )
+                          )
+                          .format("h:mm [hrs]")}
                       </Text>
                     </Text>
                   )}

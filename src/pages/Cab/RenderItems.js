@@ -108,7 +108,7 @@ class RenderItems extends React.PureComponent {
           </Button>
           <Text style={{ fontSize: 18, fontWeight: "600" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹</CurrencyText>
-            <NumberFormat
+            <NumberFormat decimalScale={2} fixedDecimalScale
               value={this.props.item.TotalNetAmount}
               displayType={"text"}
               thousandSeparator={true}
