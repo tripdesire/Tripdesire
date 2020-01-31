@@ -284,7 +284,7 @@ class Bus extends React.PureComponent {
                   <Text style={{ color: "#000000" }}>Depart</Text>
 
                   <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
-                    {moment(this.state.CheckIn).format("DD-MMM-YYYY")}
+                    {moment(this.state.CheckIn).format("DD MMM, YY")}
                   </Text>
                   <DateTimePicker
                     isVisible={fromDTpicker}
@@ -302,7 +302,7 @@ class Bus extends React.PureComponent {
                     onPress={this.showDateTimePicker("toDTpicker")}>
                     <Text style={{ color: "#000000" }}>Return</Text>
                     <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
-                      {moment(this.state.CheckOut).format("DD-MMM-YYYY")}
+                      {moment(this.state.CheckOut).format("DD MMM, YY")}
                     </Text>
                     <DateTimePicker
                       isVisible={toDTpicker}

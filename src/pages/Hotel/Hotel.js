@@ -329,7 +329,7 @@ class Hotel extends React.PureComponent {
                 onPress={this.showDateTimePicker("fromDTpicker")}>
                 <Text style={{ color: "#000000" }}>Check-in</Text>
                 <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
-                  {moment(CheckIn).format("DD MMM YYYY")}
+                  {moment(CheckIn).format("DD MMM, YY")}
                 </Text>
                 <DateTimePicker
                   isVisible={fromDTpicker}
@@ -344,7 +344,7 @@ class Hotel extends React.PureComponent {
                 onPress={this.showDateTimePicker("toDTpicker")}>
                 <Text style={{ color: "#000000" }}>Check-out</Text>
                 <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
-                  {moment(CheckOut).format("DD MMM YYYY")}
+                  {moment(CheckOut).format("DD MMM, YY")}
                 </Text>
                 <DateTimePicker
                   isVisible={toDTpicker}

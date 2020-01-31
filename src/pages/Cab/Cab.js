@@ -579,7 +579,7 @@ class Cab extends React.PureComponent {
                 onPress={this.showDateTimePicker("fromDTpicker")}>
                 <Text style={{ color: "#000000" }}>Depart</Text>
                 <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
-                  {moment(this.state.CheckIn).format("DD MMM YYYY")}
+                  {moment(this.state.CheckIn).format("DD MMM, YY")}
                 </Text>
                 <DateTimePicker
                   isVisible={fromDTpicker}
@@ -597,7 +597,7 @@ class Cab extends React.PureComponent {
                   <Text
                     numberOfLines={1}
                     style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
-                    {moment(this.state.CheckOut).format("DD MMM YYYY")}
+                    {moment(this.state.CheckOut).format("DD MMM, YY")}
                   </Text>
                   <DateTimePicker
                     isVisible={toDTpicker}

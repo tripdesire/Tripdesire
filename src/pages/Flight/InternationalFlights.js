@@ -353,7 +353,7 @@ class InternationalFlights extends React.PureComponent {
               onPress={this.showDateTimePicker("fromDTpicker")}>
               <Text style={{ color: "#000000" }}>Depart </Text>
               <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
-                {moment(Journey_date).format("DD MMM YYYY")}
+                {moment(Journey_date).format("DD MMM, YY")}
               </Text>
               <DateTimePicker
                 isVisible={fromDTpicker}
@@ -369,7 +369,7 @@ class InternationalFlights extends React.PureComponent {
                 onPress={this.showDateTimePicker("toDTpicker")}>
                 <Text style={{ color: "#000000" }}>Return</Text>
                 <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
-                  {moment(Return_date).format("DD MMM YYYY")}
+                  {moment(Return_date).format("DD MMM, YY")}
                 </Text>
                 <DateTimePicker
                   isVisible={toDTpicker}
