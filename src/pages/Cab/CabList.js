@@ -77,7 +77,7 @@ class CabList extends React.PureComponent {
     etravosApi
       .get("/Cabs/AvailableCabs", params)
       .then(({ data }) => {
-        console.log(data);
+        console.log(JSON.stringify(data));
         if (data.AvailableCabs == null) {
           this.setState({ loader: false });
           //Toast.show("Data not found.", Toast.LONG);

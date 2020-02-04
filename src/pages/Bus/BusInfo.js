@@ -215,9 +215,13 @@ class BusInfo extends React.PureComponent {
                 width: "100%",
                 justifyContent: "space-between"
               }}>
-              <Text style={{ fontSize: 18 }}>{item.DepartureTime}</Text>
+              <Text style={{ fontSize: 18 }}>
+                {moment(item.DepartureTime, ["h:mm A"]).format("HH:mm")}
+              </Text>
               <Text style={{ color: "#5D666D", fontSize: 16 }}>{item.Duration}</Text>
-              <Text style={{ fontSize: 18 }}>{item.ArrivalTime}</Text>
+              <Text style={{ fontSize: 18 }}>
+                {moment(item.ArrivalTime, ["h:mm A"]).format("HH:mm")}
+              </Text>
             </View>
           </View>
         </View>

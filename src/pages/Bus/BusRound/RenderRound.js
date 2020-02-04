@@ -3,6 +3,7 @@ import { View, SafeAreaView, TouchableOpacity, Modal, StyleSheet, Image } from "
 import { Button, Text, CurrencyText, Icon } from "../../../components";
 import { withNavigation } from "react-navigation";
 import NumberFormat from "react-number-format";
+import moment from "moment";
 class RenderRound extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -65,9 +66,13 @@ class RenderRound extends React.PureComponent {
                 width: "100%",
                 justifyContent: "space-between"
               }}>
-              <Text style={{ fontSize: 18 }}>{item.DepartureTime}</Text>
+              <Text style={{ fontSize: 18 }}>
+                {moment(item.DepartureTime, ["h:mm A"]).format("HH:mm")}
+              </Text>
               <Text style={{ color: "#5D666D", fontSize: 16 }}>{item.Duration}</Text>
-              <Text style={{ fontSize: 18 }}>{item.ArrivalTime}</Text>
+              <Text style={{ fontSize: 18 }}>
+                {moment(item.ArrivalTime, ["h:mm A"]).format("HH:mm")}
+              </Text>
             </View>
           </View>
         </View>
@@ -96,7 +101,9 @@ class RenderRound extends React.PureComponent {
           </Button>
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
             <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹</CurrencyText>
-            <NumberFormat decimalScale={2} fixedDecimalScale
+            <NumberFormat
+              decimalScale={2}
+              fixedDecimalScale
               value={parseInt(rupee[0])}
               displayType={"text"}
               thousandSeparator={true}

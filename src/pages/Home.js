@@ -9,6 +9,7 @@ import {
   StatusBar
 } from "react-native";
 import { HomeButtonComponent, Text } from "../../src/components";
+import SwiperFlatList from "react-native-swiper-flatlist";
 const { width, height } = Dimensions.get("window");
 
 const aspectHeight = (width, height, newWidth) => (height / width) * newWidth;
@@ -18,7 +19,13 @@ class Home extends React.PureComponent {
     super(props);
     this.state = {
       suggestions: [],
-      isSelect: true
+      isSelect: true,
+      Images: [
+        { img: require("../assets/imgs/offer.png") },
+        { img: require("../assets/imgs/offer.png") },
+        { img: require("../assets/imgs/offer.png") },
+        { img: require("../assets/imgs/offer.png") }
+      ]
     };
   }
 
@@ -27,7 +34,7 @@ class Home extends React.PureComponent {
   };
 
   render() {
-    const { IconcolorFlight, IconcolorHotels, IconcolorBus, IconcolorCab } = this.state;
+    const { IconcolorFlight, IconcolorHotels, IconcolorBus, IconcolorCab, Images } = this.state;
     return (
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
@@ -106,7 +113,7 @@ class Home extends React.PureComponent {
               onPress={this.navigateToScreen("Cab")}
             />
           </View>
-          <Image
+          {/* <Image
             style={{
               marginVertical: 20,
               resizeMode: "contain",
@@ -115,7 +122,49 @@ class Home extends React.PureComponent {
               height: aspectHeight(1134, 1134, width - 64)
             }}
             source={require("../assets/imgs/offer.png")}
-          />
+          /> */}
+          <SwiperFlatList autoplay autoplayDelay={2} autoplayLoop index={0}>
+            <Image
+              style={{
+                width: width - 64,
+                marginHorizontal: 32,
+                marginBottom: 20,
+                height: aspectHeight(1134, 1134, width - 64),
+                resizeMode: "contain"
+              }}
+              source={require("../assets/imgs/flightOffer.jpg")}
+            />
+            <Image
+              style={{
+                width: width - 64,
+                marginHorizontal: 32,
+                marginBottom: 20,
+                height: aspectHeight(1134, 1134, width - 64),
+                resizeMode: "contain"
+              }}
+              source={require("../assets/imgs/HotelOffer.jpg")}
+            />
+            <Image
+              style={{
+                width: width - 64,
+                marginHorizontal: 32,
+                marginBottom: 20,
+                height: aspectHeight(1134, 1134, width - 64),
+                resizeMode: "contain"
+              }}
+              source={require("../assets/imgs/busOffer.jpg")}
+            />
+            <Image
+              style={{
+                width: width - 64,
+                marginHorizontal: 32,
+                marginBottom: 20,
+                height: aspectHeight(1134, 1134, width - 64),
+                resizeMode: "contain"
+              }}
+              source={require("../assets/imgs/cabOffer.jpg")}
+            />
+          </SwiperFlatList>
         </ScrollView>
         {/* </SafeAreaView> */}
       </>
