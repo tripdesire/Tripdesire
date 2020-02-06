@@ -12,6 +12,7 @@
 #import <React/RCTRootView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <RNGoogleSignin/RNGoogleSignin.h>
+#import <Firebase.h>
 
 @implementation AppDelegate
 
@@ -32,6 +33,11 @@
   /******** Override Dark mode ***********/
   if (@available(iOS 13, *)) {
     self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+  }
+  /***************************************/
+  /*********************Firebase*************/
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
   }
   /***************************************/
 
