@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { Signin } from "../store/action";
 import { GoogleSignin } from "@react-native-community/google-signin";
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from "react-native-fbsdk";
+import analytics from "@react-native-firebase/analytics";
 
 class SignIn extends React.PureComponent {
   constructor(props) {
@@ -28,6 +29,14 @@ class SignIn extends React.PureComponent {
       loader: false,
       showPassword: true
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("SignIn");
   }
 
   _showPassword = () => {

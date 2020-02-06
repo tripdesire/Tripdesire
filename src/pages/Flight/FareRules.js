@@ -5,6 +5,7 @@ import { Text, Button, ActivityIndicator } from "../../components";
 import Icon from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import HTML from "react-native-render-html";
+import analytics from "@react-native-firebase/analytics";
 
 class FareDetails extends React.PureComponent {
   constructor(props) {
@@ -13,6 +14,14 @@ class FareDetails extends React.PureComponent {
     this.state = {
       loader: false
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Flight Fare Rules");
   }
 
   render() {

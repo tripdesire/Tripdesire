@@ -4,6 +4,7 @@ import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../service";
 import { Icon } from "../components";
 import { Button, Text, TextInputComponent, ActivityIndicator } from "../components";
+import analytics from "@react-native-firebase/analytics";
 
 class ForgetPassword extends React.PureComponent {
   constructor(props) {
@@ -12,6 +13,14 @@ class ForgetPassword extends React.PureComponent {
       email: "",
       loader: false
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Forget Password");
   }
 
   _submit = () => {

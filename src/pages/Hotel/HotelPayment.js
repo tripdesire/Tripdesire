@@ -24,6 +24,8 @@ import { domainApi } from "../../service";
 import { isArray, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
+
 class HotelPayment extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -76,7 +78,14 @@ class HotelPayment extends React.PureComponent {
     });
   };
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Hotel Checkout");
+
     const params = { ...this.props.navigation.state.params, itemId: 222 };
 
     let param = {
@@ -306,7 +315,9 @@ class HotelPayment extends React.PureComponent {
                     <Text style={style._textHeading}>Room Total</Text>
                     <Text style={style._Details}>
                       <CurrencyText style={style._Details}>₹</CurrencyText>
-                      <NumberFormat decimalScale={2} fixedDecimalScale
+                      <NumberFormat
+                        decimalScale={2}
+                        fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.Hotel_item_details
                             .single_hotel_data.selectedRoom.RoomNetTotal * params.Night

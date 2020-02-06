@@ -27,6 +27,7 @@ import moment from "moment";
 import Toast from "react-native-simple-toast";
 import Filter from "./Filter";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
 
 const { width, height } = Dimensions.get("window");
 
@@ -64,7 +65,13 @@ class HotelInfo extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
   componentDidMount() {
+    this.trackScreenView("Hotel List");
+
     const { params } = this.props.navigation.state;
 
     etravosApi
@@ -201,7 +208,9 @@ class HotelInfo extends React.PureComponent {
             <View style={{ marginStart: 10 }}>
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
                 <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹</CurrencyText>
-                <NumberFormat decimalScale={2} fixedDecimalScale
+                <NumberFormat
+                  decimalScale={2}
+                  fixedDecimalScale
                   value={item.RoomDetails[0].RoomTotal.toFixed(2)}
                   displayType={"text"}
                   thousandSeparator={true}

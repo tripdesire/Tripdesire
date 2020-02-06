@@ -17,6 +17,7 @@ import HTML from "react-native-render-html";
 import { connect } from "react-redux";
 import { isEmpty, isArray } from "lodash";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
 
 class CheckoutBus extends React.PureComponent {
   constructor(props) {
@@ -83,7 +84,14 @@ class CheckoutBus extends React.PureComponent {
     });
   };
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Bus Checkout");
+
     console.log(this.props.navigation.state.params);
 
     const {

@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import CountryPicker from "react-native-country-picker-modal";
 import GstDetails from "./GstDetails";
 import HTML from "react-native-render-html";
+import analytics from "@react-native-firebase/analytics";
 
 class CheckOut1 extends React.PureComponent {
   constructor(props) {
@@ -131,6 +132,14 @@ class CheckOut1 extends React.PureComponent {
       payment_method: data.payment_gateway[0].gateway_id
     };
     this.ApiCall(data.payment_gateway[0]);
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Payement Flight");
   }
 
   closeModal = val => {

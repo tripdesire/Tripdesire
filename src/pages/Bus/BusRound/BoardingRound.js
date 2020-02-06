@@ -4,6 +4,7 @@ import { Button, Text, Header, RNPicker } from "../../../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
+import analytics from "@react-native-firebase/analytics";
 
 class BoardingRound extends React.PureComponent {
   constructor(props) {
@@ -16,6 +17,14 @@ class BoardingRound extends React.PureComponent {
       boardingpoints: paramsRound.BoardingTimes,
       droppingpoints: paramsRound.DroppingTimes
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Bus Boarding and Dropping Round");
   }
 
   _bookNow = () => {

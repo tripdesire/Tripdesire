@@ -5,6 +5,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { Header } from "../../components";
 import Animated, { Easing } from "react-native-reanimated";
+import analytics from "@react-native-firebase/analytics";
 
 class Bus extends React.PureComponent {
   constructor(props) {
@@ -31,6 +32,14 @@ class Bus extends React.PureComponent {
       TripType: 1,
       rotateVal: 1
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Bus Search");
   }
 
   showDateTimePicker = key => () => {

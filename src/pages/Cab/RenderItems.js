@@ -11,6 +11,7 @@ import {
 import { Button, Text, CurrencyText, Icon } from "../../components";
 import { withNavigation } from "react-navigation";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
 
 class RenderItems extends React.PureComponent {
   constructor(props) {
@@ -19,6 +20,14 @@ class RenderItems extends React.PureComponent {
       closeDetails: false,
       loading: false
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Cab Render Item");
   }
 
   _onFareDetails = () => {
@@ -108,7 +117,9 @@ class RenderItems extends React.PureComponent {
           </Button>
           <Text style={{ fontSize: 18, fontWeight: "600" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹</CurrencyText>
-            <NumberFormat decimalScale={2} fixedDecimalScale
+            <NumberFormat
+              decimalScale={2}
+              fixedDecimalScale
               value={this.props.item.TotalNetAmount}
               displayType={"text"}
               thousandSeparator={true}

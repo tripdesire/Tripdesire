@@ -13,6 +13,7 @@ import { orderBy } from "lodash";
 import { etravosApi } from "../../../service";
 import RenderRound from "./RenderRound";
 import Filter from "../Filter";
+import analytics from "@react-native-firebase/analytics";
 
 const { width, height } = Dimensions.get("window");
 class BusRound extends React.PureComponent {
@@ -36,7 +37,14 @@ class BusRound extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Bus Oneway List");
+
     const { params } = this.props.navigation.state;
     this.setState({ loader: true });
     etravosApi

@@ -5,10 +5,19 @@ import Text from "./TextComponent";
 import Icon from "./IconNB";
 import CurrencyText from "./CurrencyText";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
 
 class BusThankYou extends React.PureComponent {
   constructor(props) {
     super(props);
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Bus Thank You");
   }
 
   _goBack = () => {

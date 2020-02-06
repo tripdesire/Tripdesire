@@ -4,12 +4,22 @@ import { Button, Text, Icon, CurrencyText } from "../../../components";
 import { withNavigation } from "react-navigation";
 import NumberFormat from "react-number-format";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
+
 class RenderRoundReturn extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       CancellationPolicy: false
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Bus Round Render");
   }
 
   _SelectedSeat = (item, index) => () => {

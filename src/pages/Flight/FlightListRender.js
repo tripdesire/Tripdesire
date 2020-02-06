@@ -10,6 +10,8 @@ import { etravosApi } from "../../service";
 import NumberFormat from "react-number-format";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
+import analytics from "@react-native-firebase/analytics";
+
 momentDurationFormatSetup(moment);
 
 var newData = [];
@@ -22,6 +24,15 @@ class FlightListRender extends React.PureComponent {
       farerule: ""
     };
   }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Domestic Oneway List");
+  }
+
   viewDetails = () => {
     this.setState({ expanded: !this.state.expanded });
   };
@@ -161,7 +172,9 @@ class FlightListRender extends React.PureComponent {
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            <NumberFormat decimalScale={2} fixedDecimalScale
+            <NumberFormat
+              decimalScale={2}
+              fixedDecimalScale
               value={parseInt(item.FareDetails.TotalFare)}
               displayType={"text"}
               thousandSeparator={true}

@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Image, TouchableOpacity, Dimensions } from "react-native";
-import { Text,CurrencyText } from "../../components";
+import { Text, CurrencyText } from "../../components";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
 
 class RoomDetails extends React.PureComponent {
   constructor(props) {
@@ -10,6 +11,14 @@ class RoomDetails extends React.PureComponent {
       _selectRadio: "1",
       selectedRoom: props.params.RoomDetails[0]
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Hotel Room Details");
   }
 
   _radioButton = item => () => {
@@ -72,7 +81,10 @@ class RoomDetails extends React.PureComponent {
               <Text style={{ color: "#717A81" }}>No room inclusion here</Text>
             </TouchableOpacity>
             <View style={{ flex: 2, paddingStart: 4, marginStart: 10 }}>
-              <Text style={{ fontSize: 18, fontWeight: "700" }}><CurrencyText style={{ fontSize: 18, fontWeight: "700" }}>₹</CurrencyText>{this.props.item.RoomTotal}</Text>
+              <Text style={{ fontSize: 18, fontWeight: "700" }}>
+                <CurrencyText style={{ fontSize: 18, fontWeight: "700" }}>₹</CurrencyText>
+                {this.props.item.RoomTotal}
+              </Text>
               <Text style={{ color: "#717A81" }}>
                 {this.props.params.room}:Room(s),{this.props.params.Night}:night
               </Text>

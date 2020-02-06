@@ -25,6 +25,7 @@ import {
   hotelCountrySugg
 } from "../store/action";
 import { connect } from "react-redux";
+import analytics from "@react-native-firebase/analytics";
 
 const { height } = Dimensions.get("window");
 
@@ -63,7 +64,13 @@ class AutoCompleteModal extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("AutoComplete Modal");
     const {
       type,
       country,

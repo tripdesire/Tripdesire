@@ -18,6 +18,7 @@ import { etravosApi } from "../../service";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import Filter from "./Filter";
+import analytics from "@react-native-firebase/analytics";
 
 class FlightsInfoOneway extends React.PureComponent {
   constructor(props) {
@@ -61,7 +62,13 @@ class FlightsInfoOneway extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Flight Oneway");
     let data = Object.assign({}, this.props.navigation.state.params);
     this.genrateDates(data.journeyDate);
     this.ApiCall(data);

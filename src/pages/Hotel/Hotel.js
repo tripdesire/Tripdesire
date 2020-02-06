@@ -6,6 +6,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { Header } from "../../components";
 import AddPassengers from "./AddPassengers";
+import analytics from "@react-native-firebase/analytics";
 
 class Hotel extends React.PureComponent {
   constructor(props) {
@@ -37,6 +38,14 @@ class Hotel extends React.PureComponent {
       toDTpicker: false,
       hoteltype: 1
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Hotel Search");
   }
 
   goBack = () => {

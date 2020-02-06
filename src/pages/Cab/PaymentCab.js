@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { etravosApi, domainApi } from "../../service";
 import HTML from "react-native-render-html";
+import analytics from "@react-native-firebase/analytics";
 
 class PaymentCab extends React.PureComponent {
   constructor(props) {
@@ -45,6 +46,14 @@ class PaymentCab extends React.PureComponent {
       payment_method: data.payment_gateway[0].gateway_id
     };
     this.ApiCall(data.payment_gateway[0]);
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Cab Search");
   }
 
   onAdultChange = key => text => {

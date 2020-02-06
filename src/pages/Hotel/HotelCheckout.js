@@ -30,6 +30,7 @@ import { Component } from "react";
 import Toast from "react-native-simple-toast";
 import ImageFull from "./ImageFull";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
 
 class HotelCheckout extends React.Component {
   constructor(props) {
@@ -53,8 +54,13 @@ class HotelCheckout extends React.Component {
     this.SingleHotelData();
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
-    console.log("kamal");
+    this.trackScreenView("Hotel Single Page");
     const { params } = this.props.navigation.state;
     let param = {
       hotelId: params.HotelId,
@@ -426,7 +432,9 @@ class HotelCheckout extends React.Component {
                             <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
                               ₹
                             </CurrencyText>
-                            <NumberFormat decimalScale={2} fixedDecimalScale
+                            <NumberFormat
+                              decimalScale={2}
+                              fixedDecimalScale
                               value={item.RoomTotal.toFixed(2)}
                               displayType={"text"}
                               thousandSeparator={true}

@@ -7,10 +7,19 @@ import Text from "./TextComponent";
 import CurrencyText from "./CurrencyText";
 import moment from "moment";
 import HTML from "react-native-render-html";
+import analytics from "@react-native-firebase/analytics";
 
 class HotelThankYou extends React.PureComponent {
   constructor(props) {
     super(props);
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Hotel Thank You");
   }
 
   navigateToScreen = page => () => {

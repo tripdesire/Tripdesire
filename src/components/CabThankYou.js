@@ -6,8 +6,17 @@ import Icon from "./IconNB";
 import moment from "moment";
 import CurrencyText from "./CurrencyText";
 import HTML from "react-native-render-html";
+import analytics from "@react-native-firebase/analytics";
 
 class CabThankYou extends React.PureComponent {
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Cab Thank You");
+  }
+
   _goBack = () => {
     this.props.navigation.goBack(null);
   };

@@ -2,6 +2,7 @@ import React from "react";
 import { View, SafeAreaView, ScrollView, StyleSheet, StatusBar } from "react-native";
 import { Button, Text, CheckBox, RadioButton, Header, Icon } from "../../components";
 import { uniq } from "lodash";
+import analytics from "@react-native-firebase/analytics";
 
 class Filter extends React.Component {
   constructor(props) {
@@ -36,7 +37,14 @@ class Filter extends React.Component {
     ];
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Bus Filter");
+
     const { data } = this.props;
     //console.log(data);
     let travels = [];

@@ -7,6 +7,7 @@ import { Text, Button, ActivityIndicator, Icon } from "../components";
 import { Signin } from "../store/action";
 import { domainApi } from "../service";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
+import analytics from "@react-native-firebase/analytics";
 
 class OTPVerify extends Component {
   constructor(props) {
@@ -22,7 +23,14 @@ class OTPVerify extends Component {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("OTP Verify");
+
     let timer = setInterval(this.tick, 1000);
     this.setState({ timer, counter: 30 });
   }

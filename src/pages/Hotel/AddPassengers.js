@@ -4,6 +4,7 @@ import { Button, Text } from "../../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-simple-toast";
+import analytics from "@react-native-firebase/analytics";
 
 class AddPassengers extends React.PureComponent {
   constructor(props) {
@@ -17,6 +18,13 @@ class AddPassengers extends React.PureComponent {
         { adults: 1, children: 0, childAge: [-1, -1] }
       ]
     };
+  }
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Hotel Add Passengers");
   }
   onRoomChange = (itemValue, index) => {
     let newData = Object.assign([], this.state.data);

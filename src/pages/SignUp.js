@@ -16,6 +16,7 @@ import { Signin } from "../store/action";
 import { GoogleSignin } from "@react-native-community/google-signin";
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from "react-native-fbsdk";
 import axios from "axios";
+import analytics from "@react-native-firebase/analytics";
 
 class SignUp extends React.PureComponent {
   constructor(props) {
@@ -31,6 +32,14 @@ class SignUp extends React.PureComponent {
       password: "",
       showPassword: true
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("SignUp");
   }
 
   _showPassword = () => {

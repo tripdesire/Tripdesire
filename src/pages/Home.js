@@ -69,39 +69,6 @@ class Home extends React.PureComponent {
               </ImageBackground>
             </View>
           </View>
-          {/* <View
-            style={{
-              backgroundColor: "#ffffff",
-              color: "#fff",
-              borderRadius: 20
-            }}>
-            <ImageBackground
-              resizeMode="cover"
-              style={{
-                width,
-                justifyContent: "center",
-                alignItems: "center",
-                height: height / 2.8,
-                width: width + 220,
-                alignSelf: "center",
-                borderBottomLeftRadius: 650,
-                borderBottomRightRadius: 650,
-                overflow: "hidden"
-                //   transform: [{ translateX: 100, translateY: 100 }]
-              }}
-              source={require("../assets/imgs/Banner.jpg")}>
-              <Text
-                style={{
-                  fontSize: 30,
-                  color: "#FFFFFF",
-                  fontWeight: "700",
-                  marginHorizontal: 20,
-                  lineHeight: 32
-                }}>
-                Desire.Travel.Explore
-              </Text>
-            </ImageBackground>
-          </View> */}
           <View
             style={{
               marginTop: 30,
@@ -141,16 +108,6 @@ class Home extends React.PureComponent {
               onPress={this.navigateToScreen("Cab")}
             />
           </View>
-          {/* <Image
-            style={{
-              marginVertical: 20,
-              resizeMode: "contain",
-              marginHorizontal: 32,
-              width: width - 64,
-              height: aspectHeight(1134, 1134, width - 64)
-            }}
-            source={require("../assets/imgs/offer.png")}
-          /> */}
           <SwiperFlatList autoplay autoplayDelay={2} autoplayLoop index={0}>
             <Image
               style={{

@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { View, StatusBar, SafeAreaView } from "react-native";
 import { Text, Button, TextInputComponent, Icon } from "../../components";
+import analytics from "@react-native-firebase/analytics";
 
 class GstDetails extends React.PureComponent {
   constructor(props) {
@@ -17,13 +18,13 @@ class GstDetails extends React.PureComponent {
     };
   }
 
-  // componentDidMount() {
-  //   if (this.props.data == {}) {
-  //     this.setState({ loader: true });
-  //   } else {
-  //     this.setState({ loader: false });
-  //   }
-  // }
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Flight Gst Details");
+  }
 
   _submit = () => {
     this.props.onBackPress && this.props.onBackPress(this.state);

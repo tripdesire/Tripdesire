@@ -4,7 +4,7 @@ import { Button, Text, LinearGradient } from "../../components";
 import DomesticFlights from "./DomesticFlights";
 import InternationalFlights from "./InternationalFlights";
 import { Header } from "../../components";
-//import LinearGradient from "react-native-linear-gradient";
+import analytics from "@react-native-firebase/analytics";
 
 class FlightSearch extends React.PureComponent {
   constructor(props) {
@@ -12,6 +12,14 @@ class FlightSearch extends React.PureComponent {
     this.state = {
       flightType: 1
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Flight Search");
   }
 
   setDomesticActive = () => {

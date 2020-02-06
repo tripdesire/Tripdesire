@@ -17,6 +17,7 @@ import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import { Header } from "../../components";
 import SuggLoc from "./LocationModal";
+import analytics from "@react-native-firebase/analytics";
 
 class Cab extends React.PureComponent {
   constructor(props) {
@@ -64,6 +65,14 @@ class Cab extends React.PureComponent {
       pickuptime: null,
       text: null
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Cab Search");
   }
 
   getTimeStops(date) {

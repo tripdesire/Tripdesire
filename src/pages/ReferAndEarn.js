@@ -5,6 +5,7 @@ import { domainApi, etravosApi } from "../service";
 import { connect } from "react-redux";
 import HTML from "react-native-render-html";
 import Share from "react-native-share";
+import analytics from "@react-native-firebase/analytics";
 
 class ReferAndEarn extends React.PureComponent {
   constructor(props) {
@@ -37,7 +38,14 @@ class ReferAndEarn extends React.PureComponent {
       });
   };
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Refer and Earn");
+
     const { user } = this.props;
 
     this.setState({ loader: true });

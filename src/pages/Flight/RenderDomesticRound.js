@@ -19,6 +19,8 @@ import FareDetails from "./FareRules";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
+
 class RenderDomesticRound extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -27,6 +29,14 @@ class RenderDomesticRound extends React.PureComponent {
       showModal: false,
       farerule: ""
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Flight Domestic Round");
   }
 
   fareRules = () => {
@@ -192,7 +202,9 @@ class RenderDomesticRound extends React.PureComponent {
           </View>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            <NumberFormat decimalScale={2} fixedDecimalScale
+            <NumberFormat
+              decimalScale={2}
+              fixedDecimalScale
               value={parseInt(this.props.item.FareDetails.TotalFare)}
               displayType={"text"}
               thousandSeparator={true}

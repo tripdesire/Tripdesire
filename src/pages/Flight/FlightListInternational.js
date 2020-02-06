@@ -18,6 +18,8 @@ import FareDetails from "./FareRules";
 import { etravosApi } from "../../service";
 import NumberFormat from "react-number-format";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
+
 var newData = [];
 class FlightListInternational extends React.PureComponent {
   constructor(props) {
@@ -27,6 +29,14 @@ class FlightListInternational extends React.PureComponent {
       showModal: false,
       farerule: ""
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("International Oneway List");
   }
 
   fareRules = () => {
@@ -167,7 +177,9 @@ class FlightListInternational extends React.PureComponent {
           </Text>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-            <NumberFormat decimalScale={2} fixedDecimalScale
+            <NumberFormat
+              decimalScale={2}
+              fixedDecimalScale
               value={parseInt(this.props.item.FareDetails.TotalFare)}
               displayType={"text"}
               thousandSeparator={true}

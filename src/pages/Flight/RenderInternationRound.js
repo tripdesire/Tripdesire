@@ -8,6 +8,8 @@ import { etravosApi } from "../../service";
 import Toast from "react-native-simple-toast";
 import FareDetails from "./FareRules";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
+
 class RenderInternationRound extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -17,6 +19,14 @@ class RenderInternationRound extends React.PureComponent {
       showModal: false,
       farerule: ""
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Flight International Round");
   }
 
   fareRules = () => {

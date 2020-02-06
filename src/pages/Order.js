@@ -7,6 +7,7 @@ import { isEmpty, isArray } from "lodash";
 import { connect } from "react-redux";
 import { domainApi } from "../service";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
 
 class Order extends React.PureComponent {
   constructor(props) {
@@ -25,20 +26,16 @@ class Order extends React.PureComponent {
     console.log("kamal");
     await this.setState({ refreshing: true, offset: 0 });
     this.loadOrders();
-    // this.setState({ refreshing: false });
-    // React.useCallback(() => {
-    //   this.setState({ refreshing: true });
-    //   this.wait(2000).then(() => this.setState({ refreshing: false }));
-    // }, [this.state.refreshing]);
   };
 
-  // wait(timeout) {
-  //   return new Promise(resolve => {
-  //     setTimeout(resolve, timeout);
-  //   });
-  // }
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
 
   componentDidMount() {
+    this.trackScreenView("Order");
+
     if (!isEmpty(this.props.user)) {
       this.loadOrders();
     }

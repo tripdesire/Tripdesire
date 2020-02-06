@@ -5,6 +5,7 @@ import { uniq, intersection, max, min } from "lodash";
 import { Icon } from "../../components";
 import moment from "moment";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import analytics from "@react-native-firebase/analytics";
 
 class Filter extends React.Component {
   constructor(props) {
@@ -45,15 +46,12 @@ class Filter extends React.Component {
     ];
   }
 
-  /*static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.filter != prevState.filter) {
-      return {filter: nextProps.filter};
-    } else {
-      return null;
-    }
-  }*/
-
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
   componentDidMount() {
+    this.trackScreenView("Flight Filter");
     const { data, flight_type, returnFlights } = this.props;
     let stops = [];
     let fareType = [];

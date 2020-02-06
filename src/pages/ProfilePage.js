@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { UpdateProfile } from "../store/action";
 import { domainApi } from "../service";
 import { LoginButton, AccessToken } from "react-native-fbsdk";
+import analytics from "@react-native-firebase/analytics";
 
 class ProfilePage extends React.PureComponent {
   constructor(props) {
@@ -20,6 +21,14 @@ class ProfilePage extends React.PureComponent {
       newPassword: "",
       confirmPassword: ""
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Profile");
   }
 
   _Submit = () => {

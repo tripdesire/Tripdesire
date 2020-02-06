@@ -8,6 +8,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-simple-toast";
 import AddPassengers from "./AddPassengers";
+import analytics from "@react-native-firebase/analytics";
 
 class InternationalFlights extends React.PureComponent {
   constructor(props) {
@@ -54,6 +55,14 @@ class InternationalFlights extends React.PureComponent {
       toDTpicker: false,
       rotateVal: 1
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("International Search");
   }
 
   setDate = (event, date) => {

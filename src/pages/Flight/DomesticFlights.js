@@ -8,6 +8,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
+import analytics from "@react-native-firebase/analytics";
 
 class DomesticFlights extends React.PureComponent {
   constructor(props) {
@@ -47,6 +48,14 @@ class DomesticFlights extends React.PureComponent {
       toDTpicker: false,
       rotateVal: 1
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Domestic Search");
   }
 
   // getLabel = item => {

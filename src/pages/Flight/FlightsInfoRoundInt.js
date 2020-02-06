@@ -13,6 +13,7 @@ import RenderInternationRound from "./RenderInternationRound";
 import Filter from "./Filter";
 import { etravosApi } from "../../service";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
 
 class FlightsInfoRoundInt extends React.PureComponent {
   constructor(props) {
@@ -51,7 +52,14 @@ class FlightsInfoRoundInt extends React.PureComponent {
       }
     };
   }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Flight International Round");
     let data = [];
     data = this.props.navigation.state.params;
     console.log(data);

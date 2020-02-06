@@ -19,6 +19,8 @@ import { isEmpty, isArray } from "lodash";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { etravosApi, domainApi } from "../../service";
+import analytics from "@react-native-firebase/analytics";
+
 import HTML from "react-native-render-html";
 
 class BusPayment extends React.PureComponent {
@@ -53,6 +55,14 @@ class BusPayment extends React.PureComponent {
       payment_method: cartData.payment_gateway[0].gateway_id
     };
     this.ApiCall(cartData.payment_gateway[0]);
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Bus Payment");
   }
 
   _changeAdults = (index, key) => text => {

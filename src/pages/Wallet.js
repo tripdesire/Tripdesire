@@ -15,6 +15,7 @@ import HTML from "react-native-render-html";
 import Modal from "react-native-modal";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
+import analytics from "@react-native-firebase/analytics";
 
 const { height } = Dimensions.get("window");
 
@@ -29,6 +30,14 @@ class Wallet extends React.PureComponent {
       rupee: ""
     };
     this.doApiCall();
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Wallet");
   }
 
   addMoneyToWallet(rupee) {

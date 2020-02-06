@@ -7,6 +7,7 @@ import { isEmpty } from "lodash";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
 import { Signup, Signin, Billing } from "../store/action";
+import analytics from "@react-native-firebase/analytics";
 
 class BillingDetails extends React.PureComponent {
   constructor(props) {
@@ -26,6 +27,14 @@ class BillingDetails extends React.PureComponent {
       postcode: user.billing.postcode,
       country: user.billing.country
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Billing Details");
   }
 
   _Submit = () => {

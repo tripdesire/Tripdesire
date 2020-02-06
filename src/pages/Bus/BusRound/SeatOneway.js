@@ -4,6 +4,8 @@ import { Button, Text, Header, ActivityIndicator, Icon, LinearGradient } from ".
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import { etravosApi } from "../../../service";
+import analytics from "@react-native-firebase/analytics";
+
 //import data1 from "../../Bus";
 //console.log(data1);
 
@@ -19,7 +21,14 @@ class SeatOneway extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Bus Seats OnewWay");
+
     console.log(this.props.navigation.state.params);
     const {
       tripType,

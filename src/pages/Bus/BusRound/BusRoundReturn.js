@@ -13,6 +13,7 @@ import { Button, Text, ActivityIndicator, Icon, DataNotFound } from "../../../co
 import { etravosApi } from "../../../service";
 import Filter from "../Filter";
 import RenderRoundReturn from "./RenderRoundReturn";
+import analytics from "@react-native-firebase/analytics";
 
 const { width, height } = Dimensions.get("window");
 class BusRoundReturn extends React.PureComponent {
@@ -36,7 +37,13 @@ class BusRoundReturn extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Bus Round List");
     const {
       sourceName,
       sourceId,

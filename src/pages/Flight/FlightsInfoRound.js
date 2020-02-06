@@ -27,6 +27,7 @@ import moment from "moment";
 import RenderDomesticRound from "./RenderDomesticRound";
 import Filter from "./Filter";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
 
 const { width, height } = Dimensions.get("window");
 
@@ -74,7 +75,13 @@ class FlightsInfoRound extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Flight Round");
     let data = this.props.navigation.state.params;
 
     let jd = moment(data.journeyDate, "DD-MM-YYYY").format("DD MMM");
@@ -481,7 +488,9 @@ class FlightsInfoRound extends React.PureComponent {
                     <Text style={{ color: "#5F6D78" }}>Departure</Text>
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                       <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
-                      <NumberFormat decimalScale={2} fixedDecimalScale
+                      <NumberFormat
+                        decimalScale={2}
+                        fixedDecimalScale
                         value={onwardFare}
                         displayType={"text"}
                         thousandSeparator={true}
@@ -496,7 +505,9 @@ class FlightsInfoRound extends React.PureComponent {
                     <Text style={{ color: "#5F6D78" }}>Return</Text>
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                       <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
-                      <NumberFormat decimalScale={2} fixedDecimalScale
+                      <NumberFormat
+                        decimalScale={2}
+                        fixedDecimalScale
                         value={returnFare}
                         displayType={"text"}
                         thousandSeparator={true}
@@ -511,7 +522,9 @@ class FlightsInfoRound extends React.PureComponent {
                     <Text style={{ color: "#5F6D78" }}>Total</Text>
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                       <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
-                      <NumberFormat decimalScale={2} fixedDecimalScale
+                      <NumberFormat
+                        decimalScale={2}
+                        fixedDecimalScale
                         value={onwardFare + returnFare}
                         displayType={"text"}
                         thousandSeparator={true}

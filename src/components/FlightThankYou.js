@@ -9,6 +9,7 @@ import moment from "moment";
 import { isArray } from "lodash";
 import { etravosApi } from "../service";
 import HTML from "react-native-render-html";
+import analytics from "@react-native-firebase/analytics";
 
 class FlightThankYou extends React.PureComponent {
   constructor(props) {
@@ -34,7 +35,14 @@ class FlightThankYou extends React.PureComponent {
     }
   };
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Flight Thank You");
+
     const { order } = this.props.navigation.state.params;
     const dataArray = order.reference_no && JSON.parse(order.reference_no);
     let params = {

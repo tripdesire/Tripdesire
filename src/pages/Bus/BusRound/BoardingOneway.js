@@ -3,6 +3,7 @@ import { View, SafeAreaView, StatusBar } from "react-native";
 import { Button, Text, Header, RNPicker } from "../../../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
+import analytics from "@react-native-firebase/analytics";
 
 class BoardingOneway extends React.PureComponent {
   constructor(props) {
@@ -15,6 +16,14 @@ class BoardingOneway extends React.PureComponent {
       boardingpoints: params.BoardingTimes,
       droppingpoints: params.DroppingTimes
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("Bus Boarding and Dropping Oneway");
   }
 
   getLabel = item => {

@@ -4,6 +4,7 @@ import CountryPicker, { getCallingCode, getAllCountries } from "react-native-cou
 import { domainApi } from "../service";
 import Toast from "react-native-simple-toast";
 import { Text, Button, ActivityIndicator, Icon } from "../components";
+import analytics from "@react-native-firebase/analytics";
 
 class OTPScreen extends React.Component {
   constructor(props) {
@@ -13,6 +14,14 @@ class OTPScreen extends React.Component {
       country_code: "IN",
       phone: ""
     };
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+  componentDidMount() {
+    this.trackScreenView("OTP Screen");
   }
 
   sendOTP = () => {

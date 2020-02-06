@@ -7,6 +7,7 @@ import moment from "moment";
 import { etravosApi } from "../../service";
 import RenderItems from "./RenderItems";
 import Filter from "./Filter";
+import analytics from "@react-native-firebase/analytics";
 
 class CabList extends React.PureComponent {
   constructor(props) {
@@ -70,7 +71,14 @@ class CabList extends React.PureComponent {
     });
   };
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Cab List");
+
     const { params } = this.props.navigation.state;
     console.log(params);
     this.setState({ loader: true });

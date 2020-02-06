@@ -1,9 +1,20 @@
 import React, { PureComponent } from "react";
 import { Text, Button, Icon } from "../components";
 import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
+import analytics from "@react-native-firebase/analytics";
+
 class OrderDetails extends React.PureComponent {
   constructor(props) {
     super(props);
+  }
+
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
+  componentDidMount() {
+    this.trackScreenView("Order Detail");
   }
 
   _goBack = () => {

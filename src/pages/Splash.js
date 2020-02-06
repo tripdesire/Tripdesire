@@ -2,6 +2,7 @@ import React from "react";
 import { Image, ImageBackground, Dimensions, StatusBar, View } from "react-native";
 import changeNavigationBarColor from "react-native-navigation-bar-color";
 import OneSignal from "react-native-onesignal"; // Import package from node modules
+import analytics from "@react-native-firebase/analytics";
 
 const { height, width } = Dimensions.get("window");
 
@@ -12,7 +13,13 @@ class Splash extends React.PureComponent {
     OneSignal.init("9acded5d-5de2-41a5-85c8-18ea9a376ee2");
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Splash");
     setTimeout(() => {
       this.props.navigation.navigate("TabNavigator");
     }, 3000);

@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import HTML from "react-native-render-html";
 import { domainApi } from "../../service";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
 
 class CheckOut extends React.PureComponent {
   constructor(props) {
@@ -85,7 +86,13 @@ class CheckOut extends React.PureComponent {
       });
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Checkout Flight");
     const { params } = this.props.navigation.state;
     Object.assign(params, {
       itemId: 87
@@ -698,7 +705,9 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginStart: 10 }}>Base Fare</Text>
                   <Text style={{ marginEnd: 10 }}>
                     <CurrencyText>₹</CurrencyText>
-                    <NumberFormat decimalScale={2} fixedDecimalScale
+                    <NumberFormat
+                      decimalScale={2}
+                      fixedDecimalScale
                       value={params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                       displayType={"text"}
                       thousandSeparator={true}
@@ -716,7 +725,9 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
-                      <NumberFormat decimalScale={2} fixedDecimalScale
+                      <NumberFormat
+                        decimalScale={2}
+                        fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.flight_book_item
                             .flight_schagre
@@ -739,7 +750,9 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginStart: 10 }}>Tax</Text>
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
-                      <NumberFormat decimalScale={2} fixedDecimalScale
+                      <NumberFormat
+                        decimalScale={2}
+                        fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.flight_book_item
                             .flight_tax
@@ -762,7 +775,9 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                   <Text style={{ marginStart: 10 }}>
                     <CurrencyText>₹</CurrencyText>
-                    <NumberFormat decimalScale={2} fixedDecimalScale
+                    <NumberFormat
+                      decimalScale={2}
+                      fixedDecimalScale
                       value={params.departFlight.FareDetails.TotalFare}
                       displayType={"text"}
                       thousandSeparator={true}
@@ -783,7 +798,9 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginStart: 10 }}>Base Fare</Text>
                       <Text style={{ marginEnd: 10 }}>
                         <CurrencyText>₹</CurrencyText>
-                        <NumberFormat decimalScale={2} fixedDecimalScale
+                        <NumberFormat
+                          decimalScale={2}
+                          fixedDecimalScale
                           value={params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare}
                           displayType={"text"}
                           thousandSeparator={true}
@@ -801,7 +818,9 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginStart: 10 }}>Fee & Surcharges</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
-                          <NumberFormat decimalScale={2} fixedDecimalScale
+                          <NumberFormat
+                            decimalScale={2}
+                            fixedDecimalScale
                             value={
                               this.state.data.cart_data[0].custum_product_data.flight_book_item
                                 .return_flight_schagre
@@ -824,7 +843,9 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginStart: 10 }}>Tax</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
-                          <NumberFormat decimalScale={2} fixedDecimalScale
+                          <NumberFormat
+                            decimalScale={2}
+                            fixedDecimalScale
                             value={
                               this.state.data.cart_data[0].custum_product_data.flight_book_item
                                 .return_flight_tax
@@ -847,7 +868,9 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginStart: 10 }}>Total Booking Price</Text>
                       <Text style={{ marginStart: 10 }}>
                         <CurrencyText>₹</CurrencyText>
-                        <NumberFormat decimalScale={2} fixedDecimalScale
+                        <NumberFormat
+                          decimalScale={2}
+                          fixedDecimalScale
                           value={params.arrivalFlight.FareDetails.TotalFare}
                           displayType={"text"}
                           thousandSeparator={true}

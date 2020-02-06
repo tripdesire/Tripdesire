@@ -13,6 +13,7 @@ import moment from "moment";
 import { etravosApi } from "../../service";
 import Filter from "./Filter";
 import NumberFormat from "react-number-format";
+import analytics from "@react-native-firebase/analytics";
 
 class BusInfo extends React.PureComponent {
   constructor(props) {
@@ -40,7 +41,14 @@ class BusInfo extends React.PureComponent {
     };
   }
 
+  trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
   componentDidMount() {
+    this.trackScreenView("Bus List");
+
     const { params } = this.props.navigation.state;
     etravosApi
       .get("/Buses/AvailableBuses", params)
