@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -21,6 +21,15 @@ function MyAccount({ navigation }) {
 
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
+
+  const trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
+  useEffect(() => {
+    trackScreenView("My Account");
+  }, []);
 
   const login = () => {
     navigation.navigate("LoginStack", {});

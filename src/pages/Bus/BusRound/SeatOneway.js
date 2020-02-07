@@ -141,8 +141,10 @@ class SeatOneway extends React.PureComponent {
       let index = selectedSheets.findIndex(val => val.Number == item.Number);
       if (index != -1) {
         selectedSheets.splice(index, 1);
-      } else {
+      } else if (selectedSheets.length < 6) {
         selectedSheets.push(item);
+      } else {
+        Toast.show("You can not select more than 6 setas");
       }
       this.setState({ selectedSheets });
       console.log(selectedSheets);

@@ -132,13 +132,9 @@ class FlightListRender extends React.PureComponent {
   render() {
     const { item, index, from, to, className } = this.props;
     let dd = moment(item.FlightSegments[0].DepartureDateTime).format("HH:mm");
-    let departureDate = moment(item.FlightSegments[0].DepartureDateTime).format("MMM DD");
     let ad = moment(item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime).format(
       "HH:mm"
     );
-    let arrivalDate = moment(
-      item.FlightSegments[item.FlightSegments.length - 1].ArrivalDateTime
-    ).format("MMM DD");
     let img = "http://webapi.i2space.co.in" + item.FlightSegments[0].ImagePath;
 
     return (
@@ -173,7 +169,7 @@ class FlightListRender extends React.PureComponent {
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
             <NumberFormat
-              decimalScale={2}
+              decimalScale={0}
               fixedDecimalScale
               value={parseInt(item.FareDetails.TotalFare)}
               displayType={"text"}

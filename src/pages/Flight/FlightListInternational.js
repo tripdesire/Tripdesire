@@ -129,20 +129,11 @@ class FlightListInternational extends React.PureComponent {
   };
 
   render() {
-    let dd = moment
-      .utc(this.props.item.IntOnward.FlightSegments[0].DepartureDateTimeZone)
-      .format("HH:mm");
-    let departureTime = moment(
-      this.props.item.IntOnward.FlightSegments[0].DepartureDateTime
-    ).format("MMM DD");
+    let dd = moment(this.props.item.IntOnward.FlightSegments[0].DepartureDateTime).format("HH:mm");
     let ad = moment(
       this.props.item.IntOnward.FlightSegments[this.props.item.IntOnward.FlightSegments.length - 1]
         .ArrivalDateTime
     ).format("HH:mm");
-    let arrivalTime = moment(
-      this.props.item.IntOnward.FlightSegments[this.props.item.IntOnward.FlightSegments.length - 1]
-        .ArrivalDateTime
-    ).format("MMM DD");
     let img = "http://webapi.i2space.co.in" + this.props.item.IntOnward.FlightSegments[0].ImagePath;
 
     const { from, to, className } = this.props;
@@ -178,9 +169,9 @@ class FlightListInternational extends React.PureComponent {
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
             <NumberFormat
-              decimalScale={2}
-              fixedDecimalScale
-              value={parseInt(this.props.item.FareDetails.TotalFare)}
+              decimalScale={0}
+             fixedDecimalScale
+              value={this.props.item.FareDetails.TotalFare}
               displayType={"text"}
               thousandSeparator={true}
               thousandsGroupStyle="lakh"

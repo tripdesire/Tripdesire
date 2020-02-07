@@ -433,9 +433,9 @@ class HotelCheckout extends React.Component {
                               ₹
                             </CurrencyText>
                             <NumberFormat
-                              decimalScale={2}
+                              decimalScale={0}
                               fixedDecimalScale
-                              value={item.RoomTotal.toFixed(2)}
+                              value={item.RoomTotal}
                               displayType={"text"}
                               thousandSeparator={true}
                               thousandsGroupStyle="lakh"

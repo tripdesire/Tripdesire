@@ -209,9 +209,9 @@ class HotelInfo extends React.PureComponent {
               <Text style={{ fontSize: 16, fontWeight: "700" }}>
                 <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹</CurrencyText>
                 <NumberFormat
-                  decimalScale={2}
+                  decimalScale={0}
                   fixedDecimalScale
-                  value={item.RoomDetails[0].RoomTotal.toFixed(2)}
+                  value={item.RoomDetails[0].RoomTotal}
                   displayType={"text"}
                   thousandSeparator={true}
                   thousandsGroupStyle="lakh"

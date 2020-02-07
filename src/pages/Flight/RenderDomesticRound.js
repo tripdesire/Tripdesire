@@ -170,7 +170,7 @@ class RenderDomesticRound extends React.PureComponent {
               </Text>
             </View>
           </View>
-          <View>
+          <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 16, lineHeight: 20 }}>
               {this.props.item.FlightSegments.length == 1
                 ? this.props.item.FlightSegments[0].Duration
@@ -203,7 +203,7 @@ class RenderDomesticRound extends React.PureComponent {
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
             <NumberFormat
-              decimalScale={2}
+              decimalScale={0}
               fixedDecimalScale
               value={parseInt(this.props.item.FareDetails.TotalFare)}
               displayType={"text"}

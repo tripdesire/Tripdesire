@@ -113,7 +113,7 @@ class RenderRoundReturn extends React.PureComponent {
           <Text style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>
             <CurrencyText style={{ fontSize: 16, fontWeight: "600" }}>₹</CurrencyText>
             <NumberFormat
-              decimalScale={2}
+              decimalScale={0}
               fixedDecimalScale
               value={parseInt(rupee[0])}
               displayType={"text"}

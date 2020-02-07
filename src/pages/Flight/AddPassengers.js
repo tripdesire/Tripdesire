@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, SafeAreaView, StyleSheet, StatusBar } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Button, Text, Icon } from "../../components";
+import Toast from "react-native-simple-toast";
 
 function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, infantsCount }) {
   const [adult, setAdult] = useState(adultCount);
@@ -9,7 +10,12 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
   const [infants, setInfants] = useState(infantsCount);
 
   const _submit = () => {
-    submit && submit({ adult, children, infants });
+    console.log(adult, children, infants);
+    if (adult >= infants) {
+      submit && submit({ adult, children, infants });
+    } else {
+      Toast.show("Infants can not more than adults", Toast.SHORT);
+    }
   };
   const changeAdults = value => {
     setAdult(value);

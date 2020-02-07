@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
@@ -197,7 +197,7 @@ const TabNavigator = createBottomTabNavigator(
           tabBarIcon: ({ tintColor }) => (
             <Image
               source={require("./src/assets/imgs/HomeNew.png")}
-              style={{ width: 26, height: 26, tintColor }}
+              style={[styles.tabBarImg, { tintColor }]}
             />
           )
         };
@@ -210,7 +210,7 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/bagNew.png")}
-            style={{ width: 26, height: 26, tintColor }}
+            style={[styles.tabBarImg, { tintColor }]}
           />
         )
       }
@@ -225,7 +225,7 @@ const TabNavigator = createBottomTabNavigator(
           tabBarIcon: ({ tintColor }) => (
             <Image
               source={require("./src/assets/imgs/my_account.png")}
-              style={{ width: 26, height: 26, tintColor }}
+              style={[styles.tabBarImg, { tintColor }]}
             />
           )
         };
@@ -238,7 +238,7 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Image
             source={require("./src/assets/imgs/HelpNew.png")}
-            style={{ width: 26, height: 26, tintColor }}
+            style={[styles.tabBarImg, { tintColor }]}
           />
         )
       }
@@ -249,17 +249,16 @@ const TabNavigator = createBottomTabNavigator(
       //activeBackgroundColor: "#1E2A48",
       //inactiveBackgroundColor: "#1E2A48",
       activeTintColor: "#5789FF",
-      inactiveTintColor: "#828E99",
+      inactiveTintColor: "#616A71",
       labelStyle: {
-        fontSize: 10,
-        fontWeight: "700"
+        fontSize: 8,
+        fontWeight: "600"
       },
       // tabBarComponent: TabBarComponent
       style: {
         backgroundColor: "#ffffff",
-        //paddingVertical: 12,
-        height: 60,
-        paddingVertical: 10
+        height: 42,
+        paddingVertical: 2
       }
     }
     //contentComponent: CustomDrawer
@@ -273,4 +272,12 @@ const AppNavigator = createSwitchNavigator({
 });
 
 const AppContainer = createAppContainer(AppNavigator);
+
+const styles = StyleSheet.create({
+  tabBarImg: {
+    width: 20,
+    height: 20
+  }
+});
+
 export default App;

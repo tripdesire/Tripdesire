@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   StatusBar
 } from "react-native";
 import { Text, Button } from "../components";
+import analytics from "@react-native-firebase/analytics";
 
 function Help(props) {
   const _call = () => {
@@ -29,6 +30,15 @@ function Help(props) {
       })
       .catch(err => console.log(err));
   };
+
+  const trackScreenView = async screen => {
+    // Set & override the MainActivity screen name
+    await analytics().setCurrentScreen(screen, screen);
+  };
+
+  useEffect(() => {
+    trackScreenView("Help");
+  }, []);
 
   const _email = () => {
     let email = "mailto:info@tripdesire.co";

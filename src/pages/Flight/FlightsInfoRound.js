@@ -489,7 +489,7 @@ class FlightsInfoRound extends React.PureComponent {
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                       <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
                       <NumberFormat
-                        decimalScale={2}
+                        decimalScale={0}
                         fixedDecimalScale
                         value={onwardFare}
                         displayType={"text"}
@@ -506,7 +506,7 @@ class FlightsInfoRound extends React.PureComponent {
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                       <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
                       <NumberFormat
-                        decimalScale={2}
+                        decimalScale={0}
                         fixedDecimalScale
                         value={returnFare}
                         displayType={"text"}
@@ -523,7 +523,7 @@ class FlightsInfoRound extends React.PureComponent {
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
                       <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
                       <NumberFormat
-                        decimalScale={2}
+                        decimalScale={0}
                         fixedDecimalScale
                         value={onwardFare + returnFare}
                         displayType={"text"}

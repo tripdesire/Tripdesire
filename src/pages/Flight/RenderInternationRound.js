@@ -9,6 +9,7 @@ import Toast from "react-native-simple-toast";
 import FareDetails from "./FareRules";
 import moment from "moment";
 import analytics from "@react-native-firebase/analytics";
+import NumberFormat from "react-number-format";
 
 class RenderInternationRound extends React.PureComponent {
   constructor(props) {
@@ -187,8 +188,18 @@ class RenderInternationRound extends React.PureComponent {
                   fontSize: 18,
                   fontWeight: "700"
                 }}>
-                <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
-                {this.props.item.FareDetails.TotalFare}
+                <CurrencyText style={{ fontSize: 18, fontWeight: "700" }}>₹</CurrencyText>
+                <NumberFormat
+                  decimalScale={0}
+                  fixedDecimalScale
+                  value={parseInt(this.props.item.FareDetails.TotalFare)}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  thousandsGroupStyle="lakh"
+                  renderText={value => (
+                    <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>
+                  )}
+                />
               </Text>
               {/* <Button
                 style={{
