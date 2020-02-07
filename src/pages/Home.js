@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: width,
     width: width * 2,
     height: width * 2,
-    marginLeft: -(width / 2),
+    marginStart: -(width / 2),
     position: "absolute",
     bottom: 0,
     overflow: "hidden"
