@@ -6,7 +6,7 @@ import Toast from "react-native-simple-toast";
 class Button extends React.PureComponent {
   onPress = () => {
     NetInfo.fetch().then(state => {
-      if (state.isInternetReachable == null || state.isInternetReachable) {
+      if (state.isConnected == null || state.isConnected) {
         this.props.onPress && this.props.onPress();
       } else {
         Toast.show("Please connect to internet", Toast.LONG);

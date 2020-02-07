@@ -311,7 +311,7 @@ class Cab extends React.PureComponent {
               marginTop: -15,
               justifyContent: "center",
               borderRadius: 10,
-              //borderWidth: 2
+              borderWidth: 0,
               elevation: 1,
               shadowOffset: { width: 0, height: 2 },
               shadowColor: "rgba(0,0,0,0.1)",
