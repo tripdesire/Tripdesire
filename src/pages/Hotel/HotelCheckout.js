@@ -152,10 +152,16 @@ class HotelCheckout extends React.Component {
   render() {
     const { params } = this.props.navigation.state;
 
-    let str = params.HotelImages[0].Imagepath.replace(
-      "https://cdn.grnconnect.com/",
-      "https://images.grnconnect.com/"
-    );
+    let str =
+      params.HotelImages.length == 1
+        ? params.HotelImages[0].Imagepath.replace(
+            "https://cdn.grnconnect.com/",
+            "https://images.grnconnect.com/"
+          )
+        : params.HotelImages[1].Imagepath.replace(
+            "https://cdn.grnconnect.com/",
+            "https://images.grnconnect.com/"
+          );
 
     const Amenities =
       params.Facilities && params.Facilities != null
@@ -271,7 +277,15 @@ class HotelCheckout extends React.Component {
                       }}
                       source={{
                         uri:
-                          params.HotelImages[0] && params.HotelImages[0].Imagepath != ""
+                          params.HotelImages &&
+                          params.HotelImages.length == 1 &&
+                          params.HotelImages[0] &&
+                          params.HotelImages[0] != null
+                            ? str
+                            : params.HotelImages &&
+                              params.HotelImages.length > 1 &&
+                              params.HotelImages[1] &&
+                              params.HotelImages[1] != null
                             ? str
                             : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                       }}
@@ -286,9 +300,13 @@ class HotelCheckout extends React.Component {
                           borderRadius: 5
                         }}
                         source={{
-                          uri: params.HotelImages[1]
-                            ? params.HotelImages[1].Imagepath
-                            : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
+                          uri:
+                            params.HotelImages &&
+                            params.HotelImages.length > 1 &&
+                            params.HotelImages[2] &&
+                            params.HotelImages[2] != null
+                              ? params.HotelImages[2].Imagepath
+                              : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                         }}
                       />
                     </Button>
@@ -302,8 +320,11 @@ class HotelCheckout extends React.Component {
                         }}
                         source={{
                           uri:
-                            params.HotelImages[2] != null
-                              ? params.HotelImages[2].Imagepath
+                            params.HotelImages &&
+                            params.HotelImages.length > 1 &&
+                            params.HotelImages[3] &&
+                            params.HotelImages[3] != null
+                              ? params.HotelImages[3].Imagepath
                               : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                         }}
                       />
@@ -320,8 +341,11 @@ class HotelCheckout extends React.Component {
                         }}
                         source={{
                           uri:
-                            params.HotelImages[3] != null
-                              ? params.HotelImages[3].Imagepath
+                            params.HotelImages &&
+                            params.HotelImages.length > 1 &&
+                            params.HotelImages[4] &&
+                            params.HotelImages[4] != null
+                              ? params.HotelImages[4].Imagepath
                               : "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
                         }}
                       />

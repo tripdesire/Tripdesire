@@ -181,7 +181,7 @@ class HotelInfo extends React.PureComponent {
       <Button
         style={{
           padding: even ? 10 : 26,
-          marginTop: 16,
+          marginVertical: index % 2 == 0 ? 16 : 0,
           marginHorizontal: even ? 16 : null,
           flexDirection: "row",
           borderRadius: even ? 5 : null,

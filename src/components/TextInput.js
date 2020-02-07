@@ -2,16 +2,33 @@ import React, { PureComponent } from "react";
 import { StyleSheet, View, Text, TextInput, Image, Platform } from "react-native";
 
 class TextInputComponent extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFocus: false
+    };
+  }
+
+  onfocus = () => {
+    this.setState({ isFocus: true });
+  };
+
+  onblur = () => {
+    this.setState({ isFocus: false });
+  };
+
   render() {
     return (
       <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          paddingTop: 14,
-          borderBottomWidth: 1,
-          borderBottomColor: "#EAEBEF"
-        }}>
+        style={[
+          {
+            flexDirection: "row",
+            width: "100%",
+            paddingTop: 14,
+            borderBottomWidth: 1
+          },
+          { borderBottomColor: this.state.isFocus ? "#5789FF" : "#EAEBEF" }
+        ]}>
         {this.props.imgpath && (
           <Image style={{ width: 18, resizeMode: "contain" }} source={this.props.imgpath} />
         )}
@@ -25,7 +42,9 @@ class TextInputComponent extends React.PureComponent {
               Platform.OS == "ios" ? { paddingVertical: 8 } : null
             ]}
             placeholder={this.props.placeholder}
-            placeholderTextColor={"#D9D8DD"}></TextInput>
+            placeholderTextColor={"#D9D8DD"}
+            onFocus={this.onfocus}
+            onBlur={this.onblur}></TextInput>
         </View>
       </View>
     );
