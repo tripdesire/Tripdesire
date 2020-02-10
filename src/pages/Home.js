@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   Image,
-  SafeAreaView,
   ImageBackground,
   Dimensions,
   ScrollView,
@@ -13,7 +12,7 @@ import { HomeButtonComponent, Text } from "../../src/components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const aspectHeight = (width, height, newWidth) => (height / width) * newWidth;
 
@@ -109,46 +108,10 @@ class Home extends React.PureComponent {
             />
           </View>
           <SwiperFlatList autoplay autoplayDelay={2} autoplayLoop index={0}>
-            <Image
-              style={{
-                width: width - 64,
-                marginHorizontal: 32,
-                marginBottom: 20,
-                height: aspectHeight(1134, 1134, width - 64),
-                resizeMode: "contain"
-              }}
-              source={require("../assets/imgs/flightOffer.jpg")}
-            />
-            <Image
-              style={{
-                width: width - 64,
-                marginHorizontal: 32,
-                marginBottom: 20,
-                height: aspectHeight(1134, 1134, width - 64),
-                resizeMode: "contain"
-              }}
-              source={require("../assets/imgs/HotelOffer.jpg")}
-            />
-            <Image
-              style={{
-                width: width - 64,
-                marginHorizontal: 32,
-                marginBottom: 20,
-                height: aspectHeight(1134, 1134, width - 64),
-                resizeMode: "contain"
-              }}
-              source={require("../assets/imgs/busOffer.jpg")}
-            />
-            <Image
-              style={{
-                width: width - 64,
-                marginHorizontal: 32,
-                marginBottom: 20,
-                height: aspectHeight(1134, 1134, width - 64),
-                resizeMode: "contain"
-              }}
-              source={require("../assets/imgs/cabOffer.jpg")}
-            />
+            <Image style={styles.img} source={require("../assets/imgs/flightOffer.jpg")} />
+            <Image style={styles.img} source={require("../assets/imgs/HotelOffer.jpg")} />
+            <Image style={styles.img} source={require("../assets/imgs/busOffer.jpg")} />
+            <Image style={styles.img} source={require("../assets/imgs/cabOffer.jpg")} />
           </SwiperFlatList>
         </ScrollView>
         {/* </SafeAreaView> */}
@@ -183,6 +146,13 @@ const styles = StyleSheet.create({
     //  backgroundColor: "#9DD6EB",
     alignItems: "center",
     justifyContent: "center"
+  },
+  img: {
+    width: width - 64,
+    marginHorizontal: 32,
+    marginBottom: 20,
+    height: aspectHeight(1134, 1134, width - 64),
+    resizeMode: "contain"
   }
 });
 

@@ -461,7 +461,7 @@ class CheckoutBus extends React.PureComponent {
                         <Text>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
-                            decimalScale={2}
+                            decimalScale={0}
                             fixedDecimalScale
                             value={
                               cartData.cart_data[0].custum_product_data.bus_item_details.base_fare
@@ -485,7 +485,7 @@ class CheckoutBus extends React.PureComponent {
                         <Text>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
-                            decimalScale={2}
+                            decimalScale={0}
                             fixedDecimalScale
                             value={
                               cartData.cart_data[0].custum_product_data.bus_item_details
@@ -507,7 +507,7 @@ class CheckoutBus extends React.PureComponent {
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
-                            decimalScale={2}
+                            decimalScale={0}
                             fixedDecimalScale
                             value={
                               cartData.cart_data[0].custum_product_data.bus_item_details
@@ -544,7 +544,7 @@ class CheckoutBus extends React.PureComponent {
                           <Text>
                             <CurrencyText>₹</CurrencyText>
                             <NumberFormat
-                              decimalScale={2}
+                              decimalScale={0}
                               fixedDecimalScale
                               value={
                                 cartData.cart_data[0].custum_product_data.bus_item_details
@@ -569,7 +569,7 @@ class CheckoutBus extends React.PureComponent {
                           <Text>
                             <CurrencyText>₹</CurrencyText>
                             <NumberFormat
-                              decimalScale={2}
+                              decimalScale={0}
                               fixedDecimalScale
                               value={
                                 cartData.cart_data[0].custum_product_data.bus_item_details
@@ -591,7 +591,7 @@ class CheckoutBus extends React.PureComponent {
                           <Text style={{ marginEnd: 10 }}>
                             <CurrencyText>₹</CurrencyText>
                             <NumberFormat
-                              decimalScale={2}
+                              decimalScale={0}
                               fixedDecimalScale
                               value={
                                 cartData.cart_data[0].custum_product_data.bus_item_details
@@ -649,7 +649,7 @@ class CheckoutBus extends React.PureComponent {
                         ₹
                       </CurrencyText>
                       <NumberFormat
-                        decimalScale={2}
+                        decimalScale={0}
                         fixedDecimalScale
                         value={cartData.total_price}
                         displayType={"text"}

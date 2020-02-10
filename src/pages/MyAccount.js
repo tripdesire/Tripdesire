@@ -13,6 +13,7 @@ import { isEmpty } from "lodash";
 import { GoogleSignin } from "@react-native-community/google-signin";
 import { Logout } from "../store/action";
 import { Text, Button, Icon } from "../components";
+import analytics from "@react-native-firebase/analytics";
 
 function MyAccount({ navigation }) {
   GoogleSignin.configure({

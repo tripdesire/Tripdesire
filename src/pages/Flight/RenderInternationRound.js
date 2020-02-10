@@ -283,7 +283,7 @@ class RenderInternationRound extends React.PureComponent {
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
               {this.props.item.IntOnward.FlightSegments.length - 1 == 0
                 ? "Non Stop"
-                : this.props.item.IntOnward.FlightSegments.length - 1 + " Stop(s) "}
+                : this.props.item.IntOnward.FlightSegments.length - 1 + " Stop"}
             </Text>
           </View>
           <View>
@@ -621,7 +621,7 @@ class RenderInternationRound extends React.PureComponent {
                 }}>
                 {this.props.item.IntReturn.FlightSegments.length - 1 == 0
                   ? "Non Stop"
-                  : this.props.item.IntReturn.FlightSegments.length - 1 + " Stop(s) "}
+                  : this.props.item.IntReturn.FlightSegments.length - 1 + " Stop"}
               </Text>
             </View>
             <View>

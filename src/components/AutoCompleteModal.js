@@ -268,19 +268,19 @@ class AutoCompleteModal extends React.PureComponent {
         airpotName = item.AirportDesc; //item.City + "," + item.Country + "-(" + item.AirportCode + ")-" + item.AirportDesc;
         break;
       case "domesticHotel":
-        text = item.CityName + ", " + item.CityId + " - (India)";
+        text = item.CityName + " - India";
         break;
       case "intHotel":
-        text = item.CityName + ", " + item.CityId;
+        text = item.CityName;
         break;
       case "hotelCountry":
         text = item;
         break;
       case "bus":
-        text = item.Name + ", " + item.Id + " - (India)";
+        text = item.Name + " - India";
         break;
       case "cab":
-        text = item.Name + ", " + item.Id + " - (India)";
+        text = item.Name + " - India";
         break;
     }
 

@@ -231,7 +231,7 @@ class HotelInfo extends React.PureComponent {
             <Text style={{ color: "#636C73", marginEnd: 10 }}>{this.state.city}</Text>
             <Stars
               default={parseInt(item.StarRating)}
-              count={5}
+              count={parseInt(item.StarRating)}
               half={true}
               starSize={50}
               fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}

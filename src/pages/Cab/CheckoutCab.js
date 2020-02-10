@@ -317,7 +317,7 @@ class CheckoutCab extends React.PureComponent {
                         <Text>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
-                            decimalScale={2}
+                            decimalScale={0}
                             fixedDecimalScale
                             value={
                               this.state.cartData.cart_data[0].custum_product_data.car_item_details
@@ -356,7 +356,7 @@ class CheckoutCab extends React.PureComponent {
                         <Text>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
-                            decimalScale={2}
+                            decimalScale={0}
                             fixedDecimalScale
                             value={
                               this.state.cartData.cart_data[0].custum_product_data.car_item_details
@@ -408,7 +408,7 @@ class CheckoutCab extends React.PureComponent {
                   <Text style={{ fontSize: 16, fontWeight: "700" }}>
                     <CurrencyText style={{ fontSize: 16, fontWeight: "700" }}>₹</CurrencyText>
                     <NumberFormat
-                      decimalScale={2}
+                      decimalScale={0}
                       fixedDecimalScale
                       value={this.state.cartData.total_price}
                       displayType={"text"}

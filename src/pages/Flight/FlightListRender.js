@@ -221,7 +221,7 @@ class FlightListRender extends React.PureComponent {
             <Text style={{ fontSize: 12, color: "#5D666D", lineHeight: 14 }}>
               {item.FlightSegments.length - 1 == 0
                 ? "Non Stop"
-                : item.FlightSegments.length - 1 + " Stop(s)"}
+                : item.FlightSegments.length - 1 + " Stop"}
             </Text>
           </View>
 

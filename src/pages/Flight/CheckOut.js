@@ -706,7 +706,7 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginEnd: 10 }}>
                     <CurrencyText>₹</CurrencyText>
                     <NumberFormat
-                      decimalScale={2}
+                      decimalScale={0}
                       fixedDecimalScale
                       value={params.departFlight.FareDetails.ChargeableFares.ActualBaseFare}
                       displayType={"text"}
@@ -726,7 +726,7 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
                       <NumberFormat
-                        decimalScale={2}
+                        decimalScale={0}
                         fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.flight_book_item
@@ -751,7 +751,7 @@ class CheckOut extends React.PureComponent {
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
                       <NumberFormat
-                        decimalScale={2}
+                        decimalScale={0}
                         fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.flight_book_item
@@ -776,7 +776,7 @@ class CheckOut extends React.PureComponent {
                   <Text style={{ marginStart: 10 }}>
                     <CurrencyText>₹</CurrencyText>
                     <NumberFormat
-                      decimalScale={2}
+                      decimalScale={0}
                       fixedDecimalScale
                       value={params.departFlight.FareDetails.TotalFare}
                       displayType={"text"}
@@ -799,7 +799,7 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginEnd: 10 }}>
                         <CurrencyText>₹</CurrencyText>
                         <NumberFormat
-                          decimalScale={2}
+                          decimalScale={0}
                           fixedDecimalScale
                           value={params.arrivalFlight.FareDetails.ChargeableFares.ActualBaseFare}
                           displayType={"text"}
@@ -819,7 +819,7 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
-                            decimalScale={2}
+                            decimalScale={0}
                             fixedDecimalScale
                             value={
                               this.state.data.cart_data[0].custum_product_data.flight_book_item
@@ -844,7 +844,7 @@ class CheckOut extends React.PureComponent {
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
-                            decimalScale={2}
+                            decimalScale={0}
                             fixedDecimalScale
                             value={
                               this.state.data.cart_data[0].custum_product_data.flight_book_item
@@ -869,7 +869,7 @@ class CheckOut extends React.PureComponent {
                       <Text style={{ marginStart: 10 }}>
                         <CurrencyText>₹</CurrencyText>
                         <NumberFormat
-                          decimalScale={2}
+                          decimalScale={0}
                           fixedDecimalScale
                           value={params.arrivalFlight.FareDetails.TotalFare}
                           displayType={"text"}

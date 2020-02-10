@@ -170,7 +170,7 @@ class FlightListInternational extends React.PureComponent {
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
             <NumberFormat
               decimalScale={0}
-             fixedDecimalScale
+              fixedDecimalScale
               value={this.props.item.FareDetails.TotalFare}
               displayType={"text"}
               thousandSeparator={true}
@@ -219,7 +219,7 @@ class FlightListInternational extends React.PureComponent {
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
               {this.props.item.IntOnward.FlightSegments.length - 1 == 0
                 ? "Non Stop"
-                : this.props.item.IntOnward.FlightSegments.length - 1 + " Stop(s)"}
+                : this.props.item.IntOnward.FlightSegments.length - 1 + " Stop"}
             </Text>
           </View>
           {/* <View style={{ flexDirection: "row" }}> */}

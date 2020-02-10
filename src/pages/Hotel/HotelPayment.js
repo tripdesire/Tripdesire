@@ -264,7 +264,7 @@ class HotelPayment extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={style._textHeading}>Night(s)</Text>
+                    <Text style={style._textHeading}>Night</Text>
                     <Text style={style._Details}>{params.Night}</Text>
                   </View>
                   <View
@@ -272,7 +272,7 @@ class HotelPayment extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={style._textHeading}>Room(s)</Text>
+                    <Text style={style._textHeading}>Room</Text>
                     <Text style={style._Details}>{params.room}</Text>
                   </View>
                   <View
@@ -280,7 +280,7 @@ class HotelPayment extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={style._textHeading}>Guest(s)</Text>
+                    <Text style={style._textHeading}>Guest</Text>
                     <Text style={style._Details}>{params.adult + params.child}</Text>
                   </View>
                 </View>
@@ -316,7 +316,7 @@ class HotelPayment extends React.PureComponent {
                     <Text style={style._Details}>
                       <CurrencyText style={style._Details}>₹</CurrencyText>
                       <NumberFormat
-                        decimalScale={2}
+                        decimalScale={0}
                         fixedDecimalScale
                         value={
                           this.state.data.cart_data[0].custum_product_data.Hotel_item_details
@@ -339,7 +339,7 @@ class HotelPayment extends React.PureComponent {
                   }}>
                   <Text style={style._textHeading}></Text>
                   <Text style={style._Details}>
-                    {params.room + " Room(s)" + " x " + params.Night + " Night(s)"}
+                    {params.room + " Room" + " x " + params.Night + " Night"}
                   </Text>
                 </View>
 

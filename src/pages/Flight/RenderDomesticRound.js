@@ -186,7 +186,7 @@ class RenderDomesticRound extends React.PureComponent {
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
               {this.props.item.FlightSegments.length - 1 == 0
                 ? "Non Stop"
-                : this.props.item.FlightSegments.length - 1 + " Stop(s)"}
+                : this.props.item.FlightSegments.length - 1 + " Stop"}
             </Text>
           </View>
           <View>
@@ -381,7 +381,7 @@ class RenderDomesticRound extends React.PureComponent {
                     With{" "}
                     {this.props.item.FlightSegments.length - 1 == 0
                       ? "0 "
-                      : this.props.item.FlightSegments.length - 1 + " Stop(s) "}
+                      : this.props.item.FlightSegments.length - 1 + " Stop"}
                     connection/s
                   </Text>
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
