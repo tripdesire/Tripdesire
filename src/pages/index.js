@@ -49,6 +49,8 @@ import OTPVerify from "./OTPVerify";
 import PaymentCab from "./Cab/PaymentCab";
 import Wallet from "./Wallet";
 import ReferAndEarn from "./ReferAndEarn";
+import BlogList from "./BlogList";
+import Blog from "./Blog";
 
 export {
   Home,
@@ -101,5 +103,7 @@ export {
   OTPVerify,
   PaymentCab,
   Wallet,
-  ReferAndEarn
+  ReferAndEarn,
+  BlogList,
+  Blog
 };
