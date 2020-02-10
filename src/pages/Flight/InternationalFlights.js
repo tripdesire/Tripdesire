@@ -308,22 +308,13 @@ class InternationalFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalFrom", true)}>
               <Text style={{ color: "#000000" }}>From</Text>
-              <Text
-                style={{
-                  color: "#000000",
-                  fontSize: 18,
-                  fontWeight: "600",
-                  textTransform: "capitalize"
-                }}>
-                {from}
-              </Text>
+              <Text style={styles.sourceAndDestination}>{from}</Text>
             </Button>
             <Button onPress={this._exchange}>
               <Animated.Image
                 style={[imageStyle, { marginTop: 10 }]}
                 source={require("../../assets/imgs/exchange.png")}
               />
-              {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#000000" size={40} /> */}
             </Button>
           </View>
 
@@ -338,15 +329,7 @@ class InternationalFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalTo", true)}>
               <Text style={{ color: "#000000" }}>To</Text>
-              <Text
-                style={{
-                  color: "#000000",
-                  fontSize: 18,
-                  fontWeight: "600",
-                  textTransform: "capitalize"
-                }}>
-                {to}
-              </Text>
+              <Text style={styles.sourceAndDestination}>{to}</Text>
             </Button>
           </View>
 
@@ -513,6 +496,12 @@ const styles = StyleSheet.create({
     end: 0,
     top: 0,
     zIndex: 1
+  },
+  sourceAndDestination: {
+    color: "#000000",
+    fontSize: 18,
+    fontWeight: "600",
+    textTransform: "capitalize"
   }
 });
 

@@ -90,7 +90,6 @@ class FlightsInfoOneway extends React.PureComponent {
             });
           } else {
             this.setState({ loader: false, flights: [], filterFlights: [] });
-            //Toast.show("Data not Found", Toast.LONG);
           }
         }
         if (this.state.flight_type == 2) {
@@ -103,7 +102,6 @@ class FlightsInfoOneway extends React.PureComponent {
             });
           } else {
             this.setState({ loader: false, flights: [], filterFlights: [] });
-            //Toast.show("Data not Found", Toast.LONG);
           }
         }
       })
@@ -372,7 +370,6 @@ class FlightsInfoOneway extends React.PureComponent {
           borderEndWidth: 1,
           borderColor: "#717984",
           justifyContent: "center"
-          // backgroundColor: this.state.index === index ? "#5B89F9" : "#fff"
         }}
         onPress={this._ChangeDate(item, index)}>
         <Text
@@ -390,27 +387,10 @@ class FlightsInfoOneway extends React.PureComponent {
           }}>
           {item.date}
         </Text>
-        {/* <Text style={{ fontSize: 12, color: "#717984" }}>{item.month}</Text> */}
       </Button>
     </LinearGradient>
   );
-  // itemSeparator = () => (
-  //   <View
-  //     style={{
-  //       width: 1,
-  //       backgroundColor: "#DFDFDF",
-  //       height: 10
-  //       //paddingVertical: 10
-  //     }}
-  //   />
-  // );
-  // listheaderComponent = () => (
-  //   <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-  //     <Text style={{ transform: [{ rotate: "270deg" }], textAlign: "center" }}>
-  //       {this.state.month}
-  //     </Text>
-  //   </View>
-  // );
+
   _keyExtractor = (item, index) => "dates_" + item + index;
 
   goBack = () => {
@@ -525,15 +505,6 @@ class FlightsInfoOneway extends React.PureComponent {
                 borderColor: "#d2d2d2d2",
                 backgroundColor: "#FFFFFF"
               }}>
-              {/* <FlatList
-                  horizontal={true}
-                  data={dates}
-                  keyExtractor={this._keyExtractor}
-                  renderItem={this._renderItem}
-                  
-                  showsHorizontalScrollIndicator={false}
-                  ListHeaderComponent={this.listheaderComponent}
-                /> */}
               <SectionList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
@@ -562,7 +533,6 @@ class FlightsInfoOneway extends React.PureComponent {
                 }}>
                 <Button
                   style={{
-                    // backgroundColor: "#5B89F9",
                     justifyContent: "center",
                     borderBottomRightRadius: 5,
                     borderTopRightRadius: 5
@@ -595,9 +565,6 @@ class FlightsInfoOneway extends React.PureComponent {
                 onPress={this.goBack}
               />
             ) : (
-              /* <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-                <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
-              </View>*/
               <FlatList
                 nestedScrollEnabled={true}
                 vertical={true}

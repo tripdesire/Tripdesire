@@ -254,14 +254,6 @@ class FlightListRender extends React.PureComponent {
           <Button onPress={this._email}>
             <Icon name="mail" size={20} color="#F68E1F" />
           </Button>
-          {/* <View
-            style={{
-              width: 1,
-              height: 20,
-              backgroundColor: "#D2D2D2",
-              marginHorizontal: 2
-            }}></View>
-          <IconMaterial name="message-text-outline" size={20} color="#F68E1F" /> */}
           <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
             <Button>
               <Text

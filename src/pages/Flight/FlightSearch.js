@@ -53,21 +53,13 @@ class FlightSearch extends React.PureComponent {
                 <LinearGradient
                   colors={flightType == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
                   style={{
-                    elevation: 2,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
+                    ...styles.shadowAndElevation,
                     borderBottomLeftRadius: 5,
                     borderTopLeftRadius: 5
                   }}>
                   <Button
                     style={{
-                      elevation: 2,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowColor: "rgba(0,0,0,0.1)",
-                      shadowOpacity: 1,
-                      shadowRadius: 4,
+                      ...styles.shadowAndElevation,
                       borderBottomStartRadius: 5,
                       borderTopStartRadius: 5,
                       ...styles.tabButtons
@@ -86,23 +78,13 @@ class FlightSearch extends React.PureComponent {
                 <LinearGradient
                   colors={flightType == 2 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
                   style={{
-                    elevation: 2,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    //   backgroundColor: "#FFFFFF",
+                    ...styles.shadowAndElevation,
                     borderBottomRightRadius: 5,
                     borderTopRightRadius: 5
                   }}>
                   <Button
                     style={{
-                      elevation: 2,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowColor: "rgba(0,0,0,0.1)",
-                      shadowOpacity: 1,
-                      shadowRadius: 4,
-                      //  backgroundColor: "#FFFFFF",
+                      ...styles.shadowAndElevation,
                       borderBottomEndRadius: 5,
                       borderTopEndRadius: 5,
                       ...styles.tabButtons
@@ -138,6 +120,13 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: "center",
     paddingHorizontal: 30
+  },
+  shadowAndElevation: {
+    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "rgba(0,0,0,0.1)",
+    shadowOpacity: 1,
+    shadowRadius: 4
   }
 });
 

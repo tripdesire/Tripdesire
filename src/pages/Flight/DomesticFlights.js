@@ -58,10 +58,6 @@ class DomesticFlights extends React.PureComponent {
     this.trackScreenView("Domestic Search");
   }
 
-  // getLabel = item => {
-  //   return item.label;
-  // };
-
   showDateTimePicker = key => () => {
     this.setState({ [key]: true });
   };
@@ -276,15 +272,7 @@ class DomesticFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalFrom", true)}>
               <Text style={{ color: "#000000" }}>From</Text>
-              <Text
-                style={{
-                  color: "#000000",
-                  fontSize: 18,
-                  fontWeight: "600",
-                  textTransform: "capitalize"
-                }}>
-                {from}
-              </Text>
+              <Text style={styles.sourceAndDestination}>{from}</Text>
             </Button>
             <Button onPress={this._exchange}>
               <Animated.Image
@@ -306,15 +294,7 @@ class DomesticFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalTo", true)}>
               <Text style={{ color: "#000000" }}>To</Text>
-              <Text
-                style={{
-                  color: "#000000",
-                  fontSize: 18,
-                  fontWeight: "600",
-                  textTransform: "capitalize"
-                }}>
-                {to}
-              </Text>
+              <Text style={styles.sourceAndDestination}>{to}</Text>
             </Button>
           </View>
 
@@ -375,9 +355,6 @@ class DomesticFlights extends React.PureComponent {
                 {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
                   ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
                   : parseInt(adult) + parseInt(children) + parseInt(infants)}
-                {/* {adult > 0 ? adult + " Adults" : ""} 
-              {children > 0 ? ", " + children + " Children" : ""}
-              {infants > 0 ? ", " + infants + " Infants" : ""} */}
               </Text>
             </Button>
           </View>
@@ -418,13 +395,6 @@ class DomesticFlights extends React.PureComponent {
                   <Icon name={Platform.OS == "ios" ? "ios-arrow-down" : null} size={20} />
                 )}
               />
-              {/* <RNPicker
-              value={this.state.class}
-              items={className}
-              getLabel={this.getLabel}
-              fieldContainerStyle={{ paddingStart: 0 }}
-              onItemChange={(itemValue) => this.setState({ class: itemValue, index: index })}
-            /> */}
             </View>
           </View>
           <Button
@@ -487,6 +457,13 @@ class DomesticFlights extends React.PureComponent {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  sourceAndDestination: {
+    color: "#000000",
+    fontSize: 18,
+    fontWeight: "600",
+    textTransform: "capitalize"
+  }
+});
 
 export default withNavigation(DomesticFlights);

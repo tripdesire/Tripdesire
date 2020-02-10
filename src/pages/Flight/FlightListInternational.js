@@ -234,27 +234,6 @@ class FlightListInternational extends React.PureComponent {
               {to}
             </Text>
           </View>
-          {/* <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                borderRadius: 14,
-                height: 28,
-                marginStart: 4,
-                alignSelf: "center",
-                justifyContent: "center"
-              }}
-              onPress={() => this.bookNow(this.props.item)}>
-              <Text
-                style={{
-                  color: "#fff",
-                  alignSelf: "center",
-                  paddingHorizontal: 6,
-                  fontSize: 10
-                }}>
-                Book Now
-              </Text>
-            </Button> */}
-          {/* </View> */}
         </View>
         <View
           style={{
@@ -273,14 +252,6 @@ class FlightListInternational extends React.PureComponent {
             <Icon name="mail" size={20} color="#F68E1F" />
           </Button>
 
-          {/* <View
-            style={{
-              width: 1,
-              height: 20,
-              backgroundColor: "#D2D2D2",
-              marginHorizontal: 2
-            }}></View>
-          <IconMaterial name="message-text-outline" size={20} color="#F68E1F" /> */}
           <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
             <Button>
               <Text

@@ -563,12 +563,7 @@ class FlightsInfoRound extends React.PureComponent {
                   <LinearGradient
                     colors={swiperIndex == 0 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
                     style={{ borderRadius: 20 }}>
-                    <Button
-                      style={[
-                        styles.tabBtn
-                        //{ backgroundColor: swiperIndex == 0 ? "#5B89F9" : "#ffffff" }
-                      ]}
-                      onPress={this._onPress("Depart")}>
+                    <Button style={[styles.tabBtn]} onPress={this._onPress("Depart")}>
                       <Text
                         style={{ fontSize: 12, color: swiperIndex == 0 ? "#ffffff" : "#000000" }}>
                         Depart
@@ -578,12 +573,7 @@ class FlightsInfoRound extends React.PureComponent {
                   <LinearGradient
                     colors={swiperIndex == 1 ? ["#53b2fe", "#065af3"] : ["#ffffff", "#ffffff"]}
                     style={{ borderRadius: 20 }}>
-                    <Button
-                      style={[
-                        styles.tabBtn
-                        //  { backgroundColor: swiperIndex == 1 ? "#5B89F9" : "#ffffff" }
-                      ]}
-                      onPress={this._onPress("Return")}>
+                    <Button style={[styles.tabBtn]} onPress={this._onPress("Return")}>
                       <Text
                         style={{ fontSize: 12, color: swiperIndex == 1 ? "#ffffff" : "#000000" }}>
                         Return
@@ -599,14 +589,6 @@ class FlightsInfoRound extends React.PureComponent {
                 title="No flights found"
                 onPress={this.goBack}
               />
-              /* <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  ...StyleSheet.absoluteFill
-                }}>
-                <Text style={{ fontSize: 18, fontWeight: "700" }}>No flight found</Text>
-              </View>  */
             )}
             <SwiperFlatList
               //index={swiperIndex}
