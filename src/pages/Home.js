@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  View,
-  ImageBackground,
-  Dimensions,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Linking
-} from "react-native";
+import { View, ImageBackground, Dimensions, ScrollView, StatusBar, StyleSheet } from "react-native";
 import { HomeButtonComponent, Text, Button, Icon } from "../../src/components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
-import { domainApi } from "../service";
 import axios from "axios";
 import FastImage from "react-native-fast-image";
 

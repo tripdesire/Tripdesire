@@ -35,6 +35,8 @@ target 'tripdesire' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
 
+  pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
+
   target 'tripdesireTests' do
     inherit! :search_paths
     # Pods for testing
