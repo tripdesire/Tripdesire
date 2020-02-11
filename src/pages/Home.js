@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Image,
   ImageBackground,
   Dimensions,
   ScrollView,
@@ -14,6 +13,7 @@ import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
 import { domainApi } from "../service";
 import axios from "axios";
+import FastImage from "react-native-fast-image";
 
 const { width } = Dimensions.get("window");
 
@@ -55,16 +55,8 @@ class Home extends React.PureComponent {
     this.props.navigation.navigate(page);
   };
 
-  blogShare = blog => () => {
-    Linking.canOpenURL(blog.link)
-      .then(supported => {
-        if (!supported) {
-          Alert.alert("Invalid URL");
-        } else {
-          Linking.openURL(blog.link);
-        }
-      })
-      .catch(err => console.log(err));
+  blogShare = item => () => {
+    this.props.navigation.navigate("Blog", { item });
   };
 
   render() {
@@ -83,7 +75,7 @@ class Home extends React.PureComponent {
                 source={require("../assets/imgs/Banner.jpg")}>
                 <Text
                   style={{
-                    fontSize: 30,
+                    fontSize: 26,
                     color: "#FFFFFF",
                     fontWeight: "700",
                     marginHorizontal: 20,
@@ -134,10 +126,10 @@ class Home extends React.PureComponent {
             />
           </View>
           <SwiperFlatList autoplay autoplayDelay={2} autoplayLoop index={0}>
-            <Image style={styles.img} source={require("../assets/imgs/flightOffer.jpg")} />
-            <Image style={styles.img} source={require("../assets/imgs/HotelOffer.jpg")} />
-            <Image style={styles.img} source={require("../assets/imgs/busOffer.jpg")} />
-            <Image style={styles.img} source={require("../assets/imgs/cabOffer.jpg")} />
+            <FastImage style={styles.img} source={require("../assets/imgs/flightOffer.jpg")} />
+            <FastImage style={styles.img} source={require("../assets/imgs/HotelOffer.jpg")} />
+            <FastImage style={styles.img} source={require("../assets/imgs/busOffer.jpg")} />
+            <FastImage style={styles.img} source={require("../assets/imgs/cabOffer.jpg")} />
           </SwiperFlatList>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 12 }}>
@@ -146,7 +138,6 @@ class Home extends React.PureComponent {
               style={{
                 alignSelf: "flex-end",
                 flexDirection: "row",
-                alignItems: "center",
                 justifyContent: "center"
               }}
               onPress={this.navigateToScreen("BlogList")}>
@@ -162,7 +153,7 @@ class Home extends React.PureComponent {
                     style={[styles.blogView, { marginEnd: posts.length - 1 == index ? 12 : 0 }]}
                     key={item.id}
                     onPress={this.blogShare(item)}>
-                    <Image style={styles.blog} source={{ uri: item.featured_image_url }} />
+                    <FastImage style={styles.blog} source={{ uri: item.featured_image_url }} />
                     <Text style={styles.blogtext}>{item.title.rendered}</Text>
                   </Button>
                 );

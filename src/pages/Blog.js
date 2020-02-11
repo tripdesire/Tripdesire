@@ -6,10 +6,28 @@ import LinearGradient from "react-native-linear-gradient";
 import HTML from "react-native-render-html";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
+import FastImage from "react-native-fast-image";
+
+const { height, width } = Dimensions.get("window");
+const aspectHeight = (width, height, newWidth) => (height / width) * newWidth;
 
 function Blog({ navigation }) {
   console.log(navigation.getParam("item"));
   var item = navigation.getParam("item");
+
+  const customRenderer = {
+    img: (htmlAttribs, children, convertedCSSStyles, passProps) => {
+      console.log(htmlAttribs);
+      return (
+        <FastImage
+          key={passProps.key}
+          style={{ width: width - 16, height: aspectHeight(1260, 650, width - 64) }}
+          source={{ uri: htmlAttribs.src }}
+        />
+      );
+    }
+  };
+
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
@@ -27,8 +45,12 @@ function Blog({ navigation }) {
             </Button>
             <Text>{item.title.rendered}</Text>
           </View>
-          <ScrollView contentContainerStyle={{ marginHorizontal: 20 }}>
-            <HTML baseFontStyle={{ color: "#000000" }} html={item.content.rendered} />
+          <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
+            <HTML
+              baseFontStyle={{ color: "#000000" }}
+              html={item.content.rendered || "<div/>"}
+              renderers={customRenderer}
+            />
           </ScrollView>
         </View>
       </SafeAreaView>
