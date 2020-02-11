@@ -27,7 +27,11 @@ class SignIn extends React.PureComponent {
       email: "",
       password: "",
       loader: false,
-      showPassword: true
+      showPassword: true,
+      openPopup: false,
+      modal_loading: false,
+      referralCode: "",
+      userId: ""
     };
   }
 
@@ -104,10 +108,13 @@ class SignIn extends React.PureComponent {
         domainApi.post("/social-login", details).then(({ data }) => {
           console.log(data);
           if (data.code == 1) {
-            this.setState({ loader: false });
+            this.setState({ loader: false, userId: data.details.id });
             this.props.Signin(data.details);
-            onBack && onBack();
-            if (
+            if (data.refer_earn) {
+              this.setState({ openPopup: true });
+            } else if (onBack) {
+              onBack();
+            } else if (
               needBilling &&
               (data.details.billing.email == "" || data.details.billing.phone == "")
             ) {
@@ -148,10 +155,14 @@ class SignIn extends React.PureComponent {
                       .then(({ data }) => {
                         console.log(data);
                         if (data.code == 1) {
-                          this.setState({ loader: false });
+                          this.setState({ loader: false, userId: data.details.id });
                           this.props.Signin(data.details);
-                          onBack && onBack();
-                          this.goBack();
+                          if (data.refer_earn) {
+                            this.setState({ openPopup: true });
+                          } else if (onBack) {
+                            onBack();
+                            this.goBack();
+                          }
                           Toast.show("Login successful", Toast.SHORT);
                         } else {
                           this.setState({ loader: false });
@@ -178,6 +189,48 @@ class SignIn extends React.PureComponent {
 
   goBack = () => {
     this.props.navigation.goBack(null);
+  };
+
+  applyReferral = () => {
+    const { onBack, needBilling } = this.props.navigation.state.params;
+    var formData = new FormData();
+    formData.append("user_id", this.state.user_id);
+    formData.append("refer_code", this.state.referralCode);
+    this.setState({ modal_loading: true });
+    domainApi
+      .post("/referapply", formData, {
+        headers: { "content-type": "multipart/form-data" }
+      })
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ modal_loading: false });
+        if (data.status == 1) {
+          if (onBack) {
+            onBack();
+          } else {
+            this.goBack();
+          }
+        }
+        Toast.show(data.message, Toast.LONG);
+        console.log(data);
+      })
+      .catch(error => {
+        this.setState({ modal_loading: false });
+      });
+  };
+
+  handleSkip = () => {
+    const { onBack } = this.props.navigation.state.params;
+    this.setState({ openPopup: false });
+    if (onBack) {
+      onBack();
+    } else {
+      this.goBack();
+    }
+  };
+
+  updateState = key => value => {
+    this.setState({ [key]: value });
   };
 
   render() {
@@ -344,30 +397,43 @@ class SignIn extends React.PureComponent {
                   <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Facebook</Text>
                 </View>
               </View>
-              {/* <Button
-                style={[styles.facebook_google_button, { marginTop: 20 }]}
-                onPress={this.navigateToScreen("OTPScreen")}>
-                <Text style={{ color: "#D2D1D1" }}>Login via OTP</Text>
-              </Button>
-              <Button
-                style={[styles.facebook_google_button, { marginTop: 10 }]}
-                onPress={() => this.socialLogin("google")}>
-                <Image source={require("../assets/imgs/google.png")} />
-                <Text style={{ color: "#D2D1D1" }}>Login by Google</Text>
-              </Button>
-              <Button
-                style={[styles.facebook_google_button, { marginTop: 10 }]}
-                onPress={() => this.socialLogin("facebook")}>
-                <Image
-                  style={{ width: 40, height: 40 }}
-                  resizeMode="contain"
-                  source={require("../assets/imgs/facebook.png")}
-                />
-                <Text style={{ color: "#D2D1D1", marginStart: 5 }}>Login by Facebook</Text>
-              </Button> */}
             </View>
           </ScrollView>
           {this.state.loader && <ActivityIndicator />}
+          {this.state.openPopup && (
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalWrapper}>
+                <View style={styles.modaltitleContainer}>
+                  <Text>Referral Code</Text>
+                  <Button style={{ padding: 12 }} onPress={this.handleSkip}>
+                    <Text>Skip</Text>
+                  </Button>
+                </View>
+
+                <TextInput
+                  placeholder="Enter Code"
+                  //keyboardType="numeric"
+                  value={this.state.referralCode}
+                  style={{
+                    width: "100%",
+                    borderWidth: 1,
+                    borderColor: "#757575",
+                    height: 40,
+                    marginBottom: 15
+                  }}
+                  onChangeText={this.updateState("referralCode")}
+                />
+
+                {this.state.modal_loading ? (
+                  <ActivityIndicator />
+                ) : (
+                  <Button onPress={this.applyReferral} style={styles.modalButton}>
+                    <Text style={{ color: "#ffffff" }}>Next</Text>
+                  </Button>
+                )}
+              </View>
+            </View>
+          )}
         </SafeAreaView>
       </>
     );
@@ -413,10 +479,44 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingStart: 5,
     color: "#757575"
+  },
+  modalOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "#00000066",
+    justifyContent: "center",
+    elevation: 2,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: { height: 2, width: 0 }
+  },
+  modalWrapper: {
+    backgroundColor: "#EEEEEE",
+    margin: 64,
+    paddingHorizontal: 16,
+    alignItems: "center"
+  },
+  modaltitleContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  modalButton: {
+    height: 36,
+    backgroundColor: "#F68E1F",
+    paddingVertical: 8,
+    paddingHorizontal: 30,
+    marginBottom: 10,
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
+
+const mapStateToProps = state => ({ user: state.user });
+
 const mapDispatchToProps = {
   Signin
 };
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

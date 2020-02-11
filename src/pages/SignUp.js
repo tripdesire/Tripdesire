@@ -30,7 +30,11 @@ class SignUp extends React.PureComponent {
       lastname: "",
       email: "",
       password: "",
-      showPassword: true
+      openPopup: false,
+      modal_loading: false,
+      showPassword: true,
+      referralCode: "",
+      userId: ""
     };
   }
 
@@ -75,9 +79,9 @@ class SignUp extends React.PureComponent {
           .then(({ data }) => {
             if (data.status == 1) {
               console.log(data);
-              this.setState({ loader: false });
+              this.setState({ loader: false, userId: data.user_id });
               //Toast.show("Successful Signup! Login now", Toast.LONG);
-              this.props.navigation.goBack(null);
+              this.setState({ openPopup: true });
             } else {
               this.setState({ loader: false });
               Toast.show(data.error, Toast.LONG);
@@ -106,7 +110,9 @@ class SignUp extends React.PureComponent {
           if (data.code == 1) {
             this.setState({ loader: false });
             this.props.Signin(data.details);
-            if (
+            if (data.refer_earn) {
+              this.setState({ openPopup: true });
+            } else if (
               needBilling &&
               (data.details.billing.email == "" || data.details.billing.phone == "")
             ) {
@@ -147,6 +153,9 @@ class SignUp extends React.PureComponent {
                       if (data.code == 1) {
                         this.setState({ loader: false });
                         this.props.Signin(data.details);
+                        if (data.refer_earn) {
+                          this.setState({ openPopup: true });
+                        }
                         this.props.navigation.goBack(null);
                         this.props.navigation.goBack(null);
                         // Toast.show("you are signup successfully", Toast.LONG);
@@ -191,6 +200,48 @@ class SignUp extends React.PureComponent {
     } else {
       this.props.navigation.navigate(page, params);
     }
+  };
+
+  applyReferral = () => {
+    const { onBack, needBilling } = this.props.navigation.state.params;
+    var formData = new FormData();
+    formData.append("user_id", this.state.user_id);
+    formData.append("refer_code", this.state.referralCode);
+    this.setState({ modal_loading: true });
+    domainApi
+      .post("/referapply", formData, {
+        headers: { "content-type": "multipart/form-data" }
+      })
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ modal_loading: false });
+        if (data.status == 1) {
+          if (onBack) {
+            onBack();
+          } else {
+            this.goBack();
+          }
+        }
+        Toast.show(data.message, Toast.LONG);
+        console.log(data);
+      })
+      .catch(error => {
+        this.setState({ modal_loading: false });
+      });
+  };
+
+  handleSkip = () => {
+    const { onBack } = this.props.navigation.state.params;
+    this.setState({ openPopup: false });
+    if (onBack) {
+      onBack();
+    } else {
+      this.goBack();
+    }
+  };
+
+  updateState = key => value => {
+    this.setState({ [key]: value });
   };
 
   render() {
@@ -306,7 +357,7 @@ class SignUp extends React.PureComponent {
                 </Button>
 
                 <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                  <Button style={{ marginEnd: 5 }} onPress={this.navigateToScreen("SignIn")}>
+                  <Button style={{ marginEnd: 5 }}>
                     <Text style={{ color: "#757575", fontSize: 12 }}>
                       Already have an account ?
                     </Text>
@@ -377,6 +428,41 @@ class SignUp extends React.PureComponent {
               </View>
             </ScrollView>
             {loader && <ActivityIndicator />}
+
+            {this.state.openPopup && (
+              <View style={styles.modalOverlay}>
+                <View style={styles.modalWrapper}>
+                  <View style={styles.modaltitleContainer}>
+                    <Text>Referral Code</Text>
+                    <Button style={{ padding: 12 }} onPress={this.handleSkip}>
+                      <Text>Skip</Text>
+                    </Button>
+                  </View>
+
+                  <TextInput
+                    placeholder="Enter Code"
+                    //keyboardType="numeric"
+                    value={this.state.referralCode}
+                    style={{
+                      width: "100%",
+                      borderWidth: 1,
+                      borderColor: "#757575",
+                      height: 40,
+                      marginBottom: 15
+                    }}
+                    onChangeText={this.updateState("referralCode")}
+                  />
+
+                  {this.state.modal_loading ? (
+                    <ActivityIndicator />
+                  ) : (
+                    <Button onPress={this.applyReferral} style={styles.modalButton}>
+                      <Text style={{ color: "#ffffff" }}>Next</Text>
+                    </Button>
+                  )}
+                </View>
+              </View>
+            )}
           </View>
         </SafeAreaView>
       </>
@@ -423,6 +509,37 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingStart: 5,
     color: "#757575"
+  },
+  modalOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "#00000066",
+    justifyContent: "center",
+    elevation: 2,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: { height: 2, width: 0 }
+  },
+  modalWrapper: {
+    backgroundColor: "#EEEEEE",
+    margin: 64,
+    paddingHorizontal: 16,
+    alignItems: "center"
+  },
+  modaltitleContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  modalButton: {
+    height: 36,
+    backgroundColor: "#F68E1F",
+    paddingVertical: 8,
+    paddingHorizontal: 30,
+    marginBottom: 10,
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
