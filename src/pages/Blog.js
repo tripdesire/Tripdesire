@@ -17,11 +17,10 @@ function Blog({ navigation }) {
 
   const customRenderer = {
     img: (htmlAttribs, children, convertedCSSStyles, passProps) => {
-      console.log(htmlAttribs);
       return (
         <FastImage
           key={passProps.key}
-          style={{ width: width - 16, height: aspectHeight(1260, 650, width - 64) }}
+          style={{ width: width - 32, height: aspectHeight(1260, 650, width - 64) }}
           source={{ uri: htmlAttribs.src }}
         />
       );
