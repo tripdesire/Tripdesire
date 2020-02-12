@@ -1,6 +1,15 @@
 import React from "react";
-import { View, ImageBackground, Dimensions, ScrollView, StatusBar, StyleSheet } from "react-native";
-import { HomeButtonComponent, Text, Button, Icon } from "../../src/components";
+import {
+  View,
+  Image,
+  ImageBackground,
+  Dimensions,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  FlatList
+} from "react-native";
+import { HomeButtonComponent, Text, Button, Icon, LinearGradient } from "../../src/components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
 import axios from "axios";
@@ -21,6 +30,15 @@ class Home extends React.PureComponent {
         { img: require("../assets/imgs/offer.png") },
         { img: require("../assets/imgs/offer.png") },
         { img: require("../assets/imgs/offer.png") }
+      ],
+      flights: [
+        { from: "New Delhi" },
+        { from: "New Delhi" },
+        { from: "New Delhi" },
+        { from: "New Delhi" },
+        { from: "New Delhi" },
+        { from: "New Delhi" },
+        { from: "New Delhi" }
       ],
       posts: []
     };
@@ -50,8 +68,70 @@ class Home extends React.PureComponent {
     this.props.navigation.navigate("Blog", { item });
   };
 
+  renderItem = ({ item, index }) => {
+    return (
+      <Button
+        style={[styles.blogView, { marginEnd: this.state.posts.length - 1 == index ? 12 : 2 }]}
+        key={item.id}
+        onPress={this.blogShare(item)}>
+        <FastImage style={styles.blog} source={{ uri: item.featured_image_url }} />
+        <Text style={styles.blogtext}>{item.title.rendered}</Text>
+      </Button>
+    );
+  };
+
+  _renderItem = ({ item, index }) => {
+    return (
+      <View
+        style={{
+          backgroundColor: "#fff",
+          elevation: 2,
+          width: width - 96,
+          shadowOffset: { width: 2, height: 2 },
+          shadowColor: "#d8eaff",
+          shadowOpacity: 4,
+          shadowRadius: 4,
+          marginStart: 12,
+          marginEnd: this.state.flights.length - 1 == index ? 12 : 2,
+          marginVertical: 15,
+          alignItems: "center",
+          borderRadius: 8
+        }}>
+        <FastImage
+          resizeMode="contain"
+          style={{ height: 60, width: 60, marginTop: 15 }}
+          source={{
+            uri: "http://tripdesire.co/wp-content/uploads/2020/02/6E-min.png"
+          }}
+        />
+        <Text style={[styles.place, { marginTop: 10 }]}>New Delhi</Text>
+        <Text>To</Text>
+        <Text style={styles.place}>Pune</Text>
+        <Text>25 Feb 2020(Thursday)</Text>
+        <LinearGradient
+          style={{
+            backgroundColor: "red",
+            width: "100%",
+            alignItems: "center",
+            marginTop: 5,
+            elevation: 2,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8
+          }}
+          colors={["#53b2fe", "#065af3"]}>
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff" }}>Starting From:</Text>
+          <Text style={{ fontSize: 18, fontWeight: "700", color: "#fff" }}>$1400</Text>
+        </LinearGradient>
+      </View>
+    );
+  };
+
+  keyExtractor = (item, index) => "Sap" + index + item;
+
+  _keyExtractor = (item, index) => "sap" + index + item;
+
   render() {
-    const { posts } = this.state;
+    const { posts, flights } = this.state;
     return (
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
@@ -117,28 +197,55 @@ class Home extends React.PureComponent {
             />
           </View>
           <SwiperFlatList autoplay autoplayDelay={2} autoplayLoop index={0}>
+            <FastImage style={styles.imgNew} source={require("../assets/imgs/2ratio1.jpg")} />
+            <FastImage style={styles.imgNeww} source={require("../assets/imgs/3Ratio1.jpg")} />
             <FastImage style={styles.img} source={require("../assets/imgs/flightOffer.jpg")} />
             <FastImage style={styles.img} source={require("../assets/imgs/HotelOffer.jpg")} />
             <FastImage style={styles.img} source={require("../assets/imgs/busOffer.jpg")} />
             <FastImage style={styles.img} source={require("../assets/imgs/cabOffer.jpg")} />
           </SwiperFlatList>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 12 }}>
-            <Text style={{ fontSize: 16, color: "#616A71", fontWeight: "700" }}>BLOG</Text>
-            <Button
+          <Text style={[styles.heading, { marginHorizontal: 12 }]}>POPULAR DOMESTIC ROUTES</Text>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={flights}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+            // contentContainerStyle={{ backgroundColor: "#FFF" }}
+          />
+
+          {posts && posts.length > 0 && (
+            <View
               style={{
-                alignSelf: "flex-end",
                 flexDirection: "row",
-                justifyContent: "center"
-              }}
-              onPress={this.navigateToScreen("BlogList")}>
-              <Text style={{}}>VIEW ALL</Text>
-              <Icon style={{ paddingStart: 10 }} name="md-arrow-forward" size={18} />
-            </Button>
-          </View>
-          <SwiperFlatList index={0}>
+                justifyContent: "space-between",
+                marginHorizontal: 12
+              }}>
+              <Text style={styles.heading}>BLOG</Text>
+              <Button
+                style={{
+                  alignSelf: "flex-end",
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
+                onPress={this.navigateToScreen("BlogList")}>
+                <Text style={{}}>VIEW ALL</Text>
+                <Icon style={{ paddingStart: 10 }} name="md-arrow-forward" size={18} />
+              </Button>
+            </View>
+          )}
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={posts}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+          />
+          {/* <SwiperFlatList index={0}>
             {posts &&
+              posts.length > 0 &&
               posts.map((item, index) => {
+                console.log(item);
                 return (
                   <Button
                     style={[styles.blogView, { marginEnd: posts.length - 1 == index ? 12 : 0 }]}
@@ -149,7 +256,7 @@ class Home extends React.PureComponent {
                   </Button>
                 );
               })}
-          </SwiperFlatList>
+          </SwiperFlatList> */}
         </ScrollView>
 
         {/* </SafeAreaView> */}
@@ -192,6 +299,20 @@ const styles = StyleSheet.create({
     height: aspectHeight(1134, 1134, width - 64),
     resizeMode: "contain"
   },
+  imgNew: {
+    width: width - 64,
+    marginHorizontal: 32,
+    marginBottom: 20,
+    height: aspectHeight(2362, 1181, width - 64),
+    resizeMode: "contain"
+  },
+  imgNeww: {
+    width: width - 64,
+    marginHorizontal: 32,
+    marginBottom: 20,
+    height: aspectHeight(3543, 1181, width - 64),
+    resizeMode: "contain"
+  },
   blog: {
     width: width - 128,
     borderTopRightRadius: 8,
@@ -204,7 +325,7 @@ const styles = StyleSheet.create({
     width: width - 128,
     marginVertical: 15,
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     elevation: 2,
     marginStart: 12,
     shadowOffset: { width: 2, height: 2 },
@@ -212,7 +333,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 4,
     shadowRadius: 4
   },
-  blogtext: { width: width - 128, paddingHorizontal: 5, paddingVertical: 8 }
+  blogtext: { width: width - 128, paddingHorizontal: 5, paddingVertical: 8 },
+  heading: { fontSize: 18, color: "#1A2B48", fontWeight: "700" },
+  place: { fontSize: 18, fontWeight: "600", color: "#1A2B48" }
 });
 
 export default Home;

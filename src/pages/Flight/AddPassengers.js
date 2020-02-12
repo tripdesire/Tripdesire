@@ -5,26 +5,63 @@ import { Button, Text, Icon } from "../../components";
 import Toast from "react-native-simple-toast";
 
 function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, infantsCount }) {
+  console.log(adultCount, childrenCount, infantsCount);
   const [adult, setAdult] = useState(adultCount);
   const [children, setChildren] = useState(childrenCount);
   const [infants, setInfants] = useState(infantsCount);
+  const [childValue, setChildValue] = useState(
+    [...Array(10 - parseInt(adultCount) - parseInt(infantsCount))].map((item, index) => {
+      return { value: index.toString(), label: index.toString() };
+    })
+  );
+  const [InfantValue, setInfantValue] = useState(
+    [...Array(10 - parseInt(adultCount) - parseInt(childrenCount))].map((item, index) => {
+      return { value: index.toString(), label: index.toString() };
+    })
+  );
 
   const _submit = () => {
-    console.log(adult, children, infants);
-    if (adult >= infants) {
-      submit && submit({ adult, children, infants });
+    if (parseInt(adult) + parseInt(children) + parseInt(infants) > 9) {
+      Toast.show("Total passengers can not be greater than 9");
+    } else if (adult < infants) {
+      Toast.show("Infants can not be greater adults", Toast.SHORT);
     } else {
-      Toast.show("Infants can not more than adults", Toast.SHORT);
+      submit && submit({ adult, children, infants });
     }
   };
   const changeAdults = value => {
     setAdult(value);
+    //let newArray = Object.assign([], childValue);
+    console.log(10 - parseInt(value) + parseInt(infants));
+    if (9 >= parseInt(value) + parseInt(infants)) {
+      let newArray = [...Array(10 - parseInt(value) - parseInt(infants))].map((item, index) => {
+        return { value: index.toString(), label: index.toString() };
+      });
+      setChildValue(newArray);
+    }
+    console.log(10 - parseInt(value) + parseInt(children));
+    if (9 >= parseInt(value) + parseInt(children)) {
+      let newArrayInfant = [...Array(10 - parseInt(value) - parseInt(children))].map(
+        (item, index) => {
+          return { value: index.toString(), label: index.toString() };
+        }
+      );
+      setInfantValue(newArrayInfant);
+    }
   };
   const changeChildren = value => {
     setChildren(value);
+    let newArray = [...Array(10 - parseInt(adult) - parseInt(value))].map((item, index) => {
+      return { value: index.toString(), label: index.toString() };
+    });
+    setInfantValue(newArray);
   };
   const changeInfants = value => {
     setInfants(value);
+    let newArray = [...Array(10 - parseInt(adult) - parseInt(value))].map((item, index) => {
+      return { value: index.toString(), label: index.toString() };
+    });
+    setChildValue(newArray);
   };
   const ArrowDown = () => <Icon name="ios-arrow-down" size={20} />;
 
@@ -75,7 +112,11 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
                 Icon={ArrowDown}
               />
             </View>
-            <View style={{ alignItems: "center" }}>
+
+            <View
+              style={{
+                alignItems: "center"
+              }}>
               <Text>Childrens</Text>
               <RNPickerSelect
                 useNativeAndroidPickerStyle={false}
@@ -97,13 +138,15 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
                   { value: "5", label: "5" },
                   { value: "6", label: "6" },
                   { value: "7", label: "7" },
-                  { value: "8", label: "8" },
-                  { value: "9", label: "9" }
+                  { value: "8", label: "8" }
                 ]}
                 Icon={ArrowDown}
               />
             </View>
-            <View style={{ alignItems: "center" }}>
+            <View
+              style={{
+                alignItems: "center"
+              }}>
               <Text>Infants</Text>
               <RNPickerSelect
                 useNativeAndroidPickerStyle={false}
@@ -125,8 +168,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
                   { value: "5", label: "5" },
                   { value: "6", label: "6" },
                   { value: "7", label: "7" },
-                  { value: "8", label: "8" },
-                  { value: "9", label: "9" }
+                  { value: "8", label: "8" }
                 ]}
                 Icon={ArrowDown}
               />

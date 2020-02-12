@@ -31,7 +31,7 @@ function Blog({ navigation }) {
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#000000" }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               flexDirection: "row",
