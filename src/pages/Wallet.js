@@ -244,6 +244,21 @@ class Wallet extends React.PureComponent {
                 </View>
               </View>
             </View>
+            <Button
+              style={{
+                backgroundColor: "#F68E1D",
+                marginHorizontal: 16,
+                padding: 8,
+                marginVertical: 16,
+                borderRadius: 20,
+                // marginBottom: 0,
+                //marginEnd: 0,
+                //  position: "absolute",
+                alignItems: "center"
+              }}
+              onPress={this.modalShow}>
+              <Text style={{ color: "#fff" }}>Add Money</Text>
+            </Button>
             {transaction.transaction == "No transactions found" ? (
               <View
                 style={{
@@ -260,21 +275,6 @@ class Wallet extends React.PureComponent {
               </View>
             ) : (
               <View style={{ flex: 1 }}>
-                <Button
-                  style={{
-                    backgroundColor: "#F68E1D",
-                    marginHorizontal: 16,
-                    padding: 8,
-                    marginVertical: 16,
-                    borderRadius: 20,
-                    // marginBottom: 0,
-                    //marginEnd: 0,
-                    //  position: "absolute",
-                    alignItems: "center"
-                  }}
-                  onPress={this.modalShow}>
-                  <Text style={{ color: "#fff" }}>Add Money</Text>
-                </Button>
                 <FlatList
                   showsVerticalScrollIndicator={false}
                   data={transactions}

@@ -295,7 +295,7 @@ class SignUp extends React.PureComponent {
                   borderRadius: 10
                 }}>
                 <TextInputComponent
-                  label="First Name"
+                  label="First Name*"
                   //  placeholder="Enter the firstName"
                   value={this.state.firstname}
                   //imgpath={require("../assets/imgs/profile.png")}
@@ -309,7 +309,7 @@ class SignUp extends React.PureComponent {
                   onChangeText={text => this.setState({ lastname: text })}
                 />
                 <TextInputComponent
-                  label="Email"
+                  label="Email*"
                   //  placeholder="Enter the email"
                   value={this.state.email}
                   //imgpath={require("../assets/imgs/email.png")}
@@ -325,7 +325,7 @@ class SignUp extends React.PureComponent {
                     borderBottomColor: this.state.isFocus ? "#5789FF" : "#EAEBEF"
                   }}>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.text}>Password</Text>
+                    <Text style={styles.text}>Password*</Text>
                     <View
                       style={{
                         flexDirection: "row",
@@ -379,21 +379,11 @@ class SignUp extends React.PureComponent {
                 </View>
 
                 <View style={{ flexDirection: "row", alignItems: "center", marginTop: 20 }}>
-                  <View
-                    style={{
-                      height: 1.35,
-                      backgroundColor: "#757575",
-                      width: "10%"
-                    }}></View>
+                  <View style={styles.line}></View>
                   <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#757575" }}>
                     Or Sign Up with
                   </Text>
-                  <View
-                    style={{
-                      height: 1.35,
-                      backgroundColor: "#757575",
-                      width: "10%"
-                    }}></View>
+                  <View style={styles.line}></View>
                 </View>
                 <View
                   style={{
@@ -407,33 +397,30 @@ class SignUp extends React.PureComponent {
                       style={[styles.facebook_google_button]}
                       onPress={this.navigateToScreen("OTPScreen")}>
                       <Image
-                        style={{ width: 30, height: 30 }}
+                        style={styles.img}
                         source={require("../assets/imgs/mobileIconNew.png")}
                       />
                     </Button>
-                    <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>OTP</Text>
+                    <Text style={styles.socialMediaLabel}>OTP</Text>
                   </View>
                   <View style={{ alignItems: "center" }}>
                     <Button
                       style={[styles.facebook_google_button]}
                       onPress={() => this._Social_login("google")}>
-                      <Image
-                        style={{ width: 30, height: 30 }}
-                        source={require("../assets/imgs/googleNew.png")}
-                      />
+                      <Image style={styles.img} source={require("../assets/imgs/googleNew.png")} />
                     </Button>
-                    <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Google</Text>
+                    <Text style={styles.socialMediaLabel}>Google</Text>
                   </View>
                   <View style={{ alignItems: "center" }}>
                     <Button
                       style={[styles.facebook_google_button]}
                       onPress={() => this._Social_login("facebook")}>
                       <Image
-                        style={{ width: 30, height: 30 }}
+                        style={styles.img}
                         source={require("../assets/imgs/facebookNew.png")}
                       />
                     </Button>
-                    <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Facebook</Text>
+                    <Text style={styles.socialMediaLabel}>Facebook</Text>
                   </View>
                 </View>
               </View>
@@ -551,6 +538,13 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     justifyContent: "center",
     alignItems: "center"
+  },
+  socialMediaLabel: { color: "#757575", fontSize: 10, marginTop: 5 },
+  img: { width: 30, height: 30 },
+  line: {
+    height: 1.35,
+    backgroundColor: "#757575",
+    width: "10%"
   }
 });
 

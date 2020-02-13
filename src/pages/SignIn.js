@@ -343,21 +343,11 @@ class SignIn extends React.PureComponent {
                   marginTop: 20,
                   justifyContent: "center"
                 }}>
-                <View
-                  style={{
-                    height: 1.35,
-                    backgroundColor: "#757575",
-                    width: "10%"
-                  }}></View>
+                <View style={styles.line}></View>
                 <Text style={{ marginHorizontal: 5, fontSize: 10, color: "#757575" }}>
                   Or Sign In with
                 </Text>
-                <View
-                  style={{
-                    height: 1.35,
-                    backgroundColor: "#757575",
-                    width: "10%"
-                  }}></View>
+                <View style={styles.line}></View>
               </View>
               <View
                 style={{
@@ -372,33 +362,27 @@ class SignIn extends React.PureComponent {
                     style={[styles.facebook_google_button]}
                     onPress={this.navigateToScreen("OTPScreen")}>
                     <Image
-                      style={{ width: 30, height: 30 }}
+                      style={styles.img}
                       source={require("../assets/imgs/mobileIconNew.png")}
                     />
                   </Button>
-                  <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>OTP</Text>
+                  <Text style={styles.socialMediaLabel}>OTP</Text>
                 </View>
                 <View style={{ alignItems: "center" }}>
                   <Button
                     style={[styles.facebook_google_button, { marginHorizontal: 30 }]}
                     onPress={() => this.socialLogin("google")}>
-                    <Image
-                      style={{ width: 30, height: 30 }}
-                      source={require("../assets/imgs/googleNew.png")}
-                    />
+                    <Image style={styles.img} source={require("../assets/imgs/googleNew.png")} />
                   </Button>
-                  <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Google</Text>
+                  <Text style={styles.socialMediaLabel}>Google</Text>
                 </View>
                 <View style={{ alignItems: "center" }}>
                   <Button
                     style={[styles.facebook_google_button]}
                     onPress={() => this.socialLogin("facebook")}>
-                    <Image
-                      style={{ width: 30, height: 30 }}
-                      source={require("../assets/imgs/facebookNew.png")}
-                    />
+                    <Image style={styles.img} source={require("../assets/imgs/facebookNew.png")} />
                   </Button>
-                  <Text style={{ color: "#D2D1D1", fontSize: 10, marginTop: 5 }}>Facebook</Text>
+                  <Text style={styles.socialMediaLabel}>Facebook</Text>
                 </View>
               </View>
             </View>
@@ -513,6 +497,13 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     justifyContent: "center",
     alignItems: "center"
+  },
+  socialMediaLabel: { color: "#757575", fontSize: 10, marginTop: 5 },
+  img: { width: 30, height: 30 },
+  line: {
+    height: 1.35,
+    backgroundColor: "#757575",
+    width: "10%"
   }
 });
 
