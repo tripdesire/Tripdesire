@@ -80,10 +80,9 @@ function BlogList({ navigation }) {
           <LinearGradient
             style={{
               backgroundColor: "blue",
-              width: 80,
+              width: 90,
               alignItems: "center",
-              borderRadius: 15,
-              marginTop: 10
+              borderRadius: 15
             }}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
@@ -93,7 +92,7 @@ function BlogList({ navigation }) {
               onPress={() => {
                 navigation.navigate("Blog", { item });
               }}>
-              <Text style={{ color: "#fff", fontSize: 12, fontWeight: "500", paddingVertical: 3 }}>
+              <Text style={{ color: "#fff", fontSize: 12, fontWeight: "500", paddingVertical: 4 }}>
                 Read More
               </Text>
             </Button>

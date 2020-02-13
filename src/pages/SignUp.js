@@ -34,9 +34,18 @@ class SignUp extends React.PureComponent {
       modal_loading: false,
       showPassword: true,
       referralCode: "",
-      userId: ""
+      userId: "",
+      isFocus: false
     };
   }
+
+  onfocus = () => {
+    this.setState({ isFocus: true });
+  };
+
+  onblur = () => {
+    this.setState({ isFocus: false });
+  };
 
   trackScreenView = async screen => {
     // Set & override the MainActivity screen name
@@ -313,7 +322,7 @@ class SignUp extends React.PureComponent {
                     width: "100%",
                     paddingTop: 14,
                     borderBottomWidth: 1,
-                    borderBottomColor: "#EAEBEF"
+                    borderBottomColor: this.state.isFocus ? "#5789FF" : "#EAEBEF"
                   }}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.text}>Password</Text>
@@ -329,8 +338,10 @@ class SignUp extends React.PureComponent {
                         secureTextEntry={this.state.showPassword}
                         style={[
                           styles.textinput,
-                          Platform.OS == "ios" ? { paddingVertical: 8 } : null
+                          { paddingVertical: Platform.OS == "ios" ? 8 : null }
                         ]}
+                        onFocus={this.onfocus}
+                        onBlur={this.onblur}
                         onChangeText={text => this.setState({ password: text })}
                         placeholderTextColor={"#D9D8DD"}></TextInput>
                       <Button onPress={this._showPassword}>

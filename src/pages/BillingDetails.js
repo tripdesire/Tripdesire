@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, StatusBar, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import { View, StatusBar, StyleSheet, SafeAreaView, ScrollView, TextInput } from "react-native";
 import Toast from "react-native-simple-toast";
 import { etravosApi, domainApi } from "../service";
 import moment from "moment";
@@ -8,6 +8,7 @@ import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../co
 import { connect } from "react-redux";
 import { Signup, Signin, Billing } from "../store/action";
 import analytics from "@react-native-firebase/analytics";
+import Animated, { Easing } from "react-native-reanimated";
 
 class BillingDetails extends React.PureComponent {
   constructor(props) {
@@ -25,8 +26,21 @@ class BillingDetails extends React.PureComponent {
       streetAddress1: user.billing.address_2,
       state: user.billing.state,
       postcode: user.billing.postcode,
-      country: user.billing.country
+      country: user.billing.country,
+      isFocused: false
     };
+    this._animatedIsFocused = new Animated.Value(this.props.value === "" ? 0 : 1);
+  }
+
+  handleFocus = () => this.setState({ isFocused: true });
+  handleBlur = () => this.setState({ isFocused: false });
+
+  componentDidUpdate() {
+    Animated.timing(this._animatedIsFocused, {
+      toValue: this.state.isFocused || this.props.value !== "" ? 1 : 0,
+      duration: 200,
+      easing: Easing.inOut(Easing.ease)
+    }).start();
   }
 
   trackScreenView = async screen => {
@@ -136,6 +150,22 @@ class BillingDetails extends React.PureComponent {
       country,
       loader
     } = this.state;
+    const labelStyle = {
+      // position: "absolute",
+      left: 2,
+      top: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [27, 8]
+      }),
+      fontSize: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [14, 11]
+      }),
+      color: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [Animated.color(210, 210, 210), Animated.color(253, 52, 98)]
+      })
+    };
     return (
       <>
         <StatusBar backgroundColor="black" barStyle="light-content" />
@@ -171,6 +201,16 @@ class BillingDetails extends React.PureComponent {
                 value={firstname}
                 onChangeText={text => this.setState({ firstname: text })}
               />
+              {/* <View style={{ marginTop: 30 }}>
+                <Animated.Text style={labelStyle}>First Name</Animated.Text>
+                <TextInput
+                  placeholder="Enter the first name"
+                  style={[styles.txtInput]}
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  blurOnSubmit
+                />
+              </View> */}
               <TextInputComponent
                 label="Last Name"
                 placeholder="Enter the last name"
@@ -255,6 +295,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25
+  },
+  txtInput: {
+    height: 35,
+    fontSize: 14,
+    color: "#000",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EDEBF2",
+    paddingBottom: 8,
+    width: "100%"
   }
 });
 

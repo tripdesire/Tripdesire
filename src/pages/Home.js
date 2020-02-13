@@ -9,7 +9,14 @@ import {
   StyleSheet,
   FlatList
 } from "react-native";
-import { HomeButtonComponent, Text, Button, Icon, LinearGradient } from "../../src/components";
+import {
+  HomeButtonComponent,
+  Text,
+  Button,
+  Icon,
+  LinearGradient,
+  CurrencyText
+} from "../../src/components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
 import axios from "axios";
@@ -48,20 +55,24 @@ class Home extends React.PureComponent {
     await analytics().setCurrentScreen(screen, screen);
   };
   componentDidMount() {
-    axios
-      .get("https://tripdesire.co/wp-json/wp/v2/posts")
-      .then(({ data }) => {
-        console.log(data);
-        this.setState({ posts: data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", () => {
+      axios
+        .get("https://tripdesire.co/wp-json/wp/v2/posts")
+        .then(({ data }) => {
+          console.log(data);
+          this.setState({ posts: data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
+
     this.trackScreenView("Home");
   }
 
   navigateToScreen = (page, params = {}) => () => {
-    this.props.navigation.navigate(page);
+    this.props.navigation.navigate(page, params);
   };
 
   blogShare = item => () => {
@@ -80,23 +91,21 @@ class Home extends React.PureComponent {
     );
   };
 
+  _gotoFlightSearch = () => {
+    console.log("kamal");
+    this.props.navigation.navigate("FlightSearch", { check: "Blog" });
+  };
+
   _renderItem = ({ item, index }) => {
     return (
-      <View
-        style={{
-          backgroundColor: "#fff",
-          elevation: 2,
-          width: width - 96,
-          shadowOffset: { width: 2, height: 2 },
-          shadowColor: "#d8eaff",
-          shadowOpacity: 4,
-          shadowRadius: 4,
-          marginStart: 12,
-          marginEnd: this.state.flights.length - 1 == index ? 12 : 2,
-          marginVertical: 15,
-          alignItems: "center",
-          borderRadius: 8
-        }}>
+      <Button
+        style={[
+          styles.flightView,
+          {
+            marginEnd: this.state.flights.length - 1 == index ? 12 : 2
+          }
+        ]}
+        onPress={this._gotoFlightSearch}>
         <FastImage
           resizeMode="contain"
           style={{ height: 60, width: 60, marginTop: 15 }}
@@ -108,21 +117,15 @@ class Home extends React.PureComponent {
         <Text>To</Text>
         <Text style={styles.place}>Pune</Text>
         <Text>25 Feb 2020(Thursday)</Text>
-        <LinearGradient
-          style={{
-            backgroundColor: "red",
-            width: "100%",
-            alignItems: "center",
-            marginTop: 5,
-            elevation: 2,
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8
-          }}
-          colors={["#53b2fe", "#065af3"]}>
-          <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff" }}>Starting From:</Text>
-          <Text style={{ fontSize: 18, fontWeight: "700", color: "#fff" }}>$1400</Text>
+        <LinearGradient style={styles.BottomStripe} colors={["#53b2fe", "#065af3"]}>
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff", lineHeight: 20 }}>
+            Starting From:
+          </Text>
+          <CurrencyText style={[styles.heading, { color: "#fff", lineHeight: 20 }]}>
+            ₹ 1400
+          </CurrencyText>
         </LinearGradient>
-      </View>
+      </Button>
     );
   };
 
@@ -168,7 +171,7 @@ class Home extends React.PureComponent {
               tintColor={"#5789FF"}
               name="Flights"
               img_name={require("../assets/imgs/flight.png")}
-              onPress={this.navigateToScreen("FlightSearch")}
+              onPress={this.navigateToScreen("FlightSearch", { check: "FromFlight" })}
             />
             <HomeButtonComponent
               name="Hotels"
@@ -204,7 +207,9 @@ class Home extends React.PureComponent {
             <FastImage style={styles.img} source={require("../assets/imgs/busOffer.jpg")} />
             <FastImage style={styles.img} source={require("../assets/imgs/cabOffer.jpg")} />
           </SwiperFlatList>
-          <Text style={[styles.heading, { marginHorizontal: 12 }]}>POPULAR DOMESTIC ROUTES</Text>
+          <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
+            POPULAR DOMESTIC ROUTES
+          </Text>
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -221,7 +226,7 @@ class Home extends React.PureComponent {
                 justifyContent: "space-between",
                 marginHorizontal: 12
               }}>
-              <Text style={styles.heading}>BLOG</Text>
+              <Text style={[styles.heading, { color: "#1A2B48" }]}>BLOG</Text>
               <Button
                 style={{
                   alignSelf: "flex-end",
@@ -241,22 +246,6 @@ class Home extends React.PureComponent {
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
           />
-          {/* <SwiperFlatList index={0}>
-            {posts &&
-              posts.length > 0 &&
-              posts.map((item, index) => {
-                console.log(item);
-                return (
-                  <Button
-                    style={[styles.blogView, { marginEnd: posts.length - 1 == index ? 12 : 0 }]}
-                    key={item.id}
-                    onPress={this.blogShare(item)}>
-                    <FastImage style={styles.blog} source={{ uri: item.featured_image_url }} />
-                    <Text style={styles.blogtext}>{item.title.rendered}</Text>
-                  </Button>
-                );
-              })}
-          </SwiperFlatList> */}
         </ScrollView>
 
         {/* </SafeAreaView> */}
@@ -334,8 +323,31 @@ const styles = StyleSheet.create({
     shadowRadius: 4
   },
   blogtext: { width: width - 128, paddingHorizontal: 5, paddingVertical: 8 },
-  heading: { fontSize: 18, color: "#1A2B48", fontWeight: "700" },
-  place: { fontSize: 18, fontWeight: "600", color: "#1A2B48" }
+  heading: { fontSize: 18, fontWeight: "700" },
+  place: { fontSize: 18, fontWeight: "600", color: "#1A2B48" },
+  flightView: {
+    backgroundColor: "#ffffff",
+    elevation: 2,
+    width: width - 96,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: "#d8eaff",
+    shadowOpacity: 4,
+    shadowRadius: 4,
+    marginStart: 12,
+    marginVertical: 15,
+    alignItems: "center",
+    borderRadius: 8
+  },
+  BottomStripe: {
+    backgroundColor: "red",
+    width: "100%",
+    alignItems: "center",
+    marginTop: 5,
+    elevation: 2,
+    paddingVertical: 8,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8
+  }
 });
 
 export default Home;

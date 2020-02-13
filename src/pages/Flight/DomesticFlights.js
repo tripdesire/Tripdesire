@@ -13,6 +13,8 @@ import analytics from "@react-native-firebase/analytics";
 class DomesticFlights extends React.PureComponent {
   constructor(props) {
     super(props);
+    console.log(this.props.navigation.state.params);
+    const { check } = this.props.navigation.state.params;
     this.animatedValue = new Animated.Value(0);
     this.state = {
       class: "E",
@@ -33,16 +35,23 @@ class DomesticFlights extends React.PureComponent {
       modalFrom: false,
       modalTo: false,
       modalPassengers: false,
-      from: "HYD, Hyderabad",
-      to: "BLR, Bangalore",
-      sourceName: "Hyderabad",
-      sourceAirportName: "Hyderabad, India - (HYD) - Rajiv Gandhi Airpot",
-      destinationAirportName: "Bangalore, India - (BLR) - Bangalore International Airpot",
-      destinationName: "Bangalore",
-      fromCode: "HYD",
-      ToCode: "BLR",
-      Journey_date: new Date(),
-      Return_date: new Date(),
+      from: check == "FromFlight" ? "HYD, Hyderabad" : "DEL, New Delhi",
+      to: check == "FromFlight" ? "BLR, Bangalore" : "PNQ, Pune",
+      sourceName: check == "FromFlight" ? "Hyderabad" : "New Delhi",
+      sourceAirportName:
+        check == "FromFlight"
+          ? "Hyderabad, India - (HYD) - Rajiv Gandhi Airpot"
+          : "New Delhi, India - (DEL) - Indira Gandhi Intl",
+      destinationAirportName:
+        check == "FromFlight"
+          ? "Bangalore, India - (BLR) - Bangalore International Airpot"
+          : "Pune, India - (PNQ) - Lohegaon",
+      destinationName: check == "FromFlight" ? "Bangalore" : "Pune",
+      fromCode: check == "FromFlight" ? "HYD" : "DEL",
+      ToCode: check == "FromFlight" ? "BLR" : "PNQ",
+      Journey_date:
+        check == "FromFlight" ? new Date() : moment("25 Feb, 20", "DD MMM, YY").toDate(),
+      Return_date: check == "FromFlight" ? new Date() : moment("25 Feb, 20", "DD MMM, YY").toDate(),
       selectRound: false,
       fromDTpicker: false,
       toDTpicker: false,

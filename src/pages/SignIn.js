@@ -31,9 +31,18 @@ class SignIn extends React.PureComponent {
       openPopup: false,
       modal_loading: false,
       referralCode: "",
-      userId: ""
+      userId: "",
+      isFocus: false
     };
   }
+
+  onfocus = () => {
+    this.setState({ isFocus: true });
+  };
+
+  onblur = () => {
+    this.setState({ isFocus: false });
+  };
 
   trackScreenView = async screen => {
     // Set & override the MainActivity screen name
@@ -49,7 +58,6 @@ class SignIn extends React.PureComponent {
 
   login = () => {
     const { onBack, needBilling } = this.props.navigation.state.params;
-    console.log(this.state);
     if (this.state.email != "" && this.state.password != "") {
       this.setState({ loader: true });
       let param = {
@@ -59,7 +67,6 @@ class SignIn extends React.PureComponent {
       domainApi
         .post("/login", param)
         .then(({ data }) => {
-          console.log(data);
           if (data.code == "1") {
             this.setState({ loader: false });
             this.props.Signin(data.details);
@@ -106,7 +113,6 @@ class SignIn extends React.PureComponent {
         details.mode = "google";
         this.setState({ loader: true });
         domainApi.post("/social-login", details).then(({ data }) => {
-          console.log(data);
           if (data.code == 1) {
             this.setState({ loader: false, userId: data.details.id });
             this.props.Signin(data.details);
@@ -148,12 +154,10 @@ class SignIn extends React.PureComponent {
                   } else {
                     let details = result;
                     details.mode = "facebook";
-                    console.log(result);
                     this.setState({ loader: true });
                     domainApi
                       .post("/social-login", details)
                       .then(({ data }) => {
-                        console.log(data);
                         if (data.code == 1) {
                           this.setState({ loader: false, userId: data.details.id });
                           this.props.Signin(data.details);
@@ -202,7 +206,6 @@ class SignIn extends React.PureComponent {
         headers: { "content-type": "multipart/form-data" }
       })
       .then(({ data }) => {
-        console.log(data);
         this.setState({ modal_loading: false });
         if (data.status == 1) {
           if (onBack) {
@@ -212,7 +215,6 @@ class SignIn extends React.PureComponent {
           }
         }
         Toast.show(data.message, Toast.LONG);
-        console.log(data);
       })
       .catch(error => {
         this.setState({ modal_loading: false });
@@ -277,7 +279,7 @@ class SignIn extends React.PureComponent {
                   width: "100%",
                   paddingTop: 14,
                   borderBottomWidth: 1,
-                  borderBottomColor: "#EAEBEF"
+                  borderBottomColor: this.state.isFocus ? "#5789FF" : "#D2D1D1"
                 }}>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.text}>Password*</Text>
@@ -291,12 +293,14 @@ class SignIn extends React.PureComponent {
                     }}>
                     <TextInput
                       secureTextEntry={this.state.showPassword}
-                      //  {...this.props}
                       style={[
                         styles.textinput,
-                        Platform.OS == "ios" ? { paddingVertical: 8 } : null
+                        {
+                          paddingVertical: Platform.OS == "ios" ? 8 : null
+                        }
                       ]}
-                      //  placeholder={this.props.placeholder}
+                      onFocus={this.onfocus}
+                      onBlur={this.onblur}
                       placeholderTextColor={"#D9D8DD"}
                       onChangeText={text => this.setState({ password: text })}></TextInput>
                     <Button onPress={this._showPassword}>
@@ -469,7 +473,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4
   },
   textinput: {
-    borderBottomColor: "#D2D1D1",
     width: "100%",
     fontSize: 16,
     paddingStart: 5,
