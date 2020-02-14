@@ -7,7 +7,7 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  FlatList
+  FlatList,
 } from "react-native";
 import {
   HomeButtonComponent,
@@ -135,7 +135,7 @@ class Home extends React.PureComponent {
 
   render() {
     const { posts, flights } = this.state;
-    return (
+    return (     
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
         {/* <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}> */}

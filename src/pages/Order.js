@@ -35,10 +35,12 @@ class Order extends React.PureComponent {
 
   componentDidMount() {
     this.trackScreenView("Order");
-
-    if (!isEmpty(this.props.user)) {
-      this.loadOrders();
-    }
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", () => {
+      if (!isEmpty(this.props.user)) {
+        this.loadOrders();
+      }
+    });
   }
 
   loadOrders = () => {

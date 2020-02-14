@@ -121,7 +121,7 @@ class FlightThankYou extends React.PureComponent {
                     marginStart: 5,
                     fontWeight: "700"
                   }}>
-                  #{order.id}
+                  {"    #" + order.id}
                 </Text>
               </View>
             )}
@@ -1158,7 +1158,7 @@ class FlightThankYou extends React.PureComponent {
                   </View>
                 )}
 
-                <View style={[styles.cardView, { marginTop: 15 }]}>
+                <View style={[styles.cardView, { marginVertical: 15 }]}>
                   <View style={styles.flightType}>
                     <Text style={styles.heading}>Fare Summary</Text>
                   </View>
