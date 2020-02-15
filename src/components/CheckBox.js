@@ -6,7 +6,7 @@ import Text from "./TextComponent";
 
 class CheckBox extends React.PureComponent {
   render() {
-    const { checked, label } = this.props;
+    const { checked, label, style, styleIcon } = this.props;
     return (
       <TouchableOpacity
         onPress={this.props.onPress}
@@ -14,7 +14,8 @@ class CheckBox extends React.PureComponent {
           flexDirection: "row",
           padding: 16,
           alignItems: "center",
-          width: "100%"
+          width: "100%",
+          ...styleIcon
         }}>
         <Icon
           type="MaterialCommunityIcons"
@@ -23,7 +24,7 @@ class CheckBox extends React.PureComponent {
           name={checked ? "checkbox-marked" : "checkbox-blank-outline"}
         />
 
-        <Text style={{ marginStart: 16, flex: 1 }}>{label}</Text>
+        <Text style={{ marginStart: 16, flex: 1, ...style }}>{label}</Text>
       </TouchableOpacity>
     );
   }

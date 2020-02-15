@@ -7,11 +7,19 @@ import {
   ScrollView,
   SafeAreaView,
   Modal,
-  StatusBar
+  StatusBar,
+  StyleSheet
 } from "react-native";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { Button, Text, ActivityIndicator, Icon } from "../../components";
+import {
+  Button,
+  Text,
+  ActivityIndicator,
+  Icon,
+  CheckBox,
+  TextInputComponent
+} from "../../components";
 import moment from "moment";
 import RazorpayCheckout from "react-native-razorpay";
 import RNPickerSelect from "react-native-picker-select";
@@ -29,6 +37,14 @@ class CheckOut1 extends React.PureComponent {
     const { params, data } = props.navigation.state.params;
     console.log(props.navigation.state.params);
     this.state = {
+      GSTCompanyAddress: "",
+      GSTCompanyContactNumber: "",
+      GSTCompanyName: "",
+      GSTNumber: "",
+      GSTCompanyEmail: "",
+      GSTFirstName: "",
+      GSTLastName: "",
+      checked: false,
       data: data,
       showGst: false,
       loading: false,
@@ -262,13 +278,23 @@ class CheckOut1 extends React.PureComponent {
 
   _order = async () => {
     const { params } = this.props.navigation.state.params;
+    const {
+      GSTCompanyAddress,
+      GSTCompanyContactNumber,
+      GSTCompanyName,
+      GSTNumber,
+      GSTCompanyEmail,
+      GSTFirstName,
+      GSTLastName,
+      checked
+    } = this.state;
 
     if (this.state.GstDetails == "") {
       this.setState({ showGst: true });
     }
 
     const { user } = this.props;
-    if (isEmpty(user)) {
+    if (isEmpty(user)) { 
       //Toast.show("Please login or signup", Toast.LONG);
       this.props.navigation.navigate("SignIn", { needBilling: true });
       return;
@@ -423,7 +449,17 @@ class CheckOut1 extends React.PureComponent {
         FlightId: departFlight.OriginDestinationoptionId.Id,
         FlightIdRet: null,
         FlightType: flightType,
-        GSTDetails: departFlight.IsGSTMandatory ? this.state.GstDetails : null,
+        GSTDetails: checked
+          ? {
+              GSTCompanyAddress: GSTCompanyAddress,
+              GSTCompanyContactNumber: GSTCompanyContactNumber,
+              GSTCompanyName: GSTCompanyName,
+              GSTNumber: GSTNumber,
+              GSTCompanyEmail: GSTCompanyEmail,
+              GSTFirstName: GSTFirstName,
+              GSTLastName: GSTLastName
+            }
+          : null,
         InfantPax: params.infant,
         IsLCC: departFlight.IsLCC,
         IsLCCRet: null,
@@ -518,7 +554,17 @@ class CheckOut1 extends React.PureComponent {
           FlightId: departFlight.OriginDestinationoptionId.Id,
           FlightIdRet: arrivalFlight.OriginDestinationoptionId.Id,
           FlightType: flightType,
-          GSTDetails: arrivalFlight.IsGSTMandatory ? this.state.GstDetails : null,
+          GSTDetails: checked
+            ? {
+                GSTCompanyAddress: GSTCompanyAddress,
+                GSTCompanyContactNumber: GSTCompanyContactNumber,
+                GSTCompanyName: GSTCompanyName,
+                GSTNumber: GSTNumber,
+                GSTCompanyEmail: GSTCompanyEmail,
+                GSTFirstName: GSTFirstName,
+                GSTLastName: GSTLastName
+              }
+            : null,
           InfantPax: params.infant,
           IsLCC: departFlight.IsLCC,
           IsLCCRet: arrivalFlight.IsLCC,
@@ -848,9 +894,23 @@ class CheckOut1 extends React.PureComponent {
       });
   }
 
+  setGST = () => {
+    this.setState({ checked: !this.state.checked });
+  };
+
   render() {
     const { params } = this.props.navigation.state.params;
-    const { ffn, data } = this.state;
+    const {
+      ffn,
+      data,
+      GSTCompanyAddress,
+      GSTCompanyContactNumber,
+      GSTCompanyName,
+      GSTNumber,
+      GSTCompanyEmail,
+      GSTFirstName,
+      GSTLastName
+    } = this.state;
 
     return (
       <>
@@ -1629,7 +1689,7 @@ class CheckOut1 extends React.PureComponent {
                                       ? moment(this.state.infants[index].passportIssueDate).format(
                                           "DD-MMM-YYYY"
                                         )
-                                      : "-- Issue Date --"}
+                                      : "Issue Date"}
                                   </Text>
                                 </Button>
                                 <DateTimePicker
@@ -1657,7 +1717,7 @@ class CheckOut1 extends React.PureComponent {
                                       ? moment(this.state.infants[index].passportExpiryDate).format(
                                           "DD-MMM-YYYY"
                                         )
-                                      : "-- Expiry Date --"}
+                                      : "Expiry Date"}
                                   </Text>
                                 </Button>
                                 <DateTimePicker
@@ -1676,6 +1736,99 @@ class CheckOut1 extends React.PureComponent {
                         </View>
                       ))}
                   </View>
+                </View>
+
+                <View
+                  style={{
+                    elevation: 2,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: "rgba(0,0,0,0.1)",
+                    shadowOpacity: 1,
+                    shadowRadius: 4,
+                    backgroundColor: "#ffffff",
+                    marginHorizontal: 16,
+                    marginTop: 20,
+                    // padding: 10,
+                    borderRadius: 8
+                  }}>
+                  <CheckBox
+                    checked={this.state.checked}
+                    label="Add GST Details for business travel (Optional)"
+                    styleIcon={{
+                      alignItems: "flex-start",
+                      paddingTop: 16,
+                      paddingHorizontal: 10
+                    }}
+                    onPress={this.setGST}
+                  />
+                  {this.state.checked && (
+                    <View
+                      style={{
+                        marginHorizontal: 10,
+                        elevation: 2
+                      }}>
+                      <TextInput
+                        style={[styles.textInput, { marginTop: 0 }]}
+                        placeholder={"First Name"}
+                        placeholderTextColor={"#D9D8DD"}
+                        //onFocus={this.onfocus}
+                        //onBlur={this.onblur}
+                        value={GSTFirstName}
+                        onChangeText={text => this.setState({ GSTFirstName: text })}></TextInput>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder={"Last Name"}
+                        placeholderTextColor={"#D9D8DD"}
+                        //onFocus={this.onfocus}
+                        //onBlur={this.onblur}
+                        value={GSTLastName}
+                        onChangeText={text => this.setState({ GSTLastName: text })}></TextInput>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder={"Company Name"}
+                        placeholderTextColor={"#D9D8DD"}
+                        //onFocus={this.onfocus}
+                        //onBlur={this.onblur}
+                        value={GSTCompanyName}
+                        onChangeText={text => this.setState({ GSTCompanyName: text })}></TextInput>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder={"GST Number"}
+                        placeholderTextColor={"#D9D8DD"}
+                        //onFocus={this.onfocus}
+                        //onBlur={this.onblur}
+                        value={GSTNumber}
+                        onChangeText={text => this.setState({ GSTNumber: text })}></TextInput>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder={"Company Email"}
+                        placeholderTextColor={"#D9D8DD"}
+                        //onFocus={this.onfocus}
+                        //onBlur={this.onblur}
+                        value={GSTCompanyEmail}
+                        onChangeText={text => this.setState({ GSTCompanyEmail: text })}></TextInput>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder={"Company Contact Number"}
+                        placeholderTextColor={"#D9D8DD"}
+                        //onFocus={this.onfocus}
+                        //onBlur={this.onblur}
+                        value={GSTCompanyContactNumber}
+                        onChangeText={text =>
+                          this.setState({ GSTCompanyContactNumber: text })
+                        }></TextInput>
+                      <TextInput
+                        style={[styles.textInput, { marginBottom: 10 }]}
+                        placeholder={"Company Address"}
+                        placeholderTextColor={"#D9D8DD"}
+                        //onFocus={this.onfocus}
+                        //onBlur={this.onblur}
+                        value={GSTCompanyAddress}
+                        onChangeText={text =>
+                          this.setState({ GSTCompanyAddress: text })
+                        }></TextInput>
+                    </View>
+                  )}
                 </View>
 
                 {data.payment_gateway &&
@@ -1778,6 +1931,16 @@ class CheckOut1 extends React.PureComponent {
 
 const mapStateToProps = state => ({
   user: state.user
+});
+
+const styles = StyleSheet.create({
+  textInput: {
+    borderColor: "#f2f2f2",
+    borderWidth: 1,
+    height: 40,
+    paddingStart: 5,
+    marginTop: 5
+  }
 });
 
 export default connect(mapStateToProps, null)(CheckOut1);
