@@ -107,20 +107,20 @@ class FlightsInfoRound extends React.PureComponent {
     etravosApi
       .get("/Flights/AvailableFlights", data)
       .then(({ data }) => {
+        const onwardFlights = data.DomesticOnwardFlights.filter(
+          item => item.AirlineRemark.toLowerCase() !== "sme fare"
+        );
+        const returnFlights = data.DomesticReturnFlights.filter(
+          item => item.AirlineRemark.toLowerCase() !== "sme fare"
+        );
         this.setState({
-          onwardFlightsList: data.DomesticOnwardFlights,
-          returnFlightsList: data.DomesticReturnFlights,
-          onwardFlights: data.DomesticOnwardFlights,
-          returnFlights: data.DomesticReturnFlights,
-          onwardFare:
-            data.DomesticOnwardFlights.length > 0
-              ? data.DomesticOnwardFlights[0].FareDetails.TotalFare
-              : 0,
+          onwardFlightsList: onwardFlights,
+          returnFlightsList: returnFlights,
+          onwardFlights,
+          returnFlights,
+          onwardFare: onwardFlights.length > 0 ? onwardFlights[0].FareDetails.TotalFare : 0,
           selectedOnward: 0,
-          returnFare:
-            data.DomesticReturnFlights.length > 0
-              ? data.DomesticReturnFlights[0].FareDetails.TotalFare
-              : 0,
+          returnFare: returnFlights.length > 0 ? returnFlights[0].FareDetails.TotalFare : 0,
           selectedReturn: 0,
           loader: false
         });

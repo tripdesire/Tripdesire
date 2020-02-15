@@ -263,7 +263,7 @@ class CheckOut1 extends React.PureComponent {
   _order = async () => {
     const { params } = this.props.navigation.state.params;
 
-    if (params.departFlight.IsGSTMandatory && this.state.GstDetails == "") {
+    if (this.state.GstDetails == "") {
       this.setState({ showGst: true });
     }
 

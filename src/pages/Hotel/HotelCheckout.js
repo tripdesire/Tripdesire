@@ -4,7 +4,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
+  FlatList,
   ScrollView,
   SafeAreaView,
   Linking,
@@ -31,6 +31,7 @@ import Toast from "react-native-simple-toast";
 import ImageFull from "./ImageFull";
 import NumberFormat from "react-number-format";
 import analytics from "@react-native-firebase/analytics";
+import ReadMore from "react-native-read-more-text";
 
 class HotelCheckout extends React.Component {
   constructor(props) {
@@ -87,9 +88,8 @@ class HotelCheckout extends React.Component {
       .get("/Hotels/HotelDetails", param)
       .then(({ data }) => {
         this.setState({ loader: false });
-        console.log(JSON.stringify(data));
+        console.log(data);
         const { params } = this.props.navigation.state;
-
         //let merged = mergeWith({}, params, data, (a, b) => (b === null ? a : undefined));
         if (data.HotelId == null) {
           this.props.navigation.goBack(null);
@@ -98,7 +98,6 @@ class HotelCheckout extends React.Component {
           this.props.navigation.setParams({ ...params, ...data });
           this.setState({ selectedRoom: data.RoomDetails[0] });
         }
-        //console.log(merged);
       })
       .catch(error => {
         console.log(error);
@@ -149,6 +148,22 @@ class HotelCheckout extends React.Component {
 
   renderItem = ({ item, index }) => <Image style={styles.image} source={{ uri: item.uri }} />;
 
+  _renderTruncatedFooter = handlePress => {
+    return (
+      <Text style={{ color: "#5191FA", marginTop: 5 }} onPress={handlePress}>
+        Read more
+      </Text>
+    );
+  };
+
+  _renderRevealedFooter = handlePress => {
+    return (
+      <Text style={{ color: "#5191FA", marginTop: 5 }} onPress={handlePress}>
+        Show less
+      </Text>
+    );
+  };
+
   render() {
     const { params } = this.props.navigation.state;
 
@@ -167,7 +182,8 @@ class HotelCheckout extends React.Component {
       params.Facilities && params.Facilities != null
         ? params.Facilities.split(",").map(s => s.trim())
         : [];
-    console.log(Amenities);
+
+    const Description = params.Description.replace(/(<([^>]+)>)/gi, "");
 
     let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
     let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
@@ -178,7 +194,7 @@ class HotelCheckout extends React.Component {
         <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
           <View style={{ flex: 1, flexDirection: "column" }}>
             <LinearGradient colors={["#53b2fe", "#065af3"]} style={{}}>
-              <View style={{ paddingBottom: 30 }}>
+              <View style={{ paddingBottom: 20 }}>
                 <View
                   style={{
                     height: 56,
@@ -262,6 +278,24 @@ class HotelCheckout extends React.Component {
                 <Text style={{ color: "#ffffff", marginHorizontal: 16 }}>
                   {params.HotelAddress}
                 </Text>
+                <View style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 16 }}>
+                  <Text
+                    style={{ color: "#F68E1F", fontWeight: "600" }}
+                    onPress={this._viewLocation(
+                      params.Latitude,
+                      params.Longitude,
+                      params.HotelName
+                    )}>
+                    View on Map
+                  </Text>
+                  <Icon
+                    name="location-pin"
+                    type="Entypo"
+                    size={20}
+                    style={{ marginStart: 5 }}
+                    color="#F68E1F"
+                  />
+                </View>
               </View>
             </LinearGradient>
             <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -362,28 +396,6 @@ class HotelCheckout extends React.Component {
                     </Button>
                   </View>
                 </View>
-                <View style={{ flexDirection: "row", marginTop: 16 }}>
-                  <Text style={{ fontSize: 14 }}> {params.city}</Text>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginStart: 5 }}>
-                    <TouchableOpacity
-                      style={{ color: "#717A81" }}
-                      onPress={this._viewLocation(
-                        params.Latitude,
-                        params.Longitude,
-                        params.HotelName
-                      )}>
-                      <Text style={{ color: "#5B89F9", fontSize: 14 }}>View on Map</Text>
-                    </TouchableOpacity>
-                    <Icon
-                      name="location-pin"
-                      type="SimpleLineIcons"
-                      size={16}
-                      style={{ marginStart: 5 }}
-                      color="#5B89F9"
-                    />
-                  </View>
-                </View>
-                <Text style={{ fontSize: 18, flex: 1, marginTop: 10 }}>Book your Hotel</Text>
 
                 {params.RoomDetails.map(item => {
                   const { params } = this.props.navigation.state;
@@ -396,94 +408,50 @@ class HotelCheckout extends React.Component {
                     );
                   }
                   return (
-                    <View key={item.RoomIndex}>
-                      <View style={{ marginVertical: 20, flexDirection: "row" }}>
-                        <Image
+                    <>
+                      <TouchableOpacity
+                        key={item.RoomIndex}
+                        style={{
+                          backgroundColor: "#FFF",
+                          elevation: 50,
+                          margin: 5,
+                          marginVertical: 20,
+                          flexDirection: "row"
+                        }}
+                        onPress={this._radioButton(item)}>
+                        <TouchableOpacity
                           style={{
-                            width: 80,
-                            height: 80,
-                            borderRadius: 5
+                            height: 18,
+                            width: 18,
+                            borderRadius: 12,
+                            borderWidth: 1,
+                            marginEnd: 8,
+                            borderColor: "#A0A9B2",
+                            alignItems: "center",
+                            justifyContent: "center"
                           }}
-                          source={{
-                            uri:
-                              str ||
-                              "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg"
-                          }}
-                        />
-
-                        <View
-                          style={{
-                            marginHorizontal: 10,
-                            flex: 1
-                          }}>
-                          <TouchableOpacity
-                            style={{ paddingEnd: 4 }}
-                            onPress={this._radioButton(item)}>
-                            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
-                              <TouchableOpacity
-                                style={{
-                                  height: 18,
-                                  width: 18,
-                                  borderRadius: 12,
-                                  borderWidth: 2,
-                                  borderColor: "#000",
-                                  alignItems: "center",
-                                  justifyContent: "center"
-                                }}
-                                onPress={this._radioButton(item)}>
-                                {_selectRadio === item.RoomIndex && (
-                                  <View
-                                    style={{
-                                      height: 10,
-                                      width: 10,
-                                      borderRadius: 6,
-                                      backgroundColor: "#000"
-                                    }}
-                                  />
-                                )}
-                              </TouchableOpacity>
-                              <Text style={{ fontSize: 16, marginStart: 5, marginTop: -2 }}>
-                                {item.RoomType}
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              fontWeight: "700"
-                            }}>
-                            <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
-                              ₹
-                            </CurrencyText>
-                            <NumberFormat
-                              decimalScale={0}
-                              fixedDecimalScale
-                              value={item.RoomTotal}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              thousandsGroupStyle="lakh"
-                              renderText={value => (
-                                <Text style={{ fontWeight: "700", fontSize: 18 }}>{value}</Text>
-                              )}
+                          onPress={this._radioButton(item)}>
+                          {_selectRadio === item.RoomIndex && (
+                            <View
+                              style={{
+                                height: 10,
+                                width: 10,
+                                borderRadius: 6,
+                                backgroundColor: "#5191FA"
+                              }}
                             />
-                          </Text>
-                        </View>
-                      </View>
+                          )}
+                        </TouchableOpacity>
+                        <View style={{ paddingEnd: 16 }}>
+                          <Text style={{ fontSize: 16 }}>{item.RoomType}</Text>
 
-                      <View style={{ marginBottom: 10 }}>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                           <Text style={{ color: "#717A81" }}>
-                            {params.room}:Room(s), {params.Night}:night
+                            {params.room}: Room, {params.Night}: Night
                           </Text>
-                          <Text style={{ color: "#717A81" }}>
-                            {item.RefundRule != null && item.RefundRule == "Refundable Fare"
-                              ? "Refundable"
-                              : "Non Refundable"}
-                          </Text>
-                        </View>
+                          {/* </View> */}
 
-                        {item.RoomCancellationPolicy !== "" && item.RoomCancellationPolicy != null && (
+                          <View style={{ marginBottom: 10 }}>
+                            {/* {item.RoomCancellationPolicy !== "" && item.RoomCancellationPolicy != null && (
                           <Button
                             onPress={() =>
                               this.setState({ policy: true, data: item.RoomCancellationPolicy })
@@ -492,39 +460,109 @@ class HotelCheckout extends React.Component {
                               Room Cancellation Policy
                             </Text>
                           </Button>
-                        )}
-                        {item.Inclusions != null && item.Inclusions != "" && (
-                          <View>
-                            <Text style={{ fontSize: 16 }}>Inclusions</Text>
-                            <Text style={{ color: "#717A81" }}>{item.Inclusions}</Text>
+                        )} */}
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between"
+                              }}>
+                              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <Icon
+                                  type="MaterialIcons"
+                                  size={16}
+                                  name="check-circle"
+                                  color={
+                                    item.RefundRule != null && item.RefundRule
+                                      ? "#27ae60"
+                                      : "#F44336"
+                                  }
+                                />
+                                <Text
+                                  style={{
+                                    color:
+                                      item.RefundRule != null && item.RefundRule
+                                        ? "#27ae60"
+                                        : "#F44336",
+                                    fontSize: 12
+                                  }}>
+                                  {item.RefundRule != null && item.RefundRule == "Refundable Fare"
+                                    ? "Refundable"
+                                    : "Non Refundable"}
+                                </Text>
+                              </View>
+                              <Text
+                                style={{
+                                  fontSize: 18,
+                                  fontWeight: "700"
+                                }}>
+                                <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
+                                  ₹
+                                </CurrencyText>
+                                <NumberFormat
+                                  decimalScale={0}
+                                  fixedDecimalScale
+                                  value={item.RoomTotal}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  thousandsGroupStyle="lakh"
+                                  renderText={value => (
+                                    <Text style={{ fontWeight: "700", fontSize: 18 }}>{value}</Text>
+                                  )}
+                                />
+                              </Text>
+                            </View>
+                            {item.Inclusions != null && item.Inclusions != "" && (
+                              <>
+                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                  <Icon type="MaterialIcons" size={16} name="check" />
+                                  <Text style={{ fontWeight: "500", fontSize: 12 }}>Includes</Text>
+                                </View>
+                                <ReadMore
+                                  numberOfLines={1}
+                                  renderTruncatedFooter={this._renderTruncatedFooter}
+                                  renderRevealedFooter={this._renderRevealedFooter}>
+                                  <Text style={{ color: "#717A81", fontSize: 12 }}>
+                                    {item.Inclusions}
+                                  </Text>
+                                </ReadMore>
+                              </>
+                            )}
                           </View>
-                        )}
-                      </View>
-
-                      <View style={{ height: 1.35, backgroundColor: "#DDDDDD" }}></View>
-                    </View>
+                        </View>
+                      </TouchableOpacity>
+                      <View style={{ height: 1.35, backgroundColor: "#DDDDDD" }} />
+                    </>
                   );
                 })}
 
                 <View style={{ marginTop: 20 }}>
-                  <Text style={{ fontWeight: "500", fontSize: 18 }}>Description</Text>
-                  <View>
-                    <Text style={{ flex: 3, fontSize: 16, marginTop: 20 }}>Property Location</Text>
-                    <HTML
-                      baseFontStyle={{ color: "#717A81", fontFamily: "Poppins-Regular" }}
-                      html={params.Description}
-                    />
-                  </View>
-                  {params.RoomChain != null && (
-                    <View style={{ marginTop: 10 }}>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Room</Text>
-                      <Text style={{ color: "#717A81", flex: 4 }}>{params.RoomChain}</Text>
-                    </View>
-                  )}
+                  <Text style={{ fontWeight: "500", fontSize: 18, marginBottom: 16 }}>
+                    Hotel Information
+                  </Text>
+
+                  <ReadMore
+                    numberOfLines={3}
+                    renderTruncatedFooter={this._renderTruncatedFooter}
+                    renderRevealedFooter={this._renderRevealedFooter}>
+                    <Text numberOfLines={3} style={{ color: "#717A81" }}>
+                      {Description}
+                    </Text>
+                  </ReadMore>
+
                   {params.Facilities != null && (
-                    <View style={{ marginTop: 10 }}>
-                      <Text style={{ flex: 3, fontSize: 16 }}>Facilities</Text>
-                      <Text style={{ color: "#717A81" }}>{Amenities.join(", ")}</Text>
+                    <View style={{ marginTop: 16 }}>
+                      <Text style={{ fontSize: 16 }}>Hotel Facilities</Text>
+                      <FlatList
+                        data={Amenities}
+                        keyExtractor={item => item}
+                        numColumns={2}
+                        renderItem={({ item }) => (
+                          <Text style={{ color: "#717A81", flex: 1, marginVertical: 4 }}>
+                            &bull; {item}
+                          </Text>
+                        )}
+                      />
                     </View>
                   )}
                 </View>

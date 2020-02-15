@@ -14,9 +14,9 @@ class Bus extends React.PureComponent {
     this.state = {
       sourceName: "Hyderabad",
       destinationName: "Bangalore",
-      from: "Hyderabad ,100 - (India)",
+      from: "Hyderabad", // ,100 - (India)",
       sourceId: "100",
-      to: "Bangalore ,109 - (India)",
+      to: "Bangalore", // ,109 - (India)",
       destinationId: "109",
       Journey_date: "31-09-2019",
       Return_date: "31-09-2019",
@@ -68,7 +68,7 @@ class Bus extends React.PureComponent {
 
   handleFrom = item => {
     this.setState({
-      from: item.Name + " ," + item.Id + " - (India)",
+      from: item.Name, //+ " ," + item.Id + " - (India)",
       sourceId: item.Id,
       sourceName: item.Name,
       modalFrom: false
@@ -77,7 +77,7 @@ class Bus extends React.PureComponent {
 
   handleTo = item => {
     this.setState({
-      to: item.Name + " ," + item.Id + " - (India)",
+      to: item.Name, // + " ," + item.Id + " - (India)",
       destinationId: item.Id,
       destinationName: item.Name,
       modalTo: false

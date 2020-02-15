@@ -14,7 +14,7 @@ class DomesticFlights extends React.PureComponent {
   constructor(props) {
     super(props);
     console.log(this.props.navigation.state.params);
-    const { check } = this.props.navigation.state.params;
+    const { item } = this.props.navigation.state.params;
     this.animatedValue = new Animated.Value(0);
     this.state = {
       class: "E",
@@ -27,31 +27,29 @@ class DomesticFlights extends React.PureComponent {
       ],
       suggestions: [],
       passengers: 1,
-      flightType: 1,
-      tripType: 1,
+      flightType: item ? item.flightType : 1,
+      tripType: item ? item.tripType : 1,
       adult: 1,
       children: 0,
       infants: 0,
       modalFrom: false,
       modalTo: false,
       modalPassengers: false,
-      from: check == "FromFlight" ? "HYD, Hyderabad" : "DEL, New Delhi",
-      to: check == "FromFlight" ? "BLR, Bangalore" : "PNQ, Pune",
-      sourceName: check == "FromFlight" ? "Hyderabad" : "New Delhi",
-      sourceAirportName:
-        check == "FromFlight"
-          ? "Hyderabad, India - (HYD) - Rajiv Gandhi Airpot"
-          : "New Delhi, India - (DEL) - Indira Gandhi Intl",
-      destinationAirportName:
-        check == "FromFlight"
-          ? "Bangalore, India - (BLR) - Bangalore International Airpot"
-          : "Pune, India - (PNQ) - Lohegaon",
-      destinationName: check == "FromFlight" ? "Bangalore" : "Pune",
-      fromCode: check == "FromFlight" ? "HYD" : "DEL",
-      ToCode: check == "FromFlight" ? "BLR" : "PNQ",
-      Journey_date:
-        check == "FromFlight" ? new Date() : moment("25 Feb, 20", "DD MMM, YY").toDate(),
-      Return_date: check == "FromFlight" ? new Date() : moment("25 Feb, 20", "DD MMM, YY").toDate(),
+      from: item ? item.source + ", " + item.sourceName : "HYD, Hyderabad",
+      to: item ? item.destination + ", " + item.destinationName : "BLR, Bangalore",
+      sourceName: item ? item.sourceName : "Hyderabad",
+      sourceAirportName: item
+        ? item.sourceAirportName
+        : "Hyderabad, India - (HYD) - Rajiv Gandhi Airpot",
+      destinationAirportName: item
+        ? item.destinationAirportName
+        : "Bangalore, India - (BLR) - Bangalore International Airpot",
+      destinationName: item ? item.destinationName : "Bangalore",
+      fromCode: item ? item.source : "HYD",
+      ToCode: item ? item.destination : "BLR",
+      Journey_date: item ? moment(item.journeyDate, "DD-MM-YYYY").toDate() : new Date(),
+      Return_date:
+        item && item.tripType == 2 ? moment(item.returnDate, "DD-MM-YYYY").toDate() : new Date(),
       selectRound: false,
       fromDTpicker: false,
       toDTpicker: false,
@@ -179,7 +177,7 @@ class DomesticFlights extends React.PureComponent {
       sourceAirportName: this.state.sourceAirportName,
       userType: 5
     };
-    console.log(params);
+    console.log(JSON.stringify(params));
     if (this.state.adult >= this.state.infants) {
       if (this.state.tripType == 1) {
         this.props.navigation.navigate("FlightsInfoOneway", params);

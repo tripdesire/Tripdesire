@@ -7,7 +7,7 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  FlatList,
+  FlatList
 } from "react-native";
 import {
   HomeButtonComponent,
@@ -21,6 +21,7 @@ import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
 import axios from "axios";
 import FastImage from "react-native-fast-image";
+import moment from "moment";
 
 const { width } = Dimensions.get("window");
 
@@ -39,13 +40,108 @@ class Home extends React.PureComponent {
         { img: require("../assets/imgs/offer.png") }
       ],
       flights: [
-        { from: "New Delhi" },
-        { from: "New Delhi" },
-        { from: "New Delhi" },
-        { from: "New Delhi" },
-        { from: "New Delhi" },
-        { from: "New Delhi" },
-        { from: "New Delhi" }
+        {
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        }
       ],
       posts: []
     };
@@ -91,12 +187,12 @@ class Home extends React.PureComponent {
     );
   };
 
-  _gotoFlightSearch = () => {
-    console.log("kamal");
-    this.props.navigation.navigate("FlightSearch", { check: "Blog" });
+  _gotoFlightSearch = item => () => {
+    this.props.navigation.navigate("FlightSearch", { item });
   };
 
   _renderItem = ({ item, index }) => {
+    const date = moment(item.journeyDate, "DD-MM-YYYY");
     return (
       <Button
         style={[
@@ -105,7 +201,7 @@ class Home extends React.PureComponent {
             marginEnd: this.state.flights.length - 1 == index ? 12 : 2
           }
         ]}
-        onPress={this._gotoFlightSearch}>
+        onPress={this._gotoFlightSearch(item)}>
         <FastImage
           resizeMode="contain"
           style={{ height: 60, width: 60, marginTop: 15 }}
@@ -113,10 +209,10 @@ class Home extends React.PureComponent {
             uri: "http://tripdesire.co/wp-content/uploads/2020/02/6E-min.png"
           }}
         />
-        <Text style={[styles.place, { marginTop: 10 }]}>New Delhi</Text>
+        <Text style={[styles.place, { marginTop: 10 }]}>{item.sourceName}</Text>
         <Text>To</Text>
-        <Text style={styles.place}>Pune</Text>
-        <Text>25 Feb 2020(Thursday)</Text>
+        <Text style={styles.place}>{item.destinationName}</Text>
+        <Text>{date.format("DD MMM,YY") + date.format("(dddd)")}</Text>
         <LinearGradient style={styles.BottomStripe} colors={["#53b2fe", "#065af3"]}>
           <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff", lineHeight: 20 }}>
             Starting From:
@@ -135,7 +231,7 @@ class Home extends React.PureComponent {
 
   render() {
     const { posts, flights } = this.state;
-    return (     
+    return (
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
         {/* <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}> */}
@@ -171,7 +267,7 @@ class Home extends React.PureComponent {
               tintColor={"#5789FF"}
               name="Flights"
               img_name={require("../assets/imgs/flight.png")}
-              onPress={this.navigateToScreen("FlightSearch", { check: "FromFlight" })}
+              onPress={this.navigateToScreen("FlightSearch")}
             />
             <HomeButtonComponent
               name="Hotels"
@@ -324,7 +420,7 @@ const styles = StyleSheet.create({
   },
   blogtext: { width: width - 128, paddingHorizontal: 5, paddingVertical: 8 },
   heading: { fontSize: 18, fontWeight: "700" },
-  place: { fontSize: 18, fontWeight: "600", color: "#1A2B48" },
+  place: { fontSize: 18, fontWeight: "600", color: "#1A2B48", textTransform: "capitalize" },
   flightView: {
     backgroundColor: "#ffffff",
     elevation: 2,

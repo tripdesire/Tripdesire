@@ -15,7 +15,7 @@ class Hotel extends React.PureComponent {
       class: "E",
       cityId: "269",
       city: "Noida",
-      place: "Noida, 269 - (India)",
+      place: "Noida", //, 269 - (India)",
       suggestions: [],
       country: "Select Country",
       _country: false,
@@ -54,7 +54,7 @@ class Hotel extends React.PureComponent {
 
   _handle = async item => {
     await this.setState({
-      place: item.CityName + ", " + item.CityId + (this.state.hoteltype == 1 ? " - (India)" : ""),
+      place: item.CityName, // + ", " + item.CityId + (this.state.hoteltype == 1 ? " - (India)" : ""),
       cityId: item.CityId,
       city: item.CityName,
       _place: false

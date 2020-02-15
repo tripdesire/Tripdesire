@@ -89,11 +89,14 @@ class FlightsInfoRoundInt extends React.PureComponent {
     etravosApi.get("/Flights/AvailableFlights", data).then(({ data }) => {
       console.log(JSON.stringify(data));
       if (data.InternationalFlights.length != 0) {
+        const flights = data.InternationalFlights.filter(
+          item => item.AirlineRemark.toLowerCase() !== "sme fare"
+        );
         this.setState({
-          flights: data.InternationalFlights,
-          filterFlights: data.InternationalFlights,
+          flights,
+          filterFlights: flights,
           loader: false,
-          flightCount: 1
+          flightCount: flights.length
         });
       } else {
         this.setState({
