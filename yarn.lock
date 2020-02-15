@@ -5792,10 +5792,10 @@ react-native-picker-select@^6.3.3:
   dependencies:
     lodash.isequal "^4.5.0"
 
-react-native-razorpay@^2.1.31:
-  version "2.1.31"
-  resolved "https://registry.yarnpkg.com/react-native-razorpay/-/react-native-razorpay-2.1.31.tgz#07b259f6f0aa9265e86d6eda394e4dc379cccc1d"
-  integrity sha512-vSwuMXvYR0wLGCbuyQpOkkv+3YczPqhRLIzIbDppJoHRb6hliCfaSLvUU7Bcu3Z07vBx5PdGIBnujkrOqvWosg==
+react-native-razorpay@^2.1.32:
+  version "2.1.32"
+  resolved "https://registry.yarnpkg.com/react-native-razorpay/-/react-native-razorpay-2.1.32.tgz#b3bae78b85710ae6f653bc5245d0b37f50a5e542"
+  integrity sha512-ib289CuvGulPT0uZk5gw0USnKtFSkAD4WdEpKTjF1CQ4BrxLmX6N59VAkOoY2vDzsJkxiX17t/+AcBKe4S0C1Q==
 
 react-native-reanimated@^1.4.0:
   version "1.4.0"
