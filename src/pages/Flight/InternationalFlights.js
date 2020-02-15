@@ -308,7 +308,7 @@ class InternationalFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalFrom", true)}>
               <Text style={{ color: "#000000" }}>From</Text>
-              <Text style={styles.sourceAndDestination}>{from}</Text>
+              <Text style={styles.sourceAndDestination}>{from.toUpperCase()}</Text>
             </Button>
             <Button onPress={this._exchange}>
               <Animated.Image
@@ -329,7 +329,7 @@ class InternationalFlights extends React.PureComponent {
               style={{ flex: 1, paddingStart: 20 }}
               onPress={this.setModalVisible("modalTo", true)}>
               <Text style={{ color: "#000000" }}>To</Text>
-              <Text style={styles.sourceAndDestination}>{to}</Text>
+              <Text style={styles.sourceAndDestination}>{to.toUpperCase()}</Text>
             </Button>
           </View>
 
@@ -382,7 +382,7 @@ class InternationalFlights extends React.PureComponent {
               source={require("../../assets/imgs/Passenger.png")}
             />
             <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
-              <Text style={{ color: "#000000" }}>Passengers</Text>
+              <Text style={{ color: "#000000" }}>Traveller</Text>
               <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
                 {parseInt(adult) + parseInt(children) + parseInt(infants) < 9
                   ? "0" + (parseInt(adult) + parseInt(children) + parseInt(infants))
@@ -500,8 +500,8 @@ const styles = StyleSheet.create({
   sourceAndDestination: {
     color: "#000000",
     fontSize: 18,
-    fontWeight: "600",
-    textTransform: "capitalize"
+    fontWeight: "600"
+    // textTransform: "capitalize"
   }
 });
 

@@ -544,12 +544,12 @@ class CheckOut extends React.PureComponent {
                     </View>
                     <View>
                       <Text style={{ alignSelf: "center" }}>{params.className}</Text>
-                      <View
+                      {/* <View
                         style={{
                           height: 1.35,
                           width: 90,
                           backgroundColor: "#D1D1D1"
-                        }}></View>
+                        }}></View> */}
                     </View>
                     <View>
                       <Text style={{ textTransform: "capitalize" }}>{params.to}</Text>
@@ -747,7 +747,7 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Tax</Text>
+                    <Text style={{ marginStart: 10 }}>Taxes</Text>
                     <Text style={{ marginEnd: 10 }}>
                       <CurrencyText>₹</CurrencyText>
                       <NumberFormat
@@ -840,7 +840,7 @@ class CheckOut extends React.PureComponent {
                           flexDirection: "row",
                           justifyContent: "space-between"
                         }}>
-                        <Text style={{ marginStart: 10 }}>Tax</Text>
+                        <Text style={{ marginStart: 10 }}>Taxes</Text>
                         <Text style={{ marginEnd: 10 }}>
                           <CurrencyText>₹</CurrencyText>
                           <NumberFormat
@@ -889,7 +889,7 @@ class CheckOut extends React.PureComponent {
                       flexDirection: "row",
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Convenience Fees</Text>
+                    <Text style={{ marginStart: 10 }}>Convenience fee</Text>
                     <HTML
                       html={
                         this.state.data.cart_data[0].custum_product_data.flight_book_item
@@ -1157,12 +1157,12 @@ class CheckOut extends React.PureComponent {
                     </View>
                     <View>
                       <Text style={{ alignSelf: "center" }}>{params.className}</Text>
-                      <View
+                      {/* <View
                         style={{
                           height: 1.35,
                           width: 90,
                           backgroundColor: "#D1D1D1"
-                        }}></View>
+                        }}></View> */}
                     </View>
                     <View>
                       <Text style={{ textTransform: "capitalize" }}>{params.to}</Text>
@@ -1343,7 +1343,7 @@ class CheckOut extends React.PureComponent {
                       marginEnd: 10,
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Tax</Text>
+                    <Text style={{ marginStart: 10 }}>Taxes</Text>
                     <Text>
                       <CurrencyText>₹</CurrencyText>
                       {params.departFlight.FareDetails.ChargeableFares.Tax +
@@ -1382,7 +1382,7 @@ class CheckOut extends React.PureComponent {
                       marginEnd: 10,
                       justifyContent: "space-between"
                     }}>
-                    <Text style={{ marginStart: 10 }}>Convenience Fees</Text>
+                    <Text style={{ marginStart: 10 }}>Convenience fee</Text>
                     <HTML
                       html={
                         this.state.data.cart_data[0].custum_product_data.flight_book_item

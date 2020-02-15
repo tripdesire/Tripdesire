@@ -82,7 +82,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
               }}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <Text style={{ fontSize: 18 }}>Choose Passengers</Text>
+            <Text style={{ fontSize: 18 }}>Choose Traveller</Text>
           </View>
           <View style={styles.pickerContainer}>
             <View style={{ alignItems: "center" }}>
@@ -117,7 +117,7 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
               style={{
                 alignItems: "center"
               }}>
-              <Text>Childrens</Text>
+              <Text>Children</Text>
               <RNPickerSelect
                 useNativeAndroidPickerStyle={false}
                 placeholder={{}}

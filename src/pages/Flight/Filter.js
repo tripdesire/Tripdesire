@@ -228,7 +228,7 @@ class Filter extends React.Component {
                 <ScrollView>
                   {filters.stops.map((item, index) => (
                     <CheckBox
-                      label={item + " Stop(s)"}
+                      label={item + " Stop"}
                       key={"stops_" + item + index}
                       checked={filterValues.stops.includes(item)}
                       onPress={this.updateFilter("stops", index)}

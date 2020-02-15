@@ -205,22 +205,6 @@ class HotelInfo extends React.PureComponent {
           }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Text style={{ fontSize: 16, flex: 1 }}>{item.HotelName}</Text>
-            <View style={{ marginStart: 10 }}>
-              <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹</CurrencyText>
-                <NumberFormat
-                  decimalScale={0}
-                  fixedDecimalScale
-                  value={item.RoomDetails[0].RoomTotal}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  thousandsGroupStyle="lakh"
-                  renderText={value => (
-                    <Text style={{ fontWeight: "700", fontSize: 16 }}>{value}</Text>
-                  )}
-                />
-              </Text>
-            </View>
           </View>
           <View
             style={{
@@ -246,14 +230,30 @@ class HotelInfo extends React.PureComponent {
           </View>
           <View>
             <View style={{ flexDirection: "row", flex: 2 }}>
-              <Image source={require("../../assets/imgs/location.png")} />
-              <Text style={{ color: "#636C73", fontSize: 12, marginStart: 5, marginEnd: 15 }}>
-                {item.HotelAddress}
-              </Text>
+              {/* <Image source={require("../../assets/imgs/location.png")} /> */}
+              <Text style={{ color: "#636C73", fontSize: 12 }}>{item.HotelAddress}</Text>
             </View>
-            <Text style={{ color: "#636C73", flex: 1 }}>
-              {this.state.room} : Room, {this.state.Night} : Night
-            </Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={{ color: "#636C73", flex: 1 }}>
+                {this.state.room} : Room, {this.state.Night} : Night
+              </Text>
+              <View style={{ marginStart: 10 }}>
+                <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                  <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹</CurrencyText>
+                  <NumberFormat
+                    decimalScale={0}
+                    fixedDecimalScale
+                    value={item.RoomDetails[0].RoomTotal}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    thousandsGroupStyle="lakh"
+                    renderText={value => (
+                      <Text style={{ fontWeight: "700", fontSize: 16 }}>{value}</Text>
+                    )}
+                  />
+                </Text>
+              </View>
+            </View>
           </View>
           {/* <View
             style={{

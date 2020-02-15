@@ -244,7 +244,7 @@ class HotelCheckout extends React.Component {
                   <View style={{ marginStart: 5, marginTop: 8 }}>
                     <Stars
                       default={parseInt(params.StarRating)}
-                      count={5}
+                      count={parseInt(params.StarRating)}
                       half={true}
                       starSize={80}
                       fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}

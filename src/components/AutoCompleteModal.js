@@ -264,7 +264,7 @@ class AutoCompleteModal extends React.PureComponent {
     switch (this.props.type) {
       case "domesticFlight":
       case "internationalFlight":
-        text = item.AirportCode + " - " + item.City + ", " + item.Country;
+        text = item.AirportCode + " - " + item.City.toUpperCase() + ", " + item.Country;
         airpotName = item.AirportDesc; //item.City + "," + item.Country + "-(" + item.AirportCode + ")-" + item.AirportDesc;
         break;
       case "domesticHotel":

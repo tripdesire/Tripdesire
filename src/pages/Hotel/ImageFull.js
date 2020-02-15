@@ -7,6 +7,32 @@ import ImageZoom from "react-native-image-pan-zoom";
 const { width, height } = Dimensions.get("window");
 
 function ImageFull({ onBackPress, params }) {
+  const _renderItem = ({ item }) => {
+    let str = item.Imagepath.replace(
+      "https://cdn.grnconnect.com/",
+      "https://images.grnconnect.com/"
+    );
+    return (
+      <ImageZoom
+        key={item.Imagepath}
+        cropWidth={Dimensions.get("window").width}
+        cropHeight={Dimensions.get("window").height}
+        imageWidth={width}
+        imageHeight={height}>
+        <Image
+          style={{
+            width,
+            height,
+            resizeMode: "contain"
+          }}
+          source={{
+            uri: item.Imagepath != "" ? str : "https://via.placeholder.com/150"
+          }}
+        />
+      </ImageZoom>
+    );
+  };
+
   console.log(params);
   return (
     <>
@@ -24,7 +50,8 @@ function ImageFull({ onBackPress, params }) {
             //  autoplay
             // autoplayDelay={2}
             //  autoplayLoop
-
+            data={params.HotelImages}
+            renderItem={_renderItem}
             index={0}
             paginationStyleItem={{
               height: 10,
@@ -35,7 +62,7 @@ function ImageFull({ onBackPress, params }) {
             paginationStyle={{ bottom: 68 }}
             paginationActiveColor="#4D4C4C"
             paginationDefaultColor="#CCCCCC">
-            {params.HotelImages.map(item => {
+            {/* {params.HotelImages.map(item => {
               let str = item.Imagepath.replace(
                 "https://cdn.grnconnect.com/",
                 "https://images.grnconnect.com/"
@@ -60,7 +87,7 @@ function ImageFull({ onBackPress, params }) {
                   />
                 </ImageZoom>
               );
-            })}
+            })} */}
           </SwiperFlatList>
         </View>
       </SafeAreaView>
