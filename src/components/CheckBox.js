@@ -6,7 +6,7 @@ import Text from "./TextComponent";
 
 class CheckBox extends React.PureComponent {
   render() {
-    const { checked, label, style, styleIcon } = this.props;
+    const { checked, label, style, styleView, styleIcon } = this.props;
     return (
       <TouchableOpacity
         onPress={this.props.onPress}
@@ -15,12 +15,12 @@ class CheckBox extends React.PureComponent {
           padding: 16,
           alignItems: "center",
           width: "100%",
-          ...styleIcon
+          ...styleView
         }}>
         <Icon
           type="MaterialCommunityIcons"
           color={checked ? "#337ab7" : "#00000099"}
-          size={30}
+          size={styleIcon ? 24 : 30}
           name={checked ? "checkbox-marked" : "checkbox-blank-outline"}
         />
 

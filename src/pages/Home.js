@@ -8,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
   FlatList,
+  TouchableOpacity
 } from "react-native";
 import {
   HomeButtonComponent,
@@ -21,6 +22,7 @@ import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
 import axios from "axios";
 import FastImage from "react-native-fast-image";
+import Modal from "react-native-modal";
 
 const { width } = Dimensions.get("window");
 
@@ -47,9 +49,19 @@ class Home extends React.PureComponent {
         { from: "New Delhi" },
         { from: "New Delhi" }
       ],
-      posts: []
+      posts: [],
+      modalShow: false
     };
   }
+
+  modalShow = () => {
+    console.log("Kamal");
+    this.setState({ modalShow: true });
+  };
+  modalDismiss = () => {
+    this.setState({ modalShow: false });
+  };
+
   trackScreenView = async screen => {
     // Set & override the MainActivity screen name
     await analytics().setCurrentScreen(screen, screen);
@@ -135,7 +147,7 @@ class Home extends React.PureComponent {
 
   render() {
     const { posts, flights } = this.state;
-    return (     
+    return (
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
         {/* <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}> */}
@@ -199,13 +211,15 @@ class Home extends React.PureComponent {
               onPress={this.navigateToScreen("Cab")}
             />
           </View>
-          <SwiperFlatList autoplay autoplayDelay={2} autoplayLoop index={0}>
-            <FastImage style={styles.imgNew} source={require("../assets/imgs/2ratio1.jpg")} />
-            <FastImage style={styles.imgNeww} source={require("../assets/imgs/3Ratio1.jpg")} />
-            <FastImage style={styles.img} source={require("../assets/imgs/flightOffer.jpg")} />
-            <FastImage style={styles.img} source={require("../assets/imgs/HotelOffer.jpg")} />
-            <FastImage style={styles.img} source={require("../assets/imgs/busOffer.jpg")} />
-            <FastImage style={styles.img} source={require("../assets/imgs/cabOffer.jpg")} />
+          <SwiperFlatList
+          // autoplay autoplayDelay={2} autoplayLoop index={0}
+          >
+            <TouchableOpacity onPress={this.modalShow}>
+              <FastImage style={styles.imgNew} source={require("../assets/imgs/flightOffer.jpg")} />
+            </TouchableOpacity>
+            <FastImage style={styles.imgNew} source={require("../assets/imgs/hotelOffer.jpg")} />
+            <FastImage style={styles.imgNew} source={require("../assets/imgs/busOffer.jpg")} />
+            <FastImage style={styles.imgNew} source={require("../assets/imgs/cabOffer.jpg")} />
           </SwiperFlatList>
           <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
             POPULAR DOMESTIC ROUTES
@@ -246,6 +260,71 @@ class Home extends React.PureComponent {
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
           />
+          <Modal
+            style={{ margin: 16 }}
+            backdropColor="black"
+            backdropOpacity={0.7}
+            hasBackdrop
+            isVisible={this.state.modalShow}
+            onBackButtonPress={this.modalDismiss}
+            onBackdropPress={this.modalDismiss}>
+            <View>
+              <LinearGradient
+                style={{
+                  alignSelf: "flex-end",
+                  alignItems: "center",
+                  width: 30,
+                  height: 30,
+                  justifyContent: "center",
+                  borderRadius: 15,
+                  zIndex: 1,
+                  marginEnd: -10
+                }}
+                colors={["#53b2fe", "#065af3"]}>
+                <TouchableOpacity onPress={this.modalDismiss}>
+                  <Icon name="md-close" size={20} color={"#fff"} />
+                </TouchableOpacity>
+              </LinearGradient>
+              <ScrollView
+                style={{ backgroundColor: "#fff", padding: 10, marginTop: -10 }}
+                showsVerticalScrollIndicator={false}>
+                <Text style={styles.offerHeading}>ABOUT THE OFFER</Text>
+                <Text style={styles.offertext}>
+                  To get discounts, users have to book flights for their preferred destination by
+                  applying coupon code TDFLIGHT2020 to avail of the offer.
+                </Text>
+                <Text>Book your flight between 1st - 29th Feb 2020.</Text>
+                <Text style={[styles.offerHeading, { marginVertical: 10 }]}>
+                  HOW TO AVAIL THE OFFER
+                </Text>
+                <Text>
+                  Search flights on trip desire between 1st - 29th Feb 2020 and choose your
+                  preferred flight.
+                </Text>
+                <Text>Apply coupon code TDFLIGHT2020 at the time of making your booking.</Text>
+                <Text style={[styles.offerHeading, { marginVertical: 10 }]}>
+                  TERMS & CONDITIONS
+                </Text>
+                <Text>
+                  &#9679; The offer is valid only on flight bookings made between 1st - 29th Feb
+                  2020.
+                </Text>
+                <Text>
+                  &#9679; The offer is valid for domestic and international flight bookings only.
+                </Text>
+                <Text> &#9679; The code is applicable on a minimum booking amount of ₹5000.</Text>
+                <Text>
+                  &#9679; It is mandatory to apply the coupon code TDFLIGHT2020 at the time of
+                  booking.
+                </Text>
+                <Text> &#9679; The coupon code is for one-time use only.</Text>
+                <Text style={{ marginBottom: 10 }}>
+                  &#9679; The offer is valid for bookings made on Tripdesire Website, Mobile site,
+                  Android & iOS App.
+                </Text>
+              </ScrollView>
+            </View>
+          </Modal>
         </ScrollView>
 
         {/* </SafeAreaView> */}
@@ -347,6 +426,13 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8
+  },
+  offerHeading: {
+    fontSize: 18,
+    fontWeight: "500"
+  },
+  offertext: {
+    fontSize: 16
   }
 });
 

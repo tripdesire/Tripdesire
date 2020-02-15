@@ -289,12 +289,12 @@ class CheckOut1 extends React.PureComponent {
       checked
     } = this.state;
 
-    if (params.departFlight.IsGSTMandatory && this.state.GstDetails == "") {
-      this.setState({ showGst: true });
-    }
+    // if (params.departFlight.IsGSTMandatory && this.state.GstDetails == "") {
+    //   this.setState({ showGst: true });
+    // }
 
     const { user } = this.props;
-    if (isEmpty(user)) { 
+    if (isEmpty(user)) {
       //Toast.show("Please login or signup", Toast.LONG);
       this.props.navigation.navigate("SignIn", { needBilling: true });
       return;
@@ -313,6 +313,20 @@ class CheckOut1 extends React.PureComponent {
 
     if (this.validate()) {
       Toast.show("Please enter all the fields.", Toast.LONG);
+      return;
+    }
+
+    if (
+      checked &&
+      GSTCompanyAddress == "" &&
+      GSTCompanyContactNumber == "" &&
+      GSTCompanyName == "" &&
+      GSTNumber == "" &&
+      GSTCompanyEmail == "" &&
+      GSTFirstName == "" &&
+      GSTLastName == ""
+    ) {
+      Toast.show("Please fill the GST Details", Toast.LONG);
       return;
     }
 
@@ -368,7 +382,16 @@ class CheckOut1 extends React.PureComponent {
       // payment_method: this.state.payment_method,
       adult_details: adult_details,
       child_details: child_details,
-      infant_details: infant_details
+      infant_details: infant_details,
+      gst_details: {
+        GSTCompanyAddress: GSTCompanyAddress,
+        GSTCompanyContactNumber: GSTCompanyContactNumber,
+        GSTCompanyName: GSTCompanyName,
+        GSTNumber: GSTNumber,
+        GSTCompanyEmail: GSTCompanyEmail,
+        GSTFirstName: GSTFirstName,
+        GSTLastName: GSTLastName
+      }
     };
     console.log(param);
     //return;
@@ -1754,11 +1777,12 @@ class CheckOut1 extends React.PureComponent {
                   <CheckBox
                     checked={this.state.checked}
                     label="Add GST Details for business travel (Optional)"
-                    styleIcon={{
+                    styleView={{
                       alignItems: "flex-start",
                       paddingTop: 16,
                       paddingHorizontal: 10
                     }}
+                    styleIcon={24}
                     onPress={this.setGST}
                   />
                   {this.state.checked && (

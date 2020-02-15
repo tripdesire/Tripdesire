@@ -155,12 +155,12 @@ class SeatOneway extends React.PureComponent {
     const { lowerRows, selectedSheets } = this.state;
     const backgroundColor =
       item.IsAvailableSeat === "false" || item.IsAvailableSeat === "False"
-        ? "#BBBBBB"
+        ? "#c8c8c8"
         : selectedSheets.some(val => item.Number == val.Number)
-        ? "#5B89F9"
+        ? "#61CA6D"
         : "#FFF";
     const seatColor =
-      item.IsLadiesSeat == "True" || item.IsLadiesSeat == "true" ? "pink" : "#757575";
+      item.IsLadiesSeat == "True" || item.IsLadiesSeat == "true" ? "#fa1e64" : "#757575";
 
     if (item.Length == 2 && item.Width == 1) {
       //Horizonatal Sleeper
@@ -332,7 +332,7 @@ class SeatOneway extends React.PureComponent {
                   <Icon
                     size={16}
                     style={{ marginEnd: 5, fontWeight: "700" }}
-                    color="#BBBBBB"
+                    color="#c8c8c8"
                     name={Platform.OS == "ios" ? "ios-radio-button-off" : "md-radio-button-off"}
                   />
                 </View>
@@ -343,7 +343,7 @@ class SeatOneway extends React.PureComponent {
                   <Icon
                     size={16}
                     style={{ marginEnd: 5 }}
-                    color="#5B89F9"
+                    color="#61CA6D"
                     name={Platform.OS == "ios" ? "ios-radio-button-off" : "md-radio-button-off"}
                   />
                 </View>
@@ -374,9 +374,9 @@ class SeatOneway extends React.PureComponent {
                   <Icon
                     size={16}
                     style={{ marginEnd: 5, fontWeight: "700" }}
-                    color="#BBBBBB"
+                    color="#c8c8c8"
                     type="FontAwesome"
-                    backgroundColor="#BBBBBB"
+                    backgroundColor="#c8c8c8"
                     name={Platform.OS == "ios" ? "circle" : "circle"}
                   />
                 </View>
@@ -388,7 +388,7 @@ class SeatOneway extends React.PureComponent {
                     borderRadius: 5,
                     borderWidth: 1,
                     marginEnd: 5,
-                    borderColor: "#BBBBBB",
+                    borderColor: "#c8c8c8",
                     width: 30,
                     height: 30,
                     backgroundColor: "#fff"
@@ -400,7 +400,7 @@ class SeatOneway extends React.PureComponent {
                       borderStartWidth: 6,
                       borderBottomWidth: 6,
                       borderRadius: 3,
-                      borderColor: "#BBBBBB",
+                      borderColor: "#c8c8c8",
                       marginTop: 15,
                       marginStart: -3,
                       marginEnd: -3,
@@ -416,12 +416,12 @@ class SeatOneway extends React.PureComponent {
                 <View
                   style={{
                     borderRadius: 5,
-                    borderColor: "#BBBBBB",
+                    borderColor: "#c8c8c8",
                     borderWidth: 2,
                     marginEnd: 5,
                     width: 60,
                     height: 30,
-                    backgroundColor: "#BBBBBBB",
+                    backgroundColor: "#c8c8c8B",
                     flexDirection: "row"
                   }}>
                   <Text
