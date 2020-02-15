@@ -82,10 +82,13 @@ class FlightsInfoOneway extends React.PureComponent {
         this.setState({ loader: false });
         if (this.state.flight_type == 1) {
           console.log(data.DomesticOnwardFlights);
-          if (data.DomesticOnwardFlights.length != 0) {
+          let flights = data.DomesticOnwardFlights.filter(
+            item => item.AirlineRemark.toLowerCase() !== "sme fare"
+          );
+          if (flights.length != 0) {
             this.setState({
-              flights: data.DomesticOnwardFlights,
-              filterFlights: data.DomesticOnwardFlights,
+              flights,
+              filterFlights: flights,
               loader: false
             });
           } else {
@@ -94,10 +97,13 @@ class FlightsInfoOneway extends React.PureComponent {
         }
         if (this.state.flight_type == 2) {
           //  console.log(data.InternationalFlights);
+          let flights = data.InternationalFlights.filter(
+            item => item.AirlineRemark.toLowerCase() !== "sme fare"
+          );
           if (data.InternationalFlights.length != 0) {
             this.setState({
-              flights: data.InternationalFlights,
-              filterFlights: data.InternationalFlights,
+              flights,
+              filterFlights: flights,
               loader: false
             });
           } else {
@@ -444,7 +450,7 @@ class FlightsInfoOneway extends React.PureComponent {
       );
     }
   };
-  _keyExtractoritems = (item, index) => "key" + index;
+  _keyExtractoritems = (item, index) => "flights_" + item.FlightUId;
 
   render() {
     const {

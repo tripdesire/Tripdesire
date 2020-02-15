@@ -26,7 +26,7 @@ class Cab extends React.PureComponent {
     this.state = {
       sourceName: "Agra",
       destinationName: "Bangalore",
-      from: "Agra, 100 - (India)", //"Hyderabad ,149 - (India)",
+      from: "Agra", //, 100 - (India)",
       sourceId: "149",
       to: "Bangalore ,113 - (India)",
       pickuplocation: "",
@@ -120,7 +120,7 @@ class Cab extends React.PureComponent {
   handleFrom = item => {
     console.log(item);
     this.setState({
-      from: item.Name + " ," + item.Id + " - (India)",
+      from: item.Name, // + " ," + item.Id + " - (India)",
       sourceId: item.Id,
       sourceName: item.Name,
       modalFrom: false,
