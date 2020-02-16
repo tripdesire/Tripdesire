@@ -83,7 +83,7 @@ class FlightsInfoOneway extends React.PureComponent {
         if (this.state.flight_type == 1) {
           console.log(data.DomesticOnwardFlights);
           let flights = data.DomesticOnwardFlights.filter(
-            item => item.AirlineRemark.toLowerCase() !== "sme fare"
+            item => !item.AirlineRemark || item.AirlineRemark.toLowerCase() !== "sme fare"
           );
           if (flights.length != 0) {
             this.setState({
@@ -98,7 +98,7 @@ class FlightsInfoOneway extends React.PureComponent {
         if (this.state.flight_type == 2) {
           //  console.log(data.InternationalFlights);
           let flights = data.InternationalFlights.filter(
-            item => item.AirlineRemark.toLowerCase() !== "sme fare"
+            item => !item.AirlineRemark || item.AirlineRemark.toLowerCase() !== "sme fare"
           );
           if (data.InternationalFlights.length != 0) {
             this.setState({

@@ -90,7 +90,7 @@ class FlightsInfoRoundInt extends React.PureComponent {
       console.log(JSON.stringify(data));
       if (data.InternationalFlights.length != 0) {
         const flights = data.InternationalFlights.filter(
-          item => item.AirlineRemark.toLowerCase() !== "sme fare"
+          item => !item.AirlineRemark || item.AirlineRemark.toLowerCase() !== "sme fare"
         );
         this.setState({
           flights,

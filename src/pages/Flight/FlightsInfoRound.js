@@ -108,10 +108,10 @@ class FlightsInfoRound extends React.PureComponent {
       .get("/Flights/AvailableFlights", data)
       .then(({ data }) => {
         const onwardFlights = data.DomesticOnwardFlights.filter(
-          item => item.AirlineRemark.toLowerCase() !== "sme fare"
+          item => !item.AirlineRemark || item.AirlineRemark.toLowerCase() !== "sme fare"
         );
         const returnFlights = data.DomesticReturnFlights.filter(
-          item => item.AirlineRemark.toLowerCase() !== "sme fare"
+          item => !item.AirlineRemark || item.AirlineRemark.toLowerCase() !== "sme fare"
         );
         this.setState({
           onwardFlightsList: onwardFlights,
