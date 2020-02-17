@@ -24,6 +24,7 @@ import axios from "axios";
 import FastImage from "react-native-fast-image";
 import Modal from "react-native-modal";
 import moment from "moment";
+import Offer from "./Offer";
 
 const { width } = Dimensions.get("window");
 
@@ -146,13 +147,14 @@ class Home extends React.PureComponent {
         }
       ],
       posts: [],
+      index: 0,
       modalShow: false
     };
   }
 
-  modalShow = () => {
-    console.log("Kamal");
-    this.setState({ modalShow: true });
+  modalShow = index => () => {
+    console.log(index);
+    this.setState({ index: index, modalShow: true });
   };
   modalDismiss = () => {
     this.setState({ modalShow: false });
@@ -242,7 +244,7 @@ class Home extends React.PureComponent {
   _keyExtractor = (item, index) => "sap" + index + item;
 
   render() {
-    const { posts, flights } = this.state;
+    const { posts, flights, index } = this.state;
     return (
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
@@ -310,12 +312,17 @@ class Home extends React.PureComponent {
           <SwiperFlatList
           // autoplay autoplayDelay={2} autoplayLoop index={0}
           >
-            <TouchableOpacity onPress={this.modalShow}>
+            <TouchableOpacity onPress={this.modalShow("0")}>
               <FastImage style={styles.imgNew} source={require("../assets/imgs/flightOffer.jpg")} />
             </TouchableOpacity>
+
             <FastImage style={styles.imgNew} source={require("../assets/imgs/hotelOffer.jpg")} />
-            <FastImage style={styles.imgNew} source={require("../assets/imgs/busOffer.jpg")} />
+
             <FastImage style={styles.imgNew} source={require("../assets/imgs/cabOffer.jpg")} />
+
+            <TouchableOpacity onPress={this.modalShow("3")}>
+              <FastImage style={styles.imgNew} source={require("../assets/imgs/busOffer.jpg")} />
+            </TouchableOpacity>
           </SwiperFlatList>
           <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
             POPULAR DOMESTIC ROUTES
@@ -384,40 +391,83 @@ class Home extends React.PureComponent {
               <ScrollView
                 style={{ backgroundColor: "#fff", padding: 10, marginTop: -10 }}
                 showsVerticalScrollIndicator={false}>
-                <Text style={styles.offerHeading}>ABOUT THE OFFER</Text>
-                <Text style={styles.offertext}>
-                  To get discounts, users have to book flights for their preferred destination by
-                  applying coupon code TDFLIGHT2020 to avail of the offer.
-                </Text>
-                <Text>Book your flight between 1st - 29th Feb 2020.</Text>
-                <Text style={[styles.offerHeading, { marginVertical: 10 }]}>
-                  HOW TO AVAIL THE OFFER
-                </Text>
-                <Text>
-                  Search flights on trip desire between 1st - 29th Feb 2020 and choose your
-                  preferred flight.
-                </Text>
-                <Text>Apply coupon code TDFLIGHT2020 at the time of making your booking.</Text>
-                <Text style={[styles.offerHeading, { marginVertical: 10 }]}>
-                  TERMS & CONDITIONS
-                </Text>
-                <Text>
-                  &#9679; The offer is valid only on flight bookings made between 1st - 29th Feb
-                  2020.
-                </Text>
-                <Text>
-                  &#9679; The offer is valid for domestic and international flight bookings only.
-                </Text>
-                <Text> &#9679; The code is applicable on a minimum booking amount of ₹5000.</Text>
-                <Text>
-                  &#9679; It is mandatory to apply the coupon code TDFLIGHT2020 at the time of
-                  booking.
-                </Text>
-                <Text> &#9679; The coupon code is for one-time use only.</Text>
-                <Text style={{ marginBottom: 10 }}>
-                  &#9679; The offer is valid for bookings made on Tripdesire Website, Mobile site,
-                  Android & iOS App.
-                </Text>
+                <Offer
+                  abouttheoffer={
+                    index == 0 ? (
+                      <>
+                        <Text>
+                          To get discounts, users have to book flights for their preferred
+                          destination by applying coupon code TDFLIGHT2020 to avail of the offer.
+                        </Text>
+                        <Text>Book your flight between 1st - 29th Feb 2020.</Text>
+                      </>
+                    ) : index == 3 ? (
+                      <>
+                        <Text>
+                          To get discounts Book a bus on Trip Desire coupon code TDBUS100.
+                        </Text>
+                      </>
+                    ) : null
+                  }
+                  howtoavailthisoffer={
+                    index == 0 ? (
+                      <>
+                        <Text>
+                          Search flights on trip desire between 1st - 29th Feb 2020 and choose your
+                          preferred flight.
+                        </Text>
+                        <Text>
+                          Apply coupon code TDFLIGHT2020 at the time of making your booking.
+                        </Text>
+                      </>
+                    ) : index == 3 ? (
+                      <>
+                        <Text>Search and choose your preferred bus.</Text>
+                        <Text>Apply coupon code TDBUS100 at the time of making your booking.</Text>
+                      </>
+                    ) : null
+                  }
+                  termandcondition={
+                    index == 0 ? (
+                      <>
+                        <Text>
+                          &#9679; The offer is valid only on flight bookings made between 1st - 29th
+                          Feb 2020.
+                        </Text>
+                        <Text>
+                          &#9679; The offer is valid for domestic and international flight bookings
+                          only.
+                        </Text>
+                        <Text>
+                          &#9679; The code is applicable on a minimum booking amount of ₹5000.
+                        </Text>
+                        <Text>
+                          &#9679; It is mandatory to apply the coupon code TDFLIGHT2020 at the time
+                          of booking.
+                        </Text>
+                        <Text>&#9679; The coupon code is for one-time use only.</Text>
+                        <Text style={{ marginBottom: 10 }}>
+                          &#9679; The offer is valid for bookings made on Tripdesire Website, Mobile
+                          site, Android & iOS App.
+                        </Text>
+                      </>
+                    ) : index == 3 ? (
+                      <>
+                        <Text>&#9679; This offer is valid for all users.</Text>
+                        <Text>
+                          &#9679; You must apply coupon code TDBUS100 at the time of booking.
+                        </Text>
+                        <Text>
+                          &#9679; The code is applicable on a minimum booking amount of ₹5000.
+                        </Text>
+                        <Text>
+                          &#9679; The offer is valid for bookings made on Tripdesire Website,
+                          Android & iOS App.
+                        </Text>
+                      </>
+                    ) : null
+                  }
+                />
               </ScrollView>
             </View>
           </Modal>
