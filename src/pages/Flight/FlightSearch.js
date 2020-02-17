@@ -9,8 +9,9 @@ import analytics from "@react-native-firebase/analytics";
 class FlightSearch extends React.PureComponent {
   constructor(props) {
     super(props);
+    const { item } = this.props.navigation.state.params;
     this.state = {
-      flightType: 1
+      flightType: item ? item.flightType : 1
     };
   }
 

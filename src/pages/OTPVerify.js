@@ -82,9 +82,10 @@ class OTPVerify extends Component {
     domainApi
       .get("/verifyOTP", { phone, country_code, otp })
       .then(({ data }) => {
+        console.log(data);
         this.setState({ loading: false });
         if (data.code == 1) {
-          this.setState({ loader: false });
+          this.setState({ loading: false });
           this.props.Signin(data.details);
           onBack && onBack();
           //this.props.navigation.pop(3);
@@ -93,11 +94,12 @@ class OTPVerify extends Component {
           this.props.navigation.goBack(null);
           Toast.show("Login successful", Toast.LONG);
         } else {
-          this.setState({ loader: false });
+          this.setState({ loading: false });
           Toast.show("Login / Signup Failed.", Toast.LONG);
         }
       })
-      .catch(() => {
+      .catch(error => {
+        console.log(error);
         this.setState({ loading: false });
       });
   };

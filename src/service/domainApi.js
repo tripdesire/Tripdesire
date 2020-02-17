@@ -7,7 +7,7 @@ import perf from "@react-native-firebase/perf";
 class Service {
   constructor() {
     let service = axios.create({
-      //baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2",
+      // baseURL: "https://demo66.tutiixx.com/wp-json/wc/v2",
       baseURL: "https://tripdesire.co/wp-json/wc/v2",
       headers: { "Cache-Control": "no-cache" }
     });

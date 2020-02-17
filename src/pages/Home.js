@@ -61,21 +61,22 @@ class Home extends React.PureComponent {
           sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
         },
         {
-          source: "DEL",
-          destination: "PNQ",
-          sourceName: "NEW DELHI",
-          destinationName: "Pune",
-          journeyDate: "25-02-2020",
+          source: "DXB",
+          destination: "SFO",
+          sourceName: "Dubai",
+          destinationName: "San Francisco",
+          journeyDate: "26-02-2020",
           returnDate: "",
           tripType: 1,
-          flightType: 1,
+          flightType: 2,
           adults: 1,
           children: 0,
           infants: 0,
           travelClass: "E",
           className: "Economy",
-          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
-          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+          destinationAirportName:
+            "San Francisco, Unites State - (SFO) - San Francisco International",
+          sourceAirportName: "Dubai, United Arab Emirates - (DXB) - Dubai"
         },
         {
           source: "DEL",
@@ -129,21 +130,22 @@ class Home extends React.PureComponent {
           sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
         },
         {
-          source: "DEL",
-          destination: "PNQ",
-          sourceName: "NEW DELHI",
-          destinationName: "Pune",
-          journeyDate: "25-02-2020",
+          source: "DXB",
+          destination: "SFO",
+          sourceName: "Dubai",
+          destinationName: "San Francisco",
+          journeyDate: "26-02-2020",
           returnDate: "",
           tripType: 1,
-          flightType: 1,
+          flightType: 2,
           adults: 1,
           children: 0,
           infants: 0,
           travelClass: "E",
           className: "Economy",
-          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
-          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+          destinationAirportName:
+            "San Francisco, Unites State - (SFO) - San Francisco International",
+          sourceAirportName: "Dubai, United Arab Emirates - (DXB) - Dubai"
         }
       ],
       posts: [],
@@ -551,8 +553,8 @@ const styles = StyleSheet.create({
   heading: { fontSize: 18, fontWeight: "700" },
   place: { fontSize: 18, fontWeight: "600", color: "#1A2B48", textTransform: "capitalize" },
   flightView: {
-    backgroundColor: "#ffffff",
-    elevation: 2,
+    backgroundColor: "#fff",
+    elevation: 10,
     width: width - 96,
     shadowOffset: { width: 2, height: 2 },
     shadowColor: "#d8eaff",

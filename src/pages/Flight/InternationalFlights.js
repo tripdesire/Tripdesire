@@ -13,6 +13,7 @@ import analytics from "@react-native-firebase/analytics";
 class InternationalFlights extends React.PureComponent {
   constructor(props) {
     super(props);
+    const { item } = this.props.navigation.state.params;
     this.animatedValue = new Animated.Value(0);
     this.state = {
       class: "E",
@@ -25,24 +26,29 @@ class InternationalFlights extends React.PureComponent {
       ],
       suggestions: [],
       passengers: 1,
-      flightType: 2,
-      tripType: 1,
+      flightType: item ? item.flightType : 2,
+      tripType: item ? item.tripType : 1,
       adult: 1,
       children: 0,
       infants: 0,
       modalFrom: false,
       modalTo: false,
       modalPassengers: false,
-      from: "DXB, Dubai",
-      to: "SFO, San Francisco",
-      sourceName: "Dubai",
-      destinationName: "San Francisco",
-      fromCode: "DXB",
-      ToCode: "SFO",
-      sourceAirportName: "Dubai, United Arab Emirates - (DXB) - Dubai",
-      destinationAirportName: "San Francisco, Unites State - (SFO) - San Francisco International",
-      Journey_date: new Date(),
-      Return_date: new Date(),
+      from: item ? item.source + ", " + item.sourceName : "DXB, Dubai",
+      to: item ? item.destination + ", " + item.destinationName : "SFO, San Francisco",
+      sourceName: item ? item.sourceName : "Dubai",
+      destinationName: item ? item.destinationName : "San Francisco",
+      fromCode: item ? item.source : "DXB",
+      ToCode: item ? item.destination : "SFO",
+      sourceAirportName: item
+        ? item.sourceAirportName
+        : "Dubai, United Arab Emirates - (DXB) - Dubai",
+      destinationAirportName: item
+        ? item.destinationAirportName
+        : "San Francisco, Unites State - (SFO) - San Francisco International",
+      Journey_date: item ? moment(item.journeyDate, "DD-MM-YYYY").toDate() : new Date(),
+      Return_date:
+        item && item.tripType == 2 ? moment(item.returnDate, "DD-MM-YYYY").toDate() : new Date(),
       mode: "date",
       show: false,
       showTo: false,

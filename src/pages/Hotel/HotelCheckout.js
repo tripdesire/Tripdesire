@@ -151,7 +151,7 @@ class HotelCheckout extends React.Component {
   _renderTruncatedFooter = handlePress => {
     return (
       <Text style={{ color: "#5191FA", marginTop: 5 }} onPress={handlePress}>
-        Read more
+        Show more
       </Text>
     );
   };
@@ -298,11 +298,16 @@ class HotelCheckout extends React.Component {
                 </View>
               </View>
             </LinearGradient>
-            <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+            <View style={{ flex: 1 }}>
               <ScrollView
-                contentContainerStyle={{ backgroundColor: "#ffffff", marginHorizontal: 16 }}
+                contentContainerStyle={{ marginHorizontal: 16 }}
                 showsVerticalScrollIndicator={false}>
-                <View style={{ flexDirection: "row", marginTop: 16, width: "100%" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 16,
+                    width: "100%"
+                  }}>
                   <Button style={{ flex: 1 }} onPress={this.showImage}>
                     <Image
                       style={{
@@ -413,8 +418,10 @@ class HotelCheckout extends React.Component {
                         key={item.RoomIndex}
                         style={{
                           backgroundColor: "#FFF",
-                          elevation: 50,
-                          margin: 5,
+                          elevation: 2,
+                          padding: 10,
+                          borderRadius: 5,
+                          marginHorizontal: 1,
                           marginVertical: 20,
                           flexDirection: "row"
                         }}
@@ -426,6 +433,7 @@ class HotelCheckout extends React.Component {
                             borderRadius: 12,
                             borderWidth: 1,
                             marginEnd: 8,
+                            marginTop: 3,
                             borderColor: "#A0A9B2",
                             alignItems: "center",
                             justifyContent: "center"
@@ -442,76 +450,67 @@ class HotelCheckout extends React.Component {
                             />
                           )}
                         </TouchableOpacity>
-                        <View style={{ paddingEnd: 16 }}>
-                          <Text style={{ fontSize: 16 }}>{item.RoomType}</Text>
+                        <View style={{ flex: 1 }}>
+                          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <Text style={{ fontSize: 16 }}>{item.RoomType}</Text>
+                            <Text
+                              style={{
+                                fontSize: 18,
+                                fontWeight: "700"
+                              }}>
+                              <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>
+                                ₹
+                              </CurrencyText>
+                              <NumberFormat
+                                decimalScale={0}
+                                fixedDecimalScale
+                                value={item.RoomTotal}
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                thousandsGroupStyle="lakh"
+                                renderText={value => (
+                                  <Text style={{ fontWeight: "700", fontSize: 18 }}>{value}</Text>
+                                )}
+                              />
+                            </Text>
+                          </View>
 
                           <Text style={{ color: "#717A81" }}>
                             {params.room}: Room, {params.Night}: Night
                           </Text>
                           {/* </View> */}
 
-                          <View style={{ marginBottom: 10 }}>
-                            {/* {item.RoomCancellationPolicy !== "" && item.RoomCancellationPolicy != null && (
-                          <Button
-                            onPress={() =>
-                              this.setState({ policy: true, data: item.RoomCancellationPolicy })
-                            }>
-                            <Text style={{ fontSize: 16, color: "#5B89F9" }}>
-                              Room Cancellation Policy
-                            </Text>
-                          </Button>
-                        )} */}
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between"
-                              }}>
-                              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <Icon
-                                  type="MaterialIcons"
-                                  size={16}
-                                  name="check-circle"
-                                  color={
-                                    item.RefundRule != null && item.RefundRule
-                                      ? "#27ae60"
-                                      : "#F44336"
-                                  }
-                                />
-                                <Text
-                                  style={{
-                                    color:
-                                      item.RefundRule != null && item.RefundRule
-                                        ? "#27ae60"
-                                        : "#F44336",
-                                    fontSize: 12
-                                  }}>
-                                  {item.RefundRule != null && item.RefundRule == "Refundable Fare"
-                                    ? "Refundable"
-                                    : "Non Refundable"}
-                                </Text>
-                              </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              flex: 1,
+                              justifyContent: "space-between"
+                            }}>
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                              <Icon
+                                type="MaterialIcons"
+                                size={16}
+                                name="check-circle"
+                                color={
+                                  item.RefundRule != null && item.RefundRule ? "#27ae60" : "#F44336"
+                                }
+                              />
                               <Text
                                 style={{
-                                  fontSize: 18,
-                                  fontWeight: "700"
+                                  color:
+                                    item.RefundRule != null && item.RefundRule
+                                      ? "#27ae60"
+                                      : "#F44336",
+                                  fontSize: 12
                                 }}>
-                                <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>
-                                  ₹
-                                </CurrencyText>
-                                <NumberFormat
-                                  decimalScale={0}
-                                  fixedDecimalScale
-                                  value={item.RoomTotal}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  thousandsGroupStyle="lakh"
-                                  renderText={value => (
-                                    <Text style={{ fontWeight: "700", fontSize: 18 }}>{value}</Text>
-                                  )}
-                                />
+                                {item.RefundRule != null && item.RefundRule == "Refundable Fare"
+                                  ? " Refundable"
+                                  : " Non Refundable"}
                               </Text>
                             </View>
+                          </View>
+                          <View>
                             {item.Inclusions != null && item.Inclusions != "" && (
                               <>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>

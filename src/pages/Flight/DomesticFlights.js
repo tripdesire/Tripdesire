@@ -13,7 +13,6 @@ import analytics from "@react-native-firebase/analytics";
 class DomesticFlights extends React.PureComponent {
   constructor(props) {
     super(props);
-    console.log(this.props.navigation.state.params);
     const { item } = this.props.navigation.state.params;
     this.animatedValue = new Animated.Value(0);
     this.state = {
