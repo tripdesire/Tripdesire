@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -14,11 +14,14 @@ import { GoogleSignin } from "@react-native-community/google-signin";
 import { Logout } from "../store/action";
 import { Text, Button, Icon } from "../components";
 import analytics from "@react-native-firebase/analytics";
+import Modal from "react-native-modal";
 
 function MyAccount({ navigation }) {
   GoogleSignin.configure({
     iosClientId: "700390422426-jd4ktatcufq8ncqd6p3728be7c3cl3bj.apps.googleusercontent.com"
   });
+
+  const [modalShow, setmodal] = useState(false);
 
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -31,6 +34,10 @@ function MyAccount({ navigation }) {
   useEffect(() => {
     trackScreenView("My Account");
   }, []);
+
+  const modalDismiss = () => {
+    setmodal(false);
+  };
 
   const login = () => {
     navigation.navigate("LoginStack", {});
@@ -94,8 +101,13 @@ function MyAccount({ navigation }) {
   };
 
   const logout = () => {
+    setmodal(false);
     dispatch(Logout(null));
     GoogleSignin.signOut();
+  };
+
+  const logoutModal = () => {
+    setmodal(true);
   };
 
   return (
@@ -205,11 +217,39 @@ function MyAccount({ navigation }) {
           </Button>
 
           {!isEmpty(user) && (
-            <Button style={styles.rowView} onPress={logout}>
+            <Button style={styles.rowView} onPress={logoutModal}>
               <Icon type="AntDesign" name="logout" size={24} color="#757575" />
               <Text style={styles.rowText}>Logout</Text>
             </Button>
           )}
+
+          <Modal
+            style={{ margin: 16 }}
+            backdropColor="black"
+            backdropOpacity={0.7}
+            hasBackdrop
+            isVisible={modalShow}
+            onBackButtonPress={modalDismiss}
+            onBackdropPress={modalDismiss}>
+            <View style={{ padding: 20, backgroundColor: "#fff" }}>
+              <Text style={{ fontSize: 16, fontWeight: "500" }}>Logout</Text>
+              <Text>Are you sure you want to logout?</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  marginTop: 50
+                }}>
+                <Button style={{ marginEnd: 15 }} onPress={logout}>
+                  <Text style={{ color: "#F68E1F", fontWeight: "500" }}>LOG OUT</Text>
+                </Button>
+                <Button onPress={modalDismiss}>
+                  <Text style={{ color: "#F68E1F", fontWeight: "500" }}>CANCEL</Text>
+                </Button>
+              </View>
+            </View>
+          </Modal>
         </ScrollView>
       </SafeAreaView>
     </>

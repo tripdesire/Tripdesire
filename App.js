@@ -62,7 +62,9 @@ import {
   Wallet,
   ReferAndEarn,
   BlogList,
-  Blog
+  Blog,
+  TourPackages,
+  TourPackSinPg
 } from "./src/pages";
 
 import Splash from "./src/pages/Splash";
@@ -138,7 +140,9 @@ const HomeStack = createStackNavigator(
     Wallet,
     ReferAndEarn,
     BlogList,
-    Blog
+    Blog,
+    TourPackages,
+    TourPackSinPg
   },
   {
     headerMode: "none",

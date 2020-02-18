@@ -148,6 +148,124 @@ class Home extends React.PureComponent {
           sourceAirportName: "Dubai, United Arab Emirates - (DXB) - Dubai"
         }
       ],
+      tourindia: [
+        {
+          Name: "Shimla",
+          img: "https://demo66.tutiixx.com/wp-content/uploads/2020/01/4-min.png",
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          Name: "Manali",
+          img: "https://demo66.tutiixx.com/wp-content/uploads/2020/01/2-min.png",
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          Name: "Gangtok",
+          img: "https://demo66.tutiixx.com/wp-content/uploads/2019/12/3-min.png",
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        }
+      ],
+      international: [
+        {
+          Name: "Europe",
+          img: "https://demo66.tutiixx.com/wp-content/uploads/2019/12/unnamed-3-min.png",
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          Name: "Singapore",
+          img: "https://demo66.tutiixx.com/wp-content/uploads/2020/01/Artboard-–-2-min.png",
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        },
+        {
+          Name: "Mauritius",
+          img: "https://demo66.tutiixx.com/wp-content/uploads/2020/01/Artboard-–-6-min.png",
+          source: "DEL",
+          destination: "PNQ",
+          sourceName: "NEW DELHI",
+          destinationName: "Pune",
+          journeyDate: "25-02-2020",
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+        }
+      ],
       posts: [],
       index: 0,
       modalShow: false
@@ -206,6 +324,9 @@ class Home extends React.PureComponent {
   _gotoFlightSearch = item => () => {
     this.props.navigation.navigate("FlightSearch", { item });
   };
+  _gotoTour = item => () => {
+    this.props.navigation.navigate("TourPackages", { item });
+  };
 
   _renderItem = ({ item, index }) => {
     const date = moment(item.journeyDate, "DD-MM-YYYY");
@@ -241,12 +362,147 @@ class Home extends React.PureComponent {
     );
   };
 
+  _renderItemTourIndia = ({ item, index }) => {
+    const date = moment(item.journeyDate, "DD-MM-YYYY");
+    return (
+      <Button
+        style={[
+          styles.flightView,
+          {
+            marginEnd: this.state.tourindia.length - 1 == index ? 12 : 2
+          }
+        ]}
+        onPress={this._gotoTour(item)}>
+        <FastImage
+          resizeMode="cover"
+          style={{
+            width: width - 96,
+            height: 180,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8
+          }}
+          source={{ uri: item.img }}
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            paddingHorizontal: 10,
+            paddingTop: 15
+          }}>
+          <Text style={[styles.place]}>{item.Name}</Text>
+          <Text>2 Nights/3 Days</Text>
+        </View>
+
+        <View
+          style={{
+            width: width - 116,
+            margin: 15,
+            height: 1.25,
+            backgroundColor: "#d2d2d2"
+          }}></View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            paddingHorizontal: 10,
+            paddingBottom: 10
+          }}>
+          <Text>Starting From</Text>
+          <LinearGradient
+            style={{ paddingHorizontal: 15, paddingVertical: 5, borderRadius: 18 }}
+            colors={["#53b2fe", "#065af3"]}>
+            <Button>
+              <CurrencyText style={[styles.heading, { color: "#fff", lineHeight: 20 }]}>
+                Rs. 1400
+              </CurrencyText>
+            </Button>
+          </LinearGradient>
+        </View>
+      </Button>
+    );
+  };
+
+  _renderItemInternational = ({ item, index }) => {
+    const date = moment(item.journeyDate, "DD-MM-YYYY");
+    return (
+      <Button
+        style={[
+          styles.flightView,
+          {
+            marginEnd: this.state.tourindia.length - 1 == index ? 12 : 2
+          }
+        ]}>
+        <FastImage
+          resizeMode="cover"
+          style={{
+            width: width - 96,
+            height: 180,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8
+          }}
+          source={{ uri: item.img }}
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            paddingHorizontal: 10,
+            paddingTop: 15
+          }}>
+          <Text style={[styles.place]}>{item.Name}</Text>
+          <Text>2 Nights/3 Days</Text>
+        </View>
+
+        <View
+          style={{
+            width: width - 116,
+            margin: 15,
+            height: 1.25,
+            backgroundColor: "#d2d2d2"
+          }}></View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            paddingHorizontal: 10,
+            paddingBottom: 10
+          }}>
+          <Text>Starting From</Text>
+          <LinearGradient
+            style={{ paddingHorizontal: 15, paddingVertical: 5, borderRadius: 18 }}
+            colors={["#53b2fe", "#065af3"]}>
+            <Button>
+              <CurrencyText style={[styles.heading, { color: "#fff", lineHeight: 20 }]}>
+                Rs. 1400
+              </CurrencyText>
+            </Button>
+          </LinearGradient>
+        </View>
+      </Button>
+    );
+  };
+
   keyExtractor = (item, index) => "Sap" + index + item;
 
   _keyExtractor = (item, index) => "sap" + index + item;
 
+  _keyExtractorTourIndia = (item, index) => "TourIndia" + item + index;
+
+  _keyExtractorInternational = (item, index) => "International" + item + index;
+
   render() {
-    const { posts, flights, index } = this.state;
+    const { posts, flights, index, tourindia, international } = this.state;
     return (
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
@@ -335,7 +591,26 @@ class Home extends React.PureComponent {
             data={flights}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
-            // contentContainerStyle={{ backgroundColor: "#FFF" }}
+          />
+          <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
+            TOUR PACKAGES IN INDIA
+          </Text>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={tourindia}
+            keyExtractor={this._keyExtractorTourIndia}
+            renderItem={this._renderItemTourIndia}
+          />
+          <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
+            INTERNATIONAL TOUR PACKAGES
+          </Text>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={international}
+            keyExtractor={this._keyExtractorInternational}
+            renderItem={this._renderItemInternational}
           />
 
           {posts && posts.length > 0 && (
@@ -554,7 +829,7 @@ const styles = StyleSheet.create({
   place: { fontSize: 18, fontWeight: "600", color: "#1A2B48", textTransform: "capitalize" },
   flightView: {
     backgroundColor: "#fff",
-    elevation: 10,
+    elevation: 5,
     width: width - 96,
     shadowOffset: { width: 2, height: 2 },
     shadowColor: "#d8eaff",

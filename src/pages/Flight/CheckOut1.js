@@ -745,7 +745,7 @@ class CheckOut1 extends React.PureComponent {
 
       console.log(book);
       const { data: blockres } = await etravosApi.post("/Flights/BlockFlightTicket", book);
-      //console.log(blockres);
+      console.log(JSON.stringify(blockres));
       if (blockres.BookingStatus == 8) {
         const { data: ord } = await domainApi.post(
           "/checkout/new-order?user_id=" + user.id + "&payment_method=" + this.state.payment_method,

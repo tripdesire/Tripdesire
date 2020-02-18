@@ -51,6 +51,8 @@ import Wallet from "./Wallet";
 import ReferAndEarn from "./ReferAndEarn";
 import BlogList from "./BlogList";
 import Blog from "./Blog";
+import TourPackages from "./TourPackages";
+import TourPackSinPg from "./TourPackSinPg";
 
 export {
   Home,
@@ -105,5 +107,7 @@ export {
   Wallet,
   ReferAndEarn,
   BlogList,
-  Blog
+  Blog,
+  TourPackages,
+  TourPackSinPg
 };
