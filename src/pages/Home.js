@@ -384,14 +384,13 @@ class Home extends React.PureComponent {
           source={{ uri: item.img }}
         />
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            paddingHorizontal: 10,
-            paddingTop: 15
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              paddingHorizontal: 10,
+              paddingTop: 15
+            }
+          ]}>
           <Text style={[styles.place]}>{item.Name}</Text>
           <Text>2 Nights/3 Days</Text>
         </View>
@@ -405,14 +404,13 @@ class Home extends React.PureComponent {
           }}></View>
 
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            paddingHorizontal: 10,
-            paddingBottom: 10
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              paddingHorizontal: 10,
+              paddingBottom: 10
+            }
+          ]}>
           <Text>Starting From</Text>
           <LinearGradient
             style={{ paddingHorizontal: 15, paddingVertical: 5, borderRadius: 18 }}
@@ -449,14 +447,13 @@ class Home extends React.PureComponent {
           source={{ uri: item.img }}
         />
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            paddingHorizontal: 10,
-            paddingTop: 15
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              paddingHorizontal: 10,
+              paddingTop: 15
+            }
+          ]}>
           <Text style={[styles.place]}>{item.Name}</Text>
           <Text>2 Nights/3 Days</Text>
         </View>
@@ -470,14 +467,13 @@ class Home extends React.PureComponent {
           }}></View>
 
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            paddingHorizontal: 10,
-            paddingBottom: 10
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              paddingHorizontal: 10,
+              paddingBottom: 10
+            }
+          ]}>
           <Text>Starting From</Text>
           <LinearGradient
             style={{ paddingHorizontal: 15, paddingVertical: 5, borderRadius: 18 }}
@@ -856,6 +852,12 @@ const styles = StyleSheet.create({
   },
   offertext: {
     fontSize: 16
+  },
+  flexdirection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%"
   }
 });
 

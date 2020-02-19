@@ -2,12 +2,12 @@ import React from "react";
 import { View, ImageBackground, Dimensions, FlatList, ScrollView, StyleSheet } from "react-native";
 import { Text, Button, Icon, LinearGradient } from "../components";
 import FastImage from "react-native-fast-image";
-
 const { width, height } = Dimensions.get("window");
 
 class TourPackSinPg extends React.PureComponent {
   constructor(props) {
     super(props);
+    console.log(props.navigation.state.params);
     this.state = {
       hotels: [{ Name: "The Oberoi" }, { Name: "The Oberoi" }, { Name: "The Oberoi" }],
       days: [{ sno: "Day" }, { sno: "Day" }, { sno: "Day" }, { sno: "Day" }],
@@ -82,6 +82,7 @@ class TourPackSinPg extends React.PureComponent {
 
   render() {
     const { hotels, days, can } = this.state;
+    const { name, Name } = this.props.navigation.state.params;
     return (
       <View style={{ flex: 1 }}>
         <ImageBackground
@@ -99,7 +100,7 @@ class TourPackSinPg extends React.PureComponent {
               alignSelf: "center",
               marginTop: 20
             }}>
-            Shimla
+            {Name}
           </Text>
         </ImageBackground>
         <ScrollView>

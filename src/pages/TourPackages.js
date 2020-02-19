@@ -12,26 +12,33 @@ class TourPackages extends React.PureComponent {
     this.state = {
       hotel: [
         {
-          Name: "Heavenly Shimla Tour"
+          name: "Heavenly Shimla Tour"
         },
         {
-          Name: "Heavenly Shimla Tour"
+          name: "Heavenly Shimla Tour"
         },
         {
-          Name: "Heavenly Shimla Tour"
+          name: "Heavenly Shimla Tour"
         },
         {
-          Name: "Heavenly Shimla Tour"
+          name: "Heavenly Shimla Tour"
         },
         {
-          Name: "Heavenly Shimla Tour"
+          name: "Heavenly Shimla Tour"
         },
         {
-          Name: "Heavenly Shimla Tour"
+          name: "Heavenly Shimla Tour"
         }
       ]
     };
   }
+
+  _gotoViewDetail = item => () => {
+    this.props.navigation.navigate("TourPackSinPg", {
+      ...this.props.navigation.state.params.item,
+      ...item
+    });
+  };
 
   _renderItem = ({ item, index }) => (
     <View
@@ -74,7 +81,7 @@ class TourPackages extends React.PureComponent {
           width: 120
         }}
         colors={["#53b2fe", "#065af3"]}>
-        <Button>
+        <Button onPress={this._gotoViewDetail(item)}>
           <Text style={{ color: "#fff" }}>View Details</Text>
         </Button>
       </LinearGradient>

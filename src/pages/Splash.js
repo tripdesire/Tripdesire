@@ -21,8 +21,8 @@ class Splash extends React.PureComponent {
   componentDidMount() {
     this.trackScreenView("Splash");
     setTimeout(() => {
-      // this.props.navigation.navigate("TabNavigator");
-      this.props.navigation.navigate("TourPackSinPg");
+      this.props.navigation.navigate("TabNavigator");
+      //this.props.navigation.navigate("TourPackSinPg");
     }, 3000);
   }
 
