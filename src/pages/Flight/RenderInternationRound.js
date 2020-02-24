@@ -1,5 +1,14 @@
 import React, { PureComponent } from "react";
-import { Dimensions, View, Image, TouchableOpacity, Modal, Linking, Alert } from "react-native";
+import {
+  Dimensions,
+  View,
+  Image,
+  TouchableOpacity,
+  Modal,
+  Linking,
+  Alert,
+  StyleSheet
+} from "react-native";
 import { Button, Text, CurrencyText } from "../../components";
 import { withNavigation } from "react-navigation";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -158,11 +167,7 @@ class RenderInternationRound extends React.PureComponent {
           marginTop: 16,
           borderRadius: 8,
           paddingTop: 10,
-          // paddingVertical: index % 2 == 0 ? 30 : 10,
           backgroundColor: "#fff"
-          //  backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
-          // paddingVertical: 10,
-          // backgroundColor: this.props.index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
         }}
         onPress={() => this._BookNow(this.props.item)}>
         <View
@@ -171,24 +176,20 @@ class RenderInternationRound extends React.PureComponent {
             marginEnd: 8,
             marginBottom: 10
           }}>
-          {/* <Image style={{ width: 35, resizeMode: "contain" }} source={{ uri: img }} /> */}
           <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              flex: 1,
-              alignItems: "flex-start"
-            }}>
+            style={[
+              styles.flexdirection,
+              {
+                flex: 1,
+                alignItems: "flex-start"
+              }
+            ]}>
             <Text style={{ marginStart: 10, flex: 1 }}>
               {this.props.item.IntOnward.FlightSegments[0].AirLineName}
             </Text>
             <View>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "700"
-                }}>
-                <CurrencyText style={{ fontSize: 18, fontWeight: "700" }}>₹</CurrencyText>
+              <Text style={styles.text}>
+                <CurrencyText style={styles.text}>₹</CurrencyText>
                 <NumberFormat
                   decimalScale={0}
                   fixedDecimalScale
@@ -196,39 +197,19 @@ class RenderInternationRound extends React.PureComponent {
                   displayType={"text"}
                   thousandSeparator={true}
                   thousandsGroupStyle="lakh"
-                  renderText={value => (
-                    <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>
-                  )}
+                  renderText={value => <Text style={styles.text}>{value}</Text>}
                 />
               </Text>
-              {/* <Button
-                style={{
-                  backgroundColor: "#F68E1F",
-                  borderRadius: 15,
-                  height: 24,
-                  alignSelf: "center",
-                  justifyContent: "center"
-                }}
-                onPress={() => this._BookNow(this.props.item)}>
-                <Text
-                  style={{
-                    color: "#fff",
-                    alignSelf: "center",
-                    fontSize: 12,
-                    paddingHorizontal: 10
-                  }}>
-                  Book Now
-                </Text>
-              </Button> */}
             </View>
           </View>
         </View>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 8
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8
+            }
+          ]}>
           <Text style={{ color: "#636C73", fontSize: 12 }}>
             Depart - {this.props.item.IntOnward.FlightSegments[0].AirLineName} |{" "}
             {this.props.item.IntOnward.FlightSegments[0].OperatingAirlineCode +
@@ -237,28 +218,18 @@ class RenderInternationRound extends React.PureComponent {
           </Text>
         </View>
         <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 8,
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8,
+              alignItems: "center"
+            }
+          ]}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Image
-              style={{ width: 40, height: 40, marginEnd: 10 }}
-              resizeMode="contain"
-              source={{ uri: img }}
-            />
+            <Image style={styles.image} resizeMode="contain" source={{ uri: img }} />
             <View>
               <Text style={{ fontSize: 18, lineHeight: 22 }}>{dd}</Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  // color: "#5D646A",
-                  lineHeight: 14
-                }}>
-                {from}
-              </Text>
+              <Text style={styles.fontsize}>{from}</Text>
             </View>
           </View>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -273,13 +244,7 @@ class RenderInternationRound extends React.PureComponent {
                 )
                 .format("h:mm [hrs]")}
             </Text>
-            {/* <View
-              style={{
-                backgroundColor: "#5D646A",
-                height: 1.35,
-                width: width / 5,
-                lineHeight: 14
-              }}></View> */}
+
             <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
               {this.props.item.IntOnward.FlightSegments.length - 1 == 0
                 ? "Non Stop"
@@ -288,14 +253,7 @@ class RenderInternationRound extends React.PureComponent {
           </View>
           <View>
             <Text style={{ fontSize: 18, lineHeight: 22, textAlign: "right" }}>{ad}</Text>
-            <Text
-              style={{
-                fontSize: 12,
-                // color: "#5D646A",
-                lineHeight: 14
-              }}>
-              {to}
-            </Text>
+            <Text style={styles.fontsize}>{to}</Text>
           </View>
         </View>
         <View
@@ -314,15 +272,7 @@ class RenderInternationRound extends React.PureComponent {
           <Button onPress={this._email}>
             <Icon name="mail" size={20} color="#F68E1F" />
           </Button>
-          {/* <View
-            style={{
-              width: 1,
-              height: 20,
-              backgroundColor: "#D2D2D2",
-              marginHorizontal: 2
-            }}></View>
-          <IconMaterial name="message-text-outline" size={20} color="#F68E1F" /> */}
-          <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
+          <View style={[styles.flexdirection, { flex: 1 }]}>
             <Button>
               <Text
                 style={{
@@ -335,15 +285,11 @@ class RenderInternationRound extends React.PureComponent {
               </Text>
             </Button>
             <Button onPress={this.fareRules}>
-              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
+              <Text style={styles.farerule}>Fare Rules</Text>
             </Button>
             <Button onPress={this.toggle}>
-              {this.state.expanded == false && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
-              )}
-              {this.state.expanded == true && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
-              )}
+              {this.state.expanded == false && <Text style={styles.farerule}>+View Details</Text>}
+              {this.state.expanded == true && <Text style={styles.farerule}>-Hide Details</Text>}
             </Button>
           </View>
         </View>
@@ -355,26 +301,28 @@ class RenderInternationRound extends React.PureComponent {
                 style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
                 key={"_Sep" + index}>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginHorizontal: 8
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8
+                    }
+                  ]}>
                   <Text style={{ color: "#636C73", fontSize: 12 }}>
                     {itemEach.AirLineName} |{" "}
                     {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                   </Text>
                 </View>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    marginHorizontal: 8,
-                    justifyContent: "space-between",
-                    alignItems: "center"
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8,
+                      alignItems: "center"
+                    }
+                  ]}>
                   <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                     <Image
-                      style={{ width: 40, height: 40, marginEnd: 4 }}
+                      style={styles.image}
                       resizeMode="contain"
                       source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
                     />
@@ -382,20 +330,14 @@ class RenderInternationRound extends React.PureComponent {
                       <Text style={{ fontSize: 18, lineHeight: 22 }}>
                         {moment(itemEach.DepartureDateTime).format("HH:mm")}
                       </Text>
+                      <Text style={styles.fontsize}>{itemEach.IntDepartureAirportName}</Text>
                       <Text
-                        style={{
-                          fontSize: 12,
-                          // color: "#5D646A",
-                          lineHeight: 14
-                        }}>
-                        {itemEach.IntDepartureAirportName}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#5D646A",
-                          lineHeight: 14
-                        }}>
+                        style={[
+                          styles.fontsize,
+                          {
+                            color: "#5D646A"
+                          }
+                        ]}>
                         {moment(itemEach.DepartureDateTime).format("MMM DD")}
                       </Text>
                     </View>
@@ -405,41 +347,34 @@ class RenderInternationRound extends React.PureComponent {
                     <Text style={{ fontSize: 18, lineHeight: 22 }}>
                       {moment(itemEach.ArrivalDateTime).format("HH:mm")}
                     </Text>
+                    <Text style={styles.fontsize}>{itemEach.IntArrivalAirportName}</Text>
                     <Text
-                      style={{
-                        fontSize: 12,
-                        //color: "#5D646A",
-                        lineHeight: 14
-                      }}>
-                      {itemEach.IntArrivalAirportName}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                      style={[
+                        styles.fontsize,
+                        {
+                          color: "#5D646A"
+                        }
+                      ]}>
                       {moment(itemEach.ArrivalDateTime).format("MMM DD")}
                     </Text>
                   </View>
                 </View>
                 <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5,
-                    marginTop: 10
-                  }}></View>
+                  style={[
+                    styles.dash,
+                    {
+                      marginTop: 10
+                    }
+                  ]}></View>
                 <View
-                  style={{
-                    marginHorizontal: 8,
-                    flexDirection: "row",
-                    marginVertical: 5,
-                    flex: 1,
-                    justifyContent: "space-between"
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8,
+                      marginVertical: 5,
+                      flex: 1
+                    }
+                  ]}>
                   <Text
                     style={{
                       color: "#5D666D",
@@ -460,34 +395,22 @@ class RenderInternationRound extends React.PureComponent {
                     connection/s
                   </Text>
                   <Foundation name="shopping-bag" size={20} color="#5D666D" />
-                  <Text style={{ color: "#5D666D", fontSize: 12 }}>
+                  <Text style={styles.bag}>
                     {itemEach.BaggageAllowed.HandBaggage != ""
                       ? itemEach.BaggageAllowed.HandBaggage
                       : 0 + " PC(s)"}
                   </Text>
                   <Foundation name="shopping-bag" size={20} color="#5D666D" />
-                  <Text style={{ color: "#5D666D", fontSize: 12 }}>
-                    {itemEach.BaggageAllowed.CheckInBaggage}
-                  </Text>
+                  <Text style={styles.bag}>{itemEach.BaggageAllowed.CheckInBaggage}</Text>
                 </View>
-                <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5
-                  }}></View>
+                <View style={styles.dash}></View>
 
                 {this.props.item.IntOnward.FlightSegments.length - 1 != index && (
                   <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
                     Change of Planes at{" "}
-                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                      {" "}
-                      {itemEach.IntArrivalAirportName}
-                    </Text>{" "}
-                    | Connection Time:
-                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                    <Text style={styles.changeFlightText}> {itemEach.IntArrivalAirportName}</Text> |
+                    Connection Time:
+                    <Text style={styles.changeFlightText}>
                       {" "}
                       {moment
                         .duration(
@@ -510,39 +433,19 @@ class RenderInternationRound extends React.PureComponent {
                       alignItems: "flex-start",
                       marginTop: 5
                     }}>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDetailText}>
                       Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDetailText}>
                       Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Tax}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDetailText}>
                       Fee & SubCharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDetailText}>
                       Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {parseInt(this.props.item.FareDetails.TotalFare)}
                     </Text>
@@ -551,22 +454,15 @@ class RenderInternationRound extends React.PureComponent {
               </View>
             );
           })}
-        <View
-          style={{
-            borderStyle: "dashed",
-            borderWidth: 1,
-            marginHorizontal: 8,
-            marginVertical: 10,
-            borderColor: "#D0D3DA",
-            borderRadius: 0.5
-          }}></View>
+        <View style={styles.dash}></View>
         <View>
           <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 8
-            }}>
+            style={[
+              styles.flexdirection,
+              {
+                marginHorizontal: 8
+              }
+            ]}>
             <Text style={{ color: "#636C73", fontSize: 12 }}>
               Return - {this.props.item.IntReturn.FlightSegments[0].AirLineName} |{" "}
               {this.props.item.IntReturn.FlightSegments[0].OperatingAirlineCode +
@@ -574,24 +470,12 @@ class RenderInternationRound extends React.PureComponent {
                 this.props.item.IntReturn.FlightSegments[0].OperatingAirlineFlightNumber}
             </Text>
           </View>
-          <View
-            style={{ flexDirection: "row", marginHorizontal: 8, justifyContent: "space-between" }}>
+          <View style={[styles.flexdirection, { marginHorizontal: 8 }]}>
             <View style={{ alignItems: "center", flexDirection: "row" }}>
-              <Image
-                style={{ width: 40, height: 40, marginEnd: 10, resizeMode: "contain" }}
-                source={{ uri: imgReturn }}
-                resizeMode="contain"
-              />
+              <Image style={styles.image} source={{ uri: imgReturn }} resizeMode="contain" />
               <View>
                 <Text style={{ fontSize: 18, lineHeight: 22 }}>{ddRet}</Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    // color: "#5D646A",
-                    lineHeight: 14
-                  }}>
-                  {to}
-                </Text>
+                <Text style={styles.fontsize}>{to}</Text>
               </View>
             </View>
             <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -606,19 +490,14 @@ class RenderInternationRound extends React.PureComponent {
                   )
                   .format("h:mm [hrs]")}
               </Text>
-              {/* <View
-                style={{
-                  backgroundColor: "#5D646A",
-                  height: 1.35,
-                  width: width / 5,
-                  lineHeight: 14
-                }}></View> */}
+
               <Text
-                style={{
-                  fontSize: 12,
-                  color: "#5D646A",
-                  lineHeight: 14
-                }}>
+                style={[
+                  styles.fontsize,
+                  {
+                    color: "#5D646A"
+                  }
+                ]}>
                 {this.props.item.IntReturn.FlightSegments.length - 1 == 0
                   ? "Non Stop"
                   : this.props.item.IntReturn.FlightSegments.length - 1 + " Stop"}
@@ -629,7 +508,6 @@ class RenderInternationRound extends React.PureComponent {
               <Text
                 style={{
                   fontSize: 12,
-                  // color: "#5D646A",
                   lineHeight: 18,
                   textAlign: "right"
                 }}>
@@ -653,14 +531,7 @@ class RenderInternationRound extends React.PureComponent {
             <Button onPress={this._email}>
               <Icon name="mail" size={20} color="#F68E1F" />
             </Button>
-            {/* <View
-              style={{
-                width: 1,
-                height: 20,
-                backgroundColor: "#D2D2D2",
-                marginHorizontal: 2
-              }}></View>
-            <IconMaterial name="message-text-outline" size={20} color="#F68E1F" /> */}
+
             <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
               <Button>
                 <Text
@@ -674,14 +545,14 @@ class RenderInternationRound extends React.PureComponent {
                 </Text>
               </Button>
               <Button onPress={this.fareRules}>
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
+                <Text style={styles.farerule}>Fare Rules</Text>
               </Button>
               <Button onPress={this.toggleReturn}>
                 {this.state.expandedReturn == false && (
-                  <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
+                  <Text style={styles.farerule}>+View Details</Text>
                 )}
                 {this.state.expandedReturn == true && (
-                  <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
+                  <Text style={styles.farerule}>-Hide Details</Text>
                 )}
               </Button>
             </View>
@@ -694,51 +565,42 @@ class RenderInternationRound extends React.PureComponent {
                   style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
                   key={"_SepReturn" + index}>
                   <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginHorizontal: 8
-                    }}>
+                    style={[
+                      styles.flexdirection,
+                      {
+                        marginHorizontal: 8
+                      }
+                    ]}>
                     <Text style={{ color: "#636C73", fontSize: 12 }}>
                       {itemEach.AirLineName} |{" "}
                       {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                     </Text>
                   </View>
                   <View
-                    style={{
-                      flexDirection: "row",
-                      marginHorizontal: 8,
-                      alignItems: "center",
-                      justifyContent: "space-between"
-                    }}>
+                    style={[
+                      styles.flexdirection,
+                      {
+                        marginHorizontal: 8,
+                        alignItems: "center"
+                      }
+                    ]}>
                     <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                       <Image
-                        style={{
-                          width: 40,
-                          height: 40,
-                          marginEnd: 4,
-                          resizeMode: "contain"
-                        }}
+                        style={styles.image}
                         source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
                       />
                       <View>
                         <Text style={{ fontSize: 18, lineHeight: 22 }}>
                           {moment(itemEach.DepartureDateTime).format("HH:mm")}
                         </Text>
+                        <Text style={styles.fontsize}>{itemEach.IntDepartureAirportName}</Text>
                         <Text
-                          style={{
-                            fontSize: 12,
-                            // color: "#5D646A",
-                            lineHeight: 14
-                          }}>
-                          {itemEach.IntDepartureAirportName}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#5D646A",
-                            lineHeight: 14
-                          }}>
+                          style={[
+                            styles.fontsize,
+                            {
+                              color: "#5D646A"
+                            }
+                          ]}>
                           {moment(itemEach.DepartureDateTime).format("MMM DD")}
                         </Text>
                       </View>
@@ -750,33 +612,25 @@ class RenderInternationRound extends React.PureComponent {
                       <Text style={{ fontSize: 18, lineHeight: 22 }}>
                         {moment(itemEach.ArrivalDateTime).format("HH:mm")}
                       </Text>
+                      <Text style={styles.fontsize}>{itemEach.IntArrivalAirportName}</Text>
                       <Text
-                        style={{
-                          fontSize: 12,
-                          // color: "#5D646A",
-                          lineHeight: 14
-                        }}>
-                        {itemEach.IntArrivalAirportName}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#5D646A",
-                          lineHeight: 14
-                        }}>
+                        style={[
+                          styles.fontsize,
+                          {
+                            color: "#5D646A"
+                          }
+                        ]}>
                         {moment(itemEach.ArrivalDateTime).format("MMM DD")}
                       </Text>
                     </View>
                   </View>
                   <View
-                    style={{
-                      borderStyle: "dashed",
-                      borderWidth: 1,
-                      marginHorizontal: 8,
-                      borderColor: "#D0D3DA",
-                      borderRadius: 0.5,
-                      marginTop: 10
-                    }}></View>
+                    style={[
+                      styles.dash,
+                      {
+                        marginTop: 10
+                      }
+                    ]}></View>
                   <View
                     style={{
                       marginHorizontal: 8,
@@ -805,34 +659,22 @@ class RenderInternationRound extends React.PureComponent {
                       connection/s
                     </Text>
                     <Foundation name="shopping-bag" size={20} color="#5D666D" />
-                    <Text style={{ color: "#5D666D", fontSize: 12 }}>
+                    <Text style={styles.bag}>
                       {itemEach.BaggageAllowed.HandBaggage != ""
                         ? itemEach.BaggageAllowed.HandBaggage
                         : 0 + " PC(s)"}
                     </Text>
                     <Foundation name="shopping-bag" size={20} color="#5D666D" />
-                    <Text style={{ color: "#5D666D", fontSize: 12 }}>
-                      {itemEach.BaggageAllowed.CheckInBaggage}
-                    </Text>
+                    <Text style={styles.bag}>{itemEach.BaggageAllowed.CheckInBaggage}</Text>
                   </View>
-                  <View
-                    style={{
-                      borderStyle: "dashed",
-                      borderWidth: 1,
-                      marginHorizontal: 8,
-                      borderColor: "#D0D3DA",
-                      borderRadius: 0.5
-                    }}></View>
+                  <View style={styles.dash}></View>
 
                   {this.props.item.IntReturn.FlightSegments.length - 1 != index && (
                     <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
                       Change of Planes at{" "}
-                      <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                        {" "}
-                        {itemEach.IntArrivalAirportName}
-                      </Text>{" "}
+                      <Text style={styles.changeFlightText}>{itemEach.IntArrivalAirportName}</Text>{" "}
                       | Connection Time:
-                      <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                      <Text style={styles.changeFlightText}>
                         {" "}
                         {moment
                           .duration(
@@ -851,34 +693,19 @@ class RenderInternationRound extends React.PureComponent {
 
                   {this.props.item.IntReturn.FlightSegments.length - 1 == index && (
                     <View style={{ flex: 1, marginHorizontal: 8, marginTop: 5 }}>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#5D646A",
-                          lineHeight: 14
-                        }}>
+                      <Text style={styles.fareDetailText}>
                         Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                       </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#5D646A",
-                          lineHeight: 14
-                        }}>
+                      <Text style={styles.fareDetailText}>
                         Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {this.props.item.FareDetails.ChargeableFares.Tax}
                       </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#5D646A",
-                          lineHeight: 14
-                        }}>
+                      <Text style={styles.fareDetailText}>
                         Fee & SubCharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
                       </Text>
-                      <Text style={{ fontSize: 12, color: "#5D646A", lineHeight: 14 }}>
+                      <Text style={styles.fareDetailText}>
                         Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                         {parseInt(this.props.item.FareDetails.TotalFare)}
                       </Text>
@@ -899,5 +726,29 @@ class RenderInternationRound extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  text: { fontSize: 18, fontWeight: "700" },
+  fareDetailText: {
+    fontSize: 12,
+    color: "#5D646A",
+    lineHeight: 14
+  },
+  dash: {
+    borderStyle: "dashed",
+    borderWidth: 1,
+    marginHorizontal: 8,
+    borderColor: "#D0D3DA",
+    borderRadius: 0.5
+  },
+  bag: { color: "#5D666D", fontSize: 12 },
+  farerule: { flex: 1, color: "#5D666D", fontSize: 12 },
+  image: { width: 40, height: 40, marginEnd: 10 },
+  flexdirection: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  changeFlightText: { fontSize: 16, fontWeight: "700" }
+});
 
 export default withNavigation(RenderInternationRound);

@@ -487,7 +487,7 @@ class FlightsInfoRound extends React.PureComponent {
                   <View>
                     <Text style={{ color: "#5F6D78" }}>Departure</Text>
                     <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                      <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
+                      <CurrencyText style={styles.text}>₹</CurrencyText>
                       <NumberFormat
                         decimalScale={0}
                         fixedDecimalScale
@@ -503,8 +503,8 @@ class FlightsInfoRound extends React.PureComponent {
                   </View>
                   <View>
                     <Text style={{ color: "#5F6D78" }}>Return</Text>
-                    <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                      <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
+                    <Text style={[styles.text, { color: "#212C4C" }]}>
+                      <CurrencyText style={styles.text}>₹</CurrencyText>
                       <NumberFormat
                         decimalScale={0}
                         fixedDecimalScale
@@ -512,16 +512,14 @@ class FlightsInfoRound extends React.PureComponent {
                         displayType={"text"}
                         thousandSeparator={true}
                         thousandsGroupStyle="lakh"
-                        renderText={value => (
-                          <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>
-                        )}
+                        renderText={value => <Text style={styles.text}>{value}</Text>}
                       />
                     </Text>
                   </View>
                   <View>
                     <Text style={{ color: "#5F6D78" }}>Total</Text>
-                    <Text style={{ color: "#212C4C", fontSize: 18, fontWeight: "700" }}>
-                      <CurrencyText style={{ fontWeight: "700", fontSize: 18 }}>₹</CurrencyText>
+                    <Text style={[styles.text, { color: "#212C4C" }]}>
+                      <CurrencyText style={styles.text}>₹</CurrencyText>
                       <NumberFormat
                         decimalScale={0}
                         fixedDecimalScale
@@ -548,7 +546,6 @@ class FlightsInfoRound extends React.PureComponent {
                     backgroundColor: "#DEDEDE",
                     height: 1,
                     marginHorizontal: 16
-                    // marginTop: 10
                   }}
                 />
                 <View
@@ -641,7 +638,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 50,
     borderRadius: 20
-  }
+  },
+  text: { fontWeight: "700", fontSize: 18 }
 });
 
 export default withNavigation(FlightsInfoRound);

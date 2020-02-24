@@ -23,7 +23,6 @@ import {
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 import { etravosApi } from "../../service";
-//import MapView from "react-native-maps";
 import moment from "moment";
 import HTML from "react-native-render-html";
 import { Component } from "react";
@@ -257,20 +256,25 @@ class HotelCheckout extends React.Component {
                     }}>
                     {params.HotelName}
                   </Text>
-                  <View style={{ marginStart: 5, marginTop: 8 }}>
+                  <View style={{ marginStart: 5 }}>
                     <Stars
                       default={parseInt(params.StarRating)}
                       count={parseInt(params.StarRating)}
                       half={true}
-                      starSize={80}
-                      fullStar={<IconMaterial name={"star"} style={[styles.myStarStyle]} />}
+                      starSize={50}
+                      fullStar={
+                        <IconMaterial name={"star"} style={[styles.myStarStyle]} size={18} />
+                      }
                       emptyStar={
                         <IconMaterial
+                          size={18}
                           name={"star-outline"}
                           style={[styles.myStarStyle, styles.myEmptyStarStyle]}
                         />
                       }
-                      halfStar={<IconMaterial name={"star-half"} style={[styles.myStarStyle]} />}
+                      halfStar={
+                        <IconMaterial size={18} name={"star-half"} style={[styles.myStarStyle]} />
+                      }
                     />
                   </View>
                 </View>

@@ -146,20 +146,19 @@ class FlightListInternational extends React.PureComponent {
           shadowColor: "rgba(0,0,0,0.1)",
           shadowOpacity: 1,
           shadowRadius: 4,
-          marginTop: 16,
+          marginVertical: 8,
           borderRadius: 8,
           paddingTop: 10,
-          // paddingVertical: index % 2 == 0 ? 30 : 10,
           backgroundColor: "#fff"
-          //  backgroundColor: index % 2 == 0 ? "#FFFFFF" : "#EEF1F8"
         }}
         onPress={() => this.bookNow(this.props.item)}>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 8
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8
+            }
+          ]}>
           <Text style={{ color: "#636C73", fontSize: 12, flex: 1, paddingEnd: 10 }}>
             {this.props.item.IntOnward.FlightSegments[0].AirLineName} |{" "}
             {this.props.item.IntOnward.FlightSegments[0].OperatingAirlineCode +
@@ -180,12 +179,13 @@ class FlightListInternational extends React.PureComponent {
           </Text>
         </View>
         <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 8,
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8,
+              alignItems: "center"
+            }
+          ]}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               style={{ width: 40, height: 40, marginEnd: 10 }}
@@ -197,7 +197,6 @@ class FlightListInternational extends React.PureComponent {
               <Text
                 style={{
                   fontSize: 12,
-                  // color: "#5D646A",
                   lineHeight: 14
                 }}>
                 {from}
@@ -222,13 +221,11 @@ class FlightListInternational extends React.PureComponent {
                 : this.props.item.IntOnward.FlightSegments.length - 1 + " Stop"}
             </Text>
           </View>
-          {/* <View style={{ flexDirection: "row" }}> */}
           <View>
             <Text style={{ fontSize: 20, lineHeight: 22, textAlign: "right" }}>{ad}</Text>
             <Text
               style={{
                 fontSize: 12,
-                // color: "#5D646A",
                 lineHeight: 14
               }}>
               {to}
@@ -252,7 +249,7 @@ class FlightListInternational extends React.PureComponent {
             <Icon name="mail" size={20} color="#F68E1F" />
           </Button>
 
-          <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
+          <View style={[styles.flexdirection, { flex: 1 }]}>
             <Button>
               <Text
                 style={{
@@ -265,15 +262,11 @@ class FlightListInternational extends React.PureComponent {
               </Text>
             </Button>
             <Button onPress={this.fareRules}>
-              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
+              <Text style={styles.farerule}>Fare Rules</Text>
             </Button>
             <Button onPress={this.toggle}>
-              {this.state.expanded == false && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
-              )}
-              {this.state.expanded == true && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
-              )}
+              {this.state.expanded == false && <Text style={styles.farerule}>+View Details</Text>}
+              {this.state.expanded == true && <Text style={styles.farerule}>-Hide Details</Text>}
             </Button>
           </View>
         </View>
@@ -285,26 +278,28 @@ class FlightListInternational extends React.PureComponent {
                 style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
                 key={"_Seg" + index}>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginHorizontal: 8
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8
+                    }
+                  ]}>
                   <Text style={{ color: "#636C73", fontSize: 12 }}>
                     {itemEach.AirLineName} |{" "}
                     {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                   </Text>
                 </View>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    marginHorizontal: 8,
-                    alignItems: "center",
-                    justifyContent: "space-between"
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8,
+                      alignItems: "center"
+                    }
+                  ]}>
                   <View style={{ alignItems: "flex-start", flexDirection: "row" }}>
                     <Image
-                      style={{ width: 40, height: 40, marginEnd: 4 }}
+                      style={{ width: 40, height: 40, marginEnd: 10 }}
                       source={{
                         uri: "http://webapi.i2space.co.in" + itemEach.ImagePath
                       }}
@@ -347,7 +342,6 @@ class FlightListInternational extends React.PureComponent {
                     <Text
                       style={{
                         fontSize: 12,
-                        // color: "#5D646A",
                         lineHeight: 14
                       }}>
                       {itemEach.IntArrivalAirportName}
@@ -363,21 +357,20 @@ class FlightListInternational extends React.PureComponent {
                   </View>
                 </View>
                 <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5,
-                    marginTop: 10
-                  }}></View>
+                  style={[
+                    styles.dash,
+                    {
+                      marginTop: 10
+                    }
+                  ]}></View>
                 <View
-                  style={{
-                    marginHorizontal: 8,
-                    flexDirection: "row",
-                    marginVertical: 5,
-                    justifyContent: "space-between"
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8,
+                      marginVertical: 5
+                    }
+                  ]}>
                   <Text
                     style={{
                       marginEnd: 10,
@@ -399,34 +392,15 @@ class FlightListInternational extends React.PureComponent {
                     connection/s
                   </Text>
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
-                  <Text
-                    style={{
-                      color: "#5D666D",
-                      fontSize: 12,
-                      marginStart: 2
-                    }}>
+                  <Text style={styles.bags}>
                     {itemEach.BaggageAllowed.HandBaggage != ""
                       ? itemEach.BaggageAllowed.HandBaggage
                       : 0 + " PC(s)"}
                   </Text>
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
-                  <Text
-                    style={{
-                      color: "#5D666D",
-                      fontSize: 12,
-                      marginStart: 2
-                    }}>
-                    {itemEach.BaggageAllowed.CheckInBaggage}
-                  </Text>
+                  <Text style={styles.bags}>{itemEach.BaggageAllowed.CheckInBaggage}</Text>
                 </View>
-                <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5
-                  }}></View>
+                <View style={styles.dash}></View>
 
                 {this.props.item.IntOnward.FlightSegments.length - 1 != index && (
                   <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
@@ -459,39 +433,19 @@ class FlightListInternational extends React.PureComponent {
                       marginTop: 5,
                       marginHorizontal: 8
                     }}>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fare_label}>
                       Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fare_label}>
                       Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Tax}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fare_label}>
                       Fee & Surcharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fare_label}>
                       Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {parseInt(this.props.item.FareDetails.TotalFare)}
                     </Text>
@@ -511,5 +465,27 @@ class FlightListInternational extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  fare_label: {
+    fontSize: 12,
+    color: "#5D646A",
+    lineHeight: 14
+  },
+  dash: {
+    borderStyle: "dashed",
+    borderWidth: 1,
+    marginHorizontal: 8,
+    borderColor: "#D0D3DA",
+    borderRadius: 0.5
+  },
+  farerule: { flex: 1, color: "#5D666D", fontSize: 12 },
+  bags: {
+    color: "#5D666D",
+    fontSize: 12,
+    marginStart: 2
+  },
+  flexdirection: { flexDirection: "row", justifyContent: "space-between" }
+});
 
 export default withNavigation(FlightListInternational);

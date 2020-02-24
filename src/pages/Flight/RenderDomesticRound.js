@@ -125,6 +125,7 @@ class RenderDomesticRound extends React.PureComponent {
     return (
       <TouchableOpacity
         style={{
+          elevation: 2,
           borderColor: "#EEF1F8",
           borderWidth: 1,
           paddingTop: 10,
@@ -134,11 +135,12 @@ class RenderDomesticRound extends React.PureComponent {
         }}
         onPress={this._onpress}>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 8
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8
+            }
+          ]}>
           <Text style={{ color: "#636C73", fontSize: 12 }}>
             {this.props.item.FlightSegments[0].AirLineName} |{" "}
             {this.props.item.FlightSegments[0].OperatingAirlineCode +
@@ -147,27 +149,17 @@ class RenderDomesticRound extends React.PureComponent {
           </Text>
         </View>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 8
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8
+            }
+          ]}>
           <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <Image
-              style={{ width: 40, height: 40, marginEnd: 10 }}
-              source={{ uri: img }}
-              resizeMode="contain"
-            />
+            <Image style={styles.image} source={{ uri: img }} resizeMode="contain" />
             <View>
               <Text style={{ fontSize: 20, lineHeight: 22 }}>{dd}</Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  // color: "#5D646A",
-                  lineHeight: 14
-                }}>
-                {from}
-              </Text>
+              <Text style={styles.fontsize}>{from}</Text>
             </View>
           </View>
           <View style={{ alignItems: "center" }}>
@@ -191,16 +183,9 @@ class RenderDomesticRound extends React.PureComponent {
           </View>
           <View>
             <Text style={{ fontSize: 20, lineHeight: 22 }}>{ad}</Text>
-            <Text
-              style={{
-                fontSize: 12,
-                //color: "#5D646A",
-                lineHeight: 14
-              }}>
-              {to}
-            </Text>
+            <Text style={styles.fontsize}>{to}</Text>
           </View>
-          <Text style={{ fontSize: 18, fontWeight: "700" }}>
+          <Text style={styles.text}>
             <CurrencyText style={{ fontSize: 18, fontWeight: "bold" }}>₹</CurrencyText>
             <NumberFormat
               decimalScale={0}
@@ -209,7 +194,7 @@ class RenderDomesticRound extends React.PureComponent {
               displayType={"text"}
               thousandSeparator={true}
               thousandsGroupStyle="lakh"
-              renderText={value => <Text style={{ fontSize: 18, fontWeight: "700" }}>{value}</Text>}
+              renderText={value => <Text style={styles.text}>{value}</Text>}
             />
           </Text>
         </View>
@@ -229,15 +214,8 @@ class RenderDomesticRound extends React.PureComponent {
           <Button onPress={this._email}>
             <Icon name="mail" size={20} color="#F68E1F" />
           </Button>
-          {/* <View
-            style={{
-              width: 1,
-              height: 20,
-              backgroundColor: "#D2D2D2",
-              marginHorizontal: 2
-            }}></View>
-          <IconMaterial name="message-text-outline" size={20} color="#F68E1F" /> */}
-          <View style={{ justifyContent: "space-between", flexDirection: "row", flex: 1 }}>
+
+          <View style={[styles.flexdirection, { flex: 1 }]}>
             <Button>
               <Text
                 style={{
@@ -250,15 +228,11 @@ class RenderDomesticRound extends React.PureComponent {
               </Text>
             </Button>
             <Button onPress={this.fareRules}>
-              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
+              <Text style={styles.farerule}>Fare Rules</Text>
             </Button>
             <Button onPress={this.toggle}>
-              {this.state.expanded == false && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
-              )}
-              {this.state.expanded == true && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
-              )}
+              {this.state.expanded == false && <Text style={styles.farerule}>+View Details</Text>}
+              {this.state.expanded == true && <Text style={styles.farerule}>-Hide Details</Text>}
             </Button>
           </View>
         </View>
@@ -270,26 +244,28 @@ class RenderDomesticRound extends React.PureComponent {
                 style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
                 key={"_Seg" + index}>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginHorizontal: 8
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8
+                    }
+                  ]}>
                   <Text style={{ color: "#636C73", fontSize: 12 }}>
                     {itemEach.AirLineName} |{" "}
                     {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                   </Text>
                 </View>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    marginHorizontal: 8,
-                    alignItems: "center",
-                    justifyContent: "space-between"
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8,
+                      alignItems: "center"
+                    }
+                  ]}>
                   <View style={{ alignItems: "flex-start", flexDirection: "row" }}>
                     <Image
-                      style={{ width: 40, height: 40, marginEnd: 6 }}
+                      style={styles.image}
                       source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
                       resizeMode="contain"
                     />
@@ -297,20 +273,14 @@ class RenderDomesticRound extends React.PureComponent {
                       <Text style={{ fontSize: 20, lineHeight: 22 }}>
                         {moment(itemEach.DepartureDateTime).format("HH:mm")}
                       </Text>
+                      <Text style={styles.fontsize}>{itemEach.IntDepartureAirportName}</Text>
                       <Text
-                        style={{
-                          fontSize: 12,
-                          // color: "#5D646A",
-                          lineHeight: 14
-                        }}>
-                        {itemEach.IntDepartureAirportName}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#5D646A",
-                          lineHeight: 14
-                        }}>
+                        style={[
+                          styles.fontsize,
+                          {
+                            color: "#5D646A"
+                          }
+                        ]}>
                         {moment(itemEach.DepartureDateTime).format("MMM DD")}
                       </Text>
                     </View>
@@ -330,41 +300,34 @@ class RenderDomesticRound extends React.PureComponent {
                     <Text style={{ fontSize: 20, lineHeight: 22 }}>
                       {moment(itemEach.ArrivalDateTime).format("HH:mm")}
                     </Text>
+                    <Text style={styles.fontsize}>{itemEach.IntArrivalAirportName}</Text>
                     <Text
-                      style={{
-                        fontSize: 12,
-                        // color: "#5D646A",
-                        lineHeight: 14
-                      }}>
-                      {itemEach.IntArrivalAirportName}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                      style={[
+                        styles.fontsize,
+                        {
+                          color: "#5D646A"
+                        }
+                      ]}>
                       {moment(itemEach.ArrivalDateTime).format("MMM DD")}
                     </Text>
                   </View>
                 </View>
                 <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5,
-                    marginTop: 10
-                  }}></View>
+                  style={[
+                    styles.dash,
+                    {
+                      marginTop: 10
+                    }
+                  ]}></View>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    marginVertical: 5,
-                    justifyContent: "space-between",
-                    marginHorizontal: 8,
-                    flex: 1
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginVertical: 5,
+                      marginHorizontal: 8,
+                      flex: 1
+                    }
+                  ]}>
                   <Text
                     style={{
                       color: "#5D666D",
@@ -385,44 +348,22 @@ class RenderDomesticRound extends React.PureComponent {
                     connection/s
                   </Text>
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
-                  <Text
-                    style={{
-                      color: "#5D666D",
-                      fontSize: 12,
-                      marginStart: 2
-                    }}>
+                  <Text style={styles.bags}>
                     {itemEach.BaggageAllowed.HandBaggage != 0
                       ? itemEach.BaggageAllowed.HandBaggage
                       : "0KG"}
                   </Text>
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
-                  <Text
-                    style={{
-                      color: "#5D666D",
-                      fontSize: 12,
-                      marginStart: 2
-                    }}>
-                    {itemEach.BaggageAllowed.CheckInBaggage}
-                  </Text>
+                  <Text style={styles.bags}>{itemEach.BaggageAllowed.CheckInBaggage}</Text>
                 </View>
-                <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5
-                  }}></View>
+                <View style={styles.dash}></View>
 
                 {this.props.item.FlightSegments.length - 1 != index && (
                   <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
                     Change of Planes at{" "}
-                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
-                      {" "}
-                      {itemEach.IntArrivalAirportName}
-                    </Text>{" "}
-                    | Connection Time:
-                    <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                    <Text style={styles.changeFlightText}> {itemEach.IntArrivalAirportName}</Text> |
+                    Connection Time:
+                    <Text style={styles.changeFlightText}>
                       {" "}
                       {moment
                         .duration(
@@ -437,39 +378,19 @@ class RenderDomesticRound extends React.PureComponent {
 
                 {this.props.item.FlightSegments.length - 1 == index && (
                   <View style={{ flex: 1, marginStart: 8, alignItems: "flex-start", marginTop: 5 }}>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDeatilLabel}>
                       Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDeatilLabel}>
                       Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Tax}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDeatilLabel}>
                       Fee & SubCharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {this.props.item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14
-                      }}>
+                    <Text style={styles.fareDeatilLabel}>
                       Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {parseInt(this.props.item.FareDetails.TotalFare)}
                     </Text>
@@ -489,5 +410,34 @@ class RenderDomesticRound extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  image: { width: 40, height: 40, marginEnd: 10 },
+  farerule: { flex: 1, color: "#5D666D", fontSize: 12 },
+  dash: {
+    borderStyle: "dashed",
+    borderWidth: 1,
+    marginHorizontal: 8,
+    borderColor: "#D0D3DA",
+    borderRadius: 0.5
+  },
+  flexdirection: { flexDirection: "row", justifyContent: "space-between" },
+  text: { fontSize: 18, fontWeight: "700" },
+  fareDeatilLabel: {
+    fontSize: 12,
+    color: "#5D646A",
+    lineHeight: 14
+  },
+  changeFlightText: { fontSize: 16, fontWeight: "700" },
+  bags: {
+    color: "#5D666D",
+    fontSize: 12,
+    marginStart: 2
+  },
+  fontsize: {
+    fontSize: 12,
+    lineHeight: 14
+  }
+});
 
 export default RenderDomesticRound;

@@ -51,14 +51,14 @@ function AddPassengers({ submit, onModalBackPress, adultCount, childrenCount, in
   };
   const changeChildren = value => {
     setChildren(value);
-    let newArray = [...Array(10 - parseInt(adult) - parseInt(value))].map((item, index) => {
+    let newArray = [...Array(10 - parseInt(adult) + parseInt(value))].map((item, index) => {
       return { value: index.toString(), label: index.toString() };
     });
     setInfantValue(newArray);
   };
   const changeInfants = value => {
     setInfants(value);
-    let newArray = [...Array(10 - parseInt(adult) - parseInt(value))].map((item, index) => {
+    let newArray = [...Array(10 - parseInt(adult) + parseInt(value))].map((item, index) => {
       return { value: index.toString(), label: index.toString() };
     });
     setChildValue(newArray);

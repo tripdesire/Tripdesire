@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StatusBar, Modal, SafeAreaView } from "react-native";
+import { View, Image, StatusBar, Modal, SafeAreaView, StyleSheet } from "react-native";
 import { Button, Text, AutoCompleteModal, LinearGradient } from "../../components";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -218,23 +218,13 @@ class Hotel extends React.PureComponent {
                 }}>
                 <Button
                   onPress={this.updateHotelType(1)}
-                  style={{
-                    // backgroundColor: hoteltype == 1 ? "#5B89F9" : "#FFF",
-                    elevation: 1,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    zIndex: 2,
-                    height: 30,
-                    borderWidth: 1,
-                    borderColor: "#DDDDDD",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingHorizontal: 30,
-                    borderBottomStartRadius: 5,
-                    borderTopStartRadius: 5
-                  }}>
+                  style={[
+                    styles.hotelType,
+                    {
+                      borderBottomStartRadius: 5,
+                      borderTopStartRadius: 5
+                    }
+                  ]}>
                   <Text
                     style={{
                       color: hoteltype == 1 ? "#FFF" : "#000000",
@@ -253,23 +243,13 @@ class Hotel extends React.PureComponent {
                 }}>
                 <Button
                   onPress={this.updateHotelType(2)}
-                  style={{
-                    // backgroundColor: hoteltype == 2 ? "#5B89F9" : "#FFF",
-                    elevation: 1,
-                    borderWidth: 1,
-                    borderColor: "#DDDDDD",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    zIndex: 2,
-                    height: 30,
-                    paddingHorizontal: 30,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderBottomEndRadius: 5,
-                    borderTopEndRadius: 5
-                  }}>
+                  style={[
+                    styles.hotelType,
+                    {
+                      borderBottomEndRadius: 5,
+                      borderTopEndRadius: 5
+                    }
+                  ]}>
                   <Text
                     style={{
                       color: hoteltype == 2 ? "#FFF" : "#000000",
@@ -287,15 +267,13 @@ class Hotel extends React.PureComponent {
                 <View
                   style={{ margin: 16, marginTop: 54, flexDirection: "row", alignItems: "center" }}>
                   <Image
-                    style={{ width: 40, height: 40, tintColor: "#000000" }}
+                    style={styles.image}
                     source={require("../../assets/imgs/locationList.png")}
                   />
 
-                  <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.countryOpen}>
-                    <Text style={{ color: "#000000" }}>Country</Text>
-                    <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
-                      {country}
-                    </Text>
+                  <Button style={styles.button} onPress={this.countryOpen}>
+                    <Text style={styles.label}>Country</Text>
+                    <Text style={styles.text}>{country}</Text>
                   </Button>
                 </View>
                 <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
@@ -308,12 +286,9 @@ class Hotel extends React.PureComponent {
                 flexDirection: "row",
                 alignItems: "center"
               }}>
-              <Image
-                style={{ width: 40, height: 40, tintColor: "#000000" }}
-                source={require("../../assets/imgs/locationList.png")}
-              />
-              <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.modalOpen}>
-                <Text style={{ color: "#000000" }}>City</Text>
+              <Image style={styles.image} source={require("../../assets/imgs/locationList.png")} />
+              <Button style={styles.button} onPress={this.modalOpen}>
+                <Text style={styles.label}>City</Text>
                 <Text
                   style={{
                     color: "#000000",
@@ -326,20 +301,13 @@ class Hotel extends React.PureComponent {
               </Button>
             </View>
 
-            <View style={{ height: 1, backgroundColor: "#DDDDDD", marginHorizontal: 20 }} />
+            <View style={styles.line} />
 
-            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{ width: 40, height: 40, tintColor: "#000000" }}
-                source={require("../../assets/imgs/calender.png")}
-              />
-              <Button
-                style={{ flex: 1, paddingStart: 20 }}
-                onPress={this.showDateTimePicker("fromDTpicker")}>
-                <Text style={{ color: "#000000" }}>Check-in</Text>
-                <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
-                  {moment(CheckIn).format("DD MMM, YY")}
-                </Text>
+            <View style={styles.view}>
+              <Image style={styles.image} source={require("../../assets/imgs/calender.png")} />
+              <Button style={styles.button} onPress={this.showDateTimePicker("fromDTpicker")}>
+                <Text style={styles.label}>Check-in</Text>
+                <Text style={styles.text}>{moment(CheckIn).format("DD MMM, YY")}</Text>
                 <DateTimePicker
                   isVisible={fromDTpicker}
                   onConfirm={this.handleDatePicked("fromDTpicker")}
@@ -348,13 +316,9 @@ class Hotel extends React.PureComponent {
                   minimumDate={new Date()}
                 />
               </Button>
-              <Button
-                style={{ flex: 1, paddingStart: 20 }}
-                onPress={this.showDateTimePicker("toDTpicker")}>
-                <Text style={{ color: "#000000" }}>Check-out</Text>
-                <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
-                  {moment(CheckOut).format("DD MMM, YY")}
-                </Text>
+              <Button style={styles.button} onPress={this.showDateTimePicker("toDTpicker")}>
+                <Text style={styles.label}>Check-out</Text>
+                <Text style={styles.text}>{moment(CheckOut).format("DD MMM, YY")}</Text>
                 <DateTimePicker
                   isVisible={toDTpicker}
                   onConfirm={this.handleDatePicked("toDTpicker")}
@@ -367,16 +331,13 @@ class Hotel extends React.PureComponent {
               </Button>
             </View>
 
-            <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
+            <View style={styles.line} />
 
-            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{ width: 40, height: 40, tintColor: "#000000" }}
-                source={require("../../assets/imgs/Passenger.png")}
-              />
-              <Button style={{ flex: 1, paddingStart: 20 }} onPress={this.setPassengers}>
-                <Text style={{ color: "#000000" }}>Rooms & Guests</Text>
-                <Text style={{ color: "#000000", fontSize: 18, fontWeight: "600" }}>
+            <View style={styles.view}>
+              <Image style={styles.image} source={require("../../assets/imgs/Passenger.png")} />
+              <Button style={styles.button} onPress={this.setPassengers}>
+                <Text style={styles.label}>Rooms & Guests</Text>
+                <Text style={styles.text}>
                   {adults_count === "Passengers:" ? adults_count : ""}
                   {adults_count > 0 ? adults_count + " Adults , " : ""}
                   {children_count > 0 ? children_count + " Children , " : ""}
@@ -437,5 +398,28 @@ class Hotel extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  image: { width: 40, height: 40, tintColor: "#000000" },
+  text: { color: "#000000", fontSize: 18, fontWeight: "600" },
+  view: { margin: 16, flexDirection: "row", alignItems: "center" },
+  line: { height: 1, backgroundColor: "#DDD", marginHorizontal: 20 },
+  button: { flex: 1, paddingStart: 20 },
+  label: { color: "#000000" },
+  hotelType: {
+    elevation: 1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "rgba(0,0,0,0.1)",
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    zIndex: 2,
+    height: 30,
+    borderWidth: 1,
+    borderColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 30
+  }
+});
 
 export default Hotel;

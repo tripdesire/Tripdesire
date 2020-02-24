@@ -115,8 +115,8 @@ class RenderItems extends React.PureComponent {
           <Button onPress={this._onFareDetails}>
             <Text style={{ fontSize: 12, color: "green" }}>Fare Details</Text>
           </Button>
-          <Text style={{ fontSize: 18, fontWeight: "600" }}>
-            <CurrencyText style={{ fontSize: 18, fontWeight: "600" }}>₹</CurrencyText>
+          <Text style={styles.text}>
+            <CurrencyText style={styles.text}>₹</CurrencyText>
             <NumberFormat
               decimalScale={0}
               fixedDecimalScale
@@ -124,7 +124,7 @@ class RenderItems extends React.PureComponent {
               displayType={"text"}
               thousandSeparator={true}
               thousandsGroupStyle="lakh"
-              renderText={value => <Text style={{ fontSize: 18, fontWeight: "600" }}>{value}</Text>}
+              renderText={value => <Text style={styles.text}>{value}</Text>}
             />
           </Text>
         </View>
@@ -163,34 +163,28 @@ class FareDetails extends React.PureComponent {
             <Text style={{ marginHorizontal: 16, marginTop: 16, fontWeight: "700", fontSize: 16 }}>
               Fare Details
             </Text>
-            <Text style={{ marginHorizontal: 16 }}>
-              Approx. one way distance : {data.ApproxDistance} Kms.
-            </Text>
-            <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16, marginTop: 10 }}>
+            <Text style={styles.margin}>Approx. one way distance : {data.ApproxDistance} Kms.</Text>
+            <Text style={styles.txt}>
               If you will use car/cab more than day(s) and {data.ApproxDistance} kms extra charges
               as follows:
             </Text>
-            <Text style={{ marginHorizontal: 16 }}>After {data.ApproxDistance} kms & day(s) :</Text>
-            <View style={{ marginHorizontal: 16, flexDirection: "row", alignItems: "center" }}>
-              <View
-                style={{ backgroundColor: "black", width: 8, height: 8, borderRadius: 8 }}></View>
+            <Text style={styles.margin}>After {data.ApproxDistance} kms & day(s) :</Text>
+            <View style={styles.view}>
+              <View style={styles.subView}></View>
               <Text style={{ marginStart: 10 }}>Rs {data.PerKm} per Km.</Text>
             </View>
-            <View style={{ marginHorizontal: 16, flexDirection: "row", alignItems: "center" }}>
-              <View
-                style={{ backgroundColor: "black", width: 8, height: 8, borderRadius: 8 }}></View>
+            <View style={styles.view}>
+              <View style={styles.subView}></View>
               <Text style={{ marginStart: 10 }}>
                 Rs {data.DriverCharges} per day driver charges
               </Text>
             </View>
-            <Text style={{ marginHorizontal: 16, fontWeight: "700", fontSize: 16, marginTop: 10 }}>
-              Terms & Conditions:
-            </Text>
-            <Text style={{ marginHorizontal: 16 }}>Fare includes Vehicle & Fuel charges</Text>
-            <Text style={{ marginHorizontal: 16 }}>
+            <Text style={styles.txt}>Terms & Conditions:</Text>
+            <Text style={styles.margin}>Fare includes Vehicle & Fuel charges</Text>
+            <Text style={styles.margin}>
               Each day will be counted from midnight 12 to midnight 12
             </Text>
-            <Text style={{ marginHorizontal: 16 }}>
+            <Text style={styles.margin}>
               Toll(both-ways), State Tax, Parking & Airport Entry (not included in bill) to be paid
               wherever applicable
             </Text>
@@ -207,7 +201,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 56,
     backgroundColor: "#E5EBF7"
-  }
+  },
+  view: { marginHorizontal: 16, flexDirection: "row", alignItems: "center" },
+  subView: { backgroundColor: "black", width: 8, height: 8, borderRadius: 8 },
+  txt: { marginHorizontal: 16, fontWeight: "700", fontSize: 16, marginTop: 10 },
+  text: { fontSize: 18, fontWeight: "600" },
+  margin: { marginHorizontal: 16 }
 });
 
 export default withNavigation(RenderItems);

@@ -17,7 +17,7 @@ import {
   Icon,
   LinearGradient,
   CurrencyText
-} from "../../src/components";
+} from "../components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
 import axios from "axios";

@@ -255,65 +255,6 @@ class HotelInfo extends React.PureComponent {
               </View>
             </View>
           </View>
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center"
-            }}>
-            <View style={{ flexDirection: "row", marginTop: 10 }}>
-              {Amenities.map(item => (
-                <View key={item}>
-                  {item.toLowerCase() == "housekeeping - daily" && (
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      size={24}
-                      color="#636C73"
-                      name="washing-machine"
-                    />
-                  )}
-                  {item.toLowerCase() == "complimentary wireless internet" && (
-                    <Icon
-                      style={{ marginHorizontal: 5 }}
-                      color="#636C73"
-                      size={24}
-                      name="ios-wifi"
-                    />
-                  )}
-                  {item.toLowerCase() == "24-hour front desk" && (
-                    <Icon
-                      style={{ marginHorizontal: 5 }}
-                      type="FontAwesome5"
-                      name="crosshairs"
-                      size={24}
-                      color="#636C73"
-                    />
-                  )}
-                  {item.toLowerCase() == "air conditioning" && (
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      color="#636C73"
-                      size={24}
-                      name="air-conditioner"
-                    />
-                  )}
-                </View>
-              ))}
-            </View>
-            <Button
-              style={{
-                backgroundColor: "#F68E1F",
-                borderRadius: 15,
-                paddingVertical: 5,
-                alignItems: "center",
-                justifyContent: "center",
-                height: 30,
-                paddingHorizontal: 12
-              }}
-              onPress={() => this._BookNow(item, index)}>
-              <Text style={{ color: "#fff" }}>Book Now</Text>
-            </Button>
-          </View> */}
         </View>
       </Button>
     );
@@ -419,7 +360,6 @@ class HotelInfo extends React.PureComponent {
                   }}>
                   <Button
                     style={{
-                      // backgroundColor: "#5B89F9",
                       justifyContent: "center",
                       borderBottomRightRadius: 3,
                       borderTopRightRadius: 3

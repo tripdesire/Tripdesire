@@ -161,12 +161,7 @@ class CabList extends React.PureComponent {
             keyExtractor={this._keyExtractoritems}
             renderItem={this._renderItemList}
           />
-          {filteredcabs.length == 0 && (
-            <DataNotFound title="No cabs found" onPress={this.goBack} />
-            /* <View style={{ alignItems: "center", justifyContent: "center", flex: 4 }}>
-                  <Text style={{ fontSize: 18, fontWeight: "700" }}>No cab found</Text>
-                </View> */
-          )}
+          {filteredcabs.length == 0 && <DataNotFound title="No cabs found" onPress={this.goBack} />}
           <Modal
             animationType="slide"
             transparent={false}

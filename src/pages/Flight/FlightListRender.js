@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Modal, Linking, Alert, TouchableOpacity } from "react-native";
+import { View, Image, Modal, Linking, Alert, TouchableOpacity, StyleSheet } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Text, CurrencyText } from "../../components";
 import FareDetails from "./FareRules";
@@ -155,11 +155,12 @@ class FlightListRender extends React.PureComponent {
         }}
         onPress={this.bookNow}>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginHorizontal: 8
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8
+            }
+          ]}>
           <Text style={{ color: "#5D666D", fontSize: 12 }}>
             {item.FlightSegments[0].AirLineName} |{" "}
             {item.FlightSegments[0].OperatingAirlineCode +
@@ -180,12 +181,13 @@ class FlightListRender extends React.PureComponent {
           </Text>
         </View>
         <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 8,
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>
+          style={[
+            styles.flexdirection,
+            {
+              marginHorizontal: 8,
+              alignItems: "center"
+            }
+          ]}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               style={{ width: 40, height: 40, marginEnd: 10 }}
@@ -198,7 +200,6 @@ class FlightListRender extends React.PureComponent {
                 style={{
                   fontSize: 12,
                   lineHeight: 14,
-                  //  color: "#000",
                   textTransform: "capitalize"
                 }}>
                 {from}
@@ -230,7 +231,6 @@ class FlightListRender extends React.PureComponent {
             <Text
               style={{
                 fontSize: 12,
-                // color: "#5D666D",
                 lineHeight: 14,
                 textTransform: "capitalize"
               }}>
@@ -267,15 +267,11 @@ class FlightListRender extends React.PureComponent {
               </Text>
             </Button>
             <Button onPress={this.fareRules}>
-              <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>Fare Rules</Text>
+              <Text style={styles.farerule}>Fare Rules</Text>
             </Button>
             <Button onPress={this.viewDetails}>
-              {this.state.expanded == false && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>+View Details</Text>
-              )}
-              {this.state.expanded == true && (
-                <Text style={{ flex: 1, color: "#5D666D", fontSize: 12 }}>-Hide Details</Text>
-              )}
+              {this.state.expanded == false && <Text style={styles.farerule}>+View Details</Text>}
+              {this.state.expanded == true && <Text style={styles.farerule}>-Hide Details</Text>}
             </Button>
           </View>
         </View>
@@ -287,26 +283,28 @@ class FlightListRender extends React.PureComponent {
                 style={{ paddingVertical: 10, backgroundColor: "#F4F4F4" }}
                 key={"_Seg" + index}>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginHorizontal: 8
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8
+                    }
+                  ]}>
                   <Text style={{ color: "#636C73", fontSize: 12 }}>
                     {itemEach.AirLineName} |{" "}
                     {itemEach.OperatingAirlineCode + "-" + itemEach.OperatingAirlineFlightNumber}
                   </Text>
                 </View>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    marginHorizontal: 8,
-                    justifyContent: "space-between",
-                    alignItems: "center"
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginHorizontal: 8,
+                      alignItems: "center"
+                    }
+                  ]}>
                   <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                     <Image
-                      style={{ width: 40, height: 40, marginEnd: 4 }}
+                      style={{ width: 40, height: 40, marginEnd: 9 }}
                       source={{ uri: "http://webapi.i2space.co.in" + itemEach.ImagePath }}
                       resizeMode="contain"
                     />
@@ -317,7 +315,6 @@ class FlightListRender extends React.PureComponent {
                       <Text
                         style={{
                           fontSize: 12,
-                          // color: "#5D646A",
                           lineHeight: 14
                         }}>
                         {itemEach.IntDepartureAirportName}
@@ -354,7 +351,6 @@ class FlightListRender extends React.PureComponent {
                     <Text
                       style={{
                         fontSize: 12,
-                        // color: "#5D646A",
                         lineHeight: 14
                       }}>
                       {itemEach.IntArrivalAirportName}
@@ -370,22 +366,21 @@ class FlightListRender extends React.PureComponent {
                   </View>
                 </View>
                 <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5,
-                    marginTop: 10
-                  }}></View>
+                  style={[
+                    styles.dash,
+                    {
+                      marginTop: 10
+                    }
+                  ]}></View>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    marginVertical: 5,
-                    flex: 1,
-                    marginHorizontal: 8,
-                    justifyContent: "space-between"
-                  }}>
+                  style={[
+                    styles.flexdirection,
+                    {
+                      marginVertical: 5,
+                      flex: 1,
+                      marginHorizontal: 8
+                    }
+                  ]}>
                   <Text
                     style={{
                       color: "#5D666D",
@@ -406,34 +401,15 @@ class FlightListRender extends React.PureComponent {
                     connection/s
                   </Text>
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
-                  <Text
-                    style={{
-                      color: "#5D666D",
-                      fontSize: 12,
-                      marginStart: 2
-                    }}>
+                  <Text style={styles.bags}>
                     {itemEach.BaggageAllowed.HandBaggage != ""
                       ? itemEach.BaggageAllowed.HandBaggage
                       : 0}
                   </Text>
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
-                  <Text
-                    style={{
-                      color: "#5D666D",
-                      fontSize: 12,
-                      marginStart: 2
-                    }}>
-                    {itemEach.BaggageAllowed.CheckInBaggage}
-                  </Text>
+                  <Text style={styles.bags}>{itemEach.BaggageAllowed.CheckInBaggage}</Text>
                 </View>
-                <View
-                  style={{
-                    borderStyle: "dashed",
-                    borderWidth: 1,
-                    marginHorizontal: 8,
-                    borderColor: "#D0D3DA",
-                    borderRadius: 0.5
-                  }}></View>
+                <View style={styles.dash}></View>
 
                 {item.FlightSegments.length - 1 != index && (
                   <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>
@@ -459,43 +435,24 @@ class FlightListRender extends React.PureComponent {
                 {item.FlightSegments.length - 1 == index && (
                   <View style={{ alignItems: "flex-start", marginStart: 8 }}>
                     <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#5D646A",
-                        lineHeight: 14,
-                        flex: 1,
-                        marginTop: 5
-                      }}>
+                      style={[
+                        styles.fare_label,
+                        {
+                          marginTop: 5
+                        }
+                      ]}>
                       Base Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {item.FareDetails.ChargeableFares.ActualBaseFare}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        lineHeight: 14,
-                        color: "#5D646A",
-                        flex: 1
-                      }}>
+                    <Text style={styles.fare_label}>
                       Tax : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {item.FareDetails.ChargeableFares.Tax}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        lineHeight: 14,
-                        color: "#5D646A",
-                        flex: 1
-                      }}>
+                    <Text style={styles.fare_label}>
                       Fee & Surcharges : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {item.FareDetails.ChargeableFares.Conveniencefee}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        lineHeight: 14,
-                        color: "#5D646A",
-                        flex: 1
-                      }}>
+                    <Text style={styles.fare_label}>
                       Total Fare : <CurrencyText style={{ fontSize: 12 }}>₹</CurrencyText>
                       {parseInt(item.FareDetails.TotalFare)}
                     </Text>
@@ -515,5 +472,28 @@ class FlightListRender extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  fare_label: {
+    fontSize: 12,
+    lineHeight: 14,
+    color: "#5D646A",
+    flex: 1
+  },
+  dash: {
+    borderStyle: "dashed",
+    borderWidth: 1,
+    marginHorizontal: 8,
+    borderColor: "#D0D3DA",
+    borderRadius: 0.5
+  },
+  bags: {
+    color: "#5D666D",
+    fontSize: 12,
+    marginStart: 2
+  },
+  farerule: { flex: 1, color: "#5D666D", fontSize: 12 },
+  flexdirection: { flexDirection: "row", justifyContent: "space-between" }
+});
 
 export default withNavigation(FlightListRender);

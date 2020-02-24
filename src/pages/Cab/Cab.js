@@ -292,7 +292,6 @@ class Cab extends React.PureComponent {
           )
         }
       ]
-      // transform: [{ rotate: "90deg" }]}
     };
 
     return (
@@ -488,18 +487,11 @@ class Cab extends React.PureComponent {
             )}
 
             <View style={{ margin: 16, marginTop: 40, flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{ width: 40, height: 40, tintColor: "#000000" }}
-                source={require("../../assets/imgs/cabSearch.png")}
-              />
-              <Button
-                style={{ flex: 1, paddingStart: 20 }}
-                onPress={this.setModalVisible("modalFrom", true)}>
-                <Text style={{ color: "#000000" }}>From</Text>
+              <Image style={styles.image} source={require("../../assets/imgs/cabSearch.png")} />
+              <Button style={styles.view} onPress={this.setModalVisible("modalFrom", true)}>
+                <Text style={styles.heading}>From</Text>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text
-                    numberOfLines={1}
-                    style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
+                  <Text numberOfLines={1} style={styles.places}>
                     {from}
                   </Text>
                   {travelType == 1 && (
@@ -508,12 +500,6 @@ class Cab extends React.PureComponent {
                         style={[imageStyle]}
                         source={require("../../assets/imgs/exchange.png")}
                       />
-                      {/* <Icon
-                        type="MaterialCommunityIcons"
-                        name="swap-vertical"
-                        color="#000000"
-                        size={40}
-                      /> */}
                     </Button>
                   )}
                 </View>
@@ -522,20 +508,13 @@ class Cab extends React.PureComponent {
 
             {travelType == 1 && (
               <>
-                <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
-                <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-                  <Image
-                    style={{ width: 40, height: 40, tintColor: "#000000" }}
-                    source={require("../../assets/imgs/cabSearch.png")}
-                  />
+                <View style={styles.line} />
+                <View style={styles.mainView}>
+                  <Image style={styles.image} source={require("../../assets/imgs/cabSearch.png")} />
 
-                  <Button
-                    style={{ flex: 1, paddingStart: 20 }}
-                    onPress={this.setModalVisible("modalTo", true)}>
-                    <Text style={{ color: "#000000" }}>To</Text>
-                    <Text
-                      numberOfLines={1}
-                      style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
+                  <Button style={styles.view} onPress={this.setModalVisible("modalTo", true)}>
+                    <Text style={styles.heading}>To</Text>
+                    <Text numberOfLines={1} style={styles.places}>
                       {to}
                     </Text>
                   </Button>
@@ -545,27 +524,25 @@ class Cab extends React.PureComponent {
 
             {travelType == 3 && (
               <>
-                <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
+                <View style={styles.line} />
 
-                <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.mainView}>
                   <Image
-                    style={{ width: 40, height: 40, tintColor: "#000000" }}
+                    style={styles.image}
                     source={require("../../assets/imgs/locationList.png")}
                   />
                   <Button
-                    style={{ flex: 1, paddingStart: 20 }}
+                    style={styles.view}
                     onPress={this.setModalVisible("modalPickupLocationSugg", true)}>
-                    <Text style={{ color: "#000000" }}>Pickup Location</Text>
+                    <Text style={styles.heading}>Pickup Location</Text>
                     <Text
                       numberOfLines={1}
                       style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                       {pickuplocation != "" ? pickuplocation : "Tap To Enter"}
                     </Text>
                   </Button>
-                  <Button
-                    style={{ flex: 1, paddingStart: 20 }}
-                    onPress={this.setModalVisible("modalDropSugg", true)}>
-                    <Text style={{ color: "#000000" }}>Drop Location</Text>
+                  <Button style={styles.view} onPress={this.setModalVisible("modalDropSugg", true)}>
+                    <Text style={styles.heading}>Drop Location</Text>
                     <Text
                       numberOfLines={1}
                       style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
@@ -576,17 +553,12 @@ class Cab extends React.PureComponent {
               </>
             )}
 
-            <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
+            <View style={styles.line} />
 
-            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{ width: 40, height: 40, tintColor: "#000000" }}
-                source={require("../../assets/imgs/calender.png")}
-              />
-              <Button
-                style={{ flex: 1, paddingStart: 20 }}
-                onPress={this.showDateTimePicker("fromDTpicker")}>
-                <Text style={{ color: "#000000" }}>Depart</Text>
+            <View style={styles.mainView}>
+              <Image style={styles.image} source={require("../../assets/imgs/calender.png")} />
+              <Button style={styles.view} onPress={this.showDateTimePicker("fromDTpicker")}>
+                <Text style={styles.heading}>Depart</Text>
                 <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
                   {moment(this.state.CheckIn).format("DD MMM, YY")}
                 </Text>
@@ -599,10 +571,8 @@ class Cab extends React.PureComponent {
                 />
               </Button>
               {travelType == 1 && tripType == 2 && (
-                <Button
-                  style={{ flex: 1, paddingStart: 20 }}
-                  onPress={this.showDateTimePicker("toDTpicker")}>
-                  <Text style={{ color: "#000000" }}>Return</Text>
+                <Button style={styles.view} onPress={this.showDateTimePicker("toDTpicker")}>
+                  <Text style={styles.heading}>Return</Text>
                   <Text
                     numberOfLines={1}
                     style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
@@ -619,16 +589,13 @@ class Cab extends React.PureComponent {
               )}
             </View>
 
-            <View style={{ height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }} />
+            <View style={styles.line} />
 
-            <View style={{ margin: 16, flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{ width: 40, height: 40, tintColor: "#000000" }}
-                source={require("../../assets/imgs/locationList.png")}
-              />
+            <View style={styles.mainView}>
+              <Image style={styles.image} source={require("../../assets/imgs/locationList.png")} />
               {travelType == 2 && (
-                <View style={{ flex: 1, paddingStart: 20 }}>
-                  <Text style={{ color: "#000000" }}>Select Trip</Text>
+                <View style={styles.view}>
+                  <Text style={styles.heading}>Select Trip</Text>
                   <View style={{ width: 80 }}>
                     <RNPickerSelect
                       placeholder={{}}
@@ -641,7 +608,6 @@ class Cab extends React.PureComponent {
                         { label: "24 hrs", value: "24" }
                       ]}
                       style={{
-                        //iconContainer: { paddingEnd: 32 },
                         inputIOS: {
                           color: "#000000",
                           padding: 0,
@@ -664,8 +630,8 @@ class Cab extends React.PureComponent {
                   </View>
                 </View>
               )}
-              <View style={{ flex: 1, paddingStart: 20 }}>
-                <Text style={{ color: "#000000" }}>Pickup</Text>
+              <View style={styles.view}>
+                <Text style={styles.heading}>Pickup</Text>
                 <View style={{ width: 100 }}>
                   <RNPickerSelect
                     placeholder={{}}
@@ -717,7 +683,6 @@ class Cab extends React.PureComponent {
             onRequestClose={this.setModalVisible("modalFrom", false)}>
             <AutoCompleteModal
               placeholder="Enter Source"
-              //visible={this.state.modalTo}
               type="cab"
               onChange={this.handleFrom}
               onModalBackPress={this.setModalVisible("modalFrom", false)}
@@ -731,7 +696,6 @@ class Cab extends React.PureComponent {
             onRequestClose={this.setModalVisible("modalTo", false)}>
             <AutoCompleteModal
               placeholder="Enter Destination"
-              //visible={this.state.modalTo}
               type="cab"
               onChange={this.handleTo}
               onModalBackPress={this.setModalVisible("modalTo", false)}
@@ -762,7 +726,6 @@ class Cab extends React.PureComponent {
             <SuggLoc
               placeholder="Enter Location"
               type="cab"
-              // selectedTransfer={this.state.selectedTransfer}
               data={this.state.SuggDrop}
               onChange={this.handleDropLocation}
               item={this.itemSingle}
@@ -789,7 +752,13 @@ const styles = StyleSheet.create({
     // shadowRadius: 2,
     justifyContent: "center",
     alignItems: "center"
-  }
+  },
+  places: { fontSize: 18, color: "#000000", fontWeight: "600" },
+  image: { width: 40, height: 40, tintColor: "#000000" },
+  view: { flex: 1, paddingStart: 20 },
+  heading: { color: "#000000" },
+  mainView: { margin: 16, flexDirection: "row", alignItems: "center" },
+  line: { height: 1, backgroundColor: "#DDD", marginHorizontal: 20 }
 });
 
 export default Cab;
