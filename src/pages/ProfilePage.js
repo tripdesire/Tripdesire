@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, StyleSheet, SafeAreaView, ScrollView, StatusBar } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView, StatusBar, TextInput } from "react-native";
 import Toast from "react-native-simple-toast";
 import { Button, Text, TextInputComponent, ActivityIndicator, Icon } from "../components";
 import { connect } from "react-redux";
@@ -19,7 +19,9 @@ class ProfilePage extends React.PureComponent {
       email: user.email,
       currentPassword: "",
       newPassword: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      showCurrentPassword: false,
+      isFocus: false
     };
   }
 
@@ -30,6 +32,18 @@ class ProfilePage extends React.PureComponent {
   componentDidMount() {
     this.trackScreenView("Profile");
   }
+
+  onfocus = () => {
+    this.setState({ isFocus: true });
+  };
+
+  onblur = () => {
+    this.setState({ isFocus: false });
+  };
+
+  _showPassword = () => {
+    this.setState({ showCurrentPassword: this.state.showCurrentPassword == true ? false : true });
+  };
 
   _Submit = () => {
     const {
@@ -148,14 +162,64 @@ class ProfilePage extends React.PureComponent {
                 value={email}
                 onChangeText={text => this.setState({ email: text })}
               />
-
-              <Text style={{ marginTop: 20 }}>Password Change</Text>
-              <TextInputComponent
+              <Text style={{ marginTop: 20, marginStart: 5 }}>Password Change</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  paddingTop: 14,
+                  borderBottomWidth: 1,
+                  borderBottomColor: this.state.isFocus ? "#5789FF" : "#D2D1D1"
+                }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 12, paddingStart: 5, color: "#757575" }}>
+                    Current Password
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      flex: 1,
+                      alignItems: "center",
+                      marginEnd: 18
+                    }}>
+                    <TextInput
+                      secureTextEntry={!this.state.showCurrentPassword}
+                      style={[
+                        styles.textinput,
+                        {
+                          paddingVertical: Platform.OS == "ios" ? 8 : null
+                        }
+                      ]}
+                      onFocus={this.onfocus}
+                      onBlur={this.onblur}
+                      placeholderTextColor={"#D9D8DD"}
+                      onChangeText={text => this.setState({ currentPassword: text })}
+                    />
+                    <Button style={{ padding: 16 }} onPress={this._showPassword}>
+                      <Icon
+                        name={
+                          !this.state.showCurrentPassword == true && Platform.OS != "ios"
+                            ? "md-eye-off"
+                            : !this.state.showCurrentPassword == true && Platform.OS == "ios"
+                            ? "ios-eye-off"
+                            : !this.state.showCurrentPassword == false && Platform.OS == "ios"
+                            ? "ios-eye"
+                            : "md-eye"
+                        }
+                        color="#5D666D"
+                        size={20}
+                      />
+                    </Button>
+                  </View>
+                </View>
+              </View>
+              {/* <TextInputComponent
                 label="Current Password"
                 placeholder="Enter the currrent password"
                 value={currentPassword}
                 onChangeText={text => this.setState({ currentPassword: text })}
-              />
+              /> */}
               <TextInputComponent
                 label="New Password"
                 placeholder="Enter the new password"
@@ -190,6 +254,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25
+  },
+  textinput: {
+    width: "100%",
+    fontSize: 16,
+    paddingStart: 5,
+    color: "#000"
   }
 });
 

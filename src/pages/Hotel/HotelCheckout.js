@@ -49,7 +49,8 @@ class HotelCheckout extends React.Component {
         { uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg" },
         { uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg" },
         { uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/10/resort.jpg" }
-      ]
+      ],
+      index: 0
     };
     this.SingleHotelData();
   }
@@ -118,8 +119,9 @@ class HotelCheckout extends React.Component {
     this.setState({ imageShow: false });
   };
 
-  showImage = () => {
-    this.setState({ imageShow: true });
+  showImage = index => () => {
+    console.log(index);
+    this.setState({ imageShow: true, index: index });
   };
 
   SingleHotelData() {
@@ -312,7 +314,13 @@ class HotelCheckout extends React.Component {
                     marginTop: 16,
                     width: "100%"
                   }}>
-                  <Button style={{ flex: 1 }} onPress={this.showImage}>
+                  <Button
+                    style={{ flex: 1 }}
+                    onPress={
+                      params.HotelImages && params.HotelImages.length == 1
+                        ? this.showImage(0)
+                        : this.showImage(1)
+                    }>
                     <Image
                       style={{
                         height: 260,
@@ -335,7 +343,7 @@ class HotelCheckout extends React.Component {
                     />
                   </Button>
                   <View style={{ marginStart: 10 }}>
-                    <Button onPress={this.showImage}>
+                    <Button onPress={this.showImage(2)}>
                       <Image
                         style={{
                           width: 80,
@@ -353,7 +361,7 @@ class HotelCheckout extends React.Component {
                         }}
                       />
                     </Button>
-                    <Button onPress={this.showImage}>
+                    <Button onPress={this.showImage(3)}>
                       <Image
                         style={{
                           width: 80,
@@ -374,7 +382,7 @@ class HotelCheckout extends React.Component {
                     </Button>
                     <Button
                       style={{ alignItems: "center", justifyContent: "center" }}
-                      onPress={this.showImage}>
+                      onPress={this.showImage(4)}>
                       <Image
                         style={{
                           width: 80,
@@ -456,7 +464,7 @@ class HotelCheckout extends React.Component {
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}>
                           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text style={{ fontSize: 16 }}>{item.RoomType}</Text>
+                            <Text style={{ fontSize: 16, flex: 1 }}>{item.RoomType}</Text>
                             <Text
                               style={{
                                 fontSize: 18,
@@ -555,7 +563,9 @@ class HotelCheckout extends React.Component {
 
                   {params.Facilities != null && (
                     <View style={{ marginTop: 16 }}>
-                      <Text style={{ fontSize: 16 }}>Hotel Facilities</Text>
+                      <Text style={{ fontWeight: "500", fontSize: 18, marginBottom: 16 }}>
+                        Hotel Facilities
+                      </Text>
                       <FlatList
                         data={Amenities}
                         keyExtractor={item => item}
@@ -597,7 +607,7 @@ class HotelCheckout extends React.Component {
               transparent={false}
               visible={this.state.imageShow}
               onRequestClose={this.modalClose}>
-              <ImageFull params={params} onBackPress={this.modalClose} />
+              <ImageFull params={params} index={this.state.index} onBackPress={this.modalClose} />
             </Modal>
             {this.state.loader && <ActivityIndicator />}
           </View>

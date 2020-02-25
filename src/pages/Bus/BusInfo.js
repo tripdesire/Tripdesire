@@ -24,7 +24,7 @@ class BusInfo extends React.PureComponent {
       destinationName: params.destinationName,
       journeyDate: moment(params.journeyDate, "DD-MM-YYYY").format("DD MMM"),
       day: moment(params.journeyDate, "DD-MM-YYYY").format("dddd"),
-      loader: true,
+      loader: false,
       buses: [],
       filteredBuses: [],
       nofound: 1,
@@ -50,6 +50,7 @@ class BusInfo extends React.PureComponent {
     this.trackScreenView("Bus List");
 
     const { params } = this.props.navigation.state;
+    this.setState({ loader: true });
     etravosApi
       .get("/Buses/AvailableBuses", params)
       .then(({ data }) => {
@@ -246,7 +247,6 @@ class BusInfo extends React.PureComponent {
             justifyContent: "space-between"
           }}>
           <Button onPress={this._onCanPolicy}>
-            {/* <Icon name="mobile-phone" size={24} color="#6287F9" type="FontAwesome" /> */}
             <Text
               style={{
                 fontSize: 12,
@@ -387,21 +387,21 @@ class CanPolicy extends React.PureComponent {
               <Text style={{ fontWeight: "700", fontSize: 16 }}>Cancellation Policy</Text>
             </View>
             <View style={{ marginHorizontal: 16, marginTop: 16 }}>
-              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+              <View style={styles.flexDirection}>
                 <Text style={{ fontWeight: "700", flex: 3 }}>Cancellation Time</Text>
                 <Text style={{ fontWeight: "700", flex: 1 }}>Cancellation Charge</Text>
               </View>
-              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+              <View style={styles.flexDirection}>
                 <Text style={{ flex: 3 }}>
                   Between 0 days 5 hours and 0 hours before journey time
                 </Text>
                 <Text style={{ flex: 1 }}>100.0%</Text>
               </View>
-              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+              <View style={styles.flexDirection}>
                 <Text style={{ flex: 3 }}>Between 24 hours and 0 days before journey time</Text>
                 <Text style={{ flex: 1 }}>10.0%</Text>
               </View>
-              <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+              <View style={styles.flexDirection}>
                 <Text style={{ flex: 3 }}>24 hours before journey time</Text>
                 <Text style={{ flex: 1 }}>10.0%</Text>
               </View>
@@ -420,7 +420,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 56,
     backgroundColor: "#E5EBF7"
-  }
+  },
+  flexDirection: { justifyContent: "space-between", flexDirection: "row" }
 });
 
 export default BusInfo;

@@ -150,7 +150,6 @@ class Bus extends React.PureComponent {
           )
         }
       ]
-      // transform: [{ rotate: "90deg" }]}
     };
     return (
       <>
@@ -174,7 +173,6 @@ class Bus extends React.PureComponent {
                   style={{ borderBottomLeftRadius: 5, borderTopLeftRadius: 5 }}>
                   <Button
                     style={{
-                      // backgroundColor: TripType == 1 ? "#5B89F9" : "#FFFFFF",
                       borderBottomLeftRadius: 5,
                       borderTopLeftRadius: 5,
                       ...styles.tabButton
@@ -195,7 +193,6 @@ class Bus extends React.PureComponent {
                   style={{ borderBottomRightRadius: 5, borderTopRightRadius: 5 }}>
                   <Button
                     style={{
-                      //backgroundColor: TripType == 2 ? "#5B89F9" : "#FFFFFF",
                       borderBottomRightRadius: 5,
                       borderTopRightRadius: 5,
                       ...styles.tabButton
@@ -212,17 +209,8 @@ class Bus extends React.PureComponent {
                   </Button>
                 </LinearGradient>
               </View>
-              <View
-                style={{
-                  marginHorizontal: 16,
-                  marginVertical: 20,
-                  flexDirection: "row",
-                  alignItems: "center"
-                }}>
-                <Image
-                  style={{ width: 40, height: 40, tintColor: "#000000" }}
-                  source={require("../../assets/imgs/busNew.png")}
-                />
+              <View style={styles.view}>
+                <Image style={styles.image} source={require("../../assets/imgs/busNew.png")} />
                 <View
                   style={{
                     flexDirection: "row",
@@ -233,9 +221,7 @@ class Bus extends React.PureComponent {
                   }}>
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: "#000000" }}>From</Text>
-                    <Text
-                      style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}
-                      onPress={this.setModalVisible("modalFrom", true)}>
+                    <Text style={styles.text} onPress={this.setModalVisible("modalFrom", true)}>
                       {from}
                     </Text>
                   </View>
@@ -244,46 +230,23 @@ class Bus extends React.PureComponent {
                       style={[imageStyle, { marginTop: 10 }]}
                       source={require("../../assets/imgs/exchange.png")}
                     />
-                    {/* <Icon type="MaterialCommunityIcons" name="swap-vertical" color="#000000" size={40} /> */}
                   </Button>
                 </View>
               </View>
-              <View
-                style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
-              <View
-                style={{
-                  marginHorizontal: 16,
-                  marginVertical: 20,
-                  flexDirection: "row",
-                  alignItems: "center"
-                }}>
-                <Image
-                  style={{ width: 40, height: 40, tintColor: "#000000" }}
-                  source={require("../../assets/imgs/busNew.png")}
-                />
+              <View style={styles.line}></View>
+              <View style={styles.view}>
+                <Image style={styles.image} source={require("../../assets/imgs/busNew.png")} />
                 <View style={{ marginStart: 20, flex: 1 }}>
                   <Text style={{ color: "#000000" }}>To</Text>
-                  <Text
-                    style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}
-                    onPress={this.setModalVisible("modalTo", true)}>
+                  <Text style={styles.text} onPress={this.setModalVisible("modalTo", true)}>
                     {to}
                   </Text>
                 </View>
               </View>
-              <View
-                style={{ height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" }}></View>
+              <View style={styles.line}></View>
 
-              <View
-                style={{
-                  marginHorizontal: 16,
-                  marginVertical: 20,
-                  flexDirection: "row",
-                  alignItems: "center"
-                }}>
-                <Image
-                  style={{ width: 40, height: 40, tintColor: "#000000" }}
-                  source={require("../../assets/imgs/calender.png")}
-                />
+              <View style={styles.view}>
+                <Image style={styles.image} source={require("../../assets/imgs/calender.png")} />
                 <Button
                   style={{
                     flex: 1,
@@ -292,9 +255,7 @@ class Bus extends React.PureComponent {
                   onPress={this.showDateTimePicker("fromDTpicker")}>
                   <Text style={{ color: "#000000" }}>Depart</Text>
 
-                  <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
-                    {moment(this.state.CheckIn).format("DD MMM, YY")}
-                  </Text>
+                  <Text style={styles.text}>{moment(this.state.CheckIn).format("DD MMM, YY")}</Text>
                   <DateTimePicker
                     isVisible={fromDTpicker}
                     onConfirm={this.handleDatePicked("fromDTpicker")}
@@ -310,7 +271,7 @@ class Bus extends React.PureComponent {
                     }}
                     onPress={this.showDateTimePicker("toDTpicker")}>
                     <Text style={{ color: "#000000" }}>Return</Text>
-                    <Text style={{ fontSize: 18, color: "#000000", fontWeight: "600" }}>
+                    <Text style={styles.text}>
                       {moment(this.state.CheckOut).format("DD MMM, YY")}
                     </Text>
                     <DateTimePicker
@@ -383,6 +344,15 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     justifyContent: "center",
     paddingHorizontal: 45
+  },
+  image: { width: 40, height: 40, tintColor: "#000000" },
+  line: { height: 1.35, marginHorizontal: 16, backgroundColor: "#CFCFCF" },
+  text: { fontSize: 18, color: "#000000", fontWeight: "600" },
+  view: {
+    marginHorizontal: 16,
+    marginVertical: 20,
+    flexDirection: "row",
+    alignItems: "center"
   }
 });
 

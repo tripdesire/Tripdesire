@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView, Image, Dimensions, StatusBar } from "react-native";
 import { Text, Button, Icon } from "../../components";
 import SwiperFlatList from "react-native-swiper-flatlist";
@@ -6,8 +6,10 @@ import ImageZoom from "react-native-image-pan-zoom";
 
 const { width, height } = Dimensions.get("window");
 
-function ImageFull({ onBackPress, params }) {
-  const _renderItem = ({ item }) => {
+function ImageFull({ onBackPress, params, index }) {
+  const [indexx, setIndex] = useState(index);
+
+  const _renderItem = ({ item, index }) => {
     let str = item.Imagepath.replace(
       "https://cdn.grnconnect.com/",
       "https://images.grnconnect.com/"
@@ -33,7 +35,11 @@ function ImageFull({ onBackPress, params }) {
     );
   };
 
-  console.log(params);
+  const _onChangeIndex = ({ index }) => {
+    console.log(index);
+    setIndex(index);
+  };
+
   return (
     <>
       <StatusBar backgroundColor="black" barStyle="light-content" />
@@ -50,9 +56,10 @@ function ImageFull({ onBackPress, params }) {
             //  autoplay
             // autoplayDelay={2}
             //  autoplayLoop
+            scrollToIndex={_onChangeIndex}
+            index={indexx}
             data={params.HotelImages}
             renderItem={_renderItem}
-            index={0}
             paginationStyleItem={{
               height: 10,
               width: 10,
