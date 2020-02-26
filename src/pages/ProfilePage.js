@@ -21,7 +21,11 @@ class ProfilePage extends React.PureComponent {
       newPassword: "",
       confirmPassword: "",
       showCurrentPassword: false,
-      isFocus: false
+      showNewPassword: false,
+      showConfirmPassword: false,
+      isFocus: false,
+      isFocusNew: false,
+      isFocusConfirm: false
     };
   }
 
@@ -33,16 +37,16 @@ class ProfilePage extends React.PureComponent {
     this.trackScreenView("Profile");
   }
 
-  onfocus = () => {
-    this.setState({ isFocus: true });
+  onfocus = key => () => {
+    this.setState({ [key]: true });
   };
 
-  onblur = () => {
-    this.setState({ isFocus: false });
+  onblur = key => () => {
+    this.setState({ [key]: false });
   };
 
-  _showPassword = () => {
-    this.setState({ showCurrentPassword: this.state.showCurrentPassword == true ? false : true });
+  _showPassword = key => () => {
+    this.setState({ [key]: this.state[key] == true ? false : true });
   };
 
   _Submit = () => {
@@ -191,12 +195,14 @@ class ProfilePage extends React.PureComponent {
                           paddingVertical: Platform.OS == "ios" ? 8 : null
                         }
                       ]}
-                      onFocus={this.onfocus}
-                      onBlur={this.onblur}
+                      onFocus={this.onfocus("isFocus")}
+                      onBlur={this.onblur("isFocus")}
                       placeholderTextColor={"#D9D8DD"}
                       onChangeText={text => this.setState({ currentPassword: text })}
                     />
-                    <Button style={{ padding: 16 }} onPress={this._showPassword}>
+                    <Button
+                      style={{ paddingVertical: 5 }}
+                      onPress={this._showPassword("showCurrentPassword")}>
                       <Icon
                         name={
                           !this.state.showCurrentPassword == true && Platform.OS != "ios"
@@ -220,18 +226,124 @@ class ProfilePage extends React.PureComponent {
                 value={currentPassword}
                 onChangeText={text => this.setState({ currentPassword: text })}
               /> */}
-              <TextInputComponent
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  paddingTop: 14,
+                  borderBottomWidth: 1,
+                  borderBottomColor: this.state.isFocusNew ? "#5789FF" : "#D2D1D1"
+                }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 12, paddingStart: 5, color: "#757575" }}>
+                    New Password
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      flex: 1,
+                      alignItems: "center",
+                      marginEnd: 18
+                    }}>
+                    <TextInput
+                      secureTextEntry={!this.state.showNewPassword}
+                      style={[
+                        styles.textinput,
+                        {
+                          paddingVertical: Platform.OS == "ios" ? 8 : null
+                        }
+                      ]}
+                      onFocus={this.onfocus("isFocusNew")}
+                      onBlur={this.onblur("isFocusNew")}
+                      placeholderTextColor={"#D9D8DD"}
+                      onChangeText={text => this.setState({ newPassword: text })}
+                    />
+                    <Button
+                      style={{ paddingVertical: 5 }}
+                      onPress={this._showPassword("showNewPassword")}>
+                      <Icon
+                        name={
+                          !this.state.showNewPassword == true && Platform.OS != "ios"
+                            ? "md-eye-off"
+                            : !this.state.showNewPassword == true && Platform.OS == "ios"
+                            ? "ios-eye-off"
+                            : !this.state.showNewPassword == false && Platform.OS == "ios"
+                            ? "ios-eye"
+                            : "md-eye"
+                        }
+                        color="#5D666D"
+                        size={20}
+                      />
+                    </Button>
+                  </View>
+                </View>
+              </View>
+              {/* <TextInputComponent
                 label="New Password"
                 placeholder="Enter the new password"
                 value={newPassword}
                 onChangeText={text => this.setState({ newPassword: text })}
-              />
-              <TextInputComponent
+              /> */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  paddingTop: 14,
+                  borderBottomWidth: 1,
+                  borderBottomColor: this.state.isFocusConfirm ? "#5789FF" : "#D2D1D1"
+                }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 12, paddingStart: 5, color: "#757575" }}>
+                    Confirm Password
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      flex: 1,
+                      alignItems: "center",
+                      marginEnd: 18
+                    }}>
+                    <TextInput
+                      secureTextEntry={!this.state.showConfirmPassword}
+                      style={[
+                        styles.textinput,
+                        {
+                          paddingVertical: Platform.OS == "ios" ? 8 : null
+                        }
+                      ]}
+                      onFocus={this.onfocus("isFocusConfirm")}
+                      onBlur={this.onblur("isFocusConfirm")}
+                      placeholderTextColor={"#D9D8DD"}
+                      onChangeText={text => this.setState({ confirmPassword: text })}
+                    />
+                    <Button
+                      style={{ paddingVertical: 5 }}
+                      onPress={this._showPassword("showConfirmPassword")}>
+                      <Icon
+                        name={
+                          !this.state.showConfirmPassword == true && Platform.OS != "ios"
+                            ? "md-eye-off"
+                            : !this.state.showConfirmPassword == true && Platform.OS == "ios"
+                            ? "ios-eye-off"
+                            : !this.state.showConfirmPassword == false && Platform.OS == "ios"
+                            ? "ios-eye"
+                            : "md-eye"
+                        }
+                        color="#5D666D"
+                        size={20}
+                      />
+                    </Button>
+                  </View>
+                </View>
+              </View>
+              {/* <TextInputComponent
                 label="Confirm Password"
                 placeholder="Enter the confirm password"
                 value={confirmPassword}
                 onChangeText={text => this.setState({ confirmPassword: text })}
-              />
+              /> */}
               <View style={{ alignItems: "center" }}>
                 <Button style={styles.button} onPress={this._Submit}>
                   <Text style={{ color: "#fff" }}>Submit</Text>

@@ -1,15 +1,21 @@
 import React from "react";
-import { View, ImageBackground, Dimensions, FlatList } from "react-native";
+import { View, ImageBackground, Dimensions, FlatList, Platform, Animated } from "react-native";
 import { Text, Button, Icon, LinearGradient } from "../components";
 import FastImage from "react-native-fast-image";
+//import Animated from "react-native-reanimated";
 
 const { width, height } = Dimensions.get("window");
+
+const Header_Maximum_Height = height / 4;
+const Header_Minimum_Height = height / 4 - 56;
 
 class TourPackages extends React.PureComponent {
   constructor(props) {
     console.log(props.navigation.state.params);
     super(props);
+    this.AnimatedHeaderValue = new Animated.Value(0);
     this.state = {
+      ht: false,
       hotel: [
         {
           name: "Heavenly Shimla Tour"
@@ -97,31 +103,57 @@ class TourPackages extends React.PureComponent {
   render() {
     const { hotel } = this.state;
     const { item } = this.props.navigation.state.params;
+
+    const HeaderHeight = this.AnimatedHeaderValue.interpolate({
+      inputRange: [0, Header_Maximum_Height],
+      outputRange: [0, -Header_Maximum_Height + 56],
+      extrapolate: "clamp"
+    });
+
     return (
       <View style={{ flex: 1 }}>
-        <ImageBackground
-          style={{ width: width, height: height / 4 }}
-          resizeMode="cover"
-          source={{ uri: item.img }}>
-          <Button onPress={this._goBack} style={{ padding: 16 }}>
-            <Icon name="md-arrow-back" size={24} color="#fff" />
-          </Button>
-          <Text
+        <Animated.View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            zIndex: 1000,
+            top: Platform.OS == "ios" ? 20 : 0,
+            // height: height / 4,
+            transform: [{ translateY: HeaderHeight }],
+            resizeMode: "cover"
+          }}>
+          <ImageBackground
             style={{
-              fontSize: 30,
-              fontWeight: "700",
-              color: "#fff",
-              alignSelf: "center",
-              marginTop: 20
-            }}>
-            {item.Name}
-          </Text>
-        </ImageBackground>
+              width: width,
+              height: height / 4
+            }}
+            resizeMode="cover"
+            source={{ uri: item.img }}>
+            <Button onPress={this._goBack} style={{ padding: 16 }}>
+              <Icon name="md-arrow-back" size={24} color="#fff" />
+            </Button>
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "700",
+                color: "#fff",
+                alignSelf: "center",
+                marginTop: 20
+              }}>
+              {item.Name}
+            </Text>
+          </ImageBackground>
+        </Animated.View>
         <FlatList
           data={hotel}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
-          //numColumns={2}
+          scrollEventThrottle={16}
+          contentContainerStyle={{ paddingTop: height / 4 }}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue } } }
+          ])}
         />
       </View>
     );

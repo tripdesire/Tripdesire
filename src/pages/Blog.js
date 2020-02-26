@@ -1,6 +1,6 @@
 import { Text, Icon, Button } from "../../src/components";
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, Image, Dimensions, FlatList } from "react-native";
+import { View, SafeAreaView, Image, Dimensions, FlatList, Animated } from "react-native";
 import axios from "axios";
 import LinearGradient from "react-native-linear-gradient";
 import HTML from "react-native-render-html";
