@@ -48,7 +48,7 @@ class Home extends React.PureComponent {
           destination: "PNQ",
           sourceName: "NEW DELHI",
           destinationName: "Pune",
-          journeyDate: "25-02-2020",
+          journeyDate: new Date(),
           returnDate: "",
           tripType: 1,
           flightType: 1,
@@ -58,32 +58,15 @@ class Home extends React.PureComponent {
           travelClass: "E",
           className: "Economy",
           destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
-          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
-        },
-        {
-          source: "DXB",
-          destination: "SFO",
-          sourceName: "Dubai",
-          destinationName: "San Francisco",
-          journeyDate: "26-02-2020",
-          returnDate: "",
-          tripType: 1,
-          flightType: 2,
-          adults: 1,
-          children: 0,
-          infants: 0,
-          travelClass: "E",
-          className: "Economy",
-          destinationAirportName:
-            "San Francisco, Unites State - (SFO) - San Francisco International",
-          sourceAirportName: "Dubai, United Arab Emirates - (DXB) - Dubai"
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl",
+          rupee: 5694
         },
         {
           source: "DEL",
-          destination: "PNQ",
+          destination: "BOM",
           sourceName: "NEW DELHI",
-          destinationName: "Pune",
-          journeyDate: "25-02-2020",
+          destinationName: "Mumbai",
+          journeyDate: new Date(),
           returnDate: "",
           tripType: 1,
           flightType: 1,
@@ -92,15 +75,16 @@ class Home extends React.PureComponent {
           infants: 0,
           travelClass: "E",
           className: "Economy",
-          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
-          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+          destinationAirportName: "Mumbai, India- (BOM) - Chatrapati Shivaji International",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl",
+          rupee: 5696
         },
         {
           source: "DEL",
-          destination: "PNQ",
+          destination: "BLR",
           sourceName: "NEW DELHI",
-          destinationName: "Pune",
-          journeyDate: "25-02-2020",
+          destinationName: "Bangalore",
+          journeyDate: new Date(),
           returnDate: "",
           tripType: 1,
           flightType: 1,
@@ -109,15 +93,16 @@ class Home extends React.PureComponent {
           infants: 0,
           travelClass: "E",
           className: "Economy",
-          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
-          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+          destinationAirportName: "Bangalore, India- (BLR) - Bangalore International Airpot",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl",
+          rupee: 6619
         },
         {
           source: "DEL",
-          destination: "PNQ",
+          destination: "CCU",
           sourceName: "NEW DELHI",
-          destinationName: "Pune",
-          journeyDate: "25-02-2020",
+          destinationName: "Kolkata",
+          journeyDate: new Date(),
           returnDate: "",
           tripType: 1,
           flightType: 1,
@@ -126,26 +111,45 @@ class Home extends React.PureComponent {
           infants: 0,
           travelClass: "E",
           className: "Economy",
-          destinationAirportName: "Pune, India- (PNQ) - Lohegaon",
-          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl"
+          destinationAirportName: "Kolkata, India- (CCU) - Netaji Subhas Chandra",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl",
+          rupee: 5065
         },
         {
-          source: "DXB",
-          destination: "SFO",
-          sourceName: "Dubai",
-          destinationName: "San Francisco",
-          journeyDate: "26-02-2020",
+          source: "DEL",
+          destination: "GOI",
+          sourceName: "NEW DELHI",
+          destinationName: "Goa",
+          journeyDate: new Date(),
           returnDate: "",
           tripType: 1,
-          flightType: 2,
+          flightType: 1,
           adults: 1,
           children: 0,
           infants: 0,
           travelClass: "E",
           className: "Economy",
-          destinationAirportName:
-            "San Francisco, Unites State - (SFO) - San Francisco International",
-          sourceAirportName: "Dubai, United Arab Emirates - (DXB) - Dubai"
+          destinationAirportName: "Goa, India- (GOI) - Dabolim",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl",
+          rupee: 6326
+        },
+        {
+          source: "DEL",
+          destination: "MAA",
+          sourceName: "NEW DELHI",
+          destinationName: "Chennai",
+          journeyDate: new Date(),
+          returnDate: "",
+          tripType: 1,
+          flightType: 1,
+          adults: 1,
+          children: 0,
+          infants: 0,
+          travelClass: "E",
+          className: "Economy",
+          destinationAirportName: "Chennai, India- (MAA) - Madras International[Meenamabakkam]",
+          sourceAirportName: "NEW DELHI, India- (DEL) - Indira Gandhi Intl",
+          rupee: 5898
         }
       ],
       tourindia: [
@@ -329,7 +333,7 @@ class Home extends React.PureComponent {
   };
 
   _renderItem = ({ item, index }) => {
-    const date = moment(item.journeyDate, "DD-MM-YYYY");
+    // const date = moment(item.journeyDate, "DD-MM-YYYY");
     return (
       <Button
         style={[
@@ -349,13 +353,15 @@ class Home extends React.PureComponent {
         <Text style={[styles.place, { marginTop: 10 }]}>{item.sourceName}</Text>
         <Text>To</Text>
         <Text style={styles.place}>{item.destinationName}</Text>
-        <Text>{date.format("DD MMM,YY") + date.format("(dddd)")}</Text>
+        <Text>
+          {moment(item.journeyDate).format("DD MMM,YY") + moment(item.journeyDate).format("(dddd)")}
+        </Text>
         <LinearGradient style={styles.BottomStripe} colors={["#53b2fe", "#065af3"]}>
           <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff", lineHeight: 20 }}>
             Starting From:
           </Text>
           <CurrencyText style={[styles.heading, { color: "#fff", lineHeight: 20 }]}>
-            ₹ 1400
+            ₹ {item.rupee}
           </CurrencyText>
         </LinearGradient>
       </Button>

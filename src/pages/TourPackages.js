@@ -106,7 +106,7 @@ class TourPackages extends React.PureComponent {
 
     const HeaderHeight = this.AnimatedHeaderValue.interpolate({
       inputRange: [0, Header_Maximum_Height],
-      outputRange: [0, -Header_Maximum_Height + 56],
+      outputRange: [0, -Header_Maximum_Height],
       extrapolate: "clamp"
     });
 

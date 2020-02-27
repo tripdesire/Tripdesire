@@ -1,12 +1,24 @@
 import React from "react";
-import { View, ImageBackground, Dimensions, FlatList, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  ImageBackground,
+  Dimensions,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Animated
+} from "react-native";
 import { Text, Button, Icon, LinearGradient } from "../components";
 import FastImage from "react-native-fast-image";
 const { width, height } = Dimensions.get("window");
 
+const Header_Maximum_Height = height / 4;
+const Header_Minimum_Height = height / 4 - 56;
+
 class TourPackSinPg extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.AnimatedHeaderValue = new Animated.Value(0);
     console.log(props.navigation.state.params);
     this.state = {
       hotels: [{ Name: "The Oberoi" }, { Name: "The Oberoi" }, { Name: "The Oberoi" }],
@@ -83,27 +95,51 @@ class TourPackSinPg extends React.PureComponent {
   render() {
     const { hotels, days, can } = this.state;
     const { name, Name } = this.props.navigation.state.params;
+
+    const HeaderHeight = this.AnimatedHeaderValue.interpolate({
+      inputRange: [0, Header_Maximum_Height],
+      outputRange: [0, -Header_Maximum_Height],
+      extrapolate: "clamp"
+    });
+
     return (
       <View style={{ flex: 1 }}>
-        <ImageBackground
-          style={{ width, height: height / 4 }}
-          resizeMode="cover"
-          source={{ uri: "https://demo66.tutiixx.com/wp-content/uploads/2020/01/4-min.png" }}>
-          <Button onPress={this._goBack} style={{ padding: 16 }}>
-            <Icon name="md-arrow-back" size={24} color="#fff" />
-          </Button>
-          <Text
-            style={{
-              fontSize: 30,
-              fontWeight: "700",
-              color: "#fff",
-              alignSelf: "center",
-              marginTop: 20
-            }}>
-            {Name}
-          </Text>
-        </ImageBackground>
-        <ScrollView>
+        <Animated.View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            zIndex: 1000,
+            top: Platform.OS == "ios" ? 20 : 0,
+            // height: height / 4,
+            transform: [{ translateY: HeaderHeight }],
+            resizeMode: "cover"
+          }}>
+          <ImageBackground
+            style={{ width, height: height / 4 }}
+            resizeMode="cover"
+            source={{ uri: "https://demo66.tutiixx.com/wp-content/uploads/2020/01/4-min.png" }}>
+            <Button onPress={this._goBack} style={{ padding: 16 }}>
+              <Icon name="md-arrow-back" size={24} color="#fff" />
+            </Button>
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "700",
+                color: "#fff",
+                alignSelf: "center",
+                marginTop: 20
+              }}>
+              {Name}
+            </Text>
+          </ImageBackground>
+        </Animated.View>
+        <ScrollView
+          scrollEventThrottle={16}
+          contentContainerStyle={{ paddingTop: height / 4 }}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue } } }
+          ])}>
           {/* <FastImage
             style={{ width: width - 16, height: height / 4, margin: 8 }}
             source={{ uri: "https://demo66.tutiixx.com/wp-content/uploads/2019/12/3-min.png" }}
