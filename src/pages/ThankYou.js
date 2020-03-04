@@ -40,6 +40,7 @@ class ThankYou extends React.PureComponent {
     etravosApi
       .get("Flights/FlightTicketBookingDetails", params)
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           this.setState({ ticket: res.data, loader: false });
         } else {
@@ -520,7 +521,13 @@ class ThankYou extends React.PureComponent {
                             {item.gender == "M" ? "Male" : "Female"}
                           </Text>
 
-                          {isArray(ticket.Tickets) &&
+                          <Text style={[styles.airlineno, { flex: 2, textAlign: "center" }]}>
+                            {isArray(ticket.Tickets) && ticket.Tickets[index].TripType == 1
+                              ? ticket.Tickets[0].EticketNo
+                              : null}
+                          </Text>
+
+                          {/* {isArray(ticket.Tickets) &&
                             ticket.Tickets.map(item => {
                               if (item.TripType == 1) {
                                 return (
@@ -531,7 +538,7 @@ class ThankYou extends React.PureComponent {
                                   </Text>
                                 );
                               }
-                            })}
+                            })} */}
                         </View>
                       );
                     })}
