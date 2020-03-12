@@ -490,7 +490,6 @@ class HotelCheckout extends React.Component {
                           <Text style={{ color: "#717A81" }}>
                             {params.room}: Room, {params.Night}: Night
                           </Text>
-                          {/* </View> */}
 
                           <View
                             style={{
