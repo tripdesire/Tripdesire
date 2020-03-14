@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   View,
   SafeAreaView,
@@ -9,13 +9,12 @@ import {
   StatusBar
 } from "react-native";
 import { Button, Text, ActivityIndicator } from "../../components";
-import IconSimple from "react-native-vector-icons/SimpleLineIcons";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from "moment";
 import Toast from "react-native-simple-toast";
 import RazorpayCheckout from "react-native-razorpay";
 import axios from "axios";
-import { isEmpty, isArray } from "lodash";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { etravosApi, domainApi } from "../../service";
