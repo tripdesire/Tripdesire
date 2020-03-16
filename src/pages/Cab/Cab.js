@@ -28,7 +28,7 @@ class Cab extends React.PureComponent {
       destinationName: "Bangalore",
       from: "Agra", //, 100 - (India)",
       sourceId: "149",
-      to: "Bangalore ,113 - (India)",
+      to: "Bangalore", //113 - (India)",
       pickuplocation: "",
       droplocation: "",
       destinationId: "113",
@@ -124,7 +124,6 @@ class Cab extends React.PureComponent {
       sourceId: item.Id,
       sourceName: item.Name,
       modalFrom: false,
-      sourceName: item.Name,
       suggItem: item,
       SuggPickup:
         this.state.selectedTransfer == 1
@@ -140,7 +139,7 @@ class Cab extends React.PureComponent {
 
   handleTo = item => {
     this.setState({
-      to: item.Name + " ," + item.Id + " - (India)",
+      to: item.Name, // + " ," + item.Id + " - (India)",
       destinationId: item.Id,
       destinationName: item.Name,
       modalTo: false

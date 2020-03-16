@@ -40,12 +40,6 @@ class RenderItems extends React.PureComponent {
 
   _BookNow = item => () => {
     const { params } = this.props;
-    // let param = {
-    //   params: params,
-    //   item: item,
-
-    // };
-    // console.log(param);
     this.props.navigation.navigate("CheckoutCab", { params, item });
   };
 
@@ -99,6 +93,7 @@ class RenderItems extends React.PureComponent {
                 </Text>
               </View>
             </View>
+            <Text style={{ fontSize: 12, color: "#5D666D" }}>Full cancellation policy</Text>
           </View>
         </View>
 
