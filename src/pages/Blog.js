@@ -36,13 +36,14 @@ function Blog({ navigation }) {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              height: 56,
-              backgroundColor: "#E5EBF7"
+              // height: 72,
+              backgroundColor: "#E5EBF7",
+              paddingVertical: 4
             }}>
             <Button onPress={() => navigation.goBack(null)} style={{ padding: 16 }}>
               <Icon name="md-arrow-back" size={24} />
             </Button>
-            <Text>{item.title.rendered}</Text>
+            <Text style={{ flex: 1 }}>{item.title.rendered}</Text>
           </View>
           <ScrollView contentContainerStyle={{ marginHorizontal: 16 }}>
             <HTML

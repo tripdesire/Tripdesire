@@ -146,7 +146,8 @@ class FlightListRender extends React.PureComponent {
           shadowColor: "rgba(0,0,0,0.1)",
           shadowOpacity: 1,
           shadowRadius: 4,
-          marginTop: 16,
+          marginTop: 8,
+          marginBottom: 8,
           borderRadius: 8,
           paddingTop: 10,
           // paddingVertical: index % 2 == 0 ? 30 : 10,
@@ -244,7 +245,8 @@ class FlightListRender extends React.PureComponent {
             marginHorizontal: 8,
             backgroundColor: "#D0D3DA",
             marginTop: 10
-          }}></View>
+          }}
+        />
         <View
           style={{
             marginHorizontal: 8,
@@ -371,7 +373,8 @@ class FlightListRender extends React.PureComponent {
                     {
                       marginTop: 10
                     }
-                  ]}></View>
+                  ]}
+                />
                 <View
                   style={[
                     styles.flexdirection,
@@ -409,7 +412,7 @@ class FlightListRender extends React.PureComponent {
                   <Foundation name="shopping-bag" size={18} color="#5D666D" />
                   <Text style={styles.bags}>{itemEach.BaggageAllowed.CheckInBaggage}</Text>
                 </View>
-                <View style={styles.dash}></View>
+                <View style={styles.dash} />
 
                 {item.FlightSegments.length - 1 != index && (
                   <Text style={{ marginHorizontal: 8, marginVertical: 10, color: "green" }}>

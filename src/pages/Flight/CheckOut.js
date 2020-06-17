@@ -40,7 +40,8 @@ class CheckOut extends React.PureComponent {
       .then(({ data }) => {
         console.log(data);
         if (data.code && data.code == 201) {
-          Toast.show(data.message.join());
+          console.log(data + "data");
+          Toast.show(data.message[0].notice, Toast.LONG);
         }
         this.toggleCoupon(false)();
         //this.setState({ data: data });
@@ -565,7 +566,8 @@ class CheckOut extends React.PureComponent {
                       backgroundColor: "#F2F3F5",
                       marginVertical: 10,
                       flex: 1
-                    }}></View>
+                    }}
+                  />
                 )}
                 {params.tripType == 2 && params.flightType == 1 && (
                   <View>
@@ -635,7 +637,8 @@ class CheckOut extends React.PureComponent {
                             height: 1.35,
                             width: 90,
                             backgroundColor: "#D1D1D1"
-                          }}></View>
+                          }}
+                        />
                       </View>
                       <View>
                         <Text style={{ textTransform: "capitalize" }}>{params.from}</Text>
@@ -1178,7 +1181,8 @@ class CheckOut extends React.PureComponent {
                       backgroundColor: "#F2F3F5",
                       marginVertical: 10,
                       flex: 1
-                    }}></View>
+                    }}
+                  />
                 )}
                 {params.tripType == 2 && params.flightType == 2 && (
                   <View>
@@ -1245,7 +1249,8 @@ class CheckOut extends React.PureComponent {
                             height: 1.35,
                             width: 90,
                             backgroundColor: "#D1D1D1"
-                          }}></View>
+                          }}
+                        />
                       </View>
                       <View>
                         <Text style={{ textTransform: "capitalize" }}>{params.from}</Text>
@@ -1563,4 +1568,7 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, null)(CheckOut);
+export default connect(
+  mapStateToProps,
+  null
+)(CheckOut);

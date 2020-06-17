@@ -187,7 +187,7 @@ function OrderItems({ item, onPress }) {
       return (
         <Text
           style={{
-            color: "yellow",
+            color: "#F68E1F",
             lineHeight: 18,
             fontWeight: "500",
             textTransform: "capitalize"
