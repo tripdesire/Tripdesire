@@ -53,6 +53,8 @@ import BlogList from "./BlogList";
 import Blog from "./Blog";
 import TourPackages from "./TourPackages";
 import TourPackSinPg from "./TourPackSinPg";
+import BlogCheckout from "./BlogCheckout";
+import BlogPayment from "./BlogPayment";
 
 export {
   Home,
@@ -109,5 +111,7 @@ export {
   BlogList,
   Blog,
   TourPackages,
-  TourPackSinPg
+  TourPackSinPg,
+  BlogCheckout,
+  BlogPayment
 };

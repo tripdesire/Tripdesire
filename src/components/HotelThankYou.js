@@ -12,6 +12,7 @@ import analytics from "@react-native-firebase/analytics";
 class HotelThankYou extends React.PureComponent {
   constructor(props) {
     super(props);
+    console.log(props.navigation.state.params);
   }
 
   trackScreenView = async screen => {

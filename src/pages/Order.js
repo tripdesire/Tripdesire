@@ -88,7 +88,7 @@ class Order extends React.PureComponent {
     } else if (product_id === 87) {
       this.props.navigation.navigate("FlightThankYou", { order: value, isOrderPage: true });
     } else {
-      this.props.navigation.navigate("OrderDetails", value);
+      this.props.navigation.navigate("ThankYouHotel", { order: value, isOrderPage: true });
     }
   };
 

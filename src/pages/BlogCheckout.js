@@ -9,27 +9,22 @@ import {
   StatusBar
 } from "react-native";
 import Toast from "react-native-simple-toast";
-import {
-  Button,
-  Text,
-  ActivityIndicator,
-  Icon,
-  LinearGradient,
-  CurrencyText
-} from "../../components";
+import { Button, Text, ActivityIndicator, Icon, LinearGradient, CurrencyText } from "../components";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import HTML from "react-native-render-html";
-import { domainApi } from "../../service";
+import { domainApi } from "../service";
 import { isArray, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import NumberFormat from "react-number-format";
 import analytics from "@react-native-firebase/analytics";
 
-class HotelPayment extends React.PureComponent {
+class BlogCheckout extends React.PureComponent {
   constructor(props) {
     super(props);
     const { params } = props.navigation.state;
+    console.log(props.navigation.state.params);
+    console.log("heyy");
     this.state = {
       loading: false,
       inputCoupon: false,
@@ -87,34 +82,15 @@ class HotelPayment extends React.PureComponent {
     this.trackScreenView("Hotel Checkout");
 
     const params = { ...this.props.navigation.state.params, itemId: 222 };
+    console.log(params);
 
     let param = {
-      id: 222,
-      quantity: "1",
-      hotel_type: params.hoteltype,
-      single_hotel_data: params,
-      single_ht_img: params.HotelImages[0].Imagepath,
-      hotel_adults: params.adultDetail,
-      single_ht_address: params.HotelAddress,
-      hotel_children: params.childDetail,
-      hotel_children_age: params.childAge,
-      hotel_city_id: params.cityid,
-      single_ht_name: params.HotelName,
-      single_ht_room_type: params.selectedRoom.RoomType,
-      single_ht_city: params.city,
-      single_ht_chk_in: params.checkInDate,
-      single_ht_chk_out: params.checkOutDate,
-      single_ht_night: params.Night,
-      single_ht_room: params.room,
-      single_ht_guest: params.adult + params.child,
-      single_ht_adults: params.adult,
-      single_ht_children: params.child,
-      single_ht_price: params.selectedRoom.RoomTotal,
-      single_ht_extra_guest: params.selectedRoom.ExtGuestTotal,
-      single_ht_tax_amount: params.selectedRoom.ServicetaxTotal,
-      single_ht_convenience_fee: params.ConvenienceFeeTotal
+      id: params.Hotel_id,
+      duration_time: params.item.nights,
+      package_location: params.item.slug,
+      quantity: params.No_of_person
     };
-    console.log("cartdata", param);
+    console.log("cartdata", JSON.stringify(param));
     //console.log(JSON.stringify(param));
     this.setState({ loading: true });
     domainApi
@@ -167,14 +143,14 @@ class HotelPayment extends React.PureComponent {
       return;
     }
     this.ApiCall();
-    this.props.navigation.navigate("Payment", { params, data: this.state.data });
+    this.props.navigation.navigate("BlogPayment", { params, data: this.state.data });
   };
 
   render() {
     const { params } = this.props.navigation.state;
     const { width, height } = Dimensions.get("window");
-    let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
-    let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
+    // let checkInDate = moment(params.checkInDate, "DD-MM-YYYY").format("DD MMM");
+    // let checkOutDate = moment(params.checkOutDate, "DD-MM-YYYY").format("DD MMM");
     return (
       <>
         <StatusBar backgroundColor="#000000" barStyle="light-content" />
@@ -185,10 +161,9 @@ class HotelPayment extends React.PureComponent {
               <View
                 style={{
                   height: 56,
-                  //  backgroundColor: "#5B89F9",
+                  alignItems: "center",
                   flexDirection: "row",
-                  marginHorizontal: 16,
-                  marginTop: 10
+                  marginHorizontal: 16
                 }}>
                 <Button onPress={() => this.props.navigation.goBack(null)}>
                   <Icon name="md-arrow-back" size={24} color="#fff" />
@@ -201,91 +176,12 @@ class HotelPayment extends React.PureComponent {
                       marginHorizontal: 5,
                       color: "#fff"
                     }}>
-                    Hotel Summary
+                    Order Summary
                   </Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start"
-                    }}>
-                    <IconMaterial name="calendar-month" size={18} color="#ffffff" />
-                    <Text style={{ fontSize: 12, marginHorizontal: 5, color: "#ffffff" }}>
-                      {checkInDate} - {checkOutDate}
-                    </Text>
-                  </View>
                 </View>
               </View>
             </LinearGradient>
             <View style={{ flex: 4, backgroundColor: "#FFFFFF", height: 100 }}>
-              <View
-                style={{
-                  elevation: 2,
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowColor: "rgba(0,0,0,0.1)",
-                  shadowOpacity: 1,
-                  shadowRadius: 4,
-                  backgroundColor: "#ffffff",
-                  marginHorizontal: 16,
-                  marginVertical: 8,
-                  borderRadius: 8,
-                  padding: 10
-                }}>
-                <View>
-                  <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 10 }}>
-                    Hotel Details
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={style._textHeading}>City</Text>
-                    <Text style={style._Details}>{params.city}</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={style._textHeading}>Check In</Text>
-                    <Text style={style._Details}>{params.checkInDate}</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={style._textHeading}>Check Out</Text>
-                    <Text style={style._Details}>{params.checkOutDate}</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={style._textHeading}>Night</Text>
-                    <Text style={style._Details}>{params.Night}</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={style._textHeading}>Room</Text>
-                    <Text style={style._Details}>{params.room}</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={style._textHeading}>Guest</Text>
-                    <Text style={style._Details}>{params.adult + params.child}</Text>
-                  </View>
-                </View>
-              </View>
-
               <View
                 style={{
                   elevation: 2,
@@ -306,106 +202,62 @@ class HotelPayment extends React.PureComponent {
                 </View>
 
                 {isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0 && (
-                  <View
-                    style={{
-                      paddingHorizontal: 10,
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}>
-                    <Text style={style._textHeading}>Room Total</Text>
-                    <Text style={style._Details}>
-                      <CurrencyText style={style._Details}>₹</CurrencyText>
-                      <NumberFormat
-                        decimalScale={0}
-                        fixedDecimalScale
-                        value={
-                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details
-                            .single_hotel_data.selectedRoom.RoomNetTotal * params.Night
-                        }
-                        displayType={"text"}
-                        thousandSeparator={true}
-                        thousandsGroupStyle="lakh"
-                        renderText={value => <Text style={style._Details}>{value}</Text>}
+                  <>
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}>
+                      <Text style={style._textHeading}>
+                        {this.state.data.cart_data[0].custum_product_data.package_data.name}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}>
+                      <Text style={style._textHeading}>Per Person</Text>
+                      <Text style={{ color: "#717A81" }}>
+                        <CurrencyText>₹</CurrencyText>
+                        {(
+                          parseInt(
+                            this.state.data.cart_order_total_without_symbol.replace(/\,/g, "")
+                          ) / this.state.data.cart_data[0].custum_product_data.package_data.quantity
+                        ).toFixed(2)}
+                      </Text>
+                    </View>
+
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between"
+                      }}>
+                      <Text style={style._textHeading}>No. of Passengers</Text>
+                      <Text style={{ color: "#717A81" }}>
+                        {this.state.data.cart_data[0].custum_product_data.package_data.quantity}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}>
+                      <Text style={style._textHeading}>Sub Total</Text>
+                      <HTML
+                        baseFontStyle={{
+                          color: "#717A81"
+                        }}
+                        html={this.state.data.cart_data[0].subtotal}
                       />
-                    </Text>
-                  </View>
+                    </View>
+                  </>
                 )}
-
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={style._textHeading} />
-                  <Text style={style._Details}>
-                    {params.room + " Room" + " x " + params.Night + " Night"}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={style._textHeading}>Taxes and Fees</Text>
-                  <HTML
-                    baseFontStyle={style._Details}
-                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
-                    html={
-                      isArray(this.state.data.cart_data) &&
-                      this.state.data.cart_data.length > 0 &&
-                      this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax !=
-                        null
-                        ? "₹" +
-                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details.tax
-                        : "₹0.00"
-                    }
-                  />
-                </View>
-
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={style._textHeading}>Service Charge</Text>
-                  <HTML
-                    baseFontStyle={style._Details}
-                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
-                    html={
-                      isArray(this.state.data.cart_data) &&
-                      this.state.data.cart_data.length > 0 &&
-                      this.state.data.cart_data[0].custum_product_data.Hotel_item_details.gst !=
-                        null
-                        ? this.state.data.cart_data[0].custum_product_data.Hotel_item_details
-                            .service_charge
-                        : "₹0.00"
-                    }
-                  />
-                </View>
-
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }}>
-                  <Text style={style._textHeading}>Extra Guest Charge</Text>
-                  <HTML
-                    baseFontStyle={style._Details}
-                    containerStyle={{ flex: 2, alignItems: "flex-start" }}
-                    html={
-                      isArray(this.state.data.cart_data) && this.state.data.cart_data.length > 0
-                        ? "₹" +
-                          this.state.data.cart_data[0].custum_product_data.Hotel_item_details
-                            .extra_guest_charge
-                        : "₹0.00"
-                    }
-                  />
-                </View>
 
                 {!this.state.inputCoupon && (
                   <View
@@ -451,7 +303,7 @@ class HotelPayment extends React.PureComponent {
                   </Text>
                   <Text
                     style={[style._Details, { fontSize: 16, fontWeight: "700", color: "#000" }]}>
-                    <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹ </CurrencyText>
+                    <CurrencyText style={{ fontWeight: "700", fontSize: 16 }}>₹</CurrencyText>
                     {this.state.data.total_price ? this.state.data.total_price : "₹" + 0.0}
                   </Text>
                 </View>
@@ -572,7 +424,7 @@ const style = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 16
   },
-  _Details: { color: "#717A81", flex: 2, alignItems: "flex-start" },
+  _Details: { color: "#717A81" },
   _textHeading: { color: "#717A81", flex: 5, marginStart: 8 }
 });
 
@@ -602,4 +454,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(HotelPayment);
+)(BlogCheckout);

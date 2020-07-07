@@ -16,7 +16,8 @@ import {
   Button,
   Icon,
   LinearGradient,
-  CurrencyText
+  CurrencyText,
+  ActivityIndicator
 } from "../components";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import analytics from "@react-native-firebase/analytics";
@@ -25,6 +26,8 @@ import FastImage from "react-native-fast-image";
 import Modal from "react-native-modal";
 import moment from "moment";
 import Offer from "./Offer";
+import { domainApi } from "../service";
+import { isArray, isEmpty } from "lodash";
 
 const { width } = Dimensions.get("window");
 
@@ -272,7 +275,10 @@ class Home extends React.PureComponent {
       ],
       posts: [],
       index: 0,
-      modalShow: false
+      modalShow: false,
+      domesticPackages: [],
+      internationalPackages: [],
+      loading: false
     };
   }
 
@@ -289,20 +295,39 @@ class Home extends React.PureComponent {
     await analytics().setCurrentScreen(screen, screen);
   };
   componentDidMount() {
-    const { navigation } = this.props;
-    this.focusListener = navigation.addListener("didFocus", () => {
-      axios
-        .get("https://tripdesire.co/wp-json/wp/v2/posts")
-        .then(({ data }) => {
-          console.log(data);
-          this.setState({ posts: data });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
-
+    // this.focusListener = this.props.navigation.addListener("didFocus", () => {
+    this.setState({ loading: true });
+    axios
+      .get("https://tripdesire.co/wp-json/wp/v2/posts")
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ posts: data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    domainApi
+      .get("/package/package-list")
+      .then(({ data }) => {
+        console.log(data);
+        if (data.status == 1) {
+          this.setState({
+            loading: false,
+            domesticPackages: data.data[1].sub_categories,
+            internationalPackages: data.data[0].sub_categories
+          });
+        }
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+        console.log(error);
+      });
+    // });
     this.trackScreenView("Home");
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   navigateToScreen = (page, params = {}) => () => {
@@ -369,13 +394,12 @@ class Home extends React.PureComponent {
   };
 
   _renderItemTourIndia = ({ item, index }) => {
-    const date = moment(item.journeyDate, "DD-MM-YYYY");
     return (
       <Button
         style={[
           styles.flightView,
           {
-            marginEnd: this.state.tourindia.length - 1 == index ? 12 : 2
+            marginEnd: this.state.tourindia.length == index ? 12 : 2
           }
         ]}
         onPress={this._gotoTour(item)}>
@@ -387,7 +411,7 @@ class Home extends React.PureComponent {
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8
           }}
-          source={{ uri: item.img }}
+          source={{ uri: item.image_url }}
         />
         <View
           style={[
@@ -397,8 +421,8 @@ class Home extends React.PureComponent {
               paddingTop: 15
             }
           ]}>
-          <Text style={[styles.place]}>{item.Name}</Text>
-          <Text>2 Nights/3 Days</Text>
+          <Text style={[styles.place]}>{item.name}</Text>
+          <Text>{item.nights}</Text>
         </View>
 
         <View
@@ -407,7 +431,8 @@ class Home extends React.PureComponent {
             margin: 15,
             height: 1.25,
             backgroundColor: "#d2d2d2"
-          }}></View>
+          }}
+        />
 
         <View
           style={[
@@ -423,7 +448,7 @@ class Home extends React.PureComponent {
             colors={["#53b2fe", "#065af3"]}>
             <Button>
               <CurrencyText style={[styles.heading, { color: "#fff", lineHeight: 20 }]}>
-                Rs. 1400
+                {"Rs. " + item.price_min}
               </CurrencyText>
             </Button>
           </LinearGradient>
@@ -433,13 +458,12 @@ class Home extends React.PureComponent {
   };
 
   _renderItemInternational = ({ item, index }) => {
-    const date = moment(item.journeyDate, "DD-MM-YYYY");
     return (
       <Button
         style={[
           styles.flightView,
           {
-            marginEnd: this.state.tourindia.length - 1 == index ? 12 : 2
+            marginEnd: this.state.tourindia.length == index ? 12 : 2
           }
         ]}>
         <FastImage
@@ -450,7 +474,7 @@ class Home extends React.PureComponent {
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8
           }}
-          source={{ uri: item.img }}
+          source={{ uri: item.image_url }}
         />
         <View
           style={[
@@ -460,8 +484,8 @@ class Home extends React.PureComponent {
               paddingTop: 15
             }
           ]}>
-          <Text style={[styles.place]}>{item.Name}</Text>
-          <Text>2 Nights/3 Days</Text>
+          <Text style={[styles.place]}>{item.name}</Text>
+          <Text>{item.nights}</Text>
         </View>
 
         <View
@@ -470,7 +494,8 @@ class Home extends React.PureComponent {
             margin: 15,
             height: 1.25,
             backgroundColor: "#d2d2d2"
-          }}></View>
+          }}
+        />
 
         <View
           style={[
@@ -486,7 +511,7 @@ class Home extends React.PureComponent {
             colors={["#53b2fe", "#065af3"]}>
             <Button>
               <CurrencyText style={[styles.heading, { color: "#fff", lineHeight: 20 }]}>
-                Rs. 1400
+                {"Rs. " + item.price_min}
               </CurrencyText>
             </Button>
           </LinearGradient>
@@ -504,253 +529,271 @@ class Home extends React.PureComponent {
   _keyExtractorInternational = (item, index) => "International" + item + index;
 
   render() {
-    const { posts, flights, index, tourindia, international } = this.state;
+    const {
+      posts,
+      flights,
+      index,
+      tourindia,
+      international,
+      domesticPackages,
+      internationalPackages,
+      loading
+    } = this.state;
     return (
       <>
         {/* <SafeAreaView style={{ flex: 0, backgroundColor: "transparent" }} /> */}
         {/* <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}> */}
-        <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-          <StatusBar backgroundColor="black" barStyle="light-content" />
-          <View style={styles.containerStyle}>
-            <View style={styles.sliderContainerStyle}>
-              <ImageBackground
-                // resizeMode="cover"
-                style={styles.slider}
-                source={require("../assets/imgs/Banner.jpg")}>
-                <Text
-                  style={{
-                    fontSize: 26,
-                    color: "#FFFFFF",
-                    fontWeight: "700",
-                    marginHorizontal: 20,
-                    lineHeight: 32
-                  }}>
-                  Desire.Travel.Explore
-                </Text>
-              </ImageBackground>
+        {!loading ? (
+          <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+            <StatusBar backgroundColor="black" barStyle="light-content" />
+            <View style={styles.containerStyle}>
+              <View style={styles.sliderContainerStyle}>
+                <ImageBackground
+                  // resizeMode="cover"
+                  style={styles.slider}
+                  source={require("../assets/imgs/Banner.jpg")}>
+                  <Text
+                    style={{
+                      fontSize: 26,
+                      color: "#FFFFFF",
+                      fontWeight: "700",
+                      marginHorizontal: 20,
+                      lineHeight: 32
+                    }}>
+                    Desire.Travel.Explore
+                  </Text>
+                </ImageBackground>
+              </View>
             </View>
-          </View>
-          <View
-            style={{
-              marginTop: 30,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 16
-            }}>
-            <HomeButtonComponent
-              tintColor={"#5789FF"}
-              name="Flights"
-              img_name={require("../assets/imgs/flight.png")}
-              onPress={this.navigateToScreen("FlightSearch")}
-            />
-            <HomeButtonComponent
-              name="Hotels"
-              tintColor={"#5789FF"}
-              img_name={require("../assets/imgs/Hotel.png")}
-              onPress={this.navigateToScreen("Hotel")}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginHorizontal: 16
-            }}>
-            <HomeButtonComponent
-              name="Buses"
-              tintColor={"#5789FF"}
-              img_name={require("../assets/imgs/bus.png")}
-              onPress={this.navigateToScreen("Bus")}
-            />
-            <HomeButtonComponent
-              name="Cabs"
-              tintColor={"#5789FF"}
-              img_name={require("../assets/imgs/car.png")}
-              onPress={this.navigateToScreen("Cab")}
-            />
-          </View>
-          <SwiperFlatList
-          // autoplay autoplayDelay={2} autoplayLoop index={0}
-          >
-            <TouchableOpacity onPress={this.modalShow("0")}>
-              <FastImage style={styles.imgNew} source={require("../assets/imgs/flightOffer.jpg")} />
-            </TouchableOpacity>
-
-            <FastImage style={styles.imgNew} source={require("../assets/imgs/hotelOffer.jpg")} />
-
-            <FastImage style={styles.imgNew} source={require("../assets/imgs/cabOffer.jpg")} />
-
-            <TouchableOpacity onPress={this.modalShow("3")}>
-              <FastImage style={styles.imgNew} source={require("../assets/imgs/busOffer.jpg")} />
-            </TouchableOpacity>
-          </SwiperFlatList>
-          <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
-            POPULAR DOMESTIC ROUTES
-          </Text>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={flights}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}
-          />
-          <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
-            TOUR PACKAGES IN INDIA
-          </Text>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={tourindia}
-            keyExtractor={this._keyExtractorTourIndia}
-            renderItem={this._renderItemTourIndia}
-          />
-          <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
-            INTERNATIONAL TOUR PACKAGES
-          </Text>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={international}
-            keyExtractor={this._keyExtractorInternational}
-            renderItem={this._renderItemInternational}
-          />
-
-          {posts && posts.length > 0 && (
+            <View
+              style={{
+                marginTop: 30,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginHorizontal: 16
+              }}>
+              <HomeButtonComponent
+                tintColor={"#5789FF"}
+                name="Flights"
+                img_name={require("../assets/imgs/flight.png")}
+                onPress={this.navigateToScreen("FlightSearch")}
+              />
+              <HomeButtonComponent
+                name="Hotels"
+                tintColor={"#5789FF"}
+                img_name={require("../assets/imgs/Hotel.png")}
+                onPress={this.navigateToScreen("Hotel")}
+              />
+            </View>
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginHorizontal: 12
+                marginHorizontal: 16
               }}>
-              <Text style={[styles.heading, { color: "#1A2B48" }]}>BLOG</Text>
-              <Button
-                style={{
-                  alignSelf: "flex-end",
-                  flexDirection: "row",
-                  justifyContent: "center"
-                }}
-                onPress={this.navigateToScreen("BlogList")}>
-                <Text style={{}}>VIEW ALL</Text>
-                <Icon style={{ paddingStart: 10 }} name="md-arrow-forward" size={18} />
-              </Button>
+              <HomeButtonComponent
+                name="Buses"
+                tintColor={"#5789FF"}
+                img_name={require("../assets/imgs/bus.png")}
+                onPress={this.navigateToScreen("Bus")}
+              />
+              <HomeButtonComponent
+                name="Cabs"
+                tintColor={"#5789FF"}
+                img_name={require("../assets/imgs/car.png")}
+                onPress={this.navigateToScreen("Cab")}
+              />
             </View>
-          )}
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={posts}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderItem}
-          />
-          <Modal
-            style={{ margin: 16 }}
-            backdropColor="black"
-            backdropOpacity={0.7}
-            hasBackdrop
-            isVisible={this.state.modalShow}
-            onBackButtonPress={this.modalDismiss}
-            onBackdropPress={this.modalDismiss}>
-            <View>
-              <LinearGradient
-                style={{
-                  alignSelf: "flex-end",
-                  alignItems: "center",
-                  width: 30,
-                  height: 30,
-                  justifyContent: "center",
-                  borderRadius: 15,
-                  zIndex: 1,
-                  marginEnd: -10
-                }}
-                colors={["#53b2fe", "#065af3"]}>
-                <TouchableOpacity onPress={this.modalDismiss}>
-                  <Icon name="md-close" size={20} color={"#fff"} />
-                </TouchableOpacity>
-              </LinearGradient>
-              <ScrollView
-                style={{ backgroundColor: "#fff", padding: 10, marginTop: -10 }}
-                showsVerticalScrollIndicator={false}>
-                <Offer
-                  abouttheoffer={
-                    index == 0 ? (
-                      <>
-                        <Text>
-                          To get discounts, users have to book flights for their preferred
-                          destination by applying coupon code TDFLIGHT2020 to avail of the offer.
-                        </Text>
-                        <Text>Book your flight between 1st - 29th Feb 2020.</Text>
-                      </>
-                    ) : index == 3 ? (
-                      <>
-                        <Text>
-                          To get discounts Book a bus on Trip Desire coupon code TDBUS100.
-                        </Text>
-                      </>
-                    ) : null
-                  }
-                  howtoavailthisoffer={
-                    index == 0 ? (
-                      <>
-                        <Text>
-                          Search flights on trip desire between 1st - 29th Feb 2020 and choose your
-                          preferred flight.
-                        </Text>
-                        <Text>
-                          Apply coupon code TDFLIGHT2020 at the time of making your booking.
-                        </Text>
-                      </>
-                    ) : index == 3 ? (
-                      <>
-                        <Text>Search and choose your preferred bus.</Text>
-                        <Text>Apply coupon code TDBUS100 at the time of making your booking.</Text>
-                      </>
-                    ) : null
-                  }
-                  termandcondition={
-                    index == 0 ? (
-                      <>
-                        <Text>
-                          &#9679; The offer is valid only on flight bookings made between 1st - 29th
-                          Feb 2020.
-                        </Text>
-                        <Text>
-                          &#9679; The offer is valid for domestic and international flight bookings
-                          only.
-                        </Text>
-                        <Text>
-                          &#9679; The code is applicable on a minimum booking amount of ₹5000.
-                        </Text>
-                        <Text>
-                          &#9679; It is mandatory to apply the coupon code TDFLIGHT2020 at the time
-                          of booking.
-                        </Text>
-                        <Text>&#9679; The coupon code is for one-time use only.</Text>
-                        <Text style={{ marginBottom: 10 }}>
-                          &#9679; The offer is valid for bookings made on Tripdesire Website, Mobile
-                          site, Android & iOS App.
-                        </Text>
-                      </>
-                    ) : index == 3 ? (
-                      <>
-                        <Text>&#9679; This offer is valid for all users.</Text>
-                        <Text>
-                          &#9679; You must apply coupon code TDBUS100 at the time of booking.
-                        </Text>
-                        <Text>
-                          &#9679; The code is applicable on a minimum booking amount of ₹5000.
-                        </Text>
-                        <Text>
-                          &#9679; The offer is valid for bookings made on Tripdesire Website,
-                          Android & iOS App.
-                        </Text>
-                      </>
-                    ) : null
-                  }
+            <SwiperFlatList
+            // autoplay autoplayDelay={2} autoplayLoop index={0}
+            >
+              <TouchableOpacity onPress={this.modalShow("0")}>
+                <FastImage
+                  style={styles.imgNew}
+                  source={require("../assets/imgs/flightOffer.jpg")}
                 />
-              </ScrollView>
-            </View>
-          </Modal>
-        </ScrollView>
+              </TouchableOpacity>
+
+              <FastImage style={styles.imgNew} source={require("../assets/imgs/hotelOffer.jpg")} />
+
+              <FastImage style={styles.imgNew} source={require("../assets/imgs/cabOffer.jpg")} />
+
+              <TouchableOpacity onPress={this.modalShow("3")}>
+                <FastImage style={styles.imgNew} source={require("../assets/imgs/busOffer.jpg")} />
+              </TouchableOpacity>
+            </SwiperFlatList>
+            <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
+              POPULAR DOMESTIC ROUTES
+            </Text>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={flights}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+            />
+            <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
+              TOUR PACKAGES IN INDIA
+            </Text>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={domesticPackages}
+              keyExtractor={this._keyExtractorTourIndia}
+              renderItem={this._renderItemTourIndia}
+            />
+            <Text style={[styles.heading, { marginHorizontal: 12, color: "#1A2B48" }]}>
+              INTERNATIONAL TOUR PACKAGES
+            </Text>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={internationalPackages}
+              keyExtractor={this._keyExtractorInternational}
+              renderItem={this._renderItemInternational}
+            />
+
+            {posts && posts.length > 0 && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginHorizontal: 12
+                }}>
+                <Text style={[styles.heading, { color: "#1A2B48" }]}>BLOG</Text>
+                <Button
+                  style={{
+                    alignSelf: "flex-end",
+                    flexDirection: "row",
+                    justifyContent: "center"
+                  }}
+                  onPress={this.navigateToScreen("BlogList")}>
+                  <Text style={{}}>VIEW ALL</Text>
+                  <Icon style={{ paddingStart: 10 }} name="md-arrow-forward" size={18} />
+                </Button>
+              </View>
+            )}
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={posts}
+              keyExtractor={this.keyExtractor}
+              renderItem={this.renderItem}
+            />
+            <Modal
+              style={{ margin: 16 }}
+              backdropColor="black"
+              backdropOpacity={0.7}
+              hasBackdrop
+              isVisible={this.state.modalShow}
+              onBackButtonPress={this.modalDismiss}
+              onBackdropPress={this.modalDismiss}>
+              <View>
+                <LinearGradient
+                  style={{
+                    alignSelf: "flex-end",
+                    alignItems: "center",
+                    width: 30,
+                    height: 30,
+                    justifyContent: "center",
+                    borderRadius: 15,
+                    zIndex: 1,
+                    marginEnd: -10
+                  }}
+                  colors={["#53b2fe", "#065af3"]}>
+                  <TouchableOpacity onPress={this.modalDismiss}>
+                    <Icon name="md-close" size={20} color={"#fff"} />
+                  </TouchableOpacity>
+                </LinearGradient>
+                <ScrollView
+                  style={{ backgroundColor: "#fff", padding: 10, marginTop: -10 }}
+                  showsVerticalScrollIndicator={false}>
+                  <Offer
+                    abouttheoffer={
+                      index == 0 ? (
+                        <>
+                          <Text>
+                            To get discounts, users have to book flights for their preferred
+                            destination by applying coupon code TDFLIGHT2020 to avail of the offer.
+                          </Text>
+                          <Text>Book your flight between 1st - 29th Feb 2020.</Text>
+                        </>
+                      ) : index == 3 ? (
+                        <>
+                          <Text>
+                            To get discounts Book a bus on Trip Desire coupon code TDBUS100.
+                          </Text>
+                        </>
+                      ) : null
+                    }
+                    howtoavailthisoffer={
+                      index == 0 ? (
+                        <>
+                          <Text>
+                            Search flights on trip desire between 1st - 29th Feb 2020 and choose
+                            your preferred flight.
+                          </Text>
+                          <Text>
+                            Apply coupon code TDFLIGHT2020 at the time of making your booking.
+                          </Text>
+                        </>
+                      ) : index == 3 ? (
+                        <>
+                          <Text>Search and choose your preferred bus.</Text>
+                          <Text>
+                            Apply coupon code TDBUS100 at the time of making your booking.
+                          </Text>
+                        </>
+                      ) : null
+                    }
+                    termandcondition={
+                      index == 0 ? (
+                        <>
+                          <Text>
+                            &#9679; The offer is valid only on flight bookings made between 1st -
+                            29th Feb 2020.
+                          </Text>
+                          <Text>
+                            &#9679; The offer is valid for domestic and international flight
+                            bookings only.
+                          </Text>
+                          <Text>
+                            &#9679; The code is applicable on a minimum booking amount of ₹5000.
+                          </Text>
+                          <Text>
+                            &#9679; It is mandatory to apply the coupon code TDFLIGHT2020 at the
+                            time of booking.
+                          </Text>
+                          <Text>&#9679; The coupon code is for one-time use only.</Text>
+                          <Text style={{ marginBottom: 10 }}>
+                            &#9679; The offer is valid for bookings made on Tripdesire Website,
+                            Mobile site, Android & iOS App.
+                          </Text>
+                        </>
+                      ) : index == 3 ? (
+                        <>
+                          <Text>&#9679; This offer is valid for all users.</Text>
+                          <Text>
+                            &#9679; You must apply coupon code TDBUS100 at the time of booking.
+                          </Text>
+                          <Text>
+                            &#9679; The code is applicable on a minimum booking amount of ₹5000.
+                          </Text>
+                          <Text>
+                            &#9679; The offer is valid for bookings made on Tripdesire Website,
+                            Android & iOS App.
+                          </Text>
+                        </>
+                      ) : null
+                    }
+                  />
+                </ScrollView>
+              </View>
+            </Modal>
+          </ScrollView>
+        ) : (
+          <ActivityIndicator />
+        )}
 
         {/* </SafeAreaView> */}
       </>
