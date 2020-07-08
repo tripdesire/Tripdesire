@@ -5740,6 +5740,13 @@ react-native-autocomplete-input@^4.1.0:
   resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-4.1.0.tgz#979ece28d891b245ecb967b6d31f1f924445b8ab"
   integrity sha512-Yn4GulZ9F6tde74UUGZHdVFeYWVuL7+EbUZy6kt+QHrzMc5B4OuRop1FT4RyWLpvbySW/vvqYgj9LAmlzkuEqA==
 
+react-native-autoheight-webview@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-autoheight-webview/-/react-native-autoheight-webview-1.5.1.tgz#67cbfb672212d93dedecf723d1914cbc40287545"
+  integrity sha512-jm/LGq+lW9MD3jdmbtDqjrBna/nkZqSIi3eajGbLM7SPlDuwDkmiMiBgonglZ6WeGqHyKbRa+f15MxqpVr+kUA==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-country-picker-modal@1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/react-native-country-picker-modal/-/react-native-country-picker-modal-1.7.2.tgz#353edfd6b852c6fbbecd167c9aeb08736525a078"

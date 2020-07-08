@@ -22,6 +22,7 @@ import HTML from "react-native-render-html";
 import Toast from "react-native-simple-toast";
 import { WebView } from "react-native-webview";
 const { width, height } = Dimensions.get("window");
+import AutoHeightWebView from "react-native-autoheight-webview";
 
 const Header_Maximum_Height = height / 4;
 const Header_Minimum_Height = height / 4 - 56;
@@ -53,7 +54,7 @@ class TourPackSinPg extends React.PureComponent {
         console.log(data);
         this.setState({ loading: false, data: data.data });
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({ loading: false });
         console.log(error);
       });
@@ -131,15 +132,31 @@ class TourPackSinPg extends React.PureComponent {
               onScroll={Animated.event([
                 { nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue } } }
               ])}>
-              <View style={{ marginHorizontal: 8 }}>
-                <HTML html={data.description ? data.description : " <b />"} />
+              <View>
                 {/* <WebView
-                style={{ height: 1000 }}
-                originWhitelist={["*"]}
-                source={{
-                  html: data.description
-                }}
-              /> */}
+                  style={{ height: 3800 }}
+                  originWhitelist={["*"]}
+                  source={{ uri: data.page_url }}
+                  injectedJavaScript={`
+                    let style = document.createElement('style');
+                    style.type = 'text/css';
+                    style.innerHTML='${data.page_css}';
+                    document.head.appendChild(style);
+                    true;
+                  `}
+                  onMessage={() => {}}
+                /> */}
+                <AutoHeightWebView
+                  customScript={`
+                    let style = document.createElement('style');
+                    style.type = 'text/css';
+                    style.innerHTML='${data.page_css}';
+                    document.head.appendChild(style);
+                    true;
+                  `}
+                  source={{ uri: data.page_url }}
+                  scalesPageToFit={true}
+                />
               </View>
 
               <View style={{ alignItems: "center", marginHorizontal: 20 }}>
@@ -148,7 +165,7 @@ class TourPackSinPg extends React.PureComponent {
                   placeholder="Enter Here"
                   value={this.state.passenger}
                   keyboardType="numeric"
-                  onChangeText={(text) => this.setState({ passenger: text })}
+                  onChangeText={text => this.setState({ passenger: text })}
                 />
               </View>
 
