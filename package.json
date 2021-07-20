@@ -24,7 +24,7 @@
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
     "react": "16.9.0",
-    "react-native": "0.61.4",
+    "react-native": "0.62.3",
     "react-native-autocomplete-input": "^4.1.0",
     "react-native-autoheight-webview": "^1.5.1",
     "react-native-country-picker-modal": "1.7.2",
